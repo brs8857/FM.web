@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | Draft for owner review |
+| **Status** | Approved by owner, 2026-09-11 |
 | **Date** | 2026-09-11 |
 | **Releases** | v1.1 (foundation), v2.0 (reach & polish) |
 | **Roadmap** | [docs/roadmap.md](../../roadmap.md) |
