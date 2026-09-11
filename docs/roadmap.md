@@ -21,6 +21,9 @@ The problems it starts from are listed in [code-review-2026-09-11.md](code-revie
 
 ## Phase 1: Foundation, then Reach & Polish (v2.0)
 
+**Design spec:** [2026-09-11-phase-1-design.md](superpowers/specs/2026-09-11-phase-1-design.md), in review.
+The foundation ships first as v1.1.
+
 ### 1A. Foundation (first milestone, not visible to players)
 
 Everything later depends on this. Today the whole game is one 2,316-line file with 940 KB of
