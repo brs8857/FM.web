@@ -61,7 +61,7 @@ how the game plays and belong to Phase 2.
   - Contrast fixes
   - Screen-reader labels
   - Reduced-motion support
-- **Onboarding**: a first-run walkthrough of draft → tactics → season, plus clearer in-game help.
+- **Onboarding**: _decided 2026-09-11: not in Phase 1._ The existing in-screen help stays; revisit if players get confused.
 - **UI polish**: consistent Tailwind styling (removing leftover inline styles),
   loading and error states, and an error boundary so a crash doesn't blank the page.
 - **Performance**: lazy-load the dataset, set a size budget for the first download.
@@ -134,7 +134,6 @@ A phase counts as shipped and tested when:
 
 - **Phase 1:**
   - What should the offline-first behaviour be?
-  - Onboarding: a tutorial or contextual tips?
   - Do existing v1 games need migrating? There are no saves today, so probably not.
 - **Phase 2:**
   - Is the source data for `build_final.py` recoverable?
