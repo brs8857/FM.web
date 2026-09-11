@@ -52,8 +52,9 @@ how the game plays and belong to Phase 2.
 - **Mobile first**: rework layouts for phone screens, make touch dragging reliable, and
   test on real iOS Safari and Android Chrome.
 - **Installable web app (PWA)**: manifest, icons, offline play, "Add to Home Screen".
-- **Desktop app** built from the same code in CI, replacing the out-of-date Electron `.exe`.
-  Electron or Tauri gets decided in the Phase 1 spec.
+- **Desktop browsers are first-class**, with the big-screen tactics board polished.
+  _Decided 2026-09-11: there's no separate desktop app. The PWA installs from Chrome and Edge on
+  desktop, and the out-of-date Electron `.exe` is retired._
 - **Accessibility**:
   - Allow pinch-zoom
   - Keyboard alternative to dragging players
@@ -72,7 +73,7 @@ how the game plays and belong to Phase 2.
 **Exit criteria**
 - The engine has test coverage and CI must pass before every deploy.
 - Saves survive refresh and a browser restart.
-- Manually tested on iOS Safari, Android Chrome, desktop Chrome/Edge/Firefox and the Windows desktop app.
+- Manually tested on iOS Safari, Android Chrome and desktop Chrome/Edge/Firefox.
 - Lighthouse scores meet the targets set in the spec (PWA installable, accessibility ≥ 90).
 
 ---
@@ -123,7 +124,7 @@ simulation, a full season is playable at "watch key moments" speed, and it perfo
 
 A phase counts as shipped and tested when:
 
-1. All scoped work is merged to `main` and deployed to GitHub Pages (and desktop builds published, from Phase 1 on).
+1. All scoped work is merged to `main` and deployed to GitHub Pages.
 2. Automated tests and CI pass.
 3. The manual test checklist in that phase's spec is complete on the target devices.
 4. A release is tagged (`v2.0`, `v3.0`, `v4.0`) with release notes.
@@ -132,7 +133,6 @@ A phase counts as shipped and tested when:
 ## Open questions to settle in each phase's brainstorm
 
 - **Phase 1:**
-  - Electron or Tauri for desktop?
   - What should the offline-first behaviour be?
   - Onboarding: a tutorial or contextual tips?
   - Do existing v1 games need migrating? There are no saves today, so probably not.
