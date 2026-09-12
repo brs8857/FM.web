@@ -5,6 +5,7 @@ import { createSquadLookup } from "./players.js";
 import { makeInitialAssignments } from "./formations.js";
 import { nextEmptySlotIndex, autoFillBench, generateShortlist, signToSlot, signToBench } from "./squad.js";
 import { createRng } from "./rng.js";
+import { playerIdentity, isSameRealPlayer } from "./identity.js";
 
 const dataset = makeMiniDataset();
 const getSquad = createSquadLookup(dataset);
@@ -64,5 +65,26 @@ describe("squad", () => {
     const st = result.assignments.find((a) => a.slotId === "ST");
     expect(st).toMatchObject({ player: newcomer, role: "POA", duty: "Attack", sliderAtt: 50, sliderDef: 50 });
     expect(result.bench).toEqual([entry(outgoing)]);
+  });
+});
+
+describe("bug #4: bench and shortlist never duplicate a real player", () => {
+  it("autoFillBench skips an owned identity from another drafted season", () => {
+    const sam2000 = getSquad("2000", "1").find((p) => p.name === "Sam Twice");
+    const squad2001 = getSquad("2001", "1");
+    const assignments = makeInitialAssignments("4-3-3").map((a, i) => ({ ...a, player: i === 10 ? sam2000 : squad2001[i + 1] }));
+    const drafted = new Set(assignments.map((a) => a.player.id));
+    const { bench } = autoFillBench(getSquad, assignments, drafted, assignments.map((a) => playerIdentity(a.player)));
+    expect(bench.map((b) => b.player.name)).not.toContain("Sam Twice");
+  });
+
+  it("generateShortlist excludes owned identities and repeats nobody", () => {
+    const owned = [playerIdentity(getSquad("2000", "1").find((p) => p.name === "Sam Twice"))];
+    for (let seed = 1; seed <= 30; seed++) {
+      const list = generateShortlist(getSquad, dataset.index, { eraMin: 2000, eraMax: 2011 }, new Set(), createRng(seed), { count: 20, ownedIdentities: owned });
+      expect(list.map((p) => p.name)).not.toContain("Sam Twice");
+      const ids = list.map(playerIdentity);
+      ids.forEach((a, i) => ids.slice(i + 1).forEach((b) => expect(isSameRealPlayer(a, b)).toBe(false)));
+    }
   });
 });

@@ -2,6 +2,7 @@
 import { describe, it, expect } from "vitest";
 import { makeMiniDataset } from "../../tests/fixtures/miniDataset.js";
 import { STAT_KEYS, rowToPlayer, slotAccepts, createSquadLookup, buildPool } from "./players.js";
+import { playerIdentity } from "./identity.js";
 
 describe("players", () => {
   it("maps a data row to a player", () => {
@@ -39,5 +40,18 @@ describe("players", () => {
     const { players, relaxed } = buildPool(getSquad, "2005", "3", "DM", null, new Set());
     expect(relaxed).toBe(true);
     expect(players.length).toBe(getSquad("2005", "3").length);
+  });
+});
+
+describe("bug #4: pools exclude players already owned in another season", () => {
+  const getSquad = createSquadLookup(makeMiniDataset());
+  const find = (y, c, name) => getSquad(y, c).find((p) => p.name === name);
+
+  it("drops the same person from a later season but keeps a namesake", () => {
+    const owned = [playerIdentity(find("2000", "1", "Sam Twice")), playerIdentity(find("2000", "2", "Alan Smith"))];
+    const later = buildPool(getSquad, "2001", "1", "ST", null, new Set(), owned).players.map((p) => p.name);
+    expect(later).not.toContain("Sam Twice");
+    const namesake = buildPool(getSquad, "2010", "4", "ST", null, new Set(), owned).players.map((p) => p.name);
+    expect(namesake).toContain("Alan Smith");
   });
 });

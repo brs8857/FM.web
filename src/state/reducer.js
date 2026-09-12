@@ -45,7 +45,10 @@ export function createReducer(dataset) {
         const idx = nextEmptySlotIndex(state.assignments);
         let slotType = "GK", side = null;
         if (idx >= 0) { slotType = state.assignments[idx].type; side = state.assignments[idx].side; }
-        const { players, relaxed } = buildPool(getSquad, entry.y, entry.c, slotType, side, state.draftedIds);
+        const { players, relaxed } = buildPool(getSquad, entry.y, entry.c, slotType, side, state.draftedIds, state.draftedIdentities);
+        if (players.length === 0) {
+          return { ...next, wheel: { spinning: false, landed: null }, pool: [], poolRelaxed: false };
+        }
         return { ...next, wheel: { spinning: false, landed: { year: entry.y, clubId: entry.c, label: entry.label } }, pool: players, poolRelaxed: relaxed };
       }
       case "PICK_PLAYER": {
@@ -60,7 +63,7 @@ export function createReducer(dataset) {
         assignments[idx] = { ...assignments[idx], player: action.player, role: role.key, duty };
         const draftDone = nextEmptySlotIndex(assignments) === -1;
         if (draftDone) {
-          const { bench, draftedIds: withBench } = autoFillBench(getSquad, assignments, draftedIds);
+          const { bench, draftedIds: withBench } = autoFillBench(getSquad, assignments, draftedIds, draftedIdentities);
           return {
             ...state, assignments, draftedIds: withBench,
             draftedIdentities: [...draftedIdentities, ...bench.map((b) => playerIdentity(b.player))],
@@ -177,7 +180,7 @@ export function createReducer(dataset) {
       }
       case "GOTO_TRANSFER": {
         const [rng, next] = takeRng(state);
-        const shortlist = generateShortlist(getSquad, dataset.index, { eraMin: state.eraMin, eraMax: state.eraMax }, state.draftedIds, rng)
+        const shortlist = generateShortlist(getSquad, dataset.index, { eraMin: state.eraMin, eraMax: state.eraMax }, state.draftedIds, rng, { ownedIdentities: state.draftedIdentities })
           .map((player) => ({ player, signed: false }));
         const { opponents, relegated, promoted } = applyPromotionRelegation(state.opponents, state.simulation?.table, dataset.championship, rng);
         return { ...next, phase: "transfer", shortlist, opponents, lastTransition: { relegated, promoted } };

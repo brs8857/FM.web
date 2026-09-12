@@ -1,4 +1,5 @@
 import { defaultRoleFor, defaultDutyFor } from "./roles.js";
+import { isOwnedIdentity, playerIdentity } from "./identity.js";
 
 export function nextEmptySlotIndex(assignments) {
   return assignments.findIndex((a) => !a.player);
@@ -7,7 +8,7 @@ export function nextEmptySlotIndex(assignments) {
 // Once the starting XI is complete, automatically pull a bench from the same
 // club-seasons that were drafted from (a backup keeper first, then the best
 // remaining outfield players).
-export function autoFillBench(getSquad, assignments, draftedIds) {
+export function autoFillBench(getSquad, assignments, draftedIds, ownedIdentities = []) {
   const usedSeasons = [...new Set(assignments.map((a) => a.player.seasonKey))];
   const dids = new Set(draftedIds);
   let remaining = [];
@@ -15,21 +16,23 @@ export function autoFillBench(getSquad, assignments, draftedIds) {
     const [year, clubId] = sk.split("_");
     getSquad(year, clubId).forEach((p) => { if (!dids.has(p.id)) remaining.push(p); });
   });
-  const gk = remaining.filter((p) => p.slot === "GK").sort((a, b) => b.ov - a.ov)[0];
+  const identities = [...ownedIdentities];
+  const free = (p) => !dids.has(p.id) && !isOwnedIdentity(identities, p);
+  const gk = remaining.filter((p) => p.slot === "GK" && free(p)).sort((a, b) => b.ov - a.ov)[0];
   const others = remaining.filter((p) => p.slot !== "GK").sort((a, b) => b.ov - a.ov);
   const bench = [];
-  if (gk) { bench.push(gk); dids.add(gk.id); }
+  if (gk) { bench.push(gk); dids.add(gk.id); identities.push(playerIdentity(gk)); }
   for (const p of others) {
     if (bench.length >= 6) break;
-    if (dids.has(p.id)) continue;
-    bench.push(p); dids.add(p.id);
+    if (!free(p)) continue;
+    bench.push(p); dids.add(p.id); identities.push(playerIdentity(p));
   }
   return { bench: bench.map((p) => ({ player: p, role: null, duty: null })), draftedIds: dids };
 }
 
 // Transfer window shortlist: candidates drawn from the career's era, excluding
 // anyone already at the club. Sampling 40 club-seasons keeps it instant.
-export function generateShortlist(getSquad, index, { eraMin, eraMax }, ownedIds, rng, count = 5) {
+export function generateShortlist(getSquad, index, { eraMin, eraMax }, ownedIds, rng, { count = 5, ownedIdentities = [] } = {}) {
   const eraEntries = index.filter((e) => {
     const y = parseInt(e.y, 10);
     return y >= eraMin && y <= eraMax;
@@ -42,7 +45,15 @@ export function generateShortlist(getSquad, index, { eraMin, eraMax }, ownedIds,
       if (!ownedIds.has(p.id) && !seen.has(p.id)) { seen.add(p.id); pool.push(p); }
     });
   });
-  return rng.shuffle(pool).slice(0, count);
+  const picked = [];
+  const identities = [...ownedIdentities];
+  for (const p of rng.shuffle(pool)) {
+    if (picked.length >= count) break;
+    if (isOwnedIdentity(identities, p)) continue;
+    picked.push(p);
+    identities.push(playerIdentity(p));
+  }
+  return picked;
 }
 
 // Sign a new player into the XI at a given slot, sending whoever was there

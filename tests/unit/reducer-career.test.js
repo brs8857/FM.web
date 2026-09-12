@@ -4,6 +4,7 @@ import { makeMiniDataset } from "../fixtures/miniDataset.js";
 import { playCareer } from "../fixtures/playCareer.js";
 import { createReducer } from "../../src/state/reducer.js";
 import { makeInitialState } from "../../src/state/initialState.js";
+import { playerIdentity, isSameRealPlayer } from "../../src/engine/identity.js";
 
 export function checkInvariants(state, action, previous) {
   const label = action.type;
@@ -14,6 +15,8 @@ export function checkInvariants(state, action, previous) {
   expect(state.opponents, label).toHaveLength(19);
   expect(state.rngCounter, label).toBeGreaterThanOrEqual(previous.rngCounter);
   expect(state.draftedIdentities, label).toHaveLength(state.draftedIds.size);
+  const owned = [...state.assignments, ...state.bench].map((e) => e.player).filter(Boolean).map(playerIdentity);
+  owned.forEach((a, i) => owned.slice(i + 1).forEach((b) => expect(isSameRealPlayer(a, b), `${label}: ${a.name}`).toBe(false)));
 }
 
 describe("reducer career walkthrough", () => {
@@ -64,5 +67,15 @@ describe("reducer career walkthrough", () => {
     expect(state.poolRelaxed).toBe(true);
     state = reducer(state, { type: "PICK_PLAYER", player: state.pool[0] });
     expect(state.poolRelaxed).toBe(false);
+  });
+
+  it("lets the player spin again when a landed squad has nobody left to draft", () => {
+    const dataset = makeMiniDataset();
+    const reducer = createReducer(dataset);
+    const everyone = ["2000_1", "2000_2"].flatMap((key) => dataset.squads[key].map((row) => `${key}__${row[0]}__${row[5]}__${row[1]}`));
+    let state = { ...makeInitialState(dataset, 5), phase: "draft", eraMin: 2000, eraMax: 2000, draftedIds: new Set(everyone) };
+    state = reducer(reducer(state, { type: "SPIN" }), { type: "LAND" });
+    expect(state.wheel).toEqual({ spinning: false, landed: null });
+    expect(state.pool).toEqual([]);
   });
 });

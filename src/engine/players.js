@@ -1,3 +1,5 @@
+import { isOwnedIdentity } from "./identity.js";
+
 export const STAT_KEYS = ["pace", "shooting", "passing", "dribbling", "defending", "physical"];
 export const STAT_LABELS = { pace: "Pace", shooting: "Shooting", passing: "Passing", dribbling: "Dribbling", defending: "Defending", physical: "Physical" };
 
@@ -28,15 +30,16 @@ export function createSquadLookup(dataset) {
   };
 }
 
-export function buildPool(getSquad, year, clubId, slotType, side, draftedIds) {
+export function buildPool(getSquad, year, clubId, slotType, side, draftedIds, ownedIdentities = []) {
   const squad = getSquad(year, clubId);
   // Strict position matching: a GK slot only offers goalkeepers from that exact
   // club season, a CB slot only offers centre-backs, etc. The only fallback is
   // for the rare case a squad has zero tagged players of that exact category
   // left — then we open up to the rest of the available squad.
-  let pool = squad.filter((p) => !draftedIds.has(p.id) && slotAccepts(slotType, p));
+  const available = (p) => !draftedIds.has(p.id) && !isOwnedIdentity(ownedIdentities, p);
+  let pool = squad.filter((p) => available(p) && slotAccepts(slotType, p));
   let relaxed = false;
-  if (pool.length === 0) { pool = squad.filter((p) => !draftedIds.has(p.id)); relaxed = true; }
+  if (pool.length === 0) { pool = squad.filter(available); relaxed = true; }
   // prefer matching side first, then by overall
   pool.sort((a, b) => {
     if (side) {
