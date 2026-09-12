@@ -590,30 +590,30 @@
      "vol": 8.46
     },
     {
-     "name": "Southampton",
-     "ov": 66.3,
-     "histMean": 77.7,
-     "histStd": 3.4,
-     "weight": 1.148,
-     "vol": 9.23,
-     "lastSeason": "promoted"
-    },
-    {
-     "name": "Bristol City",
-     "ov": 50.6,
-     "histMean": 50.6,
-     "histStd": 11.1,
-     "weight": 0.828,
-     "vol": 17,
-     "lastSeason": "promoted"
-    },
-    {
      "name": "Watford",
      "ov": 63.7,
      "histMean": 73.3,
      "histStd": 3.8,
      "weight": 1.096,
      "vol": 9.63,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Charlton Athletic",
+     "ov": 59.7,
+     "histMean": 78,
+     "histStd": 3.1,
+     "weight": 1.152,
+     "vol": 8.93,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Cardiff City",
+     "ov": 53.2,
+     "histMean": 68.8,
+     "histStd": 0.2,
+     "weight": 1.043,
+     "vol": 6,
      "lastSeason": "promoted"
     }
    ],
@@ -623,9 +623,9 @@
     "Sunderland AFC"
    ],
    "promoted": [
-    "Southampton",
-    "Bristol City",
-    "Watford"
+    "Watford",
+    "Charlton Athletic",
+    "Cardiff City"
    ]
   }
  },
@@ -905,15 +905,6 @@
      "vol": 8.46
     },
     {
-     "name": "Norwich City",
-     "ov": 63.1,
-     "histMean": 73.8,
-     "histStd": 4.4,
-     "weight": 1.102,
-     "vol": 10.24,
-     "lastSeason": "promoted"
-    },
-    {
      "name": "Southampton",
      "ov": 66.3,
      "histMean": 77.7,
@@ -930,6 +921,15 @@
      "weight": 0.819,
      "vol": 13.06,
      "lastSeason": "promoted"
+    },
+    {
+     "name": "Preston North End",
+     "ov": 47.8,
+     "histMean": 47.8,
+     "histStd": 7.2,
+     "weight": 0.795,
+     "vol": 13.06,
+     "lastSeason": "promoted"
     }
    ],
    "relegated": [
@@ -938,9 +938,9 @@
     "Sunderland AFC"
    ],
    "promoted": [
-    "Norwich City",
     "Southampton",
-    "Lincoln City"
+    "Lincoln City",
+    "Preston North End"
    ]
   }
  },
@@ -1220,30 +1220,30 @@
      "vol": 8.46
     },
     {
-     "name": "Wrexham",
-     "ov": 46.5,
-     "histMean": 46.5,
-     "histStd": 8.3,
-     "weight": 0.78,
-     "vol": 14.17,
+     "name": "Swansea City",
+     "ov": 58,
+     "histMean": 74.7,
+     "histStd": 1.1,
+     "weight": 1.113,
+     "vol": 6.91,
      "lastSeason": "promoted"
     },
     {
-     "name": "Middlesbrough",
-     "ov": 56,
-     "histMean": 78.9,
-     "histStd": 2.7,
-     "weight": 1.162,
-     "vol": 8.52,
+     "name": "Norwich City",
+     "ov": 63.1,
+     "histMean": 73.8,
+     "histStd": 4.4,
+     "weight": 1.102,
+     "vol": 10.24,
      "lastSeason": "promoted"
     },
     {
-     "name": "Portsmouth",
-     "ov": 59.1,
-     "histMean": 78.7,
-     "histStd": 3.3,
-     "weight": 1.16,
-     "vol": 9.13,
+     "name": "Charlton Athletic",
+     "ov": 59.7,
+     "histMean": 78,
+     "histStd": 3.1,
+     "weight": 1.152,
+     "vol": 8.93,
      "lastSeason": "promoted"
     }
    ],
@@ -1253,9 +1253,9 @@
     "Sunderland AFC"
    ],
    "promoted": [
-    "Wrexham",
-    "Middlesbrough",
-    "Portsmouth"
+    "Swansea City",
+    "Norwich City",
+    "Charlton Athletic"
    ]
   }
  },
@@ -1848,21 +1848,12 @@
      "vol": 8.46
     },
     {
-     "name": "Birmingham City",
-     "ov": 58.2,
-     "histMean": 77.1,
-     "histStd": 3.1,
-     "weight": 1.141,
-     "vol": 8.93,
-     "lastSeason": "promoted"
-    },
-    {
-     "name": "Sheffield United",
-     "ov": 69.1,
-     "histMean": 74.4,
-     "histStd": 3.9,
-     "weight": 1.109,
-     "vol": 9.73,
+     "name": "Queens Park Rangers",
+     "ov": 56.7,
+     "histMean": 76.5,
+     "histStd": 4.1,
+     "weight": 1.134,
+     "vol": 9.94,
      "lastSeason": "promoted"
     },
     {
@@ -1873,6 +1864,15 @@
      "weight": 1.116,
      "vol": 7.31,
      "lastSeason": "promoted"
+    },
+    {
+     "name": "Birmingham City",
+     "ov": 58.2,
+     "histMean": 77.1,
+     "histStd": 3.1,
+     "weight": 1.141,
+     "vol": 8.93,
+     "lastSeason": "promoted"
     }
    ],
    "relegated": [
@@ -1881,9 +1881,9 @@
     "Sunderland AFC"
    ],
    "promoted": [
-    "Birmingham City",
-    "Sheffield United",
-    "Stoke City"
+    "Queens Park Rangers",
+    "Stoke City",
+    "Birmingham City"
    ]
   }
  },
@@ -2163,15 +2163,6 @@
      "vol": 8.46
     },
     {
-     "name": "Watford",
-     "ov": 63.7,
-     "histMean": 73.3,
-     "histStd": 3.8,
-     "weight": 1.096,
-     "vol": 9.63,
-     "lastSeason": "promoted"
-    },
-    {
      "name": "Queens Park Rangers",
      "ov": 56.7,
      "histMean": 76.5,
@@ -2188,6 +2179,15 @@
      "weight": 1.162,
      "vol": 8.52,
      "lastSeason": "promoted"
+    },
+    {
+     "name": "Watford",
+     "ov": 63.7,
+     "histMean": 73.3,
+     "histStd": 3.8,
+     "weight": 1.096,
+     "vol": 9.63,
+     "lastSeason": "promoted"
     }
    ],
    "relegated": [
@@ -2196,9 +2196,9 @@
     "Sunderland AFC"
    ],
    "promoted": [
-    "Watford",
     "Queens Park Rangers",
-    "Middlesbrough"
+    "Middlesbrough",
+    "Watford"
    ]
   }
  },
@@ -2793,30 +2793,30 @@
      "vol": 8.46
     },
     {
-     "name": "Middlesbrough",
-     "ov": 56,
-     "histMean": 78.9,
-     "histStd": 2.7,
-     "weight": 1.162,
-     "vol": 8.52,
+     "name": "Norwich City",
+     "ov": 63.1,
+     "histMean": 73.8,
+     "histStd": 4.4,
+     "weight": 1.102,
+     "vol": 10.24,
      "lastSeason": "promoted"
     },
     {
-     "name": "Stoke City",
+     "name": "Bolton Wanderers",
      "ov": 58,
-     "histMean": 75,
-     "histStd": 1.5,
-     "weight": 1.116,
-     "vol": 7.31,
+     "histMean": 78,
+     "histStd": 3,
+     "weight": 1.152,
+     "vol": 8.83,
      "lastSeason": "promoted"
     },
     {
-     "name": "Blackburn Rovers",
-     "ov": 54.3,
-     "histMean": 77.8,
-     "histStd": 3.4,
-     "weight": 1.149,
-     "vol": 9.23,
+     "name": "Bristol City",
+     "ov": 50.6,
+     "histMean": 50.6,
+     "histStd": 11.1,
+     "weight": 0.828,
+     "vol": 17,
      "lastSeason": "promoted"
     }
    ],
@@ -2826,9 +2826,9 @@
     "Sunderland AFC"
    ],
    "promoted": [
-    "Middlesbrough",
-    "Stoke City",
-    "Blackburn Rovers"
+    "Norwich City",
+    "Bolton Wanderers",
+    "Bristol City"
    ]
   }
  },
@@ -3423,15 +3423,6 @@
      "vol": 8.46
     },
     {
-     "name": "Lincoln City",
-     "ov": 49.8,
-     "histMean": 49.8,
-     "histStd": 7.2,
-     "weight": 0.819,
-     "vol": 13.06,
-     "lastSeason": "promoted"
-    },
-    {
      "name": "Birmingham City",
      "ov": 58.2,
      "histMean": 77.1,
@@ -3441,11 +3432,20 @@
      "lastSeason": "promoted"
     },
     {
-     "name": "Preston North End",
-     "ov": 47.8,
-     "histMean": 47.8,
+     "name": "Middlesbrough",
+     "ov": 56,
+     "histMean": 78.9,
+     "histStd": 2.7,
+     "weight": 1.162,
+     "vol": 8.52,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Lincoln City",
+     "ov": 49.8,
+     "histMean": 49.8,
      "histStd": 7.2,
-     "weight": 0.795,
+     "weight": 0.819,
      "vol": 13.06,
      "lastSeason": "promoted"
     }
@@ -3456,9 +3456,9 @@
     "Sunderland AFC"
    ],
    "promoted": [
-    "Lincoln City",
     "Birmingham City",
-    "Preston North End"
+    "Middlesbrough",
+    "Lincoln City"
    ]
   }
  },
@@ -3738,30 +3738,30 @@
      "vol": 8.46
     },
     {
-     "name": "Norwich City",
-     "ov": 63.1,
-     "histMean": 73.8,
-     "histStd": 4.4,
-     "weight": 1.102,
-     "vol": 10.24,
+     "name": "West Bromwich Albion",
+     "ov": 60.4,
+     "histMean": 73.7,
+     "histStd": 2.5,
+     "weight": 1.101,
+     "vol": 8.32,
      "lastSeason": "promoted"
     },
     {
-     "name": "Cardiff City",
-     "ov": 53.2,
-     "histMean": 68.8,
-     "histStd": 0.2,
-     "weight": 1.043,
-     "vol": 6,
+     "name": "Derby County",
+     "ov": 55.2,
+     "histMean": 80.4,
+     "histStd": 3.8,
+     "weight": 1.18,
+     "vol": 9.63,
      "lastSeason": "promoted"
     },
     {
-     "name": "Bristol City",
-     "ov": 50.6,
-     "histMean": 50.6,
-     "histStd": 11.1,
-     "weight": 0.828,
-     "vol": 17,
+     "name": "Lincoln City",
+     "ov": 49.8,
+     "histMean": 49.8,
+     "histStd": 7.2,
+     "weight": 0.819,
+     "vol": 13.06,
      "lastSeason": "promoted"
     }
    ],
@@ -3771,9 +3771,9 @@
     "Sunderland AFC"
    ],
    "promoted": [
-    "Norwich City",
-    "Cardiff City",
-    "Bristol City"
+    "West Bromwich Albion",
+    "Derby County",
+    "Lincoln City"
    ]
   }
  },
@@ -4368,21 +4368,12 @@
      "vol": 8.46
     },
     {
-     "name": "Wolverhampton Wanderers",
-     "ov": 69.8,
-     "histMean": 75.6,
-     "histStd": 4.1,
-     "weight": 1.123,
-     "vol": 9.94,
-     "lastSeason": "promoted"
-    },
-    {
-     "name": "Blackburn Rovers",
-     "ov": 54.3,
-     "histMean": 77.8,
-     "histStd": 3.4,
-     "weight": 1.149,
-     "vol": 9.23,
+     "name": "Charlton Athletic",
+     "ov": 59.7,
+     "histMean": 78,
+     "histStd": 3.1,
+     "weight": 1.152,
+     "vol": 8.93,
      "lastSeason": "promoted"
     },
     {
@@ -4393,6 +4384,15 @@
      "weight": 1.109,
      "vol": 9.73,
      "lastSeason": "promoted"
+    },
+    {
+     "name": "Southampton",
+     "ov": 66.3,
+     "histMean": 77.7,
+     "histStd": 3.4,
+     "weight": 1.148,
+     "vol": 9.23,
+     "lastSeason": "promoted"
     }
    ],
    "relegated": [
@@ -4401,9 +4401,9 @@
     "Sunderland AFC"
    ],
    "promoted": [
-    "Wolverhampton Wanderers",
-    "Blackburn Rovers",
-    "Sheffield United"
+    "Charlton Athletic",
+    "Sheffield United",
+    "Southampton"
    ]
   }
  },
@@ -4683,15 +4683,6 @@
      "vol": 8.46
     },
     {
-     "name": "Bristol City",
-     "ov": 50.6,
-     "histMean": 50.6,
-     "histStd": 11.1,
-     "weight": 0.828,
-     "vol": 17,
-     "lastSeason": "promoted"
-    },
-    {
      "name": "Bolton Wanderers",
      "ov": 58,
      "histMean": 78,
@@ -4708,6 +4699,15 @@
      "weight": 0.795,
      "vol": 13.06,
      "lastSeason": "promoted"
+    },
+    {
+     "name": "Millwall",
+     "ov": 52,
+     "histMean": 52,
+     "histStd": 7.5,
+     "weight": 0.845,
+     "vol": 13.37,
+     "lastSeason": "promoted"
     }
    ],
    "relegated": [
@@ -4716,9 +4716,9 @@
     "Sunderland AFC"
    ],
    "promoted": [
-    "Bristol City",
     "Bolton Wanderers",
-    "Preston North End"
+    "Preston North End",
+    "Millwall"
    ]
   }
  },
@@ -4998,6 +4998,15 @@
      "vol": 8.46
     },
     {
+     "name": "Watford",
+     "ov": 63.7,
+     "histMean": 73.3,
+     "histStd": 3.8,
+     "weight": 1.096,
+     "vol": 9.63,
+     "lastSeason": "promoted"
+    },
+    {
      "name": "Burnley",
      "ov": 73.8,
      "histMean": 71.4,
@@ -5007,21 +5016,12 @@
      "lastSeason": "promoted"
     },
     {
-     "name": "Blackburn Rovers",
-     "ov": 54.3,
-     "histMean": 77.8,
-     "histStd": 3.4,
-     "weight": 1.149,
-     "vol": 9.23,
-     "lastSeason": "promoted"
-    },
-    {
-     "name": "Portsmouth",
-     "ov": 59.1,
-     "histMean": 78.7,
-     "histStd": 3.3,
-     "weight": 1.16,
-     "vol": 9.13,
+     "name": "Millwall",
+     "ov": 52,
+     "histMean": 52,
+     "histStd": 7.5,
+     "weight": 0.845,
+     "vol": 13.37,
      "lastSeason": "promoted"
     }
    ],
@@ -5031,9 +5031,9 @@
     "Sunderland AFC"
    ],
    "promoted": [
+    "Watford",
     "Burnley",
-    "Blackburn Rovers",
-    "Portsmouth"
+    "Millwall"
    ]
   }
  },
@@ -5322,21 +5322,21 @@
      "lastSeason": "promoted"
     },
     {
-     "name": "Wrexham",
-     "ov": 46.5,
-     "histMean": 46.5,
-     "histStd": 8.3,
-     "weight": 0.78,
-     "vol": 14.17,
-     "lastSeason": "promoted"
-    },
-    {
      "name": "Bolton Wanderers",
      "ov": 58,
      "histMean": 78,
      "histStd": 3,
      "weight": 1.152,
      "vol": 8.83,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Derby County",
+     "ov": 55.2,
+     "histMean": 80.4,
+     "histStd": 3.8,
+     "weight": 1.18,
+     "vol": 9.63,
      "lastSeason": "promoted"
     }
    ],
@@ -5347,8 +5347,8 @@
    ],
    "promoted": [
     "Birmingham City",
-    "Wrexham",
-    "Bolton Wanderers"
+    "Bolton Wanderers",
+    "Derby County"
    ]
   }
  },
@@ -5943,30 +5943,30 @@
      "vol": 8.46
     },
     {
-     "name": "Sheffield United",
-     "ov": 69.1,
-     "histMean": 74.4,
-     "histStd": 3.9,
-     "weight": 1.109,
-     "vol": 9.73,
+     "name": "Millwall",
+     "ov": 52,
+     "histMean": 52,
+     "histStd": 7.5,
+     "weight": 0.845,
+     "vol": 13.37,
      "lastSeason": "promoted"
     },
     {
-     "name": "Blackburn Rovers",
-     "ov": 54.3,
-     "histMean": 77.8,
+     "name": "Southampton",
+     "ov": 66.3,
+     "histMean": 77.7,
      "histStd": 3.4,
-     "weight": 1.149,
+     "weight": 1.148,
      "vol": 9.23,
      "lastSeason": "promoted"
     },
     {
-     "name": "Swansea City",
+     "name": "Stoke City",
      "ov": 58,
-     "histMean": 74.7,
-     "histStd": 1.1,
-     "weight": 1.113,
-     "vol": 6.91,
+     "histMean": 75,
+     "histStd": 1.5,
+     "weight": 1.116,
+     "vol": 7.31,
      "lastSeason": "promoted"
     }
    ],
@@ -5976,9 +5976,9 @@
     "Sunderland AFC"
    ],
    "promoted": [
-    "Sheffield United",
-    "Blackburn Rovers",
-    "Swansea City"
+    "Millwall",
+    "Southampton",
+    "Stoke City"
    ]
   }
  },

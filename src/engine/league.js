@@ -9,11 +9,13 @@
 // only fixes *who's in the pool*, not who comes up.
 
 // Draws `count` clubs at random from the Championship pool, excluding
-// anyone currently already in the top flight (so a club can't be "promoted"
-// while it's still up) — once up, a club stays up until it goes down on its
-// own merit, same as anyone else; there's no scripted script to any of it.
-export function drawPromotedClubs(pool, count, currentNames, rng) {
-  const available = pool.filter((c) => !currentNames.has(c.name));
+// anyone currently already in the top flight and anyone relegated this same
+// summer (so a club can't be "promoted" while it's still up, and can't bounce
+// straight back down-then-up in the same transition) — once up, a club stays
+// up until it goes down on its own merit, same as anyone else; there's no
+// scripted script to any of it.
+export function drawPromotedClubs(pool, count, excludeNames, rng) {
+  const available = pool.filter((c) => !excludeNames.has(c.name));
   return rng.shuffle(available).slice(0, count).map((c) => ({ ...c, lastSeason: "promoted" }));
 }
 
@@ -26,7 +28,7 @@ export function applyPromotionRelegation(opponents, table, pool, rng) {
   const relegatedNames = table.filter((r) => !r.isUser && r.position >= 18).map((r) => r.name);
   if (relegatedNames.length === 0) return { opponents, relegated: [], promoted: [] };
   const survivors = opponents.filter((o) => !relegatedNames.includes(o.name));
-  const currentNames = new Set(survivors.map((o) => o.name));
-  const promotedClubs = drawPromotedClubs(pool, relegatedNames.length, currentNames, rng);
+  const excludeNames = new Set([...survivors.map((o) => o.name), ...relegatedNames]);
+  const promotedClubs = drawPromotedClubs(pool, relegatedNames.length, excludeNames, rng);
   return { opponents: [...survivors, ...promotedClubs], relegated: relegatedNames, promoted: promotedClubs.map((c) => c.name) };
 }

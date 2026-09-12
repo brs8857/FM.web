@@ -86,6 +86,21 @@ describe("promotion and relegation", () => {
   });
 });
 
+describe("bug #1: promotion never brings back a club relegated in the same summer", () => {
+  it("holds across 200 seeded transitions", () => {
+    const pool = Array.from({ length: 24 }, (_, i) => ({ name: `Club ${i + 1}` }));
+    const opponents = pool.slice(0, 19); // rivals share names with the Championship pool, as West Ham and Wolves do
+    for (let seed = 1; seed <= 200; seed++) {
+      const rng = createRng(seed);
+      const order = rng.shuffle(opponents);
+      const table = [...order.map((o, i) => ({ name: o.name, isUser: false, position: i + 2 })), { name: "Your XI", isUser: true, position: 1 }];
+      const { relegated, promoted, opponents: next } = applyPromotionRelegation(opponents, table, pool, rng);
+      expect(promoted.filter((name) => relegated.includes(name)), `seed ${seed}`).toEqual([]);
+      expect(next).toHaveLength(19);
+    }
+  });
+});
+
 describe("simulateSeason with an rng", () => {
   const opponents = Array.from({ length: 19 }, (_, i) => ({ name: `Rival ${i + 1}`, ov: 70 + i, histMean: 72, weight: 1, vol: 8 }));
   const profile = { attack: 80, defense: 78, defSolidity: 76, buildup: 70, press: 70, creativity: 72, physical: 75 };
