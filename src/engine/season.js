@@ -80,7 +80,7 @@ export function simulateSeason(profile, familiarity, oppList, rng) {
 }
 
 export function seasonTier({ w, l, pts, position }) {
-  if (w === 38) return { name: "THE PERFECT SEASON", sub: "38 from 38 — a perfect points-per-game record with games to spare. No side in the league's history has ever managed it.", color: "amber" };
+  if (w === 38) return { name: "THE PERFECT SEASON", sub: "38 wins from 38 — a perfect season no Premier League side has ever managed.", color: "amber" };
   if (l === 0 && position === 1) return { name: "Invincibles", sub: "Champions and unbeaten from August to May — a status only one Premier League side has ever achieved.", color: "amber" };
   if (pts >= 100) return { name: "Centurions", sub: "Past the 100-point mark — a ruthless, record-breaking points total that dwarfs most title-winning campaigns.", color: "amber" };
   if (position === 1) return { name: "Champions", sub: "Crowned champions of England — the trophy, the open-top bus, the lot.", color: "emerald" };

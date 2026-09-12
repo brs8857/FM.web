@@ -52,7 +52,7 @@ describe("season tiers", () => {
   it("keeps the full tier object for the two outcomes the recordings never reach", () => {
     expect(seasonTier({ w: 38, l: 0, pts: 114, position: 1 })).toEqual({
       name: "THE PERFECT SEASON",
-      sub: "38 from 38 — a perfect points-per-game record with games to spare. No side in the league's history has ever managed it.",
+      sub: "38 wins from 38 — a perfect season no Premier League side has ever managed.",
       color: "amber",
     });
     expect(seasonTier({ w: 30, l: 0, pts: 98, position: 1 })).toEqual({
@@ -60,6 +60,10 @@ describe("season tiers", () => {
       sub: "Champions and unbeaten from August to May — a status only one Premier League side has ever achieved.",
       color: "amber",
     });
+  });
+
+  it("describes a perfect season without contradicting itself", () => {
+    expect(seasonTier({ w: 38, l: 0, pts: 114, position: 1 }).sub).toBe("38 wins from 38 — a perfect season no Premier League side has ever managed.");
   });
 
   it("labels career seasons from 2026-27", () => {

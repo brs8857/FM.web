@@ -95,7 +95,12 @@ export default function ResultCard({ simulation, formationKey, assignments, onRe
       {done && (
         <div className="fmweb-panel rounded-md p-4 shadow-lg shadow-black/30">
           <div className="text-xs uppercase tracking-wide font-bold text-neutral-300 mb-2">Final Table · {seasonLbl} Premier League</div>
-          <p className="text-xs text-neutral-500 mb-2">The real 19 top-flight rivals, with your XI taking Fulham's place. Rivals' points are estimated from squad strength; yours are your actual simulated results.</p>
+          <p className="text-xs text-neutral-500 mb-2">
+            {season === 1
+              ? "The real 19 top-flight rivals, with your XI taking Fulham's place."
+              : "This season's 19 Premier League clubs alongside your XI."}
+            {" "}Rivals' points are estimated from squad strength; yours are your actual simulated results.
+          </p>
           <table className="w-full text-xs">
             <thead>
               <tr className="text-neutral-500 uppercase text-xs tracking-wide">

@@ -37,6 +37,17 @@ describe("screens render", () => {
     expect(screen.getByText(/Final Table/)).toBeTruthy();
   });
 
+  it("ResultCard caption mentions Fulham only in season 1", () => {
+    const { state } = seasonOneResult();
+    const props = { formationKey: state.formationKey, assignments: state.assignments, onReset: vi.fn(), onContinue: vi.fn(), instant: true };
+    const { unmount } = render(<ResultCard simulation={state.simulation} {...props} />);
+    expect(screen.getByText(/with your XI taking Fulham's place/)).toBeTruthy();
+    unmount();
+    render(<ResultCard simulation={{ ...state.simulation, season: 2 }} {...props} />);
+    expect(screen.queryByText(/Fulham/)).toBeNull();
+    expect(screen.getByText(/This season's 19 Premier League clubs alongside your XI/)).toBeTruthy();
+  });
+
   it("TransferScreen lists five candidates", () => {
     const { reducer, state } = seasonOneResult();
     const transfer = reducer(state, { type: "GOTO_TRANSFER" });
