@@ -9,6 +9,7 @@ import { computeFamiliarity, familiarityLabel } from "./engine/familiarity.js";
 import { tacticalReadout, mentalityLabel } from "./engine/readout.js";
 import { simulateSeason, CAREER_SEASONS, careerSeasonLabel } from "./engine/season.js";
 import { applyPromotionRelegation } from "./engine/league.js";
+import { nextEmptySlotIndex, autoFillBench, generateShortlist, signToSlot, signToBench } from "./engine/squad.js";
 
 /* =========================================================================
    FM.WEB — data, constants, and pure helper/simulation functions
@@ -47,85 +48,6 @@ function makeInitialState() {
   };
 }
 
-function nextEmptySlotIndex(assignments) {
-  return assignments.findIndex((a) => !a.player);
-}
-
-// Once the starting XI is complete, automatically pull a bench from the same
-// club-seasons that were drafted from (a backup keeper first, then the best
-// remaining outfield players) — the player no longer drafts the bench by hand.
-function autoFillBench(assignments, draftedIds) {
-  const usedSeasons = [...new Set(assignments.map((a) => a.player.seasonKey))];
-  const dids = new Set(draftedIds);
-  let remaining = [];
-  usedSeasons.forEach((sk) => {
-    const [year, clubId] = sk.split("_");
-    getSquad(year, clubId).forEach((p) => { if (!dids.has(p.id)) remaining.push(p); });
-  });
-  const gk = remaining.filter((p) => p.slot === "GK").sort((a, b) => b.ov - a.ov)[0];
-  const others = remaining.filter((p) => p.slot !== "GK").sort((a, b) => b.ov - a.ov);
-  const bench = [];
-  if (gk) { bench.push(gk); dids.add(gk.id); }
-  for (const p of others) {
-    if (bench.length >= 6) break;
-    if (dids.has(p.id)) continue;
-    bench.push(p); dids.add(p.id);
-  }
-  return { bench: bench.map((p) => ({ player: p, role: null, duty: null })), draftedIds: dids };
-}
-
-// Transfer window shortlist: a fresh set of 5 candidates drawn from the same
-// era the career started in, excluding anyone already at the club. Sampling
-// 40 random club-seasons first (rather than the full era range every time)
-// keeps this instant even when the era spans the full 1992-2024 history.
-function generateShortlist(eraMin, eraMax, ownedIds, count = 5) {
-  const eraEntries = DATASET.index.filter((e) => {
-    const y = parseInt(e.y, 10);
-    return y >= eraMin && y <= eraMax;
-  });
-  const sampled = [...eraEntries].sort(() => Math.random() - 0.5).slice(0, 40);
-  const pool = [];
-  const seen = new Set();
-  sampled.forEach((e) => {
-    getSquad(e.y, e.c).forEach((p) => {
-      if (!ownedIds.has(p.id) && !seen.has(p.id)) { seen.add(p.id); pool.push(p); }
-    });
-  });
-  return [...pool].sort(() => Math.random() - 0.5).slice(0, count);
-}
-
-// Sign a new player into the XI at a given slot, sending whoever was there
-// to the bench (bumping the weakest bench player out to make room if it's
-// already full of 6).
-function signToSlot(assignments, bench, slotId, newPlayer) {
-  const outgoing = assignments.find((a) => a.slotId === slotId)?.player || null;
-  const role = defaultRoleFor(assignments.find((a) => a.slotId === slotId).type);
-  const newAssignments = assignments.map((a) => a.slotId === slotId
-    ? { ...a, player: newPlayer, role: role.key, duty: defaultDutyFor(role), sliderAtt: 50, sliderDef: 50 }
-    : a);
-  let newBench = bench.slice();
-  if (outgoing) {
-    if (newBench.length < 6) {
-      newBench.push({ player: outgoing, role: null, duty: null });
-    } else {
-      let weakestIdx = 0;
-      newBench.forEach((b, i) => { if ((b.player?.ov ?? 999) < (newBench[weakestIdx].player?.ov ?? 999)) weakestIdx = i; });
-      newBench[weakestIdx] = { player: outgoing, role: null, duty: null };
-    }
-  }
-  return { assignments: newAssignments, bench: newBench };
-}
-
-function signToBench(bench, newPlayer) {
-  const entry = { player: newPlayer, role: null, duty: null };
-  if (bench.length < 6) return [...bench, entry];
-  let weakestIdx = 0;
-  bench.forEach((b, i) => { if ((b.player?.ov ?? 999) < (bench[weakestIdx].player?.ov ?? 999)) weakestIdx = i; });
-  const copy = bench.slice();
-  copy[weakestIdx] = entry;
-  return copy;
-}
-
 function reducer(state, action) {
   switch (action.type) {
     case "SET_FORMATION": {
@@ -158,7 +80,7 @@ function reducer(state, action) {
       assignments[idx] = { ...assignments[idx], player: action.player, role: role.key, duty };
       const draftDone = nextEmptySlotIndex(assignments) === -1;
       if (draftDone) {
-        const { bench, draftedIds: withBench } = autoFillBench(assignments, draftedIds);
+        const { bench, draftedIds: withBench } = autoFillBench(getSquad, assignments, draftedIds);
         return { ...state, assignments, draftedIds: withBench, wheel: { spinning: false, landed: null }, pool: [], draftDone, bench };
       }
       return { ...state, assignments, draftedIds, wheel: { spinning: false, landed: null }, pool: [], draftDone };
@@ -269,7 +191,7 @@ function reducer(state, action) {
       return { ...state, phase: "result" };
     }
     case "GOTO_TRANSFER": {
-      const shortlist = generateShortlist(state.eraMin, state.eraMax, state.draftedIds)
+      const shortlist = generateShortlist(getSquad, DATASET.index, { eraMin: state.eraMin, eraMax: state.eraMax }, state.draftedIds)
         .map((player) => ({ player, signed: false }));
       const { opponents, relegated, promoted } = applyPromotionRelegation(state.opponents, state.simulation?.table, CHAMPIONSHIP_POOL);
       return { ...state, phase: "transfer", shortlist, opponents, lastTransition: { relegated, promoted } };
