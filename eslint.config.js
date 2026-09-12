@@ -20,6 +20,7 @@ export default [
       "no-unused-vars": "warn",
       "react/jsx-uses-vars": "error",
       "react/jsx-uses-react": "error",
+      "react/jsx-no-undef": "error",
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
     },

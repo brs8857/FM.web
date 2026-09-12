@@ -21,100 +21,11 @@ import { APP_VERSION } from "./version.js";
 import ResumeCard from "./components/app/ResumeCard.jsx";
 import StorageBanner from "./components/app/StorageBanner.jsx";
 import SaveMenu from "./components/app/SaveMenu.jsx";
-
-/* ============================== UI atoms =================================== */
-
-function StatPip({ label, value }) {
-  const pct = clamp(value, 0, 99);
-  const color = pct >= 85 ? "bg-emerald-400" : pct >= 70 ? "bg-lime-400" : pct >= 55 ? "bg-amber-400" : "bg-rose-400";
-  return (
-    <div className="flex items-center gap-2 text-xs">
-      <span className="w-16 text-neutral-400 uppercase tracking-wide">{label}</span>
-      <div className="flex-1 h-1.5 bg-neutral-700/70 rounded-full overflow-hidden">
-        <div className={`h-full ${color}`} style={{ width: `${pct}%` }} />
-      </div>
-      <span className="w-6 text-right font-mono text-neutral-200">{value}</span>
-    </div>
-  );
-}
-
-function OvBadge({ ov, size = "md" }) {
-  const color = ov >= 85 ? "text-amber-300 border-amber-400/60" : ov >= 75 ? "text-emerald-300 border-emerald-400/50" : ov >= 65 ? "text-sky-300 border-sky-400/50" : "text-neutral-300 border-emerald-600/50";
-  const sz = size === "lg" ? "w-12 h-12 text-lg" : size === "sm" ? "w-7 h-7 text-xs" : "w-9 h-9 text-sm";
-  return <div className={`flex items-center justify-center rounded-full border-2 ${color} ${sz} font-black bg-neutral-900/70`}>{ov}</div>;
-}
-
-function PlayerMiniCard({ player, onClick, selected, dim, hideRating }) {
-  return (
-    <button onClick={onClick} className={`text-left w-full rounded-md border px-3 py-2 transition-all ${selected ? "border-emerald-400 bg-emerald-400/10 ring-1 ring-emerald-400/40" : "border-neutral-800 bg-neutral-800/60 hover:border-emerald-600 hover:bg-neutral-800"} ${dim ? "opacity-40" : ""}`}>
-      <div className="flex items-center justify-between gap-2">
-        <div className="min-w-0">
-          <div className="font-bold text-neutral-100 text-sm truncate">{player.name}</div>
-          <div className="text-xs text-neutral-400 uppercase tracking-wide">{player.slot}{player.side ? ` · ${player.side}` : ""} · {player.nat} · Age {player.age || "—"}</div>
-        </div>
-        {hideRating
-          ? <div className="flex items-center justify-center rounded-full border-2 border-dashed border-neutral-600 text-neutral-500 w-7 h-7 text-xs font-black">?</div>
-          : <OvBadge ov={player.ov} size="sm" />}
-      </div>
-    </button>
-  );
-}
-
-/* Hexagonal radar chart for the six team phase attributes, drawn as raw SVG. */
-function RadarChart({ data }) {
-  // data: [{label, value}] length 6, value 0-100
-  const size = 220, cx = size / 2, cy = size / 2, R = 82;
-  const n = data.length;
-  const pt = (i, r) => {
-    const ang = (Math.PI * 2 * i) / n - Math.PI / 2;
-    return [cx + r * Math.cos(ang), cy + r * Math.sin(ang)];
-  };
-  const rings = [0.25, 0.5, 0.75, 1];
-  const poly = (r) => data.map((_, i) => pt(i, r * R).join(",")).join(" ");
-  const valuePoly = data.map((d, i) => pt(i, (clamp(d.value, 0, 100) / 100) * R).join(",")).join(" ");
-
-  return (
-    <svg viewBox={`0 0 ${size} ${size}`} className="w-full mx-auto" style={{ maxWidth: "280px" }}>
-      {rings.map((r, i) => (
-        <polygon key={i} points={poly(r)} fill="none" stroke="#2a332e" strokeWidth="1" />
-      ))}
-      {data.map((_, i) => {
-        const [x, y] = pt(i, R);
-        return <line key={i} x1={cx} y1={cy} x2={x} y2={y} stroke="#2a332e" strokeWidth="1" />;
-      })}
-      <polygon points={valuePoly} fill="#10b981" fillOpacity="0.22" stroke="#10b981" strokeWidth="2" />
-      {data.map((d, i) => {
-        const [x, y] = pt(i, R + 20);
-        return (
-          <text key={i} x={x} y={y} textAnchor="middle" dominantBaseline="middle" className="fill-green-300" style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase" }}>
-            {d.label}
-          </text>
-        );
-      })}
-      {data.map((d, i) => {
-        const [x, y] = pt(i, (clamp(d.value, 0, 100) / 100) * R);
-        return <circle key={i} cx={x} cy={y} r="3" fill="#10b981" />;
-      })}
-    </svg>
-  );
-}
-
-function Slider({ label, value, onChange, leftLabel, rightLabel, tooltip }) {
-  return (
-    <div className="mb-3 group relative">
-      <div className="flex items-center justify-between text-xs text-neutral-400 mb-1">
-        <span className="uppercase tracking-wide font-bold text-neutral-300">{label}</span>
-        <span className="font-mono">{value}</span>
-      </div>
-      <input type="range" min="0" max="100" value={value} onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full accent-emerald-400 h-1.5 cursor-pointer" />
-      <div className="flex items-center justify-between text-xs text-neutral-500 mt-0.5">
-        <span>{leftLabel}</span><span>{rightLabel}</span>
-      </div>
-      {tooltip && <div className="hidden group-hover:block absolute z-20 left-0 top-full mt-1 w-64 bg-neutral-950 border border-neutral-800 rounded-md p-2 text-xs text-neutral-300 shadow-xl">{tooltip}</div>}
-    </div>
-  );
-}
+import StatPip from "./components/ui/StatPip.jsx";
+import OvBadge from "./components/ui/OvBadge.jsx";
+import PlayerMiniCard from "./components/ui/PlayerMiniCard.jsx";
+import RadarChart from "./components/ui/RadarChart.jsx";
+import Slider from "./components/ui/Slider.jsx";
 
 /* ============================== Wheel Spinner ================================= */
 function WheelSpinner({ spinning, landed, onSpin, onDone, targetLabel, pool }) {
