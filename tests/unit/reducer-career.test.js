@@ -5,6 +5,8 @@ import { playCareer } from "../fixtures/playCareer.js";
 import { createReducer } from "../../src/state/reducer.js";
 import { makeInitialState } from "../../src/state/initialState.js";
 import { playerIdentity, isSameRealPlayer } from "../../src/engine/identity.js";
+import { createSquadLookup } from "../../src/engine/players.js";
+import { makeInitialAssignments } from "../../src/engine/formations.js";
 
 export function checkInvariants(state, action, previous) {
   const label = action.type;
@@ -77,5 +79,34 @@ describe("reducer career walkthrough", () => {
     state = reducer(reducer(state, { type: "SPIN" }), { type: "LAND" });
     expect(state.wheel).toEqual({ spinning: false, landed: null });
     expect(state.pool).toEqual([]);
+  });
+
+  it("LAND never offers an already-owned real player even when their club season comes up again", () => {
+    const dataset = makeMiniDataset();
+    const reducer = createReducer(dataset);
+    const getSquad = createSquadLookup(dataset);
+    const sam2000 = getSquad("2000", "1").find((p) => p.name === "Sam Twice");
+    const ownedIdentity = playerIdentity(sam2000);
+    // Sam Twice is an ST, so the next empty slot must be an ST slot (not the
+    // default first-empty GK slot) or slotAccepts would filter him out of any
+    // pool regardless of identity exclusion, masking the very thing this test
+    // checks. Pre-fill every non-ST slot with a placeholder so the draft's
+    // next empty slot is guaranteed to be the ST slot.
+    const filler = { id: "filler" };
+    const assignments = makeInitialAssignments("4-3-3").map((a) => a.type === "ST" ? a : { ...a, player: filler });
+
+    let sawClub1 = false;
+    for (let seed = 1; seed <= 40; seed++) {
+      let state = {
+        ...makeInitialState(dataset, seed), phase: "draft", eraMin: 2000, eraMax: 2001,
+        assignments, draftedIdentities: [ownedIdentity],
+      };
+      state = reducer(reducer(state, { type: "SPIN" }), { type: "LAND" });
+      if (state.wheel.landed?.clubId === "1") {
+        sawClub1 = true;
+        expect(state.pool.map((p) => p.name)).not.toContain("Sam Twice");
+      }
+    }
+    expect(sawClub1).toBe(true); // sanity: confirms the scenario was actually exercised, not just hoped for
   });
 });
