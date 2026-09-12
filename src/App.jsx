@@ -26,6 +26,9 @@ import OvBadge from "./components/ui/OvBadge.jsx";
 import PlayerMiniCard from "./components/ui/PlayerMiniCard.jsx";
 import RadarChart from "./components/ui/RadarChart.jsx";
 import Slider from "./components/ui/Slider.jsx";
+import Pitch from "./components/pitch/Pitch.jsx";
+import BenchStrip from "./components/pitch/BenchStrip.jsx";
+import { usePitchDrag } from "./components/pitch/usePitchDrag.js";
 
 /* ============================== Wheel Spinner ================================= */
 function WheelSpinner({ spinning, landed, onSpin, onDone, targetLabel, pool }) {
@@ -90,163 +93,7 @@ function WheelSpinner({ spinning, landed, onSpin, onDone, targetLabel, pool }) {
   );
 }
 
-/* ============================== Pitch view ================================= */
-/* Proportionally-accurate pitch markings, derived from a real 68m x 100m
-   pitch mapped onto our 0-100 x / 0-100 y coordinate system (the container's
-   aspect ratio is set so 1% of x and 1% of y represent the same real-world
-   distance, which is what keeps the center circle actually circular). */
-function PitchMarkings() {
-  const PEN_W = 59.3, PEN_D = 16.5;     // 18-yard box: 40.32m x 16.5m
-  const SIX_W = 26.9, SIX_D = 5.5;      // 6-yard box: 18.32m x 5.5m
-  const GOAL_W = 10.76;                 // goal mouth: 7.32m
-  const CIRC_RX = 13.46, CIRC_RY = 9.15; // center circle radius: 9.15m
-  const SPOT_Y = 11;                    // penalty spot: 11m from goal line
-  const ARC_BULGE = 3.65;               // how far the "D" bulges past the box
-  const lineCls = "absolute border-white/25";
-
-  const Box = (w, d, fromTop) => (
-    <div className={`${lineCls} border-2`} style={{
-      left: `${50 - w / 2}%`, width: `${w}%`,
-      ...(fromTop ? { top: 0, borderTop: "none" } : { bottom: 0, borderBottom: "none" }),
-      height: `${d}%`,
-    }} />
-  );
-
-  const Spot = (y) => (
-    <div className="absolute w-1 h-1 rounded-full bg-white/40 -translate-x-1/2 -translate-y-1/2" style={{ left: "50%", top: `${y}%` }} />
-  );
-
-  const GoalMouth = (fromTop) => (
-    <div className="absolute bg-white/40" style={{
-      left: `${50 - GOAL_W / 2}%`, width: `${GOAL_W}%`, height: "3px",
-      ...(fromTop ? { top: 0 } : { bottom: 0 }),
-    }} />
-  );
-
-  // The "D": a full ring centered on the penalty spot, clipped by a thin
-  // overflow-hidden band so only the bulge beyond the box edge is visible.
-  const Arc = (fromTop) => {
-    const bandStart = fromTop ? PEN_D : 100 - PEN_D - ARC_BULGE;
-    const topInset = bandStart;
-    const bottomInset = 100 - bandStart - ARC_BULGE;
-    const spotY = fromTop ? SPOT_Y : 100 - SPOT_Y;
-    return (
-      <div className="absolute inset-0" style={{ clipPath: `inset(${topInset}% 0% ${bottomInset}% 0%)` }}>
-        <div className="absolute rounded-full border-2 border-white/25" style={{
-          left: "50%", top: `${spotY}%`, width: `${CIRC_RX * 2}%`, height: `${CIRC_RY * 2}%`,
-          transform: "translate(-50%, -50%)",
-        }} />
-      </div>
-    );
-  };
-
-  const Corner = (left, top) => (
-    <div className="absolute rounded-full border-2 border-white/25" style={{
-      left: `${left}%`, top: `${top}%`, width: "3%", height: "2%", transform: "translate(-50%, -50%)",
-    }} />
-  );
-
-  return (
-    <>
-      {/* outer touchlines */}
-      <div className="absolute inset-2 border-2 border-white/25" />
-      {/* halfway line */}
-      <div className="absolute left-1/2 top-1/2 w-full h-px bg-white/25 -translate-x-1/2 -translate-y-1/2" />
-      {/* center circle + spot */}
-      <div className="absolute rounded-full border-2 border-white/25 -translate-x-1/2 -translate-y-1/2"
-        style={{ left: "50%", top: "50%", width: `${CIRC_RX * 2}%`, height: `${CIRC_RY * 2}%` }} />
-      {Spot(50)}
-      {/* 18-yard boxes */}
-      {Box(PEN_W, PEN_D, true)}
-      {Box(PEN_W, PEN_D, false)}
-      {/* 6-yard boxes */}
-      {Box(SIX_W, SIX_D, true)}
-      {Box(SIX_W, SIX_D, false)}
-      {/* penalty spots + arcs */}
-      {Spot(SPOT_Y)}
-      {Spot(100 - SPOT_Y)}
-      {Arc(true)}
-      {Arc(false)}
-      {/* goal mouths */}
-      {GoalMouth(true)}
-      {GoalMouth(false)}
-      {/* corner arcs */}
-      {Corner(0, 0)}
-      {Corner(100, 0)}
-      {Corner(0, 100)}
-      {Corner(100, 100)}
-    </>
-  );
-}
-
-function Pitch({ assignments, onSlotClick, activeSlotId, mode, onDragStart, draggingId, dragHint }) {
-  const draggable = mode === "tactics";
-
-  return (
-    <div className="w-full max-w-sm mx-auto" style={{ filter: "drop-shadow(0 14px 22px rgba(0,0,0,0.55))" }}>
-      <div className="relative w-full" style={{ paddingTop: `${(100 / 68) * 100}%` }}>
-        <div className="absolute inset-0 rounded-md overflow-hidden border-2 border-emerald-500/40 shadow-2xl shadow-black/50" data-drop-zone="pitch"
-          style={{ background: "repeating-linear-gradient(0deg, #14532d, #14532d 12%, #15582f 12%, #15582f 24%)", touchAction: draggable ? "none" : "auto" }}>
-          <PitchMarkings />
-          {assignments.map((a) => {
-          const filled = !!a.player;
-          const isActive = activeSlotId === a.slotId;
-          const isDragging = draggingId === a.slotId;
-          return (
-            <button key={a.slotId} onClick={() => onSlotClick(a.slotId)}
-              data-slot-id={a.slotId}
-              onPointerDown={(e) => { if (draggable && filled) { e.preventDefault(); onDragStart("slot", a.slotId); } }}
-              className="absolute -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-0.5 group select-none"
-              style={{ left: `${a.pos.x}%`, top: `${a.pos.y}%`, zIndex: isDragging ? 30 : 10, touchAction: draggable ? "none" : "auto" }}>
-              <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-xs font-black border transition
-                ${filled ? "bg-neutral-50 border-neutral-300 text-neutral-900 shadow-md" : "bg-neutral-900/60 border-dashed border-neutral-600 text-neutral-400"}
-                ${isActive ? "ring-2 ring-emerald-500 ring-offset-2 ring-offset-neutral-950" : ""}
-                ${isDragging ? "opacity-40 ring-2 ring-sky-400" : ""}
-                ${draggable && filled ? "cursor-grab active:cursor-grabbing" : ""}`}>
-                {a.type}
-              </div>
-              <div className="px-1.5 py-0.5 rounded-sm bg-neutral-950/90 border border-neutral-800 text-xs text-neutral-200 whitespace-nowrap truncate pointer-events-none" style={{ maxWidth: "90px" }}>
-                {filled ? a.player.name.split(" ").slice(-1)[0] : (mode === "draft" ? "Empty" : a.slotId)}
-              </div>
-            </button>
-          );
-        })}
-        {dragHint && (
-          <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 text-xs text-emerald-200/70 bg-neutral-950/70 px-2 py-0.5 rounded-full whitespace-nowrap pointer-events-none">
-            Drag anywhere to reposition — drop on a teammate to swap
-          </div>
-        )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 /* ============================ Role / Duty editor ============================ */
-/* ================================ Bench strip ================================ */
-function BenchStrip({ bench, onDragStart, draggingId, draggable }) {
-  return (
-    <div className="fmweb-panel rounded-md p-3" data-drop-zone="bench">
-      <div className="text-xs uppercase tracking-wide text-neutral-400 font-bold mb-2">Bench {draggable && <span className="normal-case font-normal text-neutral-500">— drag on/off the pitch</span>}</div>
-      <div className="space-y-1.5">
-        {bench.map((b, i) => (
-          <div key={i}
-            data-bench-idx={i}
-            onPointerDown={(e) => { if (draggable && b.player) { e.preventDefault(); onDragStart("bench", i); } }}
-            className={`text-xs flex items-center justify-between rounded px-2 py-1.5 border transition select-none
-              ${b.player ? "bg-neutral-800/60 border-neutral-800" : "bg-neutral-950/40 border-dashed border-neutral-800 text-neutral-500"}
-              ${draggingId === i ? "opacity-40 ring-2 ring-sky-300" : ""} ${draggable && b.player ? "cursor-grab active:cursor-grabbing" : ""}`}
-            style={{ touchAction: draggable ? "none" : "auto" }}>
-            <span className="truncate pointer-events-none">{b.player ? b.player.name : "Empty"}</span>
-            {b.player && <span className="text-neutral-400 shrink-0 pointer-events-none">{b.player.slot}</span>}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-
 function RoleEditor({ assignment, onSetRole, onSetSlider, onSetDuty }) {
   const roleOptions = ROLES[assignment.type];
   const role = roleOptions.find((r) => r.key === assignment.role) || roleOptions[0];
@@ -976,55 +823,8 @@ export default function FMWeb({ dataset, storage: storageProp }) {
     return { ok: true, message: `Loaded Season ${season} · ${seasonLabel}.` };
   };
   const { phase, formationKey, assignments, bench, draftedIds, wheel, pool, instructions } = state;
+  const { dragInfo, startDrag } = usePitchDrag({ assignments, dispatch });
   const [activeSlotId, setActiveSlotId] = useState(null);
-  const [dragInfo, setDragInfo] = useState(null); // { kind: 'slot'|'bench', id }
-
-  // Global pointer-up coordinator for the pitch/bench drag system. Using
-  // pointer events (rather than HTML5 drag-and-drop) means this works with
-  // touch on mobile too. On release we hit-test whatever DOM element is under
-  // the pointer: land on another player -> swap identities; land on open
-  // pitch space -> move that player to the exact drop point; land on the
-  // bench -> swap on/off the pitch.
-  useEffect(() => {
-    if (!dragInfo) return;
-    function onUp(e) {
-      const point = e.changedTouches ? e.changedTouches[0] : e;
-      const el = document.elementFromPoint(point.clientX, point.clientY);
-      if (el) {
-        const slotEl = el.closest("[data-slot-id]");
-        const benchEl = el.closest("[data-bench-idx]");
-        const pitchZone = el.closest('[data-drop-zone="pitch"]');
-        if (slotEl) {
-          const toId = slotEl.getAttribute("data-slot-id");
-          if (!(dragInfo.kind === "slot" && dragInfo.id === toId)) {
-            dispatch({ type: "SWAP_PLAYERS", fromKind: dragInfo.kind, fromId: dragInfo.id, toKind: "slot", toId });
-          }
-        } else if (benchEl) {
-          const toId = Number(benchEl.getAttribute("data-bench-idx"));
-          dispatch({ type: "SWAP_PLAYERS", fromKind: dragInfo.kind, fromId: dragInfo.id, toKind: "bench", toId });
-        } else if (pitchZone) {
-          const rect = pitchZone.getBoundingClientRect();
-          const x = ((point.clientX - rect.left) / rect.width) * 100;
-          const y = ((point.clientY - rect.top) / rect.height) * 100;
-          if (dragInfo.kind === "slot") {
-            dispatch({ type: "MOVE_PLAYER", slotId: dragInfo.id, x, y });
-          } else {
-            // bench player dropped on open pitch space -> swap into the nearest slot
-            let nearest = null, nearestDist = Infinity;
-            assignments.forEach((a) => {
-              const d = Math.hypot(a.pos.x - x, a.pos.y - y);
-              if (d < nearestDist) { nearestDist = d; nearest = a.slotId; }
-            });
-            if (nearest) dispatch({ type: "SWAP_PLAYERS", fromKind: "bench", fromId: dragInfo.id, toKind: "slot", toId: nearest });
-          }
-        }
-      }
-      setDragInfo(null);
-    }
-    window.addEventListener("pointerup", onUp);
-    window.addEventListener("touchend", onUp);
-    return () => { window.removeEventListener("pointerup", onUp); window.removeEventListener("touchend", onUp); };
-  }, [dragInfo, assignments]);
 
   const nextIdx = nextEmptySlotIndex(assignments);
   const draftTargetSlotId = nextIdx >= 0 ? assignments[nextIdx].slotId : null;
@@ -1169,14 +969,14 @@ export default function FMWeb({ dataset, storage: storageProp }) {
             <div style={{ flex: "1 1 260px", minWidth: 0, maxWidth: "100%", boxSizing: "border-box" }} className="space-y-3">
               <Pitch assignments={assignments} activeSlotId={activeSlotId} mode="tactics" dragHint
                 onSlotClick={(id) => setActiveSlotId(id === activeSlotId ? null : id)}
-                onDragStart={(kind, id) => setDragInfo({ kind, id })}
+                onDragStart={startDrag}
                 draggingId={dragInfo?.kind === "slot" ? dragInfo.id : null} />
               <div style={{ display: "flex", gap: "0.5rem" }}>
                 <p className="text-xs text-neutral-500" style={{ flex: "1 1 auto", minWidth: 0 }}>Drag any player anywhere on the pitch to reposition, or drop him on a teammate to swap. Tap to edit role, duty, and sliders.</p>
                 <button onClick={() => dispatch({ type: "RESET_POSITIONS" })} style={{ flexShrink: 0 }} className="text-xs px-2 py-1 h-fit rounded-md border border-neutral-700 text-neutral-300 hover:border-emerald-500 transition">Reset shape</button>
               </div>
               <BenchStrip bench={bench} draggable
-                onDragStart={(kind, id) => setDragInfo({ kind, id })}
+                onDragStart={startDrag}
                 draggingId={dragInfo?.kind === "bench" ? dragInfo.id : null} />
               <button onClick={() => dispatch({ type: "SIMULATE" })}
                 className="w-full px-4 py-3 rounded-md font-bold uppercase tracking-wide text-sm transition fmweb-cta" style={{ background: "#059669", color: "#fff" }}>
