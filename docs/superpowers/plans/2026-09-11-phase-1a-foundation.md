@@ -21,7 +21,7 @@
 - Repo files use LF (`.gitattributes`). Scripts that read files by line must normalise `\r\n` anyway, because existing Windows working copies may still be CRLF.
 - Golden comparisons go through `JSON.parse(JSON.stringify(x))` first: Vitest's `toEqual` treats `-0` and `0` as different.
 - jsdom 30 lacks `document.elementFromPoint`, `navigator.storage`, `navigator.canShare`, `window.matchMedia`, `ResizeObserver`, `URL.createObjectURL` and `Element.prototype.scrollIntoView`. Tests stub what they use (see `tests/setup.js`).
-- Every commit message ends with the trailer `Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>`.
+- Every commit message ends with a `Co-Authored-By: Claude <model> <noreply@anthropic.com>` trailer naming the model that authored the commit (controller ruling 2026-09-12: each implementer attributes itself, so Tasks 1-3 read Haiku 4.5 / Opus 5 / Sonnet 5).
 - After each task: `npm run lint` (0 errors), `npm test`, `npm run build` pass. After tasks that touch UI: `npm run e2e` passes.
 
 ## File Map
