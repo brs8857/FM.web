@@ -1,0 +1,194 @@
+[
+ {
+  "name": "Burnley",
+  "ov": 73.8,
+  "histMean": 71.4,
+  "histStd": 3.5,
+  "weight": 1.074,
+  "vol": 9.33
+ },
+ {
+  "name": "West Ham United",
+  "ov": 71.2,
+  "histMean": 78,
+  "histStd": 3.1,
+  "weight": 1.152,
+  "vol": 8.93
+ },
+ {
+  "name": "Wolverhampton Wanderers",
+  "ov": 69.8,
+  "histMean": 75.6,
+  "histStd": 4.1,
+  "weight": 1.123,
+  "vol": 9.94
+ },
+ {
+  "name": "Sheffield United",
+  "ov": 69.1,
+  "histMean": 74.4,
+  "histStd": 3.9,
+  "weight": 1.109,
+  "vol": 9.73
+ },
+ {
+  "name": "Southampton",
+  "ov": 66.3,
+  "histMean": 77.7,
+  "histStd": 3.4,
+  "weight": 1.148,
+  "vol": 9.23
+ },
+ {
+  "name": "Watford",
+  "ov": 63.7,
+  "histMean": 73.3,
+  "histStd": 3.8,
+  "weight": 1.096,
+  "vol": 9.63
+ },
+ {
+  "name": "Norwich City",
+  "ov": 63.1,
+  "histMean": 73.8,
+  "histStd": 4.4,
+  "weight": 1.102,
+  "vol": 10.24
+ },
+ {
+  "name": "West Bromwich Albion",
+  "ov": 60.4,
+  "histMean": 73.7,
+  "histStd": 2.5,
+  "weight": 1.101,
+  "vol": 8.32
+ },
+ {
+  "name": "Charlton Athletic",
+  "ov": 59.7,
+  "histMean": 78,
+  "histStd": 3.1,
+  "weight": 1.152,
+  "vol": 8.93
+ },
+ {
+  "name": "Portsmouth",
+  "ov": 59.1,
+  "histMean": 78.7,
+  "histStd": 3.3,
+  "weight": 1.16,
+  "vol": 9.13
+ },
+ {
+  "name": "Birmingham City",
+  "ov": 58.2,
+  "histMean": 77.1,
+  "histStd": 3.1,
+  "weight": 1.141,
+  "vol": 8.93
+ },
+ {
+  "name": "Bolton Wanderers",
+  "ov": 58,
+  "histMean": 78,
+  "histStd": 3,
+  "weight": 1.152,
+  "vol": 8.83
+ },
+ {
+  "name": "Stoke City",
+  "ov": 58,
+  "histMean": 75,
+  "histStd": 1.5,
+  "weight": 1.116,
+  "vol": 7.31
+ },
+ {
+  "name": "Swansea City",
+  "ov": 58,
+  "histMean": 74.7,
+  "histStd": 1.1,
+  "weight": 1.113,
+  "vol": 6.91
+ },
+ {
+  "name": "Queens Park Rangers",
+  "ov": 56.7,
+  "histMean": 76.5,
+  "histStd": 4.1,
+  "weight": 1.134,
+  "vol": 9.94
+ },
+ {
+  "name": "Middlesbrough",
+  "ov": 56,
+  "histMean": 78.9,
+  "histStd": 2.7,
+  "weight": 1.162,
+  "vol": 8.52
+ },
+ {
+  "name": "Derby County",
+  "ov": 55.2,
+  "histMean": 80.4,
+  "histStd": 3.8,
+  "weight": 1.18,
+  "vol": 9.63
+ },
+ {
+  "name": "Blackburn Rovers",
+  "ov": 54.3,
+  "histMean": 77.8,
+  "histStd": 3.4,
+  "weight": 1.149,
+  "vol": 9.23
+ },
+ {
+  "name": "Cardiff City",
+  "ov": 53.2,
+  "histMean": 68.8,
+  "histStd": 0.2,
+  "weight": 1.043,
+  "vol": 6
+ },
+ {
+  "name": "Millwall",
+  "ov": 52,
+  "histMean": 52,
+  "histStd": 7.5,
+  "weight": 0.845,
+  "vol": 13.37
+ },
+ {
+  "name": "Bristol City",
+  "ov": 50.6,
+  "histMean": 50.6,
+  "histStd": 11.1,
+  "weight": 0.828,
+  "vol": 17
+ },
+ {
+  "name": "Lincoln City",
+  "ov": 49.8,
+  "histMean": 49.8,
+  "histStd": 7.2,
+  "weight": 0.819,
+  "vol": 13.06
+ },
+ {
+  "name": "Preston North End",
+  "ov": 47.8,
+  "histMean": 47.8,
+  "histStd": 7.2,
+  "weight": 0.795,
+  "vol": 13.06
+ },
+ {
+  "name": "Wrexham",
+  "ov": 46.5,
+  "histMean": 46.5,
+  "histStd": 8.3,
+  "weight": 0.78,
+  "vol": 14.17
+ }
+]
