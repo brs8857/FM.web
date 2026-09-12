@@ -13,6 +13,7 @@ export function checkInvariants(state, action, previous) {
   expect(new Set(ids).size, label).toBe(ids.length);
   expect(state.opponents, label).toHaveLength(19);
   expect(state.rngCounter, label).toBeGreaterThanOrEqual(previous.rngCounter);
+  expect(state.draftedIdentities, label).toHaveLength(state.draftedIds.size);
 }
 
 describe("reducer career walkthrough", () => {

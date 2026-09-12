@@ -11,6 +11,7 @@ export function makeInitialState(dataset, careerSeed) {
     bench: [], // { player, role, duty } - auto-filled once starting XI is complete
     draftDone: false,
     draftedIds: new Set(),
+    draftedIdentities: [],
     wheel: { spinning: false, landed: null },
     pool: [],
     instructions: { ...DEFAULT_INSTRUCTIONS },

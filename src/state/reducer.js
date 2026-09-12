@@ -8,6 +8,7 @@ import { computeFamiliarity } from "../engine/familiarity.js";
 import { simulateSeason } from "../engine/season.js";
 import { applyPromotionRelegation } from "../engine/league.js";
 import { nextEmptySlotIndex, autoFillBench, generateShortlist, signToSlot, signToBench } from "../engine/squad.js";
+import { playerIdentity } from "../engine/identity.js";
 import { makeInitialState } from "./initialState.js";
 import { takeRng } from "./rngState.js";
 import { selectEraIndex } from "./selectors.js";
@@ -52,6 +53,7 @@ export function createReducer(dataset) {
         if (idx < 0) return state;
         const draftedIds = new Set(state.draftedIds);
         draftedIds.add(action.player.id);
+        const draftedIdentities = [...state.draftedIdentities, playerIdentity(action.player)];
         const role = defaultRoleFor(state.assignments[idx].type);
         const duty = defaultDutyFor(role);
         const assignments = state.assignments.slice();
@@ -59,9 +61,13 @@ export function createReducer(dataset) {
         const draftDone = nextEmptySlotIndex(assignments) === -1;
         if (draftDone) {
           const { bench, draftedIds: withBench } = autoFillBench(getSquad, assignments, draftedIds);
-          return { ...state, assignments, draftedIds: withBench, wheel: { spinning: false, landed: null }, pool: [], draftDone, bench };
+          return {
+            ...state, assignments, draftedIds: withBench,
+            draftedIdentities: [...draftedIdentities, ...bench.map((b) => playerIdentity(b.player))],
+            wheel: { spinning: false, landed: null }, pool: [], draftDone, bench,
+          };
         }
-        return { ...state, assignments, draftedIds, wheel: { spinning: false, landed: null }, pool: [], draftDone };
+        return { ...state, assignments, draftedIds, draftedIdentities, wheel: { spinning: false, landed: null }, pool: [], draftDone };
       }
       case "SKIP_TO_TACTICS": {
         return { ...state, phase: "tactics", wheel: { spinning: false, landed: null }, pool: [] };
@@ -181,16 +187,18 @@ export function createReducer(dataset) {
         if (!entry || entry.signed) return state;
         const bench = signToBench(state.bench, entry.player);
         const draftedIds = new Set(state.draftedIds); draftedIds.add(entry.player.id);
+        const draftedIdentities = [...state.draftedIdentities, playerIdentity(entry.player)];
         const shortlist = state.shortlist.map((s, i) => i === action.index ? { ...s, signed: true } : s);
-        return { ...state, bench, draftedIds, shortlist };
+        return { ...state, bench, draftedIds, draftedIdentities, shortlist };
       }
       case "SIGN_SHORTLIST_TO_XI": {
         const entry = state.shortlist[action.index];
         if (!entry || entry.signed) return state;
         const { assignments, bench } = signToSlot(state.assignments, state.bench, action.slotId, entry.player);
         const draftedIds = new Set(state.draftedIds); draftedIds.add(entry.player.id);
+        const draftedIdentities = [...state.draftedIdentities, playerIdentity(entry.player)];
         const shortlist = state.shortlist.map((s, i) => i === action.index ? { ...s, signed: true } : s);
-        return { ...state, assignments, bench, draftedIds, shortlist };
+        return { ...state, assignments, bench, draftedIds, draftedIdentities, shortlist };
       }
       case "CONTINUE_SEASON": {
         return { ...state, phase: "tactics", season: state.season + 1, shortlist: [], simulation: null };
