@@ -1,0 +1,6296 @@
+[
+ {
+  "seed": 1001,
+  "table": [
+   {
+    "name": "Your XI",
+    "pts": 92,
+    "isUser": true,
+    "w": 29,
+    "d": 5,
+    "l": 4,
+    "gf": 93,
+    "ga": 29,
+    "position": 1
+   },
+   {
+    "name": "Arsenal FC",
+    "pts": 86,
+    "isUser": false,
+    "position": 2
+   },
+   {
+    "name": "Manchester City",
+    "pts": 86,
+    "isUser": false,
+    "position": 3
+   },
+   {
+    "name": "Chelsea FC",
+    "pts": 86,
+    "isUser": false,
+    "position": 4
+   },
+   {
+    "name": "Liverpool FC",
+    "pts": 78,
+    "isUser": false,
+    "position": 5
+   },
+   {
+    "name": "Tottenham Hotspur",
+    "pts": 74,
+    "isUser": false,
+    "position": 6
+   },
+   {
+    "name": "Manchester United",
+    "pts": 73,
+    "isUser": false,
+    "position": 7
+   },
+   {
+    "name": "Aston Villa",
+    "pts": 66,
+    "isUser": false,
+    "position": 8
+   },
+   {
+    "name": "Newcastle United",
+    "pts": 61,
+    "isUser": false,
+    "position": 9
+   },
+   {
+    "name": "Crystal Palace",
+    "pts": 57,
+    "isUser": false,
+    "position": 10
+   },
+   {
+    "name": "Brighton and Hove Albion",
+    "pts": 55,
+    "isUser": false,
+    "position": 11
+   },
+   {
+    "name": "Everton FC",
+    "pts": 54,
+    "isUser": false,
+    "position": 12
+   },
+   {
+    "name": "Leeds United",
+    "pts": 53,
+    "isUser": false,
+    "position": 13
+   },
+   {
+    "name": "Nottingham Forest",
+    "pts": 51,
+    "isUser": false,
+    "position": 14
+   },
+   {
+    "name": "West Ham United",
+    "pts": 51,
+    "isUser": false,
+    "position": 15
+   },
+   {
+    "name": "Brentford FC",
+    "pts": 49,
+    "isUser": false,
+    "position": 16
+   },
+   {
+    "name": "AFC Bournemouth",
+    "pts": 47,
+    "isUser": false,
+    "position": 17
+   },
+   {
+    "name": "Burnley FC",
+    "pts": 44,
+    "isUser": false,
+    "position": 18
+   },
+   {
+    "name": "Wolverhampton Wanderers",
+    "pts": 42,
+    "isUser": false,
+    "position": 19
+   },
+   {
+    "name": "Sunderland AFC",
+    "pts": 17,
+    "isUser": false,
+    "position": 20
+   }
+  ],
+  "result": {
+   "opponents": [
+    {
+     "name": "Arsenal FC",
+     "ov": 87.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3,
+     "weight": 1.171,
+     "vol": 9.23
+    },
+    {
+     "name": "Manchester City",
+     "ov": 86.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3.2,
+     "weight": 1.171,
+     "vol": 10
+    },
+    {
+     "name": "Chelsea FC",
+     "ov": 84.8,
+     "lastSeason": "2024",
+     "histMean": 85.2,
+     "histStd": 3.9,
+     "weight": 1.22,
+     "vol": 12.69
+    },
+    {
+     "name": "Liverpool FC",
+     "ov": 84,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.9,
+     "weight": 1.162,
+     "vol": 8.85
+    },
+    {
+     "name": "Tottenham Hotspur",
+     "ov": 83.2,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.6,
+     "weight": 1.162,
+     "vol": 7.69
+    },
+    {
+     "name": "Manchester United",
+     "ov": 81,
+     "lastSeason": "2024",
+     "histMean": 84.1,
+     "histStd": 3,
+     "weight": 1.187,
+     "vol": 9.23
+    },
+    {
+     "name": "Aston Villa",
+     "ov": 79.7,
+     "lastSeason": "2024",
+     "histMean": 79.1,
+     "histStd": 2.6,
+     "weight": 1.034,
+     "vol": 7.69
+    },
+    {
+     "name": "Brighton and Hove Albion",
+     "ov": 78,
+     "lastSeason": "2024",
+     "histMean": 76.6,
+     "histStd": 4.1,
+     "weight": 0.958,
+     "vol": 13.46
+    },
+    {
+     "name": "Newcastle United",
+     "ov": 77.2,
+     "lastSeason": "2024",
+     "histMean": 79.5,
+     "histStd": 2.2,
+     "weight": 1.047,
+     "vol": 6.15
+    },
+    {
+     "name": "Crystal Palace",
+     "ov": 76.2,
+     "lastSeason": "2024",
+     "histMean": 75.3,
+     "histStd": 4,
+     "weight": 0.919,
+     "vol": 13.08
+    },
+    {
+     "name": "Nottingham Forest",
+     "ov": 74.1,
+     "lastSeason": "2024",
+     "histMean": 78.7,
+     "histStd": 1.9,
+     "weight": 1.022,
+     "vol": 5
+    },
+    {
+     "name": "West Ham United",
+     "ov": 73.4,
+     "lastSeason": "2024",
+     "histMean": 78,
+     "histStd": 3.1,
+     "weight": 1.001,
+     "vol": 9.62
+    },
+    {
+     "name": "Leeds United",
+     "ov": 73.3,
+     "lastSeason": "2022",
+     "histMean": 79.7,
+     "histStd": 2,
+     "weight": 1.053,
+     "vol": 5.38
+    },
+    {
+     "name": "Brentford FC",
+     "ov": 73.1,
+     "lastSeason": "2024",
+     "histMean": 77,
+     "histStd": 2.9,
+     "weight": 0.97,
+     "vol": 8.85
+    },
+    {
+     "name": "AFC Bournemouth",
+     "ov": 72.8,
+     "lastSeason": "2024",
+     "histMean": 73.9,
+     "histStd": 3.1,
+     "weight": 0.876,
+     "vol": 9.62
+    },
+    {
+     "name": "Everton FC",
+     "ov": 71.7,
+     "lastSeason": "2024",
+     "histMean": 80.5,
+     "histStd": 2.8,
+     "weight": 1.077,
+     "vol": 8.46
+    },
+    {
+     "name": "Preston North End",
+     "ov": 47.8,
+     "histMean": 47.8,
+     "histStd": 7.2,
+     "weight": 0.795,
+     "vol": 13.06,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Wrexham",
+     "ov": 46.5,
+     "histMean": 46.5,
+     "histStd": 8.3,
+     "weight": 0.78,
+     "vol": 14.17,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Charlton Athletic",
+     "ov": 59.7,
+     "histMean": 78,
+     "histStd": 3.1,
+     "weight": 1.152,
+     "vol": 8.93,
+     "lastSeason": "promoted"
+    }
+   ],
+   "relegated": [
+    "Burnley FC",
+    "Wolverhampton Wanderers",
+    "Sunderland AFC"
+   ],
+   "promoted": [
+    "Preston North End",
+    "Wrexham",
+    "Charlton Athletic"
+   ]
+  }
+ },
+ {
+  "seed": 1002,
+  "table": [
+   {
+    "name": "Arsenal FC",
+    "pts": 85,
+    "isUser": false,
+    "position": 1
+   },
+   {
+    "name": "Chelsea FC",
+    "pts": 84,
+    "isUser": false,
+    "position": 2
+   },
+   {
+    "name": "Manchester City",
+    "pts": 83,
+    "isUser": false,
+    "position": 3
+   },
+   {
+    "name": "Liverpool FC",
+    "pts": 77,
+    "isUser": false,
+    "position": 4
+   },
+   {
+    "name": "Tottenham Hotspur",
+    "pts": 77,
+    "isUser": false,
+    "position": 5
+   },
+   {
+    "name": "Manchester United",
+    "pts": 72,
+    "isUser": false,
+    "position": 6
+   },
+   {
+    "name": "Your XI",
+    "pts": 65,
+    "isUser": true,
+    "w": 18,
+    "d": 11,
+    "l": 9,
+    "gf": 55,
+    "ga": 36,
+    "position": 7
+   },
+   {
+    "name": "Aston Villa",
+    "pts": 64,
+    "isUser": false,
+    "position": 8
+   },
+   {
+    "name": "Brighton and Hove Albion",
+    "pts": 59,
+    "isUser": false,
+    "position": 9
+   },
+   {
+    "name": "Newcastle United",
+    "pts": 59,
+    "isUser": false,
+    "position": 10
+   },
+   {
+    "name": "Everton FC",
+    "pts": 54,
+    "isUser": false,
+    "position": 11
+   },
+   {
+    "name": "Nottingham Forest",
+    "pts": 53,
+    "isUser": false,
+    "position": 12
+   },
+   {
+    "name": "Leeds United",
+    "pts": 52,
+    "isUser": false,
+    "position": 13
+   },
+   {
+    "name": "West Ham United",
+    "pts": 48,
+    "isUser": false,
+    "position": 14
+   },
+   {
+    "name": "Brentford FC",
+    "pts": 46,
+    "isUser": false,
+    "position": 15
+   },
+   {
+    "name": "AFC Bournemouth",
+    "pts": 46,
+    "isUser": false,
+    "position": 16
+   },
+   {
+    "name": "Crystal Palace",
+    "pts": 45,
+    "isUser": false,
+    "position": 17
+   },
+   {
+    "name": "Burnley FC",
+    "pts": 38,
+    "isUser": false,
+    "position": 18
+   },
+   {
+    "name": "Wolverhampton Wanderers",
+    "pts": 38,
+    "isUser": false,
+    "position": 19
+   },
+   {
+    "name": "Sunderland AFC",
+    "pts": 21,
+    "isUser": false,
+    "position": 20
+   }
+  ],
+  "result": {
+   "opponents": [
+    {
+     "name": "Arsenal FC",
+     "ov": 87.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3,
+     "weight": 1.171,
+     "vol": 9.23
+    },
+    {
+     "name": "Manchester City",
+     "ov": 86.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3.2,
+     "weight": 1.171,
+     "vol": 10
+    },
+    {
+     "name": "Chelsea FC",
+     "ov": 84.8,
+     "lastSeason": "2024",
+     "histMean": 85.2,
+     "histStd": 3.9,
+     "weight": 1.22,
+     "vol": 12.69
+    },
+    {
+     "name": "Liverpool FC",
+     "ov": 84,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.9,
+     "weight": 1.162,
+     "vol": 8.85
+    },
+    {
+     "name": "Tottenham Hotspur",
+     "ov": 83.2,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.6,
+     "weight": 1.162,
+     "vol": 7.69
+    },
+    {
+     "name": "Manchester United",
+     "ov": 81,
+     "lastSeason": "2024",
+     "histMean": 84.1,
+     "histStd": 3,
+     "weight": 1.187,
+     "vol": 9.23
+    },
+    {
+     "name": "Aston Villa",
+     "ov": 79.7,
+     "lastSeason": "2024",
+     "histMean": 79.1,
+     "histStd": 2.6,
+     "weight": 1.034,
+     "vol": 7.69
+    },
+    {
+     "name": "Brighton and Hove Albion",
+     "ov": 78,
+     "lastSeason": "2024",
+     "histMean": 76.6,
+     "histStd": 4.1,
+     "weight": 0.958,
+     "vol": 13.46
+    },
+    {
+     "name": "Newcastle United",
+     "ov": 77.2,
+     "lastSeason": "2024",
+     "histMean": 79.5,
+     "histStd": 2.2,
+     "weight": 1.047,
+     "vol": 6.15
+    },
+    {
+     "name": "Crystal Palace",
+     "ov": 76.2,
+     "lastSeason": "2024",
+     "histMean": 75.3,
+     "histStd": 4,
+     "weight": 0.919,
+     "vol": 13.08
+    },
+    {
+     "name": "Nottingham Forest",
+     "ov": 74.1,
+     "lastSeason": "2024",
+     "histMean": 78.7,
+     "histStd": 1.9,
+     "weight": 1.022,
+     "vol": 5
+    },
+    {
+     "name": "West Ham United",
+     "ov": 73.4,
+     "lastSeason": "2024",
+     "histMean": 78,
+     "histStd": 3.1,
+     "weight": 1.001,
+     "vol": 9.62
+    },
+    {
+     "name": "Leeds United",
+     "ov": 73.3,
+     "lastSeason": "2022",
+     "histMean": 79.7,
+     "histStd": 2,
+     "weight": 1.053,
+     "vol": 5.38
+    },
+    {
+     "name": "Brentford FC",
+     "ov": 73.1,
+     "lastSeason": "2024",
+     "histMean": 77,
+     "histStd": 2.9,
+     "weight": 0.97,
+     "vol": 8.85
+    },
+    {
+     "name": "AFC Bournemouth",
+     "ov": 72.8,
+     "lastSeason": "2024",
+     "histMean": 73.9,
+     "histStd": 3.1,
+     "weight": 0.876,
+     "vol": 9.62
+    },
+    {
+     "name": "Everton FC",
+     "ov": 71.7,
+     "lastSeason": "2024",
+     "histMean": 80.5,
+     "histStd": 2.8,
+     "weight": 1.077,
+     "vol": 8.46
+    },
+    {
+     "name": "Bolton Wanderers",
+     "ov": 58,
+     "histMean": 78,
+     "histStd": 3,
+     "weight": 1.152,
+     "vol": 8.83,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Portsmouth",
+     "ov": 59.1,
+     "histMean": 78.7,
+     "histStd": 3.3,
+     "weight": 1.16,
+     "vol": 9.13,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Cardiff City",
+     "ov": 53.2,
+     "histMean": 68.8,
+     "histStd": 0.2,
+     "weight": 1.043,
+     "vol": 6,
+     "lastSeason": "promoted"
+    }
+   ],
+   "relegated": [
+    "Burnley FC",
+    "Wolverhampton Wanderers",
+    "Sunderland AFC"
+   ],
+   "promoted": [
+    "Bolton Wanderers",
+    "Portsmouth",
+    "Cardiff City"
+   ]
+  }
+ },
+ {
+  "seed": 1003,
+  "table": [
+   {
+    "name": "Chelsea FC",
+    "pts": 82,
+    "isUser": false,
+    "position": 1
+   },
+   {
+    "name": "Arsenal FC",
+    "pts": 81,
+    "isUser": false,
+    "position": 2
+   },
+   {
+    "name": "Manchester City",
+    "pts": 81,
+    "isUser": false,
+    "position": 3
+   },
+   {
+    "name": "Liverpool FC",
+    "pts": 81,
+    "isUser": false,
+    "position": 4
+   },
+   {
+    "name": "Tottenham Hotspur",
+    "pts": 76,
+    "isUser": false,
+    "position": 5
+   },
+   {
+    "name": "Manchester United",
+    "pts": 76,
+    "isUser": false,
+    "position": 6
+   },
+   {
+    "name": "Your XI",
+    "pts": 73,
+    "isUser": true,
+    "w": 21,
+    "d": 10,
+    "l": 7,
+    "gf": 57,
+    "ga": 28,
+    "position": 7
+   },
+   {
+    "name": "Aston Villa",
+    "pts": 62,
+    "isUser": false,
+    "position": 8
+   },
+   {
+    "name": "Brighton and Hove Albion",
+    "pts": 62,
+    "isUser": false,
+    "position": 9
+   },
+   {
+    "name": "Newcastle United",
+    "pts": 62,
+    "isUser": false,
+    "position": 10
+   },
+   {
+    "name": "Nottingham Forest",
+    "pts": 54,
+    "isUser": false,
+    "position": 11
+   },
+   {
+    "name": "Leeds United",
+    "pts": 54,
+    "isUser": false,
+    "position": 12
+   },
+   {
+    "name": "West Ham United",
+    "pts": 53,
+    "isUser": false,
+    "position": 13
+   },
+   {
+    "name": "Crystal Palace",
+    "pts": 52,
+    "isUser": false,
+    "position": 14
+   },
+   {
+    "name": "Everton FC",
+    "pts": 50,
+    "isUser": false,
+    "position": 15
+   },
+   {
+    "name": "Brentford FC",
+    "pts": 47,
+    "isUser": false,
+    "position": 16
+   },
+   {
+    "name": "AFC Bournemouth",
+    "pts": 47,
+    "isUser": false,
+    "position": 17
+   },
+   {
+    "name": "Burnley FC",
+    "pts": 46,
+    "isUser": false,
+    "position": 18
+   },
+   {
+    "name": "Wolverhampton Wanderers",
+    "pts": 41,
+    "isUser": false,
+    "position": 19
+   },
+   {
+    "name": "Sunderland AFC",
+    "pts": 20,
+    "isUser": false,
+    "position": 20
+   }
+  ],
+  "result": {
+   "opponents": [
+    {
+     "name": "Arsenal FC",
+     "ov": 87.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3,
+     "weight": 1.171,
+     "vol": 9.23
+    },
+    {
+     "name": "Manchester City",
+     "ov": 86.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3.2,
+     "weight": 1.171,
+     "vol": 10
+    },
+    {
+     "name": "Chelsea FC",
+     "ov": 84.8,
+     "lastSeason": "2024",
+     "histMean": 85.2,
+     "histStd": 3.9,
+     "weight": 1.22,
+     "vol": 12.69
+    },
+    {
+     "name": "Liverpool FC",
+     "ov": 84,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.9,
+     "weight": 1.162,
+     "vol": 8.85
+    },
+    {
+     "name": "Tottenham Hotspur",
+     "ov": 83.2,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.6,
+     "weight": 1.162,
+     "vol": 7.69
+    },
+    {
+     "name": "Manchester United",
+     "ov": 81,
+     "lastSeason": "2024",
+     "histMean": 84.1,
+     "histStd": 3,
+     "weight": 1.187,
+     "vol": 9.23
+    },
+    {
+     "name": "Aston Villa",
+     "ov": 79.7,
+     "lastSeason": "2024",
+     "histMean": 79.1,
+     "histStd": 2.6,
+     "weight": 1.034,
+     "vol": 7.69
+    },
+    {
+     "name": "Brighton and Hove Albion",
+     "ov": 78,
+     "lastSeason": "2024",
+     "histMean": 76.6,
+     "histStd": 4.1,
+     "weight": 0.958,
+     "vol": 13.46
+    },
+    {
+     "name": "Newcastle United",
+     "ov": 77.2,
+     "lastSeason": "2024",
+     "histMean": 79.5,
+     "histStd": 2.2,
+     "weight": 1.047,
+     "vol": 6.15
+    },
+    {
+     "name": "Crystal Palace",
+     "ov": 76.2,
+     "lastSeason": "2024",
+     "histMean": 75.3,
+     "histStd": 4,
+     "weight": 0.919,
+     "vol": 13.08
+    },
+    {
+     "name": "Nottingham Forest",
+     "ov": 74.1,
+     "lastSeason": "2024",
+     "histMean": 78.7,
+     "histStd": 1.9,
+     "weight": 1.022,
+     "vol": 5
+    },
+    {
+     "name": "West Ham United",
+     "ov": 73.4,
+     "lastSeason": "2024",
+     "histMean": 78,
+     "histStd": 3.1,
+     "weight": 1.001,
+     "vol": 9.62
+    },
+    {
+     "name": "Leeds United",
+     "ov": 73.3,
+     "lastSeason": "2022",
+     "histMean": 79.7,
+     "histStd": 2,
+     "weight": 1.053,
+     "vol": 5.38
+    },
+    {
+     "name": "Brentford FC",
+     "ov": 73.1,
+     "lastSeason": "2024",
+     "histMean": 77,
+     "histStd": 2.9,
+     "weight": 0.97,
+     "vol": 8.85
+    },
+    {
+     "name": "AFC Bournemouth",
+     "ov": 72.8,
+     "lastSeason": "2024",
+     "histMean": 73.9,
+     "histStd": 3.1,
+     "weight": 0.876,
+     "vol": 9.62
+    },
+    {
+     "name": "Everton FC",
+     "ov": 71.7,
+     "lastSeason": "2024",
+     "histMean": 80.5,
+     "histStd": 2.8,
+     "weight": 1.077,
+     "vol": 8.46
+    },
+    {
+     "name": "Preston North End",
+     "ov": 47.8,
+     "histMean": 47.8,
+     "histStd": 7.2,
+     "weight": 0.795,
+     "vol": 13.06,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Sheffield United",
+     "ov": 69.1,
+     "histMean": 74.4,
+     "histStd": 3.9,
+     "weight": 1.109,
+     "vol": 9.73,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Birmingham City",
+     "ov": 58.2,
+     "histMean": 77.1,
+     "histStd": 3.1,
+     "weight": 1.141,
+     "vol": 8.93,
+     "lastSeason": "promoted"
+    }
+   ],
+   "relegated": [
+    "Burnley FC",
+    "Wolverhampton Wanderers",
+    "Sunderland AFC"
+   ],
+   "promoted": [
+    "Preston North End",
+    "Sheffield United",
+    "Birmingham City"
+   ]
+  }
+ },
+ {
+  "seed": 1004,
+  "table": [
+   {
+    "name": "Arsenal FC",
+    "pts": 87,
+    "isUser": false,
+    "position": 1
+   },
+   {
+    "name": "Chelsea FC",
+    "pts": 86,
+    "isUser": false,
+    "position": 2
+   },
+   {
+    "name": "Manchester City",
+    "pts": 82,
+    "isUser": false,
+    "position": 3
+   },
+   {
+    "name": "Liverpool FC",
+    "pts": 75,
+    "isUser": false,
+    "position": 4
+   },
+   {
+    "name": "Tottenham Hotspur",
+    "pts": 73,
+    "isUser": false,
+    "position": 5
+   },
+   {
+    "name": "Manchester United",
+    "pts": 73,
+    "isUser": false,
+    "position": 6
+   },
+   {
+    "name": "Aston Villa",
+    "pts": 64,
+    "isUser": false,
+    "position": 7
+   },
+   {
+    "name": "Your XI",
+    "pts": 60,
+    "isUser": true,
+    "w": 17,
+    "d": 9,
+    "l": 12,
+    "gf": 88,
+    "ga": 66,
+    "position": 8
+   },
+   {
+    "name": "Newcastle United",
+    "pts": 59,
+    "isUser": false,
+    "position": 9
+   },
+   {
+    "name": "Crystal Palace",
+    "pts": 56,
+    "isUser": false,
+    "position": 10
+   },
+   {
+    "name": "Leeds United",
+    "pts": 53,
+    "isUser": false,
+    "position": 11
+   },
+   {
+    "name": "West Ham United",
+    "pts": 52,
+    "isUser": false,
+    "position": 12
+   },
+   {
+    "name": "Brighton and Hove Albion",
+    "pts": 50,
+    "isUser": false,
+    "position": 13
+   },
+   {
+    "name": "Nottingham Forest",
+    "pts": 50,
+    "isUser": false,
+    "position": 14
+   },
+   {
+    "name": "Wolverhampton Wanderers",
+    "pts": 50,
+    "isUser": false,
+    "position": 15
+   },
+   {
+    "name": "Everton FC",
+    "pts": 50,
+    "isUser": false,
+    "position": 16
+   },
+   {
+    "name": "AFC Bournemouth",
+    "pts": 47,
+    "isUser": false,
+    "position": 17
+   },
+   {
+    "name": "Burnley FC",
+    "pts": 46,
+    "isUser": false,
+    "position": 18
+   },
+   {
+    "name": "Brentford FC",
+    "pts": 45,
+    "isUser": false,
+    "position": 19
+   },
+   {
+    "name": "Sunderland AFC",
+    "pts": 17,
+    "isUser": false,
+    "position": 20
+   }
+  ],
+  "result": {
+   "opponents": [
+    {
+     "name": "Arsenal FC",
+     "ov": 87.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3,
+     "weight": 1.171,
+     "vol": 9.23
+    },
+    {
+     "name": "Manchester City",
+     "ov": 86.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3.2,
+     "weight": 1.171,
+     "vol": 10
+    },
+    {
+     "name": "Chelsea FC",
+     "ov": 84.8,
+     "lastSeason": "2024",
+     "histMean": 85.2,
+     "histStd": 3.9,
+     "weight": 1.22,
+     "vol": 12.69
+    },
+    {
+     "name": "Liverpool FC",
+     "ov": 84,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.9,
+     "weight": 1.162,
+     "vol": 8.85
+    },
+    {
+     "name": "Tottenham Hotspur",
+     "ov": 83.2,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.6,
+     "weight": 1.162,
+     "vol": 7.69
+    },
+    {
+     "name": "Manchester United",
+     "ov": 81,
+     "lastSeason": "2024",
+     "histMean": 84.1,
+     "histStd": 3,
+     "weight": 1.187,
+     "vol": 9.23
+    },
+    {
+     "name": "Aston Villa",
+     "ov": 79.7,
+     "lastSeason": "2024",
+     "histMean": 79.1,
+     "histStd": 2.6,
+     "weight": 1.034,
+     "vol": 7.69
+    },
+    {
+     "name": "Brighton and Hove Albion",
+     "ov": 78,
+     "lastSeason": "2024",
+     "histMean": 76.6,
+     "histStd": 4.1,
+     "weight": 0.958,
+     "vol": 13.46
+    },
+    {
+     "name": "Newcastle United",
+     "ov": 77.2,
+     "lastSeason": "2024",
+     "histMean": 79.5,
+     "histStd": 2.2,
+     "weight": 1.047,
+     "vol": 6.15
+    },
+    {
+     "name": "Crystal Palace",
+     "ov": 76.2,
+     "lastSeason": "2024",
+     "histMean": 75.3,
+     "histStd": 4,
+     "weight": 0.919,
+     "vol": 13.08
+    },
+    {
+     "name": "Nottingham Forest",
+     "ov": 74.1,
+     "lastSeason": "2024",
+     "histMean": 78.7,
+     "histStd": 1.9,
+     "weight": 1.022,
+     "vol": 5
+    },
+    {
+     "name": "West Ham United",
+     "ov": 73.4,
+     "lastSeason": "2024",
+     "histMean": 78,
+     "histStd": 3.1,
+     "weight": 1.001,
+     "vol": 9.62
+    },
+    {
+     "name": "Leeds United",
+     "ov": 73.3,
+     "lastSeason": "2022",
+     "histMean": 79.7,
+     "histStd": 2,
+     "weight": 1.053,
+     "vol": 5.38
+    },
+    {
+     "name": "AFC Bournemouth",
+     "ov": 72.8,
+     "lastSeason": "2024",
+     "histMean": 73.9,
+     "histStd": 3.1,
+     "weight": 0.876,
+     "vol": 9.62
+    },
+    {
+     "name": "Wolverhampton Wanderers",
+     "ov": 72,
+     "lastSeason": "2024",
+     "histMean": 75.6,
+     "histStd": 4.1,
+     "weight": 0.928,
+     "vol": 13.46
+    },
+    {
+     "name": "Everton FC",
+     "ov": 71.7,
+     "lastSeason": "2024",
+     "histMean": 80.5,
+     "histStd": 2.8,
+     "weight": 1.077,
+     "vol": 8.46
+    },
+    {
+     "name": "Derby County",
+     "ov": 55.2,
+     "histMean": 80.4,
+     "histStd": 3.8,
+     "weight": 1.18,
+     "vol": 9.63,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Watford",
+     "ov": 63.7,
+     "histMean": 73.3,
+     "histStd": 3.8,
+     "weight": 1.096,
+     "vol": 9.63,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Cardiff City",
+     "ov": 53.2,
+     "histMean": 68.8,
+     "histStd": 0.2,
+     "weight": 1.043,
+     "vol": 6,
+     "lastSeason": "promoted"
+    }
+   ],
+   "relegated": [
+    "Burnley FC",
+    "Brentford FC",
+    "Sunderland AFC"
+   ],
+   "promoted": [
+    "Derby County",
+    "Watford",
+    "Cardiff City"
+   ]
+  }
+ },
+ {
+  "seed": 1005,
+  "table": [
+   {
+    "name": "Arsenal FC",
+    "pts": 85,
+    "isUser": false,
+    "position": 1
+   },
+   {
+    "name": "Manchester City",
+    "pts": 82,
+    "isUser": false,
+    "position": 2
+   },
+   {
+    "name": "Chelsea FC",
+    "pts": 81,
+    "isUser": false,
+    "position": 3
+   },
+   {
+    "name": "Liverpool FC",
+    "pts": 80,
+    "isUser": false,
+    "position": 4
+   },
+   {
+    "name": "Tottenham Hotspur",
+    "pts": 79,
+    "isUser": false,
+    "position": 5
+   },
+   {
+    "name": "Manchester United",
+    "pts": 72,
+    "isUser": false,
+    "position": 6
+   },
+   {
+    "name": "Aston Villa",
+    "pts": 61,
+    "isUser": false,
+    "position": 7
+   },
+   {
+    "name": "Newcastle United",
+    "pts": 57,
+    "isUser": false,
+    "position": 8
+   },
+   {
+    "name": "West Ham United",
+    "pts": 55,
+    "isUser": false,
+    "position": 9
+   },
+   {
+    "name": "Crystal Palace",
+    "pts": 54,
+    "isUser": false,
+    "position": 10
+   },
+   {
+    "name": "Nottingham Forest",
+    "pts": 54,
+    "isUser": false,
+    "position": 11
+   },
+   {
+    "name": "Leeds United",
+    "pts": 52,
+    "isUser": false,
+    "position": 12
+   },
+   {
+    "name": "Everton FC",
+    "pts": 51,
+    "isUser": false,
+    "position": 13
+   },
+   {
+    "name": "Brentford FC",
+    "pts": 49,
+    "isUser": false,
+    "position": 14
+   },
+   {
+    "name": "Brighton and Hove Albion",
+    "pts": 48,
+    "isUser": false,
+    "position": 15
+   },
+   {
+    "name": "Burnley FC",
+    "pts": 43,
+    "isUser": false,
+    "position": 16
+   },
+   {
+    "name": "AFC Bournemouth",
+    "pts": 39,
+    "isUser": false,
+    "position": 17
+   },
+   {
+    "name": "Wolverhampton Wanderers",
+    "pts": 39,
+    "isUser": false,
+    "position": 18
+   },
+   {
+    "name": "Your XI",
+    "pts": 38,
+    "isUser": true,
+    "w": 5,
+    "d": 23,
+    "l": 10,
+    "gf": 10,
+    "ga": 16,
+    "position": 19
+   },
+   {
+    "name": "Sunderland AFC",
+    "pts": 22,
+    "isUser": false,
+    "position": 20
+   }
+  ],
+  "result": {
+   "opponents": [
+    {
+     "name": "Arsenal FC",
+     "ov": 87.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3,
+     "weight": 1.171,
+     "vol": 9.23
+    },
+    {
+     "name": "Manchester City",
+     "ov": 86.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3.2,
+     "weight": 1.171,
+     "vol": 10
+    },
+    {
+     "name": "Chelsea FC",
+     "ov": 84.8,
+     "lastSeason": "2024",
+     "histMean": 85.2,
+     "histStd": 3.9,
+     "weight": 1.22,
+     "vol": 12.69
+    },
+    {
+     "name": "Liverpool FC",
+     "ov": 84,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.9,
+     "weight": 1.162,
+     "vol": 8.85
+    },
+    {
+     "name": "Tottenham Hotspur",
+     "ov": 83.2,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.6,
+     "weight": 1.162,
+     "vol": 7.69
+    },
+    {
+     "name": "Manchester United",
+     "ov": 81,
+     "lastSeason": "2024",
+     "histMean": 84.1,
+     "histStd": 3,
+     "weight": 1.187,
+     "vol": 9.23
+    },
+    {
+     "name": "Aston Villa",
+     "ov": 79.7,
+     "lastSeason": "2024",
+     "histMean": 79.1,
+     "histStd": 2.6,
+     "weight": 1.034,
+     "vol": 7.69
+    },
+    {
+     "name": "Brighton and Hove Albion",
+     "ov": 78,
+     "lastSeason": "2024",
+     "histMean": 76.6,
+     "histStd": 4.1,
+     "weight": 0.958,
+     "vol": 13.46
+    },
+    {
+     "name": "Newcastle United",
+     "ov": 77.2,
+     "lastSeason": "2024",
+     "histMean": 79.5,
+     "histStd": 2.2,
+     "weight": 1.047,
+     "vol": 6.15
+    },
+    {
+     "name": "Crystal Palace",
+     "ov": 76.2,
+     "lastSeason": "2024",
+     "histMean": 75.3,
+     "histStd": 4,
+     "weight": 0.919,
+     "vol": 13.08
+    },
+    {
+     "name": "Burnley FC",
+     "ov": 75.7,
+     "lastSeason": "2023",
+     "histMean": 71.4,
+     "histStd": 3.5,
+     "weight": 0.8,
+     "vol": 11.15
+    },
+    {
+     "name": "Nottingham Forest",
+     "ov": 74.1,
+     "lastSeason": "2024",
+     "histMean": 78.7,
+     "histStd": 1.9,
+     "weight": 1.022,
+     "vol": 5
+    },
+    {
+     "name": "West Ham United",
+     "ov": 73.4,
+     "lastSeason": "2024",
+     "histMean": 78,
+     "histStd": 3.1,
+     "weight": 1.001,
+     "vol": 9.62
+    },
+    {
+     "name": "Leeds United",
+     "ov": 73.3,
+     "lastSeason": "2022",
+     "histMean": 79.7,
+     "histStd": 2,
+     "weight": 1.053,
+     "vol": 5.38
+    },
+    {
+     "name": "Brentford FC",
+     "ov": 73.1,
+     "lastSeason": "2024",
+     "histMean": 77,
+     "histStd": 2.9,
+     "weight": 0.97,
+     "vol": 8.85
+    },
+    {
+     "name": "AFC Bournemouth",
+     "ov": 72.8,
+     "lastSeason": "2024",
+     "histMean": 73.9,
+     "histStd": 3.1,
+     "weight": 0.876,
+     "vol": 9.62
+    },
+    {
+     "name": "Everton FC",
+     "ov": 71.7,
+     "lastSeason": "2024",
+     "histMean": 80.5,
+     "histStd": 2.8,
+     "weight": 1.077,
+     "vol": 8.46
+    },
+    {
+     "name": "Watford",
+     "ov": 63.7,
+     "histMean": 73.3,
+     "histStd": 3.8,
+     "weight": 1.096,
+     "vol": 9.63,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Bristol City",
+     "ov": 50.6,
+     "histMean": 50.6,
+     "histStd": 11.1,
+     "weight": 0.828,
+     "vol": 17,
+     "lastSeason": "promoted"
+    }
+   ],
+   "relegated": [
+    "Wolverhampton Wanderers",
+    "Sunderland AFC"
+   ],
+   "promoted": [
+    "Watford",
+    "Bristol City"
+   ]
+  }
+ },
+ {
+  "seed": 1006,
+  "table": [
+   {
+    "name": "Your XI",
+    "pts": 84,
+    "isUser": true,
+    "w": 26,
+    "d": 6,
+    "l": 6,
+    "gf": 111,
+    "ga": 43,
+    "position": 1
+   },
+   {
+    "name": "Arsenal FC",
+    "pts": 82,
+    "isUser": false,
+    "position": 2
+   },
+   {
+    "name": "Chelsea FC",
+    "pts": 81,
+    "isUser": false,
+    "position": 3
+   },
+   {
+    "name": "Liverpool FC",
+    "pts": 81,
+    "isUser": false,
+    "position": 4
+   },
+   {
+    "name": "Manchester City",
+    "pts": 80,
+    "isUser": false,
+    "position": 5
+   },
+   {
+    "name": "Tottenham Hotspur",
+    "pts": 78,
+    "isUser": false,
+    "position": 6
+   },
+   {
+    "name": "Manchester United",
+    "pts": 74,
+    "isUser": false,
+    "position": 7
+   },
+   {
+    "name": "Brighton and Hove Albion",
+    "pts": 61,
+    "isUser": false,
+    "position": 8
+   },
+   {
+    "name": "Newcastle United",
+    "pts": 60,
+    "isUser": false,
+    "position": 9
+   },
+   {
+    "name": "Aston Villa",
+    "pts": 59,
+    "isUser": false,
+    "position": 10
+   },
+   {
+    "name": "Nottingham Forest",
+    "pts": 52,
+    "isUser": false,
+    "position": 11
+   },
+   {
+    "name": "Leeds United",
+    "pts": 52,
+    "isUser": false,
+    "position": 12
+   },
+   {
+    "name": "Burnley FC",
+    "pts": 48,
+    "isUser": false,
+    "position": 13
+   },
+   {
+    "name": "Everton FC",
+    "pts": 48,
+    "isUser": false,
+    "position": 14
+   },
+   {
+    "name": "West Ham United",
+    "pts": 47,
+    "isUser": false,
+    "position": 15
+   },
+   {
+    "name": "Brentford FC",
+    "pts": 46,
+    "isUser": false,
+    "position": 16
+   },
+   {
+    "name": "Crystal Palace",
+    "pts": 45,
+    "isUser": false,
+    "position": 17
+   },
+   {
+    "name": "Wolverhampton Wanderers",
+    "pts": 42,
+    "isUser": false,
+    "position": 18
+   },
+   {
+    "name": "AFC Bournemouth",
+    "pts": 39,
+    "isUser": false,
+    "position": 19
+   },
+   {
+    "name": "Sunderland AFC",
+    "pts": 18,
+    "isUser": false,
+    "position": 20
+   }
+  ],
+  "result": {
+   "opponents": [
+    {
+     "name": "Arsenal FC",
+     "ov": 87.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3,
+     "weight": 1.171,
+     "vol": 9.23
+    },
+    {
+     "name": "Manchester City",
+     "ov": 86.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3.2,
+     "weight": 1.171,
+     "vol": 10
+    },
+    {
+     "name": "Chelsea FC",
+     "ov": 84.8,
+     "lastSeason": "2024",
+     "histMean": 85.2,
+     "histStd": 3.9,
+     "weight": 1.22,
+     "vol": 12.69
+    },
+    {
+     "name": "Liverpool FC",
+     "ov": 84,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.9,
+     "weight": 1.162,
+     "vol": 8.85
+    },
+    {
+     "name": "Tottenham Hotspur",
+     "ov": 83.2,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.6,
+     "weight": 1.162,
+     "vol": 7.69
+    },
+    {
+     "name": "Manchester United",
+     "ov": 81,
+     "lastSeason": "2024",
+     "histMean": 84.1,
+     "histStd": 3,
+     "weight": 1.187,
+     "vol": 9.23
+    },
+    {
+     "name": "Aston Villa",
+     "ov": 79.7,
+     "lastSeason": "2024",
+     "histMean": 79.1,
+     "histStd": 2.6,
+     "weight": 1.034,
+     "vol": 7.69
+    },
+    {
+     "name": "Brighton and Hove Albion",
+     "ov": 78,
+     "lastSeason": "2024",
+     "histMean": 76.6,
+     "histStd": 4.1,
+     "weight": 0.958,
+     "vol": 13.46
+    },
+    {
+     "name": "Newcastle United",
+     "ov": 77.2,
+     "lastSeason": "2024",
+     "histMean": 79.5,
+     "histStd": 2.2,
+     "weight": 1.047,
+     "vol": 6.15
+    },
+    {
+     "name": "Crystal Palace",
+     "ov": 76.2,
+     "lastSeason": "2024",
+     "histMean": 75.3,
+     "histStd": 4,
+     "weight": 0.919,
+     "vol": 13.08
+    },
+    {
+     "name": "Burnley FC",
+     "ov": 75.7,
+     "lastSeason": "2023",
+     "histMean": 71.4,
+     "histStd": 3.5,
+     "weight": 0.8,
+     "vol": 11.15
+    },
+    {
+     "name": "Nottingham Forest",
+     "ov": 74.1,
+     "lastSeason": "2024",
+     "histMean": 78.7,
+     "histStd": 1.9,
+     "weight": 1.022,
+     "vol": 5
+    },
+    {
+     "name": "West Ham United",
+     "ov": 73.4,
+     "lastSeason": "2024",
+     "histMean": 78,
+     "histStd": 3.1,
+     "weight": 1.001,
+     "vol": 9.62
+    },
+    {
+     "name": "Leeds United",
+     "ov": 73.3,
+     "lastSeason": "2022",
+     "histMean": 79.7,
+     "histStd": 2,
+     "weight": 1.053,
+     "vol": 5.38
+    },
+    {
+     "name": "Brentford FC",
+     "ov": 73.1,
+     "lastSeason": "2024",
+     "histMean": 77,
+     "histStd": 2.9,
+     "weight": 0.97,
+     "vol": 8.85
+    },
+    {
+     "name": "Everton FC",
+     "ov": 71.7,
+     "lastSeason": "2024",
+     "histMean": 80.5,
+     "histStd": 2.8,
+     "weight": 1.077,
+     "vol": 8.46
+    },
+    {
+     "name": "Norwich City",
+     "ov": 63.1,
+     "histMean": 73.8,
+     "histStd": 4.4,
+     "weight": 1.102,
+     "vol": 10.24,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Sheffield United",
+     "ov": 69.1,
+     "histMean": 74.4,
+     "histStd": 3.9,
+     "weight": 1.109,
+     "vol": 9.73,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Lincoln City",
+     "ov": 49.8,
+     "histMean": 49.8,
+     "histStd": 7.2,
+     "weight": 0.819,
+     "vol": 13.06,
+     "lastSeason": "promoted"
+    }
+   ],
+   "relegated": [
+    "Wolverhampton Wanderers",
+    "AFC Bournemouth",
+    "Sunderland AFC"
+   ],
+   "promoted": [
+    "Norwich City",
+    "Sheffield United",
+    "Lincoln City"
+   ]
+  }
+ },
+ {
+  "seed": 1007,
+  "table": [
+   {
+    "name": "Arsenal FC",
+    "pts": 85,
+    "isUser": false,
+    "position": 1
+   },
+   {
+    "name": "Chelsea FC",
+    "pts": 85,
+    "isUser": false,
+    "position": 2
+   },
+   {
+    "name": "Liverpool FC",
+    "pts": 80,
+    "isUser": false,
+    "position": 3
+   },
+   {
+    "name": "Manchester City",
+    "pts": 79,
+    "isUser": false,
+    "position": 4
+   },
+   {
+    "name": "Tottenham Hotspur",
+    "pts": 79,
+    "isUser": false,
+    "position": 5
+   },
+   {
+    "name": "Manchester United",
+    "pts": 70,
+    "isUser": false,
+    "position": 6
+   },
+   {
+    "name": "Aston Villa",
+    "pts": 63,
+    "isUser": false,
+    "position": 7
+   },
+   {
+    "name": "Newcastle United",
+    "pts": 56,
+    "isUser": false,
+    "position": 8
+   },
+   {
+    "name": "Crystal Palace",
+    "pts": 56,
+    "isUser": false,
+    "position": 9
+   },
+   {
+    "name": "Brighton and Hove Albion",
+    "pts": 53,
+    "isUser": false,
+    "position": 10
+   },
+   {
+    "name": "Everton FC",
+    "pts": 53,
+    "isUser": false,
+    "position": 11
+   },
+   {
+    "name": "Leeds United",
+    "pts": 52,
+    "isUser": false,
+    "position": 12
+   },
+   {
+    "name": "Nottingham Forest",
+    "pts": 51,
+    "isUser": false,
+    "position": 13
+   },
+   {
+    "name": "Brentford FC",
+    "pts": 51,
+    "isUser": false,
+    "position": 14
+   },
+   {
+    "name": "Wolverhampton Wanderers",
+    "pts": 49,
+    "isUser": false,
+    "position": 15
+   },
+   {
+    "name": "West Ham United",
+    "pts": 48,
+    "isUser": false,
+    "position": 16
+   },
+   {
+    "name": "AFC Bournemouth",
+    "pts": 46,
+    "isUser": false,
+    "position": 17
+   },
+   {
+    "name": "Your XI",
+    "pts": 46,
+    "isUser": true,
+    "w": 11,
+    "d": 13,
+    "l": 14,
+    "gf": 48,
+    "ga": 53,
+    "position": 18
+   },
+   {
+    "name": "Burnley FC",
+    "pts": 40,
+    "isUser": false,
+    "position": 19
+   },
+   {
+    "name": "Sunderland AFC",
+    "pts": 25,
+    "isUser": false,
+    "position": 20
+   }
+  ],
+  "result": {
+   "opponents": [
+    {
+     "name": "Arsenal FC",
+     "ov": 87.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3,
+     "weight": 1.171,
+     "vol": 9.23
+    },
+    {
+     "name": "Manchester City",
+     "ov": 86.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3.2,
+     "weight": 1.171,
+     "vol": 10
+    },
+    {
+     "name": "Chelsea FC",
+     "ov": 84.8,
+     "lastSeason": "2024",
+     "histMean": 85.2,
+     "histStd": 3.9,
+     "weight": 1.22,
+     "vol": 12.69
+    },
+    {
+     "name": "Liverpool FC",
+     "ov": 84,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.9,
+     "weight": 1.162,
+     "vol": 8.85
+    },
+    {
+     "name": "Tottenham Hotspur",
+     "ov": 83.2,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.6,
+     "weight": 1.162,
+     "vol": 7.69
+    },
+    {
+     "name": "Manchester United",
+     "ov": 81,
+     "lastSeason": "2024",
+     "histMean": 84.1,
+     "histStd": 3,
+     "weight": 1.187,
+     "vol": 9.23
+    },
+    {
+     "name": "Aston Villa",
+     "ov": 79.7,
+     "lastSeason": "2024",
+     "histMean": 79.1,
+     "histStd": 2.6,
+     "weight": 1.034,
+     "vol": 7.69
+    },
+    {
+     "name": "Brighton and Hove Albion",
+     "ov": 78,
+     "lastSeason": "2024",
+     "histMean": 76.6,
+     "histStd": 4.1,
+     "weight": 0.958,
+     "vol": 13.46
+    },
+    {
+     "name": "Newcastle United",
+     "ov": 77.2,
+     "lastSeason": "2024",
+     "histMean": 79.5,
+     "histStd": 2.2,
+     "weight": 1.047,
+     "vol": 6.15
+    },
+    {
+     "name": "Crystal Palace",
+     "ov": 76.2,
+     "lastSeason": "2024",
+     "histMean": 75.3,
+     "histStd": 4,
+     "weight": 0.919,
+     "vol": 13.08
+    },
+    {
+     "name": "Nottingham Forest",
+     "ov": 74.1,
+     "lastSeason": "2024",
+     "histMean": 78.7,
+     "histStd": 1.9,
+     "weight": 1.022,
+     "vol": 5
+    },
+    {
+     "name": "West Ham United",
+     "ov": 73.4,
+     "lastSeason": "2024",
+     "histMean": 78,
+     "histStd": 3.1,
+     "weight": 1.001,
+     "vol": 9.62
+    },
+    {
+     "name": "Leeds United",
+     "ov": 73.3,
+     "lastSeason": "2022",
+     "histMean": 79.7,
+     "histStd": 2,
+     "weight": 1.053,
+     "vol": 5.38
+    },
+    {
+     "name": "Brentford FC",
+     "ov": 73.1,
+     "lastSeason": "2024",
+     "histMean": 77,
+     "histStd": 2.9,
+     "weight": 0.97,
+     "vol": 8.85
+    },
+    {
+     "name": "AFC Bournemouth",
+     "ov": 72.8,
+     "lastSeason": "2024",
+     "histMean": 73.9,
+     "histStd": 3.1,
+     "weight": 0.876,
+     "vol": 9.62
+    },
+    {
+     "name": "Wolverhampton Wanderers",
+     "ov": 72,
+     "lastSeason": "2024",
+     "histMean": 75.6,
+     "histStd": 4.1,
+     "weight": 0.928,
+     "vol": 13.46
+    },
+    {
+     "name": "Everton FC",
+     "ov": 71.7,
+     "lastSeason": "2024",
+     "histMean": 80.5,
+     "histStd": 2.8,
+     "weight": 1.077,
+     "vol": 8.46
+    },
+    {
+     "name": "Watford",
+     "ov": 63.7,
+     "histMean": 73.3,
+     "histStd": 3.8,
+     "weight": 1.096,
+     "vol": 9.63,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Derby County",
+     "ov": 55.2,
+     "histMean": 80.4,
+     "histStd": 3.8,
+     "weight": 1.18,
+     "vol": 9.63,
+     "lastSeason": "promoted"
+    }
+   ],
+   "relegated": [
+    "Burnley FC",
+    "Sunderland AFC"
+   ],
+   "promoted": [
+    "Watford",
+    "Derby County"
+   ]
+  }
+ },
+ {
+  "seed": 1008,
+  "table": [
+   {
+    "name": "Manchester City",
+    "pts": 86,
+    "isUser": false,
+    "position": 1
+   },
+   {
+    "name": "Chelsea FC",
+    "pts": 86,
+    "isUser": false,
+    "position": 2
+   },
+   {
+    "name": "Your XI",
+    "pts": 83,
+    "isUser": true,
+    "w": 25,
+    "d": 8,
+    "l": 5,
+    "gf": 94,
+    "ga": 41,
+    "position": 3
+   },
+   {
+    "name": "Arsenal FC",
+    "pts": 82,
+    "isUser": false,
+    "position": 4
+   },
+   {
+    "name": "Tottenham Hotspur",
+    "pts": 80,
+    "isUser": false,
+    "position": 5
+   },
+   {
+    "name": "Liverpool FC",
+    "pts": 78,
+    "isUser": false,
+    "position": 6
+   },
+   {
+    "name": "Manchester United",
+    "pts": 73,
+    "isUser": false,
+    "position": 7
+   },
+   {
+    "name": "Aston Villa",
+    "pts": 63,
+    "isUser": false,
+    "position": 8
+   },
+   {
+    "name": "Newcastle United",
+    "pts": 60,
+    "isUser": false,
+    "position": 9
+   },
+   {
+    "name": "Leeds United",
+    "pts": 51,
+    "isUser": false,
+    "position": 10
+   },
+   {
+    "name": "Brighton and Hove Albion",
+    "pts": 50,
+    "isUser": false,
+    "position": 11
+   },
+   {
+    "name": "Crystal Palace",
+    "pts": 50,
+    "isUser": false,
+    "position": 12
+   },
+   {
+    "name": "Nottingham Forest",
+    "pts": 50,
+    "isUser": false,
+    "position": 13
+   },
+   {
+    "name": "Wolverhampton Wanderers",
+    "pts": 49,
+    "isUser": false,
+    "position": 14
+   },
+   {
+    "name": "Everton FC",
+    "pts": 49,
+    "isUser": false,
+    "position": 15
+   },
+   {
+    "name": "West Ham United",
+    "pts": 46,
+    "isUser": false,
+    "position": 16
+   },
+   {
+    "name": "Brentford FC",
+    "pts": 46,
+    "isUser": false,
+    "position": 17
+   },
+   {
+    "name": "AFC Bournemouth",
+    "pts": 44,
+    "isUser": false,
+    "position": 18
+   },
+   {
+    "name": "Burnley FC",
+    "pts": 38,
+    "isUser": false,
+    "position": 19
+   },
+   {
+    "name": "Sunderland AFC",
+    "pts": 23,
+    "isUser": false,
+    "position": 20
+   }
+  ],
+  "result": {
+   "opponents": [
+    {
+     "name": "Arsenal FC",
+     "ov": 87.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3,
+     "weight": 1.171,
+     "vol": 9.23
+    },
+    {
+     "name": "Manchester City",
+     "ov": 86.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3.2,
+     "weight": 1.171,
+     "vol": 10
+    },
+    {
+     "name": "Chelsea FC",
+     "ov": 84.8,
+     "lastSeason": "2024",
+     "histMean": 85.2,
+     "histStd": 3.9,
+     "weight": 1.22,
+     "vol": 12.69
+    },
+    {
+     "name": "Liverpool FC",
+     "ov": 84,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.9,
+     "weight": 1.162,
+     "vol": 8.85
+    },
+    {
+     "name": "Tottenham Hotspur",
+     "ov": 83.2,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.6,
+     "weight": 1.162,
+     "vol": 7.69
+    },
+    {
+     "name": "Manchester United",
+     "ov": 81,
+     "lastSeason": "2024",
+     "histMean": 84.1,
+     "histStd": 3,
+     "weight": 1.187,
+     "vol": 9.23
+    },
+    {
+     "name": "Aston Villa",
+     "ov": 79.7,
+     "lastSeason": "2024",
+     "histMean": 79.1,
+     "histStd": 2.6,
+     "weight": 1.034,
+     "vol": 7.69
+    },
+    {
+     "name": "Brighton and Hove Albion",
+     "ov": 78,
+     "lastSeason": "2024",
+     "histMean": 76.6,
+     "histStd": 4.1,
+     "weight": 0.958,
+     "vol": 13.46
+    },
+    {
+     "name": "Newcastle United",
+     "ov": 77.2,
+     "lastSeason": "2024",
+     "histMean": 79.5,
+     "histStd": 2.2,
+     "weight": 1.047,
+     "vol": 6.15
+    },
+    {
+     "name": "Crystal Palace",
+     "ov": 76.2,
+     "lastSeason": "2024",
+     "histMean": 75.3,
+     "histStd": 4,
+     "weight": 0.919,
+     "vol": 13.08
+    },
+    {
+     "name": "Nottingham Forest",
+     "ov": 74.1,
+     "lastSeason": "2024",
+     "histMean": 78.7,
+     "histStd": 1.9,
+     "weight": 1.022,
+     "vol": 5
+    },
+    {
+     "name": "West Ham United",
+     "ov": 73.4,
+     "lastSeason": "2024",
+     "histMean": 78,
+     "histStd": 3.1,
+     "weight": 1.001,
+     "vol": 9.62
+    },
+    {
+     "name": "Leeds United",
+     "ov": 73.3,
+     "lastSeason": "2022",
+     "histMean": 79.7,
+     "histStd": 2,
+     "weight": 1.053,
+     "vol": 5.38
+    },
+    {
+     "name": "Brentford FC",
+     "ov": 73.1,
+     "lastSeason": "2024",
+     "histMean": 77,
+     "histStd": 2.9,
+     "weight": 0.97,
+     "vol": 8.85
+    },
+    {
+     "name": "Wolverhampton Wanderers",
+     "ov": 72,
+     "lastSeason": "2024",
+     "histMean": 75.6,
+     "histStd": 4.1,
+     "weight": 0.928,
+     "vol": 13.46
+    },
+    {
+     "name": "Everton FC",
+     "ov": 71.7,
+     "lastSeason": "2024",
+     "histMean": 80.5,
+     "histStd": 2.8,
+     "weight": 1.077,
+     "vol": 8.46
+    },
+    {
+     "name": "Preston North End",
+     "ov": 47.8,
+     "histMean": 47.8,
+     "histStd": 7.2,
+     "weight": 0.795,
+     "vol": 13.06,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Burnley",
+     "ov": 73.8,
+     "histMean": 71.4,
+     "histStd": 3.5,
+     "weight": 1.074,
+     "vol": 9.33,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Sheffield United",
+     "ov": 69.1,
+     "histMean": 74.4,
+     "histStd": 3.9,
+     "weight": 1.109,
+     "vol": 9.73,
+     "lastSeason": "promoted"
+    }
+   ],
+   "relegated": [
+    "AFC Bournemouth",
+    "Burnley FC",
+    "Sunderland AFC"
+   ],
+   "promoted": [
+    "Preston North End",
+    "Burnley",
+    "Sheffield United"
+   ]
+  }
+ },
+ {
+  "seed": 1009,
+  "table": [
+   {
+    "name": "Arsenal FC",
+    "pts": 84,
+    "isUser": false,
+    "position": 1
+   },
+   {
+    "name": "Manchester City",
+    "pts": 83,
+    "isUser": false,
+    "position": 2
+   },
+   {
+    "name": "Chelsea FC",
+    "pts": 83,
+    "isUser": false,
+    "position": 3
+   },
+   {
+    "name": "Liverpool FC",
+    "pts": 83,
+    "isUser": false,
+    "position": 4
+   },
+   {
+    "name": "Tottenham Hotspur",
+    "pts": 75,
+    "isUser": false,
+    "position": 5
+   },
+   {
+    "name": "Manchester United",
+    "pts": 73,
+    "isUser": false,
+    "position": 6
+   },
+   {
+    "name": "Newcastle United",
+    "pts": 60,
+    "isUser": false,
+    "position": 7
+   },
+   {
+    "name": "Aston Villa",
+    "pts": 59,
+    "isUser": false,
+    "position": 8
+   },
+   {
+    "name": "Nottingham Forest",
+    "pts": 54,
+    "isUser": false,
+    "position": 9
+   },
+   {
+    "name": "Leeds United",
+    "pts": 54,
+    "isUser": false,
+    "position": 10
+   },
+   {
+    "name": "Brighton and Hove Albion",
+    "pts": 52,
+    "isUser": false,
+    "position": 11
+   },
+   {
+    "name": "West Ham United",
+    "pts": 51,
+    "isUser": false,
+    "position": 12
+   },
+   {
+    "name": "Everton FC",
+    "pts": 50,
+    "isUser": false,
+    "position": 13
+   },
+   {
+    "name": "Brentford FC",
+    "pts": 48,
+    "isUser": false,
+    "position": 14
+   },
+   {
+    "name": "Crystal Palace",
+    "pts": 47,
+    "isUser": false,
+    "position": 15
+   },
+   {
+    "name": "Your XI",
+    "pts": 47,
+    "isUser": true,
+    "w": 12,
+    "d": 11,
+    "l": 15,
+    "gf": 48,
+    "ga": 55,
+    "position": 16
+   },
+   {
+    "name": "AFC Bournemouth",
+    "pts": 45,
+    "isUser": false,
+    "position": 17
+   },
+   {
+    "name": "Wolverhampton Wanderers",
+    "pts": 43,
+    "isUser": false,
+    "position": 18
+   },
+   {
+    "name": "Burnley FC",
+    "pts": 40,
+    "isUser": false,
+    "position": 19
+   },
+   {
+    "name": "Sunderland AFC",
+    "pts": 22,
+    "isUser": false,
+    "position": 20
+   }
+  ],
+  "result": {
+   "opponents": [
+    {
+     "name": "Arsenal FC",
+     "ov": 87.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3,
+     "weight": 1.171,
+     "vol": 9.23
+    },
+    {
+     "name": "Manchester City",
+     "ov": 86.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3.2,
+     "weight": 1.171,
+     "vol": 10
+    },
+    {
+     "name": "Chelsea FC",
+     "ov": 84.8,
+     "lastSeason": "2024",
+     "histMean": 85.2,
+     "histStd": 3.9,
+     "weight": 1.22,
+     "vol": 12.69
+    },
+    {
+     "name": "Liverpool FC",
+     "ov": 84,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.9,
+     "weight": 1.162,
+     "vol": 8.85
+    },
+    {
+     "name": "Tottenham Hotspur",
+     "ov": 83.2,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.6,
+     "weight": 1.162,
+     "vol": 7.69
+    },
+    {
+     "name": "Manchester United",
+     "ov": 81,
+     "lastSeason": "2024",
+     "histMean": 84.1,
+     "histStd": 3,
+     "weight": 1.187,
+     "vol": 9.23
+    },
+    {
+     "name": "Aston Villa",
+     "ov": 79.7,
+     "lastSeason": "2024",
+     "histMean": 79.1,
+     "histStd": 2.6,
+     "weight": 1.034,
+     "vol": 7.69
+    },
+    {
+     "name": "Brighton and Hove Albion",
+     "ov": 78,
+     "lastSeason": "2024",
+     "histMean": 76.6,
+     "histStd": 4.1,
+     "weight": 0.958,
+     "vol": 13.46
+    },
+    {
+     "name": "Newcastle United",
+     "ov": 77.2,
+     "lastSeason": "2024",
+     "histMean": 79.5,
+     "histStd": 2.2,
+     "weight": 1.047,
+     "vol": 6.15
+    },
+    {
+     "name": "Crystal Palace",
+     "ov": 76.2,
+     "lastSeason": "2024",
+     "histMean": 75.3,
+     "histStd": 4,
+     "weight": 0.919,
+     "vol": 13.08
+    },
+    {
+     "name": "Nottingham Forest",
+     "ov": 74.1,
+     "lastSeason": "2024",
+     "histMean": 78.7,
+     "histStd": 1.9,
+     "weight": 1.022,
+     "vol": 5
+    },
+    {
+     "name": "West Ham United",
+     "ov": 73.4,
+     "lastSeason": "2024",
+     "histMean": 78,
+     "histStd": 3.1,
+     "weight": 1.001,
+     "vol": 9.62
+    },
+    {
+     "name": "Leeds United",
+     "ov": 73.3,
+     "lastSeason": "2022",
+     "histMean": 79.7,
+     "histStd": 2,
+     "weight": 1.053,
+     "vol": 5.38
+    },
+    {
+     "name": "Brentford FC",
+     "ov": 73.1,
+     "lastSeason": "2024",
+     "histMean": 77,
+     "histStd": 2.9,
+     "weight": 0.97,
+     "vol": 8.85
+    },
+    {
+     "name": "AFC Bournemouth",
+     "ov": 72.8,
+     "lastSeason": "2024",
+     "histMean": 73.9,
+     "histStd": 3.1,
+     "weight": 0.876,
+     "vol": 9.62
+    },
+    {
+     "name": "Everton FC",
+     "ov": 71.7,
+     "lastSeason": "2024",
+     "histMean": 80.5,
+     "histStd": 2.8,
+     "weight": 1.077,
+     "vol": 8.46
+    },
+    {
+     "name": "Norwich City",
+     "ov": 63.1,
+     "histMean": 73.8,
+     "histStd": 4.4,
+     "weight": 1.102,
+     "vol": 10.24,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Charlton Athletic",
+     "ov": 59.7,
+     "histMean": 78,
+     "histStd": 3.1,
+     "weight": 1.152,
+     "vol": 8.93,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Cardiff City",
+     "ov": 53.2,
+     "histMean": 68.8,
+     "histStd": 0.2,
+     "weight": 1.043,
+     "vol": 6,
+     "lastSeason": "promoted"
+    }
+   ],
+   "relegated": [
+    "Wolverhampton Wanderers",
+    "Burnley FC",
+    "Sunderland AFC"
+   ],
+   "promoted": [
+    "Norwich City",
+    "Charlton Athletic",
+    "Cardiff City"
+   ]
+  }
+ },
+ {
+  "seed": 1010,
+  "table": [
+   {
+    "name": "Your XI",
+    "pts": 102,
+    "isUser": true,
+    "w": 33,
+    "d": 3,
+    "l": 2,
+    "gf": 89,
+    "ga": 12,
+    "position": 1
+   },
+   {
+    "name": "Chelsea FC",
+    "pts": 89,
+    "isUser": false,
+    "position": 2
+   },
+   {
+    "name": "Manchester City",
+    "pts": 87,
+    "isUser": false,
+    "position": 3
+   },
+   {
+    "name": "Arsenal FC",
+    "pts": 82,
+    "isUser": false,
+    "position": 4
+   },
+   {
+    "name": "Tottenham Hotspur",
+    "pts": 79,
+    "isUser": false,
+    "position": 5
+   },
+   {
+    "name": "Manchester United",
+    "pts": 76,
+    "isUser": false,
+    "position": 6
+   },
+   {
+    "name": "Liverpool FC",
+    "pts": 74,
+    "isUser": false,
+    "position": 7
+   },
+   {
+    "name": "Aston Villa",
+    "pts": 65,
+    "isUser": false,
+    "position": 8
+   },
+   {
+    "name": "Newcastle United",
+    "pts": 56,
+    "isUser": false,
+    "position": 9
+   },
+   {
+    "name": "Leeds United",
+    "pts": 54,
+    "isUser": false,
+    "position": 10
+   },
+   {
+    "name": "Brighton and Hove Albion",
+    "pts": 53,
+    "isUser": false,
+    "position": 11
+   },
+   {
+    "name": "Nottingham Forest",
+    "pts": 51,
+    "isUser": false,
+    "position": 12
+   },
+   {
+    "name": "Everton FC",
+    "pts": 51,
+    "isUser": false,
+    "position": 13
+   },
+   {
+    "name": "West Ham United",
+    "pts": 48,
+    "isUser": false,
+    "position": 14
+   },
+   {
+    "name": "Brentford FC",
+    "pts": 48,
+    "isUser": false,
+    "position": 15
+   },
+   {
+    "name": "Crystal Palace",
+    "pts": 45,
+    "isUser": false,
+    "position": 16
+   },
+   {
+    "name": "AFC Bournemouth",
+    "pts": 45,
+    "isUser": false,
+    "position": 17
+   },
+   {
+    "name": "Wolverhampton Wanderers",
+    "pts": 38,
+    "isUser": false,
+    "position": 18
+   },
+   {
+    "name": "Burnley FC",
+    "pts": 37,
+    "isUser": false,
+    "position": 19
+   },
+   {
+    "name": "Sunderland AFC",
+    "pts": 23,
+    "isUser": false,
+    "position": 20
+   }
+  ],
+  "result": {
+   "opponents": [
+    {
+     "name": "Arsenal FC",
+     "ov": 87.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3,
+     "weight": 1.171,
+     "vol": 9.23
+    },
+    {
+     "name": "Manchester City",
+     "ov": 86.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3.2,
+     "weight": 1.171,
+     "vol": 10
+    },
+    {
+     "name": "Chelsea FC",
+     "ov": 84.8,
+     "lastSeason": "2024",
+     "histMean": 85.2,
+     "histStd": 3.9,
+     "weight": 1.22,
+     "vol": 12.69
+    },
+    {
+     "name": "Liverpool FC",
+     "ov": 84,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.9,
+     "weight": 1.162,
+     "vol": 8.85
+    },
+    {
+     "name": "Tottenham Hotspur",
+     "ov": 83.2,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.6,
+     "weight": 1.162,
+     "vol": 7.69
+    },
+    {
+     "name": "Manchester United",
+     "ov": 81,
+     "lastSeason": "2024",
+     "histMean": 84.1,
+     "histStd": 3,
+     "weight": 1.187,
+     "vol": 9.23
+    },
+    {
+     "name": "Aston Villa",
+     "ov": 79.7,
+     "lastSeason": "2024",
+     "histMean": 79.1,
+     "histStd": 2.6,
+     "weight": 1.034,
+     "vol": 7.69
+    },
+    {
+     "name": "Brighton and Hove Albion",
+     "ov": 78,
+     "lastSeason": "2024",
+     "histMean": 76.6,
+     "histStd": 4.1,
+     "weight": 0.958,
+     "vol": 13.46
+    },
+    {
+     "name": "Newcastle United",
+     "ov": 77.2,
+     "lastSeason": "2024",
+     "histMean": 79.5,
+     "histStd": 2.2,
+     "weight": 1.047,
+     "vol": 6.15
+    },
+    {
+     "name": "Crystal Palace",
+     "ov": 76.2,
+     "lastSeason": "2024",
+     "histMean": 75.3,
+     "histStd": 4,
+     "weight": 0.919,
+     "vol": 13.08
+    },
+    {
+     "name": "Nottingham Forest",
+     "ov": 74.1,
+     "lastSeason": "2024",
+     "histMean": 78.7,
+     "histStd": 1.9,
+     "weight": 1.022,
+     "vol": 5
+    },
+    {
+     "name": "West Ham United",
+     "ov": 73.4,
+     "lastSeason": "2024",
+     "histMean": 78,
+     "histStd": 3.1,
+     "weight": 1.001,
+     "vol": 9.62
+    },
+    {
+     "name": "Leeds United",
+     "ov": 73.3,
+     "lastSeason": "2022",
+     "histMean": 79.7,
+     "histStd": 2,
+     "weight": 1.053,
+     "vol": 5.38
+    },
+    {
+     "name": "Brentford FC",
+     "ov": 73.1,
+     "lastSeason": "2024",
+     "histMean": 77,
+     "histStd": 2.9,
+     "weight": 0.97,
+     "vol": 8.85
+    },
+    {
+     "name": "AFC Bournemouth",
+     "ov": 72.8,
+     "lastSeason": "2024",
+     "histMean": 73.9,
+     "histStd": 3.1,
+     "weight": 0.876,
+     "vol": 9.62
+    },
+    {
+     "name": "Everton FC",
+     "ov": 71.7,
+     "lastSeason": "2024",
+     "histMean": 80.5,
+     "histStd": 2.8,
+     "weight": 1.077,
+     "vol": 8.46
+    },
+    {
+     "name": "Portsmouth",
+     "ov": 59.1,
+     "histMean": 78.7,
+     "histStd": 3.3,
+     "weight": 1.16,
+     "vol": 9.13,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Swansea City",
+     "ov": 58,
+     "histMean": 74.7,
+     "histStd": 1.1,
+     "weight": 1.113,
+     "vol": 6.91,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Stoke City",
+     "ov": 58,
+     "histMean": 75,
+     "histStd": 1.5,
+     "weight": 1.116,
+     "vol": 7.31,
+     "lastSeason": "promoted"
+    }
+   ],
+   "relegated": [
+    "Wolverhampton Wanderers",
+    "Burnley FC",
+    "Sunderland AFC"
+   ],
+   "promoted": [
+    "Portsmouth",
+    "Swansea City",
+    "Stoke City"
+   ]
+  }
+ },
+ {
+  "seed": 1011,
+  "table": [
+   {
+    "name": "Chelsea FC",
+    "pts": 87,
+    "isUser": false,
+    "position": 1
+   },
+   {
+    "name": "Manchester City",
+    "pts": 85,
+    "isUser": false,
+    "position": 2
+   },
+   {
+    "name": "Arsenal FC",
+    "pts": 83,
+    "isUser": false,
+    "position": 3
+   },
+   {
+    "name": "Tottenham Hotspur",
+    "pts": 80,
+    "isUser": false,
+    "position": 4
+   },
+   {
+    "name": "Your XI",
+    "pts": 80,
+    "isUser": true,
+    "w": 24,
+    "d": 8,
+    "l": 6,
+    "gf": 76,
+    "ga": 31,
+    "position": 5
+   },
+   {
+    "name": "Liverpool FC",
+    "pts": 79,
+    "isUser": false,
+    "position": 6
+   },
+   {
+    "name": "Manchester United",
+    "pts": 75,
+    "isUser": false,
+    "position": 7
+   },
+   {
+    "name": "Aston Villa",
+    "pts": 65,
+    "isUser": false,
+    "position": 8
+   },
+   {
+    "name": "Newcastle United",
+    "pts": 58,
+    "isUser": false,
+    "position": 9
+   },
+   {
+    "name": "Brighton and Hove Albion",
+    "pts": 56,
+    "isUser": false,
+    "position": 10
+   },
+   {
+    "name": "Leeds United",
+    "pts": 52,
+    "isUser": false,
+    "position": 11
+   },
+   {
+    "name": "Everton FC",
+    "pts": 52,
+    "isUser": false,
+    "position": 12
+   },
+   {
+    "name": "Nottingham Forest",
+    "pts": 50,
+    "isUser": false,
+    "position": 13
+   },
+   {
+    "name": "West Ham United",
+    "pts": 50,
+    "isUser": false,
+    "position": 14
+   },
+   {
+    "name": "Brentford FC",
+    "pts": 50,
+    "isUser": false,
+    "position": 15
+   },
+   {
+    "name": "Crystal Palace",
+    "pts": 47,
+    "isUser": false,
+    "position": 16
+   },
+   {
+    "name": "Burnley FC",
+    "pts": 47,
+    "isUser": false,
+    "position": 17
+   },
+   {
+    "name": "AFC Bournemouth",
+    "pts": 43,
+    "isUser": false,
+    "position": 18
+   },
+   {
+    "name": "Wolverhampton Wanderers",
+    "pts": 40,
+    "isUser": false,
+    "position": 19
+   },
+   {
+    "name": "Sunderland AFC",
+    "pts": 19,
+    "isUser": false,
+    "position": 20
+   }
+  ],
+  "result": {
+   "opponents": [
+    {
+     "name": "Arsenal FC",
+     "ov": 87.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3,
+     "weight": 1.171,
+     "vol": 9.23
+    },
+    {
+     "name": "Manchester City",
+     "ov": 86.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3.2,
+     "weight": 1.171,
+     "vol": 10
+    },
+    {
+     "name": "Chelsea FC",
+     "ov": 84.8,
+     "lastSeason": "2024",
+     "histMean": 85.2,
+     "histStd": 3.9,
+     "weight": 1.22,
+     "vol": 12.69
+    },
+    {
+     "name": "Liverpool FC",
+     "ov": 84,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.9,
+     "weight": 1.162,
+     "vol": 8.85
+    },
+    {
+     "name": "Tottenham Hotspur",
+     "ov": 83.2,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.6,
+     "weight": 1.162,
+     "vol": 7.69
+    },
+    {
+     "name": "Manchester United",
+     "ov": 81,
+     "lastSeason": "2024",
+     "histMean": 84.1,
+     "histStd": 3,
+     "weight": 1.187,
+     "vol": 9.23
+    },
+    {
+     "name": "Aston Villa",
+     "ov": 79.7,
+     "lastSeason": "2024",
+     "histMean": 79.1,
+     "histStd": 2.6,
+     "weight": 1.034,
+     "vol": 7.69
+    },
+    {
+     "name": "Brighton and Hove Albion",
+     "ov": 78,
+     "lastSeason": "2024",
+     "histMean": 76.6,
+     "histStd": 4.1,
+     "weight": 0.958,
+     "vol": 13.46
+    },
+    {
+     "name": "Newcastle United",
+     "ov": 77.2,
+     "lastSeason": "2024",
+     "histMean": 79.5,
+     "histStd": 2.2,
+     "weight": 1.047,
+     "vol": 6.15
+    },
+    {
+     "name": "Crystal Palace",
+     "ov": 76.2,
+     "lastSeason": "2024",
+     "histMean": 75.3,
+     "histStd": 4,
+     "weight": 0.919,
+     "vol": 13.08
+    },
+    {
+     "name": "Burnley FC",
+     "ov": 75.7,
+     "lastSeason": "2023",
+     "histMean": 71.4,
+     "histStd": 3.5,
+     "weight": 0.8,
+     "vol": 11.15
+    },
+    {
+     "name": "Nottingham Forest",
+     "ov": 74.1,
+     "lastSeason": "2024",
+     "histMean": 78.7,
+     "histStd": 1.9,
+     "weight": 1.022,
+     "vol": 5
+    },
+    {
+     "name": "West Ham United",
+     "ov": 73.4,
+     "lastSeason": "2024",
+     "histMean": 78,
+     "histStd": 3.1,
+     "weight": 1.001,
+     "vol": 9.62
+    },
+    {
+     "name": "Leeds United",
+     "ov": 73.3,
+     "lastSeason": "2022",
+     "histMean": 79.7,
+     "histStd": 2,
+     "weight": 1.053,
+     "vol": 5.38
+    },
+    {
+     "name": "Brentford FC",
+     "ov": 73.1,
+     "lastSeason": "2024",
+     "histMean": 77,
+     "histStd": 2.9,
+     "weight": 0.97,
+     "vol": 8.85
+    },
+    {
+     "name": "Everton FC",
+     "ov": 71.7,
+     "lastSeason": "2024",
+     "histMean": 80.5,
+     "histStd": 2.8,
+     "weight": 1.077,
+     "vol": 8.46
+    },
+    {
+     "name": "Norwich City",
+     "ov": 63.1,
+     "histMean": 73.8,
+     "histStd": 4.4,
+     "weight": 1.102,
+     "vol": 10.24,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Stoke City",
+     "ov": 58,
+     "histMean": 75,
+     "histStd": 1.5,
+     "weight": 1.116,
+     "vol": 7.31,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Burnley",
+     "ov": 73.8,
+     "histMean": 71.4,
+     "histStd": 3.5,
+     "weight": 1.074,
+     "vol": 9.33,
+     "lastSeason": "promoted"
+    }
+   ],
+   "relegated": [
+    "AFC Bournemouth",
+    "Wolverhampton Wanderers",
+    "Sunderland AFC"
+   ],
+   "promoted": [
+    "Norwich City",
+    "Stoke City",
+    "Burnley"
+   ]
+  }
+ },
+ {
+  "seed": 1012,
+  "table": [
+   {
+    "name": "Arsenal FC",
+    "pts": 87,
+    "isUser": false,
+    "position": 1
+   },
+   {
+    "name": "Manchester City",
+    "pts": 85,
+    "isUser": false,
+    "position": 2
+   },
+   {
+    "name": "Chelsea FC",
+    "pts": 82,
+    "isUser": false,
+    "position": 3
+   },
+   {
+    "name": "Liverpool FC",
+    "pts": 81,
+    "isUser": false,
+    "position": 4
+   },
+   {
+    "name": "Tottenham Hotspur",
+    "pts": 77,
+    "isUser": false,
+    "position": 5
+   },
+   {
+    "name": "Manchester United",
+    "pts": 75,
+    "isUser": false,
+    "position": 6
+   },
+   {
+    "name": "Aston Villa",
+    "pts": 63,
+    "isUser": false,
+    "position": 7
+   },
+   {
+    "name": "Newcastle United",
+    "pts": 59,
+    "isUser": false,
+    "position": 8
+   },
+   {
+    "name": "Leeds United",
+    "pts": 54,
+    "isUser": false,
+    "position": 9
+   },
+   {
+    "name": "Brighton and Hove Albion",
+    "pts": 53,
+    "isUser": false,
+    "position": 10
+   },
+   {
+    "name": "Nottingham Forest",
+    "pts": 52,
+    "isUser": false,
+    "position": 11
+   },
+   {
+    "name": "Crystal Palace",
+    "pts": 49,
+    "isUser": false,
+    "position": 12
+   },
+   {
+    "name": "Everton FC",
+    "pts": 49,
+    "isUser": false,
+    "position": 13
+   },
+   {
+    "name": "West Ham United",
+    "pts": 48,
+    "isUser": false,
+    "position": 14
+   },
+   {
+    "name": "Wolverhampton Wanderers",
+    "pts": 48,
+    "isUser": false,
+    "position": 15
+   },
+   {
+    "name": "Brentford FC",
+    "pts": 47,
+    "isUser": false,
+    "position": 16
+   },
+   {
+    "name": "AFC Bournemouth",
+    "pts": 47,
+    "isUser": false,
+    "position": 17
+   },
+   {
+    "name": "Burnley FC",
+    "pts": 42,
+    "isUser": false,
+    "position": 18
+   },
+   {
+    "name": "Your XI",
+    "pts": 37,
+    "isUser": true,
+    "w": 7,
+    "d": 16,
+    "l": 15,
+    "gf": 13,
+    "ga": 19,
+    "position": 19
+   },
+   {
+    "name": "Sunderland AFC",
+    "pts": 29,
+    "isUser": false,
+    "position": 20
+   }
+  ],
+  "result": {
+   "opponents": [
+    {
+     "name": "Arsenal FC",
+     "ov": 87.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3,
+     "weight": 1.171,
+     "vol": 9.23
+    },
+    {
+     "name": "Manchester City",
+     "ov": 86.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3.2,
+     "weight": 1.171,
+     "vol": 10
+    },
+    {
+     "name": "Chelsea FC",
+     "ov": 84.8,
+     "lastSeason": "2024",
+     "histMean": 85.2,
+     "histStd": 3.9,
+     "weight": 1.22,
+     "vol": 12.69
+    },
+    {
+     "name": "Liverpool FC",
+     "ov": 84,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.9,
+     "weight": 1.162,
+     "vol": 8.85
+    },
+    {
+     "name": "Tottenham Hotspur",
+     "ov": 83.2,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.6,
+     "weight": 1.162,
+     "vol": 7.69
+    },
+    {
+     "name": "Manchester United",
+     "ov": 81,
+     "lastSeason": "2024",
+     "histMean": 84.1,
+     "histStd": 3,
+     "weight": 1.187,
+     "vol": 9.23
+    },
+    {
+     "name": "Aston Villa",
+     "ov": 79.7,
+     "lastSeason": "2024",
+     "histMean": 79.1,
+     "histStd": 2.6,
+     "weight": 1.034,
+     "vol": 7.69
+    },
+    {
+     "name": "Brighton and Hove Albion",
+     "ov": 78,
+     "lastSeason": "2024",
+     "histMean": 76.6,
+     "histStd": 4.1,
+     "weight": 0.958,
+     "vol": 13.46
+    },
+    {
+     "name": "Newcastle United",
+     "ov": 77.2,
+     "lastSeason": "2024",
+     "histMean": 79.5,
+     "histStd": 2.2,
+     "weight": 1.047,
+     "vol": 6.15
+    },
+    {
+     "name": "Crystal Palace",
+     "ov": 76.2,
+     "lastSeason": "2024",
+     "histMean": 75.3,
+     "histStd": 4,
+     "weight": 0.919,
+     "vol": 13.08
+    },
+    {
+     "name": "Nottingham Forest",
+     "ov": 74.1,
+     "lastSeason": "2024",
+     "histMean": 78.7,
+     "histStd": 1.9,
+     "weight": 1.022,
+     "vol": 5
+    },
+    {
+     "name": "West Ham United",
+     "ov": 73.4,
+     "lastSeason": "2024",
+     "histMean": 78,
+     "histStd": 3.1,
+     "weight": 1.001,
+     "vol": 9.62
+    },
+    {
+     "name": "Leeds United",
+     "ov": 73.3,
+     "lastSeason": "2022",
+     "histMean": 79.7,
+     "histStd": 2,
+     "weight": 1.053,
+     "vol": 5.38
+    },
+    {
+     "name": "Brentford FC",
+     "ov": 73.1,
+     "lastSeason": "2024",
+     "histMean": 77,
+     "histStd": 2.9,
+     "weight": 0.97,
+     "vol": 8.85
+    },
+    {
+     "name": "AFC Bournemouth",
+     "ov": 72.8,
+     "lastSeason": "2024",
+     "histMean": 73.9,
+     "histStd": 3.1,
+     "weight": 0.876,
+     "vol": 9.62
+    },
+    {
+     "name": "Wolverhampton Wanderers",
+     "ov": 72,
+     "lastSeason": "2024",
+     "histMean": 75.6,
+     "histStd": 4.1,
+     "weight": 0.928,
+     "vol": 13.46
+    },
+    {
+     "name": "Everton FC",
+     "ov": 71.7,
+     "lastSeason": "2024",
+     "histMean": 80.5,
+     "histStd": 2.8,
+     "weight": 1.077,
+     "vol": 8.46
+    },
+    {
+     "name": "Stoke City",
+     "ov": 58,
+     "histMean": 75,
+     "histStd": 1.5,
+     "weight": 1.116,
+     "vol": 7.31,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Sheffield United",
+     "ov": 69.1,
+     "histMean": 74.4,
+     "histStd": 3.9,
+     "weight": 1.109,
+     "vol": 9.73,
+     "lastSeason": "promoted"
+    }
+   ],
+   "relegated": [
+    "Burnley FC",
+    "Sunderland AFC"
+   ],
+   "promoted": [
+    "Stoke City",
+    "Sheffield United"
+   ]
+  }
+ },
+ {
+  "seed": 1013,
+  "table": [
+   {
+    "name": "Chelsea FC",
+    "pts": 84,
+    "isUser": false,
+    "position": 1
+   },
+   {
+    "name": "Arsenal FC",
+    "pts": 82,
+    "isUser": false,
+    "position": 2
+   },
+   {
+    "name": "Manchester City",
+    "pts": 82,
+    "isUser": false,
+    "position": 3
+   },
+   {
+    "name": "Liverpool FC",
+    "pts": 81,
+    "isUser": false,
+    "position": 4
+   },
+   {
+    "name": "Tottenham Hotspur",
+    "pts": 77,
+    "isUser": false,
+    "position": 5
+   },
+   {
+    "name": "Manchester United",
+    "pts": 74,
+    "isUser": false,
+    "position": 6
+   },
+   {
+    "name": "Your XI",
+    "pts": 70,
+    "isUser": true,
+    "w": 22,
+    "d": 4,
+    "l": 12,
+    "gf": 88,
+    "ga": 52,
+    "position": 7
+   },
+   {
+    "name": "Aston Villa",
+    "pts": 63,
+    "isUser": false,
+    "position": 8
+   },
+   {
+    "name": "Newcastle United",
+    "pts": 59,
+    "isUser": false,
+    "position": 9
+   },
+   {
+    "name": "Leeds United",
+    "pts": 55,
+    "isUser": false,
+    "position": 10
+   },
+   {
+    "name": "Brighton and Hove Albion",
+    "pts": 53,
+    "isUser": false,
+    "position": 11
+   },
+   {
+    "name": "Crystal Palace",
+    "pts": 52,
+    "isUser": false,
+    "position": 12
+   },
+   {
+    "name": "West Ham United",
+    "pts": 51,
+    "isUser": false,
+    "position": 13
+   },
+   {
+    "name": "Nottingham Forest",
+    "pts": 50,
+    "isUser": false,
+    "position": 14
+   },
+   {
+    "name": "Everton FC",
+    "pts": 48,
+    "isUser": false,
+    "position": 15
+   },
+   {
+    "name": "Burnley FC",
+    "pts": 47,
+    "isUser": false,
+    "position": 16
+   },
+   {
+    "name": "Brentford FC",
+    "pts": 47,
+    "isUser": false,
+    "position": 17
+   },
+   {
+    "name": "AFC Bournemouth",
+    "pts": 41,
+    "isUser": false,
+    "position": 18
+   },
+   {
+    "name": "Wolverhampton Wanderers",
+    "pts": 38,
+    "isUser": false,
+    "position": 19
+   },
+   {
+    "name": "Sunderland AFC",
+    "pts": 22,
+    "isUser": false,
+    "position": 20
+   }
+  ],
+  "result": {
+   "opponents": [
+    {
+     "name": "Arsenal FC",
+     "ov": 87.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3,
+     "weight": 1.171,
+     "vol": 9.23
+    },
+    {
+     "name": "Manchester City",
+     "ov": 86.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3.2,
+     "weight": 1.171,
+     "vol": 10
+    },
+    {
+     "name": "Chelsea FC",
+     "ov": 84.8,
+     "lastSeason": "2024",
+     "histMean": 85.2,
+     "histStd": 3.9,
+     "weight": 1.22,
+     "vol": 12.69
+    },
+    {
+     "name": "Liverpool FC",
+     "ov": 84,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.9,
+     "weight": 1.162,
+     "vol": 8.85
+    },
+    {
+     "name": "Tottenham Hotspur",
+     "ov": 83.2,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.6,
+     "weight": 1.162,
+     "vol": 7.69
+    },
+    {
+     "name": "Manchester United",
+     "ov": 81,
+     "lastSeason": "2024",
+     "histMean": 84.1,
+     "histStd": 3,
+     "weight": 1.187,
+     "vol": 9.23
+    },
+    {
+     "name": "Aston Villa",
+     "ov": 79.7,
+     "lastSeason": "2024",
+     "histMean": 79.1,
+     "histStd": 2.6,
+     "weight": 1.034,
+     "vol": 7.69
+    },
+    {
+     "name": "Brighton and Hove Albion",
+     "ov": 78,
+     "lastSeason": "2024",
+     "histMean": 76.6,
+     "histStd": 4.1,
+     "weight": 0.958,
+     "vol": 13.46
+    },
+    {
+     "name": "Newcastle United",
+     "ov": 77.2,
+     "lastSeason": "2024",
+     "histMean": 79.5,
+     "histStd": 2.2,
+     "weight": 1.047,
+     "vol": 6.15
+    },
+    {
+     "name": "Crystal Palace",
+     "ov": 76.2,
+     "lastSeason": "2024",
+     "histMean": 75.3,
+     "histStd": 4,
+     "weight": 0.919,
+     "vol": 13.08
+    },
+    {
+     "name": "Burnley FC",
+     "ov": 75.7,
+     "lastSeason": "2023",
+     "histMean": 71.4,
+     "histStd": 3.5,
+     "weight": 0.8,
+     "vol": 11.15
+    },
+    {
+     "name": "Nottingham Forest",
+     "ov": 74.1,
+     "lastSeason": "2024",
+     "histMean": 78.7,
+     "histStd": 1.9,
+     "weight": 1.022,
+     "vol": 5
+    },
+    {
+     "name": "West Ham United",
+     "ov": 73.4,
+     "lastSeason": "2024",
+     "histMean": 78,
+     "histStd": 3.1,
+     "weight": 1.001,
+     "vol": 9.62
+    },
+    {
+     "name": "Leeds United",
+     "ov": 73.3,
+     "lastSeason": "2022",
+     "histMean": 79.7,
+     "histStd": 2,
+     "weight": 1.053,
+     "vol": 5.38
+    },
+    {
+     "name": "Brentford FC",
+     "ov": 73.1,
+     "lastSeason": "2024",
+     "histMean": 77,
+     "histStd": 2.9,
+     "weight": 0.97,
+     "vol": 8.85
+    },
+    {
+     "name": "Everton FC",
+     "ov": 71.7,
+     "lastSeason": "2024",
+     "histMean": 80.5,
+     "histStd": 2.8,
+     "weight": 1.077,
+     "vol": 8.46
+    },
+    {
+     "name": "Cardiff City",
+     "ov": 53.2,
+     "histMean": 68.8,
+     "histStd": 0.2,
+     "weight": 1.043,
+     "vol": 6,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Swansea City",
+     "ov": 58,
+     "histMean": 74.7,
+     "histStd": 1.1,
+     "weight": 1.113,
+     "vol": 6.91,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Sheffield United",
+     "ov": 69.1,
+     "histMean": 74.4,
+     "histStd": 3.9,
+     "weight": 1.109,
+     "vol": 9.73,
+     "lastSeason": "promoted"
+    }
+   ],
+   "relegated": [
+    "AFC Bournemouth",
+    "Wolverhampton Wanderers",
+    "Sunderland AFC"
+   ],
+   "promoted": [
+    "Cardiff City",
+    "Swansea City",
+    "Sheffield United"
+   ]
+  }
+ },
+ {
+  "seed": 1014,
+  "table": [
+   {
+    "name": "Manchester City",
+    "pts": 84,
+    "isUser": false,
+    "position": 1
+   },
+   {
+    "name": "Arsenal FC",
+    "pts": 82,
+    "isUser": false,
+    "position": 2
+   },
+   {
+    "name": "Chelsea FC",
+    "pts": 77,
+    "isUser": false,
+    "position": 3
+   },
+   {
+    "name": "Liverpool FC",
+    "pts": 75,
+    "isUser": false,
+    "position": 4
+   },
+   {
+    "name": "Manchester United",
+    "pts": 74,
+    "isUser": false,
+    "position": 5
+   },
+   {
+    "name": "Tottenham Hotspur",
+    "pts": 73,
+    "isUser": false,
+    "position": 6
+   },
+   {
+    "name": "Your XI",
+    "pts": 73,
+    "isUser": true,
+    "w": 20,
+    "d": 13,
+    "l": 5,
+    "gf": 64,
+    "ga": 38,
+    "position": 7
+   },
+   {
+    "name": "Aston Villa",
+    "pts": 63,
+    "isUser": false,
+    "position": 8
+   },
+   {
+    "name": "Brighton and Hove Albion",
+    "pts": 59,
+    "isUser": false,
+    "position": 9
+   },
+   {
+    "name": "Newcastle United",
+    "pts": 57,
+    "isUser": false,
+    "position": 10
+   },
+   {
+    "name": "Crystal Palace",
+    "pts": 55,
+    "isUser": false,
+    "position": 11
+   },
+   {
+    "name": "Leeds United",
+    "pts": 54,
+    "isUser": false,
+    "position": 12
+   },
+   {
+    "name": "Nottingham Forest",
+    "pts": 51,
+    "isUser": false,
+    "position": 13
+   },
+   {
+    "name": "Brentford FC",
+    "pts": 49,
+    "isUser": false,
+    "position": 14
+   },
+   {
+    "name": "Everton FC",
+    "pts": 49,
+    "isUser": false,
+    "position": 15
+   },
+   {
+    "name": "Burnley FC",
+    "pts": 48,
+    "isUser": false,
+    "position": 16
+   },
+   {
+    "name": "Wolverhampton Wanderers",
+    "pts": 48,
+    "isUser": false,
+    "position": 17
+   },
+   {
+    "name": "West Ham United",
+    "pts": 46,
+    "isUser": false,
+    "position": 18
+   },
+   {
+    "name": "AFC Bournemouth",
+    "pts": 41,
+    "isUser": false,
+    "position": 19
+   },
+   {
+    "name": "Sunderland AFC",
+    "pts": 21,
+    "isUser": false,
+    "position": 20
+   }
+  ],
+  "result": {
+   "opponents": [
+    {
+     "name": "Arsenal FC",
+     "ov": 87.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3,
+     "weight": 1.171,
+     "vol": 9.23
+    },
+    {
+     "name": "Manchester City",
+     "ov": 86.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3.2,
+     "weight": 1.171,
+     "vol": 10
+    },
+    {
+     "name": "Chelsea FC",
+     "ov": 84.8,
+     "lastSeason": "2024",
+     "histMean": 85.2,
+     "histStd": 3.9,
+     "weight": 1.22,
+     "vol": 12.69
+    },
+    {
+     "name": "Liverpool FC",
+     "ov": 84,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.9,
+     "weight": 1.162,
+     "vol": 8.85
+    },
+    {
+     "name": "Tottenham Hotspur",
+     "ov": 83.2,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.6,
+     "weight": 1.162,
+     "vol": 7.69
+    },
+    {
+     "name": "Manchester United",
+     "ov": 81,
+     "lastSeason": "2024",
+     "histMean": 84.1,
+     "histStd": 3,
+     "weight": 1.187,
+     "vol": 9.23
+    },
+    {
+     "name": "Aston Villa",
+     "ov": 79.7,
+     "lastSeason": "2024",
+     "histMean": 79.1,
+     "histStd": 2.6,
+     "weight": 1.034,
+     "vol": 7.69
+    },
+    {
+     "name": "Brighton and Hove Albion",
+     "ov": 78,
+     "lastSeason": "2024",
+     "histMean": 76.6,
+     "histStd": 4.1,
+     "weight": 0.958,
+     "vol": 13.46
+    },
+    {
+     "name": "Newcastle United",
+     "ov": 77.2,
+     "lastSeason": "2024",
+     "histMean": 79.5,
+     "histStd": 2.2,
+     "weight": 1.047,
+     "vol": 6.15
+    },
+    {
+     "name": "Crystal Palace",
+     "ov": 76.2,
+     "lastSeason": "2024",
+     "histMean": 75.3,
+     "histStd": 4,
+     "weight": 0.919,
+     "vol": 13.08
+    },
+    {
+     "name": "Burnley FC",
+     "ov": 75.7,
+     "lastSeason": "2023",
+     "histMean": 71.4,
+     "histStd": 3.5,
+     "weight": 0.8,
+     "vol": 11.15
+    },
+    {
+     "name": "Nottingham Forest",
+     "ov": 74.1,
+     "lastSeason": "2024",
+     "histMean": 78.7,
+     "histStd": 1.9,
+     "weight": 1.022,
+     "vol": 5
+    },
+    {
+     "name": "Leeds United",
+     "ov": 73.3,
+     "lastSeason": "2022",
+     "histMean": 79.7,
+     "histStd": 2,
+     "weight": 1.053,
+     "vol": 5.38
+    },
+    {
+     "name": "Brentford FC",
+     "ov": 73.1,
+     "lastSeason": "2024",
+     "histMean": 77,
+     "histStd": 2.9,
+     "weight": 0.97,
+     "vol": 8.85
+    },
+    {
+     "name": "Wolverhampton Wanderers",
+     "ov": 72,
+     "lastSeason": "2024",
+     "histMean": 75.6,
+     "histStd": 4.1,
+     "weight": 0.928,
+     "vol": 13.46
+    },
+    {
+     "name": "Everton FC",
+     "ov": 71.7,
+     "lastSeason": "2024",
+     "histMean": 80.5,
+     "histStd": 2.8,
+     "weight": 1.077,
+     "vol": 8.46
+    },
+    {
+     "name": "Lincoln City",
+     "ov": 49.8,
+     "histMean": 49.8,
+     "histStd": 7.2,
+     "weight": 0.819,
+     "vol": 13.06,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "West Ham United",
+     "ov": 71.2,
+     "histMean": 78,
+     "histStd": 3.1,
+     "weight": 1.152,
+     "vol": 8.93,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Burnley",
+     "ov": 73.8,
+     "histMean": 71.4,
+     "histStd": 3.5,
+     "weight": 1.074,
+     "vol": 9.33,
+     "lastSeason": "promoted"
+    }
+   ],
+   "relegated": [
+    "West Ham United",
+    "AFC Bournemouth",
+    "Sunderland AFC"
+   ],
+   "promoted": [
+    "Lincoln City",
+    "West Ham United",
+    "Burnley"
+   ]
+  }
+ },
+ {
+  "seed": 1015,
+  "table": [
+   {
+    "name": "Manchester City",
+    "pts": 87,
+    "isUser": false,
+    "position": 1
+   },
+   {
+    "name": "Arsenal FC",
+    "pts": 84,
+    "isUser": false,
+    "position": 2
+   },
+   {
+    "name": "Chelsea FC",
+    "pts": 84,
+    "isUser": false,
+    "position": 3
+   },
+   {
+    "name": "Liverpool FC",
+    "pts": 78,
+    "isUser": false,
+    "position": 4
+   },
+   {
+    "name": "Your XI",
+    "pts": 77,
+    "isUser": true,
+    "w": 24,
+    "d": 5,
+    "l": 9,
+    "gf": 83,
+    "ga": 47,
+    "position": 5
+   },
+   {
+    "name": "Manchester United",
+    "pts": 76,
+    "isUser": false,
+    "position": 6
+   },
+   {
+    "name": "Tottenham Hotspur",
+    "pts": 75,
+    "isUser": false,
+    "position": 7
+   },
+   {
+    "name": "Aston Villa",
+    "pts": 66,
+    "isUser": false,
+    "position": 8
+   },
+   {
+    "name": "Newcastle United",
+    "pts": 61,
+    "isUser": false,
+    "position": 9
+   },
+   {
+    "name": "Brighton and Hove Albion",
+    "pts": 57,
+    "isUser": false,
+    "position": 10
+   },
+   {
+    "name": "Crystal Palace",
+    "pts": 55,
+    "isUser": false,
+    "position": 11
+   },
+   {
+    "name": "Leeds United",
+    "pts": 55,
+    "isUser": false,
+    "position": 12
+   },
+   {
+    "name": "Nottingham Forest",
+    "pts": 52,
+    "isUser": false,
+    "position": 13
+   },
+   {
+    "name": "Everton FC",
+    "pts": 48,
+    "isUser": false,
+    "position": 14
+   },
+   {
+    "name": "Brentford FC",
+    "pts": 47,
+    "isUser": false,
+    "position": 15
+   },
+   {
+    "name": "Wolverhampton Wanderers",
+    "pts": 47,
+    "isUser": false,
+    "position": 16
+   },
+   {
+    "name": "West Ham United",
+    "pts": 46,
+    "isUser": false,
+    "position": 17
+   },
+   {
+    "name": "Burnley FC",
+    "pts": 39,
+    "isUser": false,
+    "position": 18
+   },
+   {
+    "name": "AFC Bournemouth",
+    "pts": 39,
+    "isUser": false,
+    "position": 19
+   },
+   {
+    "name": "Sunderland AFC",
+    "pts": 25,
+    "isUser": false,
+    "position": 20
+   }
+  ],
+  "result": {
+   "opponents": [
+    {
+     "name": "Arsenal FC",
+     "ov": 87.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3,
+     "weight": 1.171,
+     "vol": 9.23
+    },
+    {
+     "name": "Manchester City",
+     "ov": 86.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3.2,
+     "weight": 1.171,
+     "vol": 10
+    },
+    {
+     "name": "Chelsea FC",
+     "ov": 84.8,
+     "lastSeason": "2024",
+     "histMean": 85.2,
+     "histStd": 3.9,
+     "weight": 1.22,
+     "vol": 12.69
+    },
+    {
+     "name": "Liverpool FC",
+     "ov": 84,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.9,
+     "weight": 1.162,
+     "vol": 8.85
+    },
+    {
+     "name": "Tottenham Hotspur",
+     "ov": 83.2,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.6,
+     "weight": 1.162,
+     "vol": 7.69
+    },
+    {
+     "name": "Manchester United",
+     "ov": 81,
+     "lastSeason": "2024",
+     "histMean": 84.1,
+     "histStd": 3,
+     "weight": 1.187,
+     "vol": 9.23
+    },
+    {
+     "name": "Aston Villa",
+     "ov": 79.7,
+     "lastSeason": "2024",
+     "histMean": 79.1,
+     "histStd": 2.6,
+     "weight": 1.034,
+     "vol": 7.69
+    },
+    {
+     "name": "Brighton and Hove Albion",
+     "ov": 78,
+     "lastSeason": "2024",
+     "histMean": 76.6,
+     "histStd": 4.1,
+     "weight": 0.958,
+     "vol": 13.46
+    },
+    {
+     "name": "Newcastle United",
+     "ov": 77.2,
+     "lastSeason": "2024",
+     "histMean": 79.5,
+     "histStd": 2.2,
+     "weight": 1.047,
+     "vol": 6.15
+    },
+    {
+     "name": "Crystal Palace",
+     "ov": 76.2,
+     "lastSeason": "2024",
+     "histMean": 75.3,
+     "histStd": 4,
+     "weight": 0.919,
+     "vol": 13.08
+    },
+    {
+     "name": "Nottingham Forest",
+     "ov": 74.1,
+     "lastSeason": "2024",
+     "histMean": 78.7,
+     "histStd": 1.9,
+     "weight": 1.022,
+     "vol": 5
+    },
+    {
+     "name": "West Ham United",
+     "ov": 73.4,
+     "lastSeason": "2024",
+     "histMean": 78,
+     "histStd": 3.1,
+     "weight": 1.001,
+     "vol": 9.62
+    },
+    {
+     "name": "Leeds United",
+     "ov": 73.3,
+     "lastSeason": "2022",
+     "histMean": 79.7,
+     "histStd": 2,
+     "weight": 1.053,
+     "vol": 5.38
+    },
+    {
+     "name": "Brentford FC",
+     "ov": 73.1,
+     "lastSeason": "2024",
+     "histMean": 77,
+     "histStd": 2.9,
+     "weight": 0.97,
+     "vol": 8.85
+    },
+    {
+     "name": "Wolverhampton Wanderers",
+     "ov": 72,
+     "lastSeason": "2024",
+     "histMean": 75.6,
+     "histStd": 4.1,
+     "weight": 0.928,
+     "vol": 13.46
+    },
+    {
+     "name": "Everton FC",
+     "ov": 71.7,
+     "lastSeason": "2024",
+     "histMean": 80.5,
+     "histStd": 2.8,
+     "weight": 1.077,
+     "vol": 8.46
+    },
+    {
+     "name": "Swansea City",
+     "ov": 58,
+     "histMean": 74.7,
+     "histStd": 1.1,
+     "weight": 1.113,
+     "vol": 6.91,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Preston North End",
+     "ov": 47.8,
+     "histMean": 47.8,
+     "histStd": 7.2,
+     "weight": 0.795,
+     "vol": 13.06,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Bristol City",
+     "ov": 50.6,
+     "histMean": 50.6,
+     "histStd": 11.1,
+     "weight": 0.828,
+     "vol": 17,
+     "lastSeason": "promoted"
+    }
+   ],
+   "relegated": [
+    "Burnley FC",
+    "AFC Bournemouth",
+    "Sunderland AFC"
+   ],
+   "promoted": [
+    "Swansea City",
+    "Preston North End",
+    "Bristol City"
+   ]
+  }
+ },
+ {
+  "seed": 1016,
+  "table": [
+   {
+    "name": "Arsenal FC",
+    "pts": 88,
+    "isUser": false,
+    "position": 1
+   },
+   {
+    "name": "Chelsea FC",
+    "pts": 84,
+    "isUser": false,
+    "position": 2
+   },
+   {
+    "name": "Liverpool FC",
+    "pts": 81,
+    "isUser": false,
+    "position": 3
+   },
+   {
+    "name": "Manchester City",
+    "pts": 80,
+    "isUser": false,
+    "position": 4
+   },
+   {
+    "name": "Tottenham Hotspur",
+    "pts": 78,
+    "isUser": false,
+    "position": 5
+   },
+   {
+    "name": "Your XI",
+    "pts": 76,
+    "isUser": true,
+    "w": 23,
+    "d": 7,
+    "l": 8,
+    "gf": 72,
+    "ga": 35,
+    "position": 6
+   },
+   {
+    "name": "Manchester United",
+    "pts": 70,
+    "isUser": false,
+    "position": 7
+   },
+   {
+    "name": "Aston Villa",
+    "pts": 61,
+    "isUser": false,
+    "position": 8
+   },
+   {
+    "name": "Newcastle United",
+    "pts": 59,
+    "isUser": false,
+    "position": 9
+   },
+   {
+    "name": "Everton FC",
+    "pts": 55,
+    "isUser": false,
+    "position": 10
+   },
+   {
+    "name": "Leeds United",
+    "pts": 54,
+    "isUser": false,
+    "position": 11
+   },
+   {
+    "name": "Brighton and Hove Albion",
+    "pts": 53,
+    "isUser": false,
+    "position": 12
+   },
+   {
+    "name": "Nottingham Forest",
+    "pts": 52,
+    "isUser": false,
+    "position": 13
+   },
+   {
+    "name": "West Ham United",
+    "pts": 51,
+    "isUser": false,
+    "position": 14
+   },
+   {
+    "name": "Crystal Palace",
+    "pts": 50,
+    "isUser": false,
+    "position": 15
+   },
+   {
+    "name": "Brentford FC",
+    "pts": 47,
+    "isUser": false,
+    "position": 16
+   },
+   {
+    "name": "AFC Bournemouth",
+    "pts": 45,
+    "isUser": false,
+    "position": 17
+   },
+   {
+    "name": "Burnley FC",
+    "pts": 44,
+    "isUser": false,
+    "position": 18
+   },
+   {
+    "name": "Wolverhampton Wanderers",
+    "pts": 43,
+    "isUser": false,
+    "position": 19
+   },
+   {
+    "name": "Sunderland AFC",
+    "pts": 23,
+    "isUser": false,
+    "position": 20
+   }
+  ],
+  "result": {
+   "opponents": [
+    {
+     "name": "Arsenal FC",
+     "ov": 87.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3,
+     "weight": 1.171,
+     "vol": 9.23
+    },
+    {
+     "name": "Manchester City",
+     "ov": 86.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3.2,
+     "weight": 1.171,
+     "vol": 10
+    },
+    {
+     "name": "Chelsea FC",
+     "ov": 84.8,
+     "lastSeason": "2024",
+     "histMean": 85.2,
+     "histStd": 3.9,
+     "weight": 1.22,
+     "vol": 12.69
+    },
+    {
+     "name": "Liverpool FC",
+     "ov": 84,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.9,
+     "weight": 1.162,
+     "vol": 8.85
+    },
+    {
+     "name": "Tottenham Hotspur",
+     "ov": 83.2,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.6,
+     "weight": 1.162,
+     "vol": 7.69
+    },
+    {
+     "name": "Manchester United",
+     "ov": 81,
+     "lastSeason": "2024",
+     "histMean": 84.1,
+     "histStd": 3,
+     "weight": 1.187,
+     "vol": 9.23
+    },
+    {
+     "name": "Aston Villa",
+     "ov": 79.7,
+     "lastSeason": "2024",
+     "histMean": 79.1,
+     "histStd": 2.6,
+     "weight": 1.034,
+     "vol": 7.69
+    },
+    {
+     "name": "Brighton and Hove Albion",
+     "ov": 78,
+     "lastSeason": "2024",
+     "histMean": 76.6,
+     "histStd": 4.1,
+     "weight": 0.958,
+     "vol": 13.46
+    },
+    {
+     "name": "Newcastle United",
+     "ov": 77.2,
+     "lastSeason": "2024",
+     "histMean": 79.5,
+     "histStd": 2.2,
+     "weight": 1.047,
+     "vol": 6.15
+    },
+    {
+     "name": "Crystal Palace",
+     "ov": 76.2,
+     "lastSeason": "2024",
+     "histMean": 75.3,
+     "histStd": 4,
+     "weight": 0.919,
+     "vol": 13.08
+    },
+    {
+     "name": "Nottingham Forest",
+     "ov": 74.1,
+     "lastSeason": "2024",
+     "histMean": 78.7,
+     "histStd": 1.9,
+     "weight": 1.022,
+     "vol": 5
+    },
+    {
+     "name": "West Ham United",
+     "ov": 73.4,
+     "lastSeason": "2024",
+     "histMean": 78,
+     "histStd": 3.1,
+     "weight": 1.001,
+     "vol": 9.62
+    },
+    {
+     "name": "Leeds United",
+     "ov": 73.3,
+     "lastSeason": "2022",
+     "histMean": 79.7,
+     "histStd": 2,
+     "weight": 1.053,
+     "vol": 5.38
+    },
+    {
+     "name": "Brentford FC",
+     "ov": 73.1,
+     "lastSeason": "2024",
+     "histMean": 77,
+     "histStd": 2.9,
+     "weight": 0.97,
+     "vol": 8.85
+    },
+    {
+     "name": "AFC Bournemouth",
+     "ov": 72.8,
+     "lastSeason": "2024",
+     "histMean": 73.9,
+     "histStd": 3.1,
+     "weight": 0.876,
+     "vol": 9.62
+    },
+    {
+     "name": "Everton FC",
+     "ov": 71.7,
+     "lastSeason": "2024",
+     "histMean": 80.5,
+     "histStd": 2.8,
+     "weight": 1.077,
+     "vol": 8.46
+    },
+    {
+     "name": "Southampton",
+     "ov": 66.3,
+     "histMean": 77.7,
+     "histStd": 3.4,
+     "weight": 1.148,
+     "vol": 9.23,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Bolton Wanderers",
+     "ov": 58,
+     "histMean": 78,
+     "histStd": 3,
+     "weight": 1.152,
+     "vol": 8.83,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Charlton Athletic",
+     "ov": 59.7,
+     "histMean": 78,
+     "histStd": 3.1,
+     "weight": 1.152,
+     "vol": 8.93,
+     "lastSeason": "promoted"
+    }
+   ],
+   "relegated": [
+    "Burnley FC",
+    "Wolverhampton Wanderers",
+    "Sunderland AFC"
+   ],
+   "promoted": [
+    "Southampton",
+    "Bolton Wanderers",
+    "Charlton Athletic"
+   ]
+  }
+ },
+ {
+  "seed": 1017,
+  "table": [
+   {
+    "name": "Your XI",
+    "pts": 96,
+    "isUser": true,
+    "w": 30,
+    "d": 6,
+    "l": 2,
+    "gf": 66,
+    "ga": 9,
+    "position": 1
+   },
+   {
+    "name": "Arsenal FC",
+    "pts": 89,
+    "isUser": false,
+    "position": 2
+   },
+   {
+    "name": "Chelsea FC",
+    "pts": 89,
+    "isUser": false,
+    "position": 3
+   },
+   {
+    "name": "Manchester City",
+    "pts": 82,
+    "isUser": false,
+    "position": 4
+   },
+   {
+    "name": "Liverpool FC",
+    "pts": 75,
+    "isUser": false,
+    "position": 5
+   },
+   {
+    "name": "Tottenham Hotspur",
+    "pts": 75,
+    "isUser": false,
+    "position": 6
+   },
+   {
+    "name": "Manchester United",
+    "pts": 75,
+    "isUser": false,
+    "position": 7
+   },
+   {
+    "name": "Aston Villa",
+    "pts": 64,
+    "isUser": false,
+    "position": 8
+   },
+   {
+    "name": "Brighton and Hove Albion",
+    "pts": 61,
+    "isUser": false,
+    "position": 9
+   },
+   {
+    "name": "Newcastle United",
+    "pts": 59,
+    "isUser": false,
+    "position": 10
+   },
+   {
+    "name": "Crystal Palace",
+    "pts": 53,
+    "isUser": false,
+    "position": 11
+   },
+   {
+    "name": "West Ham United",
+    "pts": 53,
+    "isUser": false,
+    "position": 12
+   },
+   {
+    "name": "Leeds United",
+    "pts": 52,
+    "isUser": false,
+    "position": 13
+   },
+   {
+    "name": "Nottingham Forest",
+    "pts": 51,
+    "isUser": false,
+    "position": 14
+   },
+   {
+    "name": "Everton FC",
+    "pts": 51,
+    "isUser": false,
+    "position": 15
+   },
+   {
+    "name": "Brentford FC",
+    "pts": 49,
+    "isUser": false,
+    "position": 16
+   },
+   {
+    "name": "AFC Bournemouth",
+    "pts": 46,
+    "isUser": false,
+    "position": 17
+   },
+   {
+    "name": "Wolverhampton Wanderers",
+    "pts": 46,
+    "isUser": false,
+    "position": 18
+   },
+   {
+    "name": "Burnley FC",
+    "pts": 42,
+    "isUser": false,
+    "position": 19
+   },
+   {
+    "name": "Sunderland AFC",
+    "pts": 18,
+    "isUser": false,
+    "position": 20
+   }
+  ],
+  "result": {
+   "opponents": [
+    {
+     "name": "Arsenal FC",
+     "ov": 87.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3,
+     "weight": 1.171,
+     "vol": 9.23
+    },
+    {
+     "name": "Manchester City",
+     "ov": 86.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3.2,
+     "weight": 1.171,
+     "vol": 10
+    },
+    {
+     "name": "Chelsea FC",
+     "ov": 84.8,
+     "lastSeason": "2024",
+     "histMean": 85.2,
+     "histStd": 3.9,
+     "weight": 1.22,
+     "vol": 12.69
+    },
+    {
+     "name": "Liverpool FC",
+     "ov": 84,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.9,
+     "weight": 1.162,
+     "vol": 8.85
+    },
+    {
+     "name": "Tottenham Hotspur",
+     "ov": 83.2,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.6,
+     "weight": 1.162,
+     "vol": 7.69
+    },
+    {
+     "name": "Manchester United",
+     "ov": 81,
+     "lastSeason": "2024",
+     "histMean": 84.1,
+     "histStd": 3,
+     "weight": 1.187,
+     "vol": 9.23
+    },
+    {
+     "name": "Aston Villa",
+     "ov": 79.7,
+     "lastSeason": "2024",
+     "histMean": 79.1,
+     "histStd": 2.6,
+     "weight": 1.034,
+     "vol": 7.69
+    },
+    {
+     "name": "Brighton and Hove Albion",
+     "ov": 78,
+     "lastSeason": "2024",
+     "histMean": 76.6,
+     "histStd": 4.1,
+     "weight": 0.958,
+     "vol": 13.46
+    },
+    {
+     "name": "Newcastle United",
+     "ov": 77.2,
+     "lastSeason": "2024",
+     "histMean": 79.5,
+     "histStd": 2.2,
+     "weight": 1.047,
+     "vol": 6.15
+    },
+    {
+     "name": "Crystal Palace",
+     "ov": 76.2,
+     "lastSeason": "2024",
+     "histMean": 75.3,
+     "histStd": 4,
+     "weight": 0.919,
+     "vol": 13.08
+    },
+    {
+     "name": "Nottingham Forest",
+     "ov": 74.1,
+     "lastSeason": "2024",
+     "histMean": 78.7,
+     "histStd": 1.9,
+     "weight": 1.022,
+     "vol": 5
+    },
+    {
+     "name": "West Ham United",
+     "ov": 73.4,
+     "lastSeason": "2024",
+     "histMean": 78,
+     "histStd": 3.1,
+     "weight": 1.001,
+     "vol": 9.62
+    },
+    {
+     "name": "Leeds United",
+     "ov": 73.3,
+     "lastSeason": "2022",
+     "histMean": 79.7,
+     "histStd": 2,
+     "weight": 1.053,
+     "vol": 5.38
+    },
+    {
+     "name": "Brentford FC",
+     "ov": 73.1,
+     "lastSeason": "2024",
+     "histMean": 77,
+     "histStd": 2.9,
+     "weight": 0.97,
+     "vol": 8.85
+    },
+    {
+     "name": "AFC Bournemouth",
+     "ov": 72.8,
+     "lastSeason": "2024",
+     "histMean": 73.9,
+     "histStd": 3.1,
+     "weight": 0.876,
+     "vol": 9.62
+    },
+    {
+     "name": "Everton FC",
+     "ov": 71.7,
+     "lastSeason": "2024",
+     "histMean": 80.5,
+     "histStd": 2.8,
+     "weight": 1.077,
+     "vol": 8.46
+    },
+    {
+     "name": "Southampton",
+     "ov": 66.3,
+     "histMean": 77.7,
+     "histStd": 3.4,
+     "weight": 1.148,
+     "vol": 9.23,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Wrexham",
+     "ov": 46.5,
+     "histMean": 46.5,
+     "histStd": 8.3,
+     "weight": 0.78,
+     "vol": 14.17,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Sheffield United",
+     "ov": 69.1,
+     "histMean": 74.4,
+     "histStd": 3.9,
+     "weight": 1.109,
+     "vol": 9.73,
+     "lastSeason": "promoted"
+    }
+   ],
+   "relegated": [
+    "Wolverhampton Wanderers",
+    "Burnley FC",
+    "Sunderland AFC"
+   ],
+   "promoted": [
+    "Southampton",
+    "Wrexham",
+    "Sheffield United"
+   ]
+  }
+ },
+ {
+  "seed": 1018,
+  "table": [
+   {
+    "name": "Arsenal FC",
+    "pts": 82,
+    "isUser": false,
+    "position": 1
+   },
+   {
+    "name": "Liverpool FC",
+    "pts": 81,
+    "isUser": false,
+    "position": 2
+   },
+   {
+    "name": "Manchester City",
+    "pts": 80,
+    "isUser": false,
+    "position": 3
+   },
+   {
+    "name": "Chelsea FC",
+    "pts": 78,
+    "isUser": false,
+    "position": 4
+   },
+   {
+    "name": "Tottenham Hotspur",
+    "pts": 74,
+    "isUser": false,
+    "position": 5
+   },
+   {
+    "name": "Your XI",
+    "pts": 72,
+    "isUser": true,
+    "w": 22,
+    "d": 6,
+    "l": 10,
+    "gf": 63,
+    "ga": 47,
+    "position": 6
+   },
+   {
+    "name": "Manchester United",
+    "pts": 71,
+    "isUser": false,
+    "position": 7
+   },
+   {
+    "name": "Aston Villa",
+    "pts": 65,
+    "isUser": false,
+    "position": 8
+   },
+   {
+    "name": "Newcastle United",
+    "pts": 61,
+    "isUser": false,
+    "position": 9
+   },
+   {
+    "name": "West Ham United",
+    "pts": 53,
+    "isUser": false,
+    "position": 10
+   },
+   {
+    "name": "Everton FC",
+    "pts": 52,
+    "isUser": false,
+    "position": 11
+   },
+   {
+    "name": "Brighton and Hove Albion",
+    "pts": 51,
+    "isUser": false,
+    "position": 12
+   },
+   {
+    "name": "Crystal Palace",
+    "pts": 51,
+    "isUser": false,
+    "position": 13
+   },
+   {
+    "name": "Nottingham Forest",
+    "pts": 51,
+    "isUser": false,
+    "position": 14
+   },
+   {
+    "name": "Leeds United",
+    "pts": 50,
+    "isUser": false,
+    "position": 15
+   },
+   {
+    "name": "AFC Bournemouth",
+    "pts": 47,
+    "isUser": false,
+    "position": 16
+   },
+   {
+    "name": "Brentford FC",
+    "pts": 46,
+    "isUser": false,
+    "position": 17
+   },
+   {
+    "name": "Wolverhampton Wanderers",
+    "pts": 43,
+    "isUser": false,
+    "position": 18
+   },
+   {
+    "name": "Burnley FC",
+    "pts": 38,
+    "isUser": false,
+    "position": 19
+   },
+   {
+    "name": "Sunderland AFC",
+    "pts": 17,
+    "isUser": false,
+    "position": 20
+   }
+  ],
+  "result": {
+   "opponents": [
+    {
+     "name": "Arsenal FC",
+     "ov": 87.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3,
+     "weight": 1.171,
+     "vol": 9.23
+    },
+    {
+     "name": "Manchester City",
+     "ov": 86.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3.2,
+     "weight": 1.171,
+     "vol": 10
+    },
+    {
+     "name": "Chelsea FC",
+     "ov": 84.8,
+     "lastSeason": "2024",
+     "histMean": 85.2,
+     "histStd": 3.9,
+     "weight": 1.22,
+     "vol": 12.69
+    },
+    {
+     "name": "Liverpool FC",
+     "ov": 84,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.9,
+     "weight": 1.162,
+     "vol": 8.85
+    },
+    {
+     "name": "Tottenham Hotspur",
+     "ov": 83.2,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.6,
+     "weight": 1.162,
+     "vol": 7.69
+    },
+    {
+     "name": "Manchester United",
+     "ov": 81,
+     "lastSeason": "2024",
+     "histMean": 84.1,
+     "histStd": 3,
+     "weight": 1.187,
+     "vol": 9.23
+    },
+    {
+     "name": "Aston Villa",
+     "ov": 79.7,
+     "lastSeason": "2024",
+     "histMean": 79.1,
+     "histStd": 2.6,
+     "weight": 1.034,
+     "vol": 7.69
+    },
+    {
+     "name": "Brighton and Hove Albion",
+     "ov": 78,
+     "lastSeason": "2024",
+     "histMean": 76.6,
+     "histStd": 4.1,
+     "weight": 0.958,
+     "vol": 13.46
+    },
+    {
+     "name": "Newcastle United",
+     "ov": 77.2,
+     "lastSeason": "2024",
+     "histMean": 79.5,
+     "histStd": 2.2,
+     "weight": 1.047,
+     "vol": 6.15
+    },
+    {
+     "name": "Crystal Palace",
+     "ov": 76.2,
+     "lastSeason": "2024",
+     "histMean": 75.3,
+     "histStd": 4,
+     "weight": 0.919,
+     "vol": 13.08
+    },
+    {
+     "name": "Nottingham Forest",
+     "ov": 74.1,
+     "lastSeason": "2024",
+     "histMean": 78.7,
+     "histStd": 1.9,
+     "weight": 1.022,
+     "vol": 5
+    },
+    {
+     "name": "West Ham United",
+     "ov": 73.4,
+     "lastSeason": "2024",
+     "histMean": 78,
+     "histStd": 3.1,
+     "weight": 1.001,
+     "vol": 9.62
+    },
+    {
+     "name": "Leeds United",
+     "ov": 73.3,
+     "lastSeason": "2022",
+     "histMean": 79.7,
+     "histStd": 2,
+     "weight": 1.053,
+     "vol": 5.38
+    },
+    {
+     "name": "Brentford FC",
+     "ov": 73.1,
+     "lastSeason": "2024",
+     "histMean": 77,
+     "histStd": 2.9,
+     "weight": 0.97,
+     "vol": 8.85
+    },
+    {
+     "name": "AFC Bournemouth",
+     "ov": 72.8,
+     "lastSeason": "2024",
+     "histMean": 73.9,
+     "histStd": 3.1,
+     "weight": 0.876,
+     "vol": 9.62
+    },
+    {
+     "name": "Everton FC",
+     "ov": 71.7,
+     "lastSeason": "2024",
+     "histMean": 80.5,
+     "histStd": 2.8,
+     "weight": 1.077,
+     "vol": 8.46
+    },
+    {
+     "name": "Wrexham",
+     "ov": 46.5,
+     "histMean": 46.5,
+     "histStd": 8.3,
+     "weight": 0.78,
+     "vol": 14.17,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Burnley",
+     "ov": 73.8,
+     "histMean": 71.4,
+     "histStd": 3.5,
+     "weight": 1.074,
+     "vol": 9.33,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Middlesbrough",
+     "ov": 56,
+     "histMean": 78.9,
+     "histStd": 2.7,
+     "weight": 1.162,
+     "vol": 8.52,
+     "lastSeason": "promoted"
+    }
+   ],
+   "relegated": [
+    "Wolverhampton Wanderers",
+    "Burnley FC",
+    "Sunderland AFC"
+   ],
+   "promoted": [
+    "Wrexham",
+    "Burnley",
+    "Middlesbrough"
+   ]
+  }
+ },
+ {
+  "seed": 1019,
+  "table": [
+   {
+    "name": "Arsenal FC",
+    "pts": 87,
+    "isUser": false,
+    "position": 1
+   },
+   {
+    "name": "Manchester City",
+    "pts": 81,
+    "isUser": false,
+    "position": 2
+   },
+   {
+    "name": "Chelsea FC",
+    "pts": 81,
+    "isUser": false,
+    "position": 3
+   },
+   {
+    "name": "Tottenham Hotspur",
+    "pts": 80,
+    "isUser": false,
+    "position": 4
+   },
+   {
+    "name": "Liverpool FC",
+    "pts": 77,
+    "isUser": false,
+    "position": 5
+   },
+   {
+    "name": "Your XI",
+    "pts": 74,
+    "isUser": true,
+    "w": 20,
+    "d": 14,
+    "l": 4,
+    "gf": 36,
+    "ga": 8,
+    "position": 6
+   },
+   {
+    "name": "Manchester United",
+    "pts": 72,
+    "isUser": false,
+    "position": 7
+   },
+   {
+    "name": "Aston Villa",
+    "pts": 64,
+    "isUser": false,
+    "position": 8
+   },
+   {
+    "name": "Newcastle United",
+    "pts": 59,
+    "isUser": false,
+    "position": 9
+   },
+   {
+    "name": "Crystal Palace",
+    "pts": 51,
+    "isUser": false,
+    "position": 10
+   },
+   {
+    "name": "Brighton and Hove Albion",
+    "pts": 50,
+    "isUser": false,
+    "position": 11
+   },
+   {
+    "name": "Nottingham Forest",
+    "pts": 50,
+    "isUser": false,
+    "position": 12
+   },
+   {
+    "name": "Leeds United",
+    "pts": 50,
+    "isUser": false,
+    "position": 13
+   },
+   {
+    "name": "Everton FC",
+    "pts": 50,
+    "isUser": false,
+    "position": 14
+   },
+   {
+    "name": "West Ham United",
+    "pts": 47,
+    "isUser": false,
+    "position": 15
+   },
+   {
+    "name": "Brentford FC",
+    "pts": 46,
+    "isUser": false,
+    "position": 16
+   },
+   {
+    "name": "Wolverhampton Wanderers",
+    "pts": 40,
+    "isUser": false,
+    "position": 17
+   },
+   {
+    "name": "AFC Bournemouth",
+    "pts": 39,
+    "isUser": false,
+    "position": 18
+   },
+   {
+    "name": "Burnley FC",
+    "pts": 38,
+    "isUser": false,
+    "position": 19
+   },
+   {
+    "name": "Sunderland AFC",
+    "pts": 22,
+    "isUser": false,
+    "position": 20
+   }
+  ],
+  "result": {
+   "opponents": [
+    {
+     "name": "Arsenal FC",
+     "ov": 87.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3,
+     "weight": 1.171,
+     "vol": 9.23
+    },
+    {
+     "name": "Manchester City",
+     "ov": 86.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3.2,
+     "weight": 1.171,
+     "vol": 10
+    },
+    {
+     "name": "Chelsea FC",
+     "ov": 84.8,
+     "lastSeason": "2024",
+     "histMean": 85.2,
+     "histStd": 3.9,
+     "weight": 1.22,
+     "vol": 12.69
+    },
+    {
+     "name": "Liverpool FC",
+     "ov": 84,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.9,
+     "weight": 1.162,
+     "vol": 8.85
+    },
+    {
+     "name": "Tottenham Hotspur",
+     "ov": 83.2,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.6,
+     "weight": 1.162,
+     "vol": 7.69
+    },
+    {
+     "name": "Manchester United",
+     "ov": 81,
+     "lastSeason": "2024",
+     "histMean": 84.1,
+     "histStd": 3,
+     "weight": 1.187,
+     "vol": 9.23
+    },
+    {
+     "name": "Aston Villa",
+     "ov": 79.7,
+     "lastSeason": "2024",
+     "histMean": 79.1,
+     "histStd": 2.6,
+     "weight": 1.034,
+     "vol": 7.69
+    },
+    {
+     "name": "Brighton and Hove Albion",
+     "ov": 78,
+     "lastSeason": "2024",
+     "histMean": 76.6,
+     "histStd": 4.1,
+     "weight": 0.958,
+     "vol": 13.46
+    },
+    {
+     "name": "Newcastle United",
+     "ov": 77.2,
+     "lastSeason": "2024",
+     "histMean": 79.5,
+     "histStd": 2.2,
+     "weight": 1.047,
+     "vol": 6.15
+    },
+    {
+     "name": "Crystal Palace",
+     "ov": 76.2,
+     "lastSeason": "2024",
+     "histMean": 75.3,
+     "histStd": 4,
+     "weight": 0.919,
+     "vol": 13.08
+    },
+    {
+     "name": "Nottingham Forest",
+     "ov": 74.1,
+     "lastSeason": "2024",
+     "histMean": 78.7,
+     "histStd": 1.9,
+     "weight": 1.022,
+     "vol": 5
+    },
+    {
+     "name": "West Ham United",
+     "ov": 73.4,
+     "lastSeason": "2024",
+     "histMean": 78,
+     "histStd": 3.1,
+     "weight": 1.001,
+     "vol": 9.62
+    },
+    {
+     "name": "Leeds United",
+     "ov": 73.3,
+     "lastSeason": "2022",
+     "histMean": 79.7,
+     "histStd": 2,
+     "weight": 1.053,
+     "vol": 5.38
+    },
+    {
+     "name": "Brentford FC",
+     "ov": 73.1,
+     "lastSeason": "2024",
+     "histMean": 77,
+     "histStd": 2.9,
+     "weight": 0.97,
+     "vol": 8.85
+    },
+    {
+     "name": "Wolverhampton Wanderers",
+     "ov": 72,
+     "lastSeason": "2024",
+     "histMean": 75.6,
+     "histStd": 4.1,
+     "weight": 0.928,
+     "vol": 13.46
+    },
+    {
+     "name": "Everton FC",
+     "ov": 71.7,
+     "lastSeason": "2024",
+     "histMean": 80.5,
+     "histStd": 2.8,
+     "weight": 1.077,
+     "vol": 8.46
+    },
+    {
+     "name": "Portsmouth",
+     "ov": 59.1,
+     "histMean": 78.7,
+     "histStd": 3.3,
+     "weight": 1.16,
+     "vol": 9.13,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Watford",
+     "ov": 63.7,
+     "histMean": 73.3,
+     "histStd": 3.8,
+     "weight": 1.096,
+     "vol": 9.63,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Lincoln City",
+     "ov": 49.8,
+     "histMean": 49.8,
+     "histStd": 7.2,
+     "weight": 0.819,
+     "vol": 13.06,
+     "lastSeason": "promoted"
+    }
+   ],
+   "relegated": [
+    "AFC Bournemouth",
+    "Burnley FC",
+    "Sunderland AFC"
+   ],
+   "promoted": [
+    "Portsmouth",
+    "Watford",
+    "Lincoln City"
+   ]
+  }
+ },
+ {
+  "seed": 1020,
+  "table": [
+   {
+    "name": "Arsenal FC",
+    "pts": 86,
+    "isUser": false,
+    "position": 1
+   },
+   {
+    "name": "Chelsea FC",
+    "pts": 86,
+    "isUser": false,
+    "position": 2
+   },
+   {
+    "name": "Manchester City",
+    "pts": 78,
+    "isUser": false,
+    "position": 3
+   },
+   {
+    "name": "Manchester United",
+    "pts": 77,
+    "isUser": false,
+    "position": 4
+   },
+   {
+    "name": "Your XI",
+    "pts": 75,
+    "isUser": true,
+    "w": 23,
+    "d": 6,
+    "l": 9,
+    "gf": 87,
+    "ga": 39,
+    "position": 5
+   },
+   {
+    "name": "Liverpool FC",
+    "pts": 74,
+    "isUser": false,
+    "position": 6
+   },
+   {
+    "name": "Tottenham Hotspur",
+    "pts": 73,
+    "isUser": false,
+    "position": 7
+   },
+   {
+    "name": "Aston Villa",
+    "pts": 65,
+    "isUser": false,
+    "position": 8
+   },
+   {
+    "name": "Brighton and Hove Albion",
+    "pts": 59,
+    "isUser": false,
+    "position": 9
+   },
+   {
+    "name": "Newcastle United",
+    "pts": 59,
+    "isUser": false,
+    "position": 10
+   },
+   {
+    "name": "West Ham United",
+    "pts": 54,
+    "isUser": false,
+    "position": 11
+   },
+   {
+    "name": "Nottingham Forest",
+    "pts": 53,
+    "isUser": false,
+    "position": 12
+   },
+   {
+    "name": "Everton FC",
+    "pts": 53,
+    "isUser": false,
+    "position": 13
+   },
+   {
+    "name": "Leeds United",
+    "pts": 52,
+    "isUser": false,
+    "position": 14
+   },
+   {
+    "name": "Crystal Palace",
+    "pts": 51,
+    "isUser": false,
+    "position": 15
+   },
+   {
+    "name": "Brentford FC",
+    "pts": 46,
+    "isUser": false,
+    "position": 16
+   },
+   {
+    "name": "AFC Bournemouth",
+    "pts": 43,
+    "isUser": false,
+    "position": 17
+   },
+   {
+    "name": "Wolverhampton Wanderers",
+    "pts": 43,
+    "isUser": false,
+    "position": 18
+   },
+   {
+    "name": "Burnley FC",
+    "pts": 38,
+    "isUser": false,
+    "position": 19
+   },
+   {
+    "name": "Sunderland AFC",
+    "pts": 22,
+    "isUser": false,
+    "position": 20
+   }
+  ],
+  "result": {
+   "opponents": [
+    {
+     "name": "Arsenal FC",
+     "ov": 87.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3,
+     "weight": 1.171,
+     "vol": 9.23
+    },
+    {
+     "name": "Manchester City",
+     "ov": 86.2,
+     "lastSeason": "2024",
+     "histMean": 83.6,
+     "histStd": 3.2,
+     "weight": 1.171,
+     "vol": 10
+    },
+    {
+     "name": "Chelsea FC",
+     "ov": 84.8,
+     "lastSeason": "2024",
+     "histMean": 85.2,
+     "histStd": 3.9,
+     "weight": 1.22,
+     "vol": 12.69
+    },
+    {
+     "name": "Liverpool FC",
+     "ov": 84,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.9,
+     "weight": 1.162,
+     "vol": 8.85
+    },
+    {
+     "name": "Tottenham Hotspur",
+     "ov": 83.2,
+     "lastSeason": "2024",
+     "histMean": 83.3,
+     "histStd": 2.6,
+     "weight": 1.162,
+     "vol": 7.69
+    },
+    {
+     "name": "Manchester United",
+     "ov": 81,
+     "lastSeason": "2024",
+     "histMean": 84.1,
+     "histStd": 3,
+     "weight": 1.187,
+     "vol": 9.23
+    },
+    {
+     "name": "Aston Villa",
+     "ov": 79.7,
+     "lastSeason": "2024",
+     "histMean": 79.1,
+     "histStd": 2.6,
+     "weight": 1.034,
+     "vol": 7.69
+    },
+    {
+     "name": "Brighton and Hove Albion",
+     "ov": 78,
+     "lastSeason": "2024",
+     "histMean": 76.6,
+     "histStd": 4.1,
+     "weight": 0.958,
+     "vol": 13.46
+    },
+    {
+     "name": "Newcastle United",
+     "ov": 77.2,
+     "lastSeason": "2024",
+     "histMean": 79.5,
+     "histStd": 2.2,
+     "weight": 1.047,
+     "vol": 6.15
+    },
+    {
+     "name": "Crystal Palace",
+     "ov": 76.2,
+     "lastSeason": "2024",
+     "histMean": 75.3,
+     "histStd": 4,
+     "weight": 0.919,
+     "vol": 13.08
+    },
+    {
+     "name": "Nottingham Forest",
+     "ov": 74.1,
+     "lastSeason": "2024",
+     "histMean": 78.7,
+     "histStd": 1.9,
+     "weight": 1.022,
+     "vol": 5
+    },
+    {
+     "name": "West Ham United",
+     "ov": 73.4,
+     "lastSeason": "2024",
+     "histMean": 78,
+     "histStd": 3.1,
+     "weight": 1.001,
+     "vol": 9.62
+    },
+    {
+     "name": "Leeds United",
+     "ov": 73.3,
+     "lastSeason": "2022",
+     "histMean": 79.7,
+     "histStd": 2,
+     "weight": 1.053,
+     "vol": 5.38
+    },
+    {
+     "name": "Brentford FC",
+     "ov": 73.1,
+     "lastSeason": "2024",
+     "histMean": 77,
+     "histStd": 2.9,
+     "weight": 0.97,
+     "vol": 8.85
+    },
+    {
+     "name": "AFC Bournemouth",
+     "ov": 72.8,
+     "lastSeason": "2024",
+     "histMean": 73.9,
+     "histStd": 3.1,
+     "weight": 0.876,
+     "vol": 9.62
+    },
+    {
+     "name": "Everton FC",
+     "ov": 71.7,
+     "lastSeason": "2024",
+     "histMean": 80.5,
+     "histStd": 2.8,
+     "weight": 1.077,
+     "vol": 8.46
+    },
+    {
+     "name": "Southampton",
+     "ov": 66.3,
+     "histMean": 77.7,
+     "histStd": 3.4,
+     "weight": 1.148,
+     "vol": 9.23,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Wolverhampton Wanderers",
+     "ov": 69.8,
+     "histMean": 75.6,
+     "histStd": 4.1,
+     "weight": 1.123,
+     "vol": 9.94,
+     "lastSeason": "promoted"
+    },
+    {
+     "name": "Wrexham",
+     "ov": 46.5,
+     "histMean": 46.5,
+     "histStd": 8.3,
+     "weight": 0.78,
+     "vol": 14.17,
+     "lastSeason": "promoted"
+    }
+   ],
+   "relegated": [
+    "Wolverhampton Wanderers",
+    "Burnley FC",
+    "Sunderland AFC"
+   ],
+   "promoted": [
+    "Southampton",
+    "Wolverhampton Wanderers",
+    "Wrexham"
+   ]
+  }
+ }
+]

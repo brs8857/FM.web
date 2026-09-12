@@ -1,0 +1,2962 @@
+[
+ {
+  "xiIndex": 0,
+  "style": "gegenpress",
+  "familiarity": 56,
+  "profile": {
+   "attack": 99,
+   "defense": 73.3707069767677,
+   "defSolidity": 76.10157088978096,
+   "buildup": 78.64654074573474,
+   "press": 86.00524007421153,
+   "creativity": 84.76349120113382,
+   "physical": 82.12,
+   "avgOv": 83.18181818181819,
+   "synergyLabel": "Gegenpress",
+   "executionMult": 0.9023376623376623
+  },
+  "readout": [
+   "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "An aggressive front-foot press with a high defensive line — devastating when the trigger is right, but there's real space in behind if the front line doesn't win the ball back quickly.",
+   "The offside trap is live with a high line to support it — a genuine edge if your back line's coordination holds up, but one mistimed step in behind and it's a straight run at goal."
+  ]
+ },
+ {
+  "xiIndex": 0,
+  "style": "possession",
+  "familiarity": 61,
+  "profile": {
+   "attack": 87.26980083559195,
+   "defense": 77.69463471280706,
+   "defSolidity": 79.95621745791063,
+   "buildup": 52.78351668859367,
+   "press": 73.42605009276441,
+   "creativity": 90.12646684524589,
+   "physical": 78.04,
+   "avgOv": 83.18181818181819,
+   "synergyLabel": "Possession Control",
+   "executionMult": 0.9270129870129871
+  },
+  "readout": [
+   "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
+  ]
+ },
+ {
+  "xiIndex": 0,
+  "style": "counter",
+  "familiarity": 61,
+  "profile": {
+   "attack": 90.33688864820299,
+   "defense": 86.6403100374824,
+   "defSolidity": 95.24093052810288,
+   "buildup": 62.00630541282324,
+   "press": 66.73301632653065,
+   "creativity": 76.51265383289629,
+   "physical": 79.6,
+   "avgOv": 83.18181818181819,
+   "synergyLabel": "Low Block Counter",
+   "executionMult": 0.9270129870129871
+  },
+  "readout": [
+   "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions.",
+   "Built explicitly to counter — soak up territory, then break vertically in transition, at the cost of sustained control of matches."
+  ]
+ },
+ {
+  "xiIndex": 0,
+  "style": "direct",
+  "familiarity": 61,
+  "profile": {
+   "attack": 99,
+   "defense": 75.84060873878109,
+   "defSolidity": 77.23112821930056,
+   "buildup": 55.064363547076525,
+   "press": 75.5025591836735,
+   "creativity": 82.3852270059124,
+   "physical": 80.44,
+   "avgOv": 83.18181818181819,
+   "synergyLabel": "Direct & Vertical",
+   "executionMult": 0.9270129870129871
+  },
+  "readout": [
+   "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Direct, vertical passing bypasses the midfield battle and wins territory fast, at the expense of sustained possession share."
+  ]
+ },
+ {
+  "xiIndex": 0,
+  "style": "parkbus",
+  "familiarity": 60,
+  "profile": {
+   "attack": 71.39401469580451,
+   "defense": 89.17582319157323,
+   "defSolidity": 98.03801655376658,
+   "buildup": 64.1669254617191,
+   "press": 64.05411873840448,
+   "creativity": 73.04995433137823,
+   "physical": 78.76,
+   "avgOv": 83.18181818181819,
+   "synergyLabel": "Park The Bus",
+   "executionMult": 0.922077922077922
+  },
+  "readout": [
+   "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions."
+  ]
+ },
+ {
+  "xiIndex": 0,
+  "style": "wingplay",
+  "familiarity": 62,
+  "profile": {
+   "attack": 99,
+   "defense": 77.92186181845649,
+   "defSolidity": 75.12601766261234,
+   "buildup": 77.94485600644275,
+   "press": 74.79548794063082,
+   "creativity": 95.92616125510952,
+   "physical": 79,
+   "avgOv": 83.18181818181819,
+   "synergyLabel": "Wing Play",
+   "executionMult": 0.931948051948052
+  },
+  "readout": [
+   "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Crosses are coming in early and often from deep, wide areas — a genuine weapon if there's a physical presence and late runners to attack the ball.",
+   "Playing with real width stretches the opposition's back line horizontally, but can open gaps between your own units centrally."
+  ]
+ },
+ {
+  "xiIndex": 0,
+  "style": "balanced",
+  "familiarity": 64,
+  "profile": {
+   "attack": 85.53284657598584,
+   "defense": 81.57257577001509,
+   "defSolidity": 80.15984849728783,
+   "buildup": 75.43532358235824,
+   "press": 73.93945454545457,
+   "creativity": 79.65462308241598,
+   "physical": 79,
+   "avgOv": 83.18181818181819,
+   "synergyLabel": null,
+   "executionMult": 0.9418181818181819
+  },
+  "readout": [
+   "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
+  ]
+ },
+ {
+  "xiIndex": 1,
+  "style": "gegenpress",
+  "familiarity": 52,
+  "profile": {
+   "attack": 96.79149720864652,
+   "defense": 72.72965670726242,
+   "defSolidity": 74.49235260044796,
+   "buildup": 70.49716885672328,
+   "press": 78.48980729746447,
+   "creativity": 75.12988913243233,
+   "physical": 77.30181818181819,
+   "avgOv": 80.63636363636364,
+   "synergyLabel": "Gegenpress",
+   "executionMult": 0.8825974025974026
+  },
+  "readout": [
+   "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "An aggressive front-foot press with a high defensive line — devastating when the trigger is right, but there's real space in behind if the front line doesn't win the ball back quickly.",
+   "The offside trap is live with a high line to support it — a genuine edge if your back line's coordination holds up, but one mistimed step in behind and it's a straight run at goal."
+  ]
+ },
+ {
+  "xiIndex": 1,
+  "style": "possession",
+  "familiarity": 57,
+  "profile": {
+   "attack": 80.12487740646046,
+   "defense": 77.03118678535886,
+   "defSolidity": 78.90580776927521,
+   "buildup": 47.807231491780755,
+   "press": 66.87752092352095,
+   "creativity": 79.8886025442546,
+   "physical": 73.2218181818182,
+   "avgOv": 80.63636363636364,
+   "synergyLabel": "Possession Control",
+   "executionMult": 0.9072727272727272
+  },
+  "readout": [
+   "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
+  ]
+ },
+ {
+  "xiIndex": 1,
+  "style": "counter",
+  "familiarity": 56,
+  "profile": {
+   "attack": 82.33510189168132,
+   "defense": 85.31973791259672,
+   "defSolidity": 90.8841534970123,
+   "buildup": 55.144288835229396,
+   "press": 59.9988660482375,
+   "creativity": 66.73604571579091,
+   "physical": 74.78181818181818,
+   "avgOv": 80.63636363636364,
+   "synergyLabel": "Low Block Counter",
+   "executionMult": 0.9023376623376623
+  },
+  "readout": [
+   "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions.",
+   "Built explicitly to counter — soak up territory, then break vertically in transition, at the cost of sustained control of matches."
+  ]
+ },
+ {
+  "xiIndex": 1,
+  "style": "direct",
+  "familiarity": 57,
+  "profile": {
+   "attack": 95.41452450015234,
+   "defense": 75.2166413308134,
+   "defSolidity": 76.57755042172249,
+   "buildup": 49.22564531526837,
+   "press": 68.90981183261185,
+   "creativity": 72.70232873242439,
+   "physical": 75.62181818181818,
+   "avgOv": 80.63636363636364,
+   "synergyLabel": "Direct & Vertical",
+   "executionMult": 0.9072727272727272
+  },
+  "readout": [
+   "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Direct, vertical passing bypasses the midfield battle and wins territory fast, at the expense of sustained possession share."
+  ]
+ },
+ {
+  "xiIndex": 1,
+  "style": "parkbus",
+  "familiarity": 56,
+  "profile": {
+   "attack": 65.173567025808,
+   "defense": 88.25233531519413,
+   "defSolidity": 94.23784180870064,
+   "buildup": 57.63772240033026,
+   "press": 57.72497513914659,
+   "creativity": 63.97055821028005,
+   "physical": 73.94181818181819,
+   "avgOv": 80.63636363636364,
+   "synergyLabel": "Park The Bus",
+   "executionMult": 0.9023376623376623
+  },
+  "readout": [
+   "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions."
+  ]
+ },
+ {
+  "xiIndex": 1,
+  "style": "wingplay",
+  "familiarity": 57,
+  "profile": {
+   "attack": 99,
+   "defense": 76.84973223990433,
+   "defSolidity": 74.12791405808615,
+   "buildup": 69.6706934558719,
+   "press": 67.8301572871573,
+   "creativity": 83.93344857438312,
+   "physical": 74.18181818181819,
+   "avgOv": 80.63636363636364,
+   "synergyLabel": "Wing Play",
+   "executionMult": 0.9072727272727272
+  },
+  "readout": [
+   "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Crosses are coming in early and often from deep, wide areas — a genuine weapon if there's a physical presence and late runners to attack the ball.",
+   "Playing with real width stretches the opposition's back line horizontally, but can open gaps between your own units centrally."
+  ]
+ },
+ {
+  "xiIndex": 1,
+  "style": "balanced",
+  "familiarity": 60,
+  "profile": {
+   "attack": 78.4269706077923,
+   "defense": 80.87002691013882,
+   "defSolidity": 79.48691002702193,
+   "buildup": 67.80970168445415,
+   "press": 67.32339723768298,
+   "creativity": 69.930355110863,
+   "physical": 74.18181818181819,
+   "avgOv": 80.63636363636364,
+   "synergyLabel": null,
+   "executionMult": 0.922077922077922
+  },
+  "readout": [
+   "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
+  ]
+ },
+ {
+  "xiIndex": 2,
+  "style": "gegenpress",
+  "familiarity": 52,
+  "profile": {
+   "attack": 93.84075165137294,
+   "defense": 68.27849966167263,
+   "defSolidity": 70.47495453658111,
+   "buildup": 72.08377488372597,
+   "press": 78.09053704390848,
+   "creativity": 79.84405927347404,
+   "physical": 74.30181818181819,
+   "avgOv": 75,
+   "synergyLabel": "Gegenpress",
+   "executionMult": 0.8825974025974026
+  },
+  "readout": [
+   "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "An aggressive front-foot press with a high defensive line — devastating when the trigger is right, but there's real space in behind if the front line doesn't win the ball back quickly.",
+   "The offside trap is live with a high line to support it — a genuine edge if your back line's coordination holds up, but one mistimed step in behind and it's a straight run at goal."
+  ]
+ },
+ {
+  "xiIndex": 2,
+  "style": "possession",
+  "familiarity": 57,
+  "profile": {
+   "attack": 77.04406835723009,
+   "defense": 72.45558597304421,
+   "defSolidity": 74.40508042479843,
+   "buildup": 48.757957492380804,
+   "press": 66.46708802308804,
+   "creativity": 84.66916413659789,
+   "physical": 70.2218181818182,
+   "avgOv": 75,
+   "synergyLabel": "Possession Control",
+   "executionMult": 0.9072727272727272
+  },
+  "readout": [
+   "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
+  ]
+ },
+ {
+  "xiIndex": 2,
+  "style": "counter",
+  "familiarity": 57,
+  "profile": {
+   "attack": 79.82142209458587,
+   "defense": 81.21076779122603,
+   "defSolidity": 87.00723243769067,
+   "buildup": 56.73909793642522,
+   "press": 59.91657893217895,
+   "creativity": 71.90361939414895,
+   "physical": 71.78181818181818,
+   "avgOv": 75,
+   "synergyLabel": "Low Block Counter",
+   "executionMult": 0.9072727272727272
+  },
+  "readout": [
+   "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions.",
+   "Built explicitly to counter — soak up territory, then break vertically in transition, at the cost of sustained control of matches."
+  ]
+ },
+ {
+  "xiIndex": 2,
+  "style": "direct",
+  "familiarity": 57,
+  "profile": {
+   "attack": 92.39498402390286,
+   "defense": 70.64104051849876,
+   "defSolidity": 72.00194960940784,
+   "buildup": 50.377228921629005,
+   "press": 68.49937893217894,
+   "creativity": 77.5671346126164,
+   "physical": 72.62181818181818,
+   "avgOv": 75,
+   "synergyLabel": "Direct & Vertical",
+   "executionMult": 0.9072727272727272
+  },
+  "readout": [
+   "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Direct, vertical passing bypasses the midfield battle and wins territory fast, at the expense of sustained possession share."
+  ]
+ },
+ {
+  "xiIndex": 2,
+  "style": "parkbus",
+  "familiarity": 57,
+  "profile": {
+   "attack": 62.37152010883933,
+   "defense": 84.15940415486241,
+   "defSolidity": 92.21396981142807,
+   "buildup": 59.2322630612535,
+   "press": 57.63025165945167,
+   "creativity": 69.0773371839495,
+   "physical": 70.94181818181819,
+   "avgOv": 75,
+   "synergyLabel": "Park The Bus",
+   "executionMult": 0.9072727272727272
+  },
+  "readout": [
+   "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions."
+  ]
+ },
+ {
+  "xiIndex": 2,
+  "style": "wingplay",
+  "familiarity": 58,
+  "profile": {
+   "attack": 97.55931424857013,
+   "defense": 72.6672629755783,
+   "defSolidity": 69.93063959895491,
+   "buildup": 71.59069880497823,
+   "press": 67.78645062873636,
+   "creativity": 89.55690366087045,
+   "physical": 71.18181818181819,
+   "avgOv": 75,
+   "synergyLabel": "Wing Play",
+   "executionMult": 0.9122077922077922
+  },
+  "readout": [
+   "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Crosses are coming in early and often from deep, wide areas — a genuine weapon if there's a physical presence and late runners to attack the ball.",
+   "Playing with real width stretches the opposition's back line horizontally, but can open gaps between your own units centrally."
+  ]
+ },
+ {
+  "xiIndex": 2,
+  "style": "balanced",
+  "familiarity": 61,
+  "profile": {
+   "attack": 75.73675602563387,
+   "defense": 76.62769658058308,
+   "defSolidity": 75.23717710006359,
+   "buildup": 69.67236865115082,
+   "press": 67.26435662749951,
+   "creativity": 75.24128601029372,
+   "physical": 71.18181818181819,
+   "avgOv": 75,
+   "synergyLabel": null,
+   "executionMult": 0.9270129870129871
+  },
+  "readout": [
+   "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
+  ]
+ },
+ {
+  "xiIndex": 3,
+  "style": "gegenpress",
+  "familiarity": 53,
+  "profile": {
+   "attack": 93.42310690840354,
+   "defense": 68.68386227465123,
+   "defSolidity": 70.82191794256727,
+   "buildup": 70.63602050115388,
+   "press": 76.04350006184292,
+   "creativity": 75.67381577438405,
+   "physical": 73.12,
+   "avgOv": 73.72727272727273,
+   "synergyLabel": "Gegenpress",
+   "executionMult": 0.8875324675324675
+  },
+  "readout": [
+   "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "An aggressive front-foot press with a high defensive line — devastating when the trigger is right, but there's real space in behind if the front line doesn't win the ball back quickly.",
+   "The offside trap is live with a high line to support it — a genuine edge if your back line's coordination holds up, but one mistimed step in behind and it's a straight run at goal."
+  ]
+ },
+ {
+  "xiIndex": 3,
+  "style": "possession",
+  "familiarity": 58,
+  "profile": {
+   "attack": 76.49086936557302,
+   "defense": 72.87394187108873,
+   "defSolidity": 74.9147290271953,
+   "buildup": 47.91429786419243,
+   "press": 64.07318573490004,
+   "creativity": 80.70896474174758,
+   "physical": 69.04,
+   "avgOv": 73.72727272727273,
+   "synergyLabel": "Possession Control",
+   "executionMult": 0.9122077922077922
+  },
+  "readout": [
+   "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
+  ]
+ },
+ {
+  "xiIndex": 3,
+  "style": "counter",
+  "familiarity": 58,
+  "profile": {
+   "attack": 79.28417806392028,
+   "defense": 81.67674706589393,
+   "defSolidity": 87.707454136601,
+   "buildup": 55.53939161928222,
+   "press": 57.48704547515978,
+   "creativity": 67.65723171135456,
+   "physical": 70.6,
+   "avgOv": 73.72727272727273,
+   "synergyLabel": "Low Block Counter",
+   "executionMult": 0.9122077922077922
+  },
+  "readout": [
+   "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions.",
+   "Built explicitly to counter — soak up territory, then break vertically in transition, at the cost of sustained control of matches."
+  ]
+ },
+ {
+  "xiIndex": 3,
+  "style": "direct",
+  "familiarity": 58,
+  "profile": {
+   "attack": 91.85450102199516,
+   "defense": 71.04952628667314,
+   "defSolidity": 72.41783797498483,
+   "buildup": 49.308107637951764,
+   "press": 66.1165311894455,
+   "creativity": 73.15677041362817,
+   "physical": 71.44,
+   "avgOv": 73.72727272727273,
+   "synergyLabel": "Direct & Vertical",
+   "executionMult": 0.9122077922077922
+  },
+  "readout": [
+   "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Direct, vertical passing bypasses the midfield battle and wins territory fast, at the expense of sustained possession share."
+  ]
+ },
+ {
+  "xiIndex": 3,
+  "style": "parkbus",
+  "familiarity": 58,
+  "profile": {
+   "attack": 61.65951806127691,
+   "defense": 84.64142239056926,
+   "defSolidity": 91.13836899951588,
+   "buildup": 58.06233685672326,
+   "press": 55.188281838796144,
+   "creativity": 64.92878001147173,
+   "physical": 69.76,
+   "avgOv": 73.72727272727273,
+   "synergyLabel": "Park The Bus",
+   "executionMult": 0.9122077922077922
+  },
+  "readout": [
+   "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions."
+  ]
+ },
+ {
+  "xiIndex": 3,
+  "style": "wingplay",
+  "familiarity": 59,
+  "profile": {
+   "attack": 96.77694373599887,
+   "defense": 73.08476298518143,
+   "defSolidity": 70.33333441375287,
+   "buildup": 70.18067757909625,
+   "press": 65.38282312925172,
+   "creativity": 85.03491739329306,
+   "physical": 70,
+   "avgOv": 73.72727272727273,
+   "synergyLabel": "Wing Play",
+   "executionMult": 0.9171428571428571
+  },
+  "readout": [
+   "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Crosses are coming in early and often from deep, wide areas — a genuine weapon if there's a physical presence and late runners to attack the ball.",
+   "Playing with real width stretches the opposition's back line horizontally, but can open gaps between your own units centrally."
+  ]
+ },
+ {
+  "xiIndex": 3,
+  "style": "balanced",
+  "familiarity": 62,
+  "profile": {
+   "attack": 74.99062860875893,
+   "defense": 77.06039515862835,
+   "defSolidity": 75.66247308070626,
+   "buildup": 68.29426051176546,
+   "press": 64.80737167594313,
+   "creativity": 70.8306660058988,
+   "physical": 70,
+   "avgOv": 73.72727272727273,
+   "synergyLabel": null,
+   "executionMult": 0.931948051948052
+  },
+  "readout": [
+   "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
+  ]
+ },
+ {
+  "xiIndex": 4,
+  "style": "gegenpress",
+  "familiarity": 54,
+  "profile": {
+   "attack": 94.075978768112,
+   "defense": 68.2173297197725,
+   "defSolidity": 70.18839771364887,
+   "buildup": 65.13962823862535,
+   "press": 73.6991666549644,
+   "creativity": 71.99149726286976,
+   "physical": 70.2109090909091,
+   "avgOv": 71.45454545454545,
+   "synergyLabel": "Gegenpress",
+   "executionMult": 0.8924675324675324
+  },
+  "readout": [
+   "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "An aggressive front-foot press with a high defensive line — devastating when the trigger is right, but there's real space in behind if the front line doesn't win the ball back quickly.",
+   "The offside trap is live with a high line to support it — a genuine edge if your back line's coordination holds up, but one mistimed step in behind and it's a straight run at goal."
+  ]
+ },
+ {
+  "xiIndex": 4,
+  "style": "possession",
+  "familiarity": 59,
+  "profile": {
+   "attack": 77.1550779693931,
+   "defense": 72.39628881937539,
+   "defSolidity": 74.54390798934405,
+   "buildup": 44.645675045038324,
+   "press": 61.612346938775524,
+   "creativity": 77.11903212132437,
+   "physical": 66.1309090909091,
+   "avgOv": 71.45454545454545,
+   "synergyLabel": "Possession Control",
+   "executionMult": 0.9171428571428571
+  },
+  "readout": [
+   "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
+  ]
+ },
+ {
+  "xiIndex": 4,
+  "style": "counter",
+  "familiarity": 59,
+  "profile": {
+   "attack": 79.99766821765006,
+   "defense": 81.24671739080395,
+   "defSolidity": 87.51386024794681,
+   "buildup": 51.04115736469887,
+   "press": 54.990575510204096,
+   "creativity": 63.824576998391926,
+   "physical": 67.69090909090909,
+   "avgOv": 71.45454545454545,
+   "synergyLabel": "Low Block Counter",
+   "executionMult": 0.9171428571428571
+  },
+  "readout": [
+   "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions.",
+   "Built explicitly to counter — soak up territory, then break vertically in transition, at the cost of sustained control of matches."
+  ]
+ },
+ {
+  "xiIndex": 4,
+  "style": "direct",
+  "familiarity": 59,
+  "profile": {
+   "attack": 92.65812969275069,
+   "defense": 70.56200310508967,
+   "defSolidity": 71.93771739080395,
+   "buildup": 45.30170699620337,
+   "press": 63.66674693877552,
+   "creativity": 69.28749138379818,
+   "physical": 68.53090909090909,
+   "avgOv": 71.45454545454545,
+   "synergyLabel": "Direct & Vertical",
+   "executionMult": 0.9171428571428571
+  },
+  "readout": [
+   "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Direct, vertical passing bypasses the midfield battle and wins territory fast, at the expense of sustained possession share."
+  ]
+ },
+ {
+  "xiIndex": 4,
+  "style": "parkbus",
+  "familiarity": 58,
+  "profile": {
+   "attack": 61.85479056462986,
+   "defense": 83.77421128516912,
+   "defSolidity": 90.27115789411572,
+   "buildup": 53.34077594418088,
+   "press": 52.39591243042673,
+   "creativity": 60.77138974049978,
+   "physical": 66.8509090909091,
+   "avgOv": 71.45454545454545,
+   "synergyLabel": "Park The Bus",
+   "executionMult": 0.9122077922077922
+  },
+  "readout": [
+   "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions."
+  ]
+ },
+ {
+  "xiIndex": 4,
+  "style": "wingplay",
+  "familiarity": 60,
+  "profile": {
+   "attack": 97.54550918458446,
+   "defense": 72.60143128864662,
+   "defSolidity": 69.83519752241286,
+   "buildup": 64.84035803279575,
+   "press": 62.91205936920224,
+   "creativity": 81.33383992691329,
+   "physical": 67.0909090909091,
+   "avgOv": 71.45454545454545,
+   "synergyLabel": "Wing Play",
+   "executionMult": 0.922077922077922
+  },
+  "readout": [
+   "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Crosses are coming in early and often from deep, wide areas — a genuine weapon if there's a physical presence and late runners to attack the ball.",
+   "Playing with real width stretches the opposition's back line horizontally, but can open gaps between your own units centrally."
+  ]
+ },
+ {
+  "xiIndex": 4,
+  "style": "balanced",
+  "familiarity": 62,
+  "profile": {
+   "attack": 75.16742589721845,
+   "defense": 76.17441752589038,
+   "defSolidity": 74.7764954479683,
+   "buildup": 62.759780892374934,
+   "press": 61.954575139146584,
+   "creativity": 66.55209565237712,
+   "physical": 67.0909090909091,
+   "avgOv": 71.45454545454545,
+   "synergyLabel": null,
+   "executionMult": 0.931948051948052
+  },
+  "readout": [
+   "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
+  ]
+ },
+ {
+  "xiIndex": 5,
+  "style": "gegenpress",
+  "familiarity": 53,
+  "profile": {
+   "attack": 99,
+   "defense": 69.28424453368983,
+   "defSolidity": 72.00837120155566,
+   "buildup": 76.97396240099187,
+   "press": 83.7826423005566,
+   "creativity": 83.12563876662188,
+   "physical": 79.57454545454546,
+   "avgOv": 80.36363636363636,
+   "synergyLabel": "Gegenpress",
+   "executionMult": 0.8875324675324675
+  },
+  "readout": [
+   "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "An aggressive front-foot press with a high defensive line — devastating when the trigger is right, but there's real space in behind if the front line doesn't win the ball back quickly.",
+   "The offside trap is live with a high line to support it — a genuine edge if your back line's coordination holds up, but one mistimed step in behind and it's a straight run at goal."
+  ]
+ },
+ {
+  "xiIndex": 5,
+  "style": "possession",
+  "familiarity": 58,
+  "profile": {
+   "attack": 83.19011748307284,
+   "defense": 73.49101605714185,
+   "defSolidity": 75.52170563565845,
+   "buildup": 51.711544819333646,
+   "press": 72.02749288806434,
+   "creativity": 87.9999176287562,
+   "physical": 75.49454545454546,
+   "avgOv": 80.36363636363636,
+   "synergyLabel": "Possession Control",
+   "executionMult": 0.9122077922077922
+  },
+  "readout": [
+   "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
+  ]
+ },
+ {
+  "xiIndex": 5,
+  "style": "counter",
+  "familiarity": 58,
+  "profile": {
+   "attack": 86.07353968769732,
+   "defense": 82.29382125194705,
+   "defSolidity": 90.14894390706971,
+   "buildup": 60.704552564222425,
+   "press": 65.4413526283241,
+   "creativity": 75.07209066949436,
+   "physical": 77.05454545454545,
+   "avgOv": 80.36363636363636,
+   "synergyLabel": "Low Block Counter",
+   "executionMult": 0.9122077922077922
+  },
+  "readout": [
+   "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions.",
+   "Built explicitly to counter — soak up territory, then break vertically in transition, at the cost of sustained control of matches."
+  ]
+ },
+ {
+  "xiIndex": 5,
+  "style": "direct",
+  "familiarity": 58,
+  "profile": {
+   "attack": 98.8985167394371,
+   "defense": 71.66660047272626,
+   "defSolidity": 73.03491216103795,
+   "buildup": 53.90758986530593,
+   "press": 74.0708383426098,
+   "creativity": 80.9217787505572,
+   "physical": 77.89454545454545,
+   "avgOv": 80.36363636363636,
+   "synergyLabel": "Direct & Vertical",
+   "executionMult": 0.9122077922077922
+  },
+  "readout": [
+   "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Direct, vertical passing bypasses the midfield battle and wins territory fast, at the expense of sustained possession share."
+  ]
+ },
+ {
+  "xiIndex": 5,
+  "style": "parkbus",
+  "familiarity": 57,
+  "profile": {
+   "attack": 67.95316359269776,
+   "defense": 84.79724616803587,
+   "defSolidity": 92.85181182460153,
+   "buildup": 62.83019670252498,
+   "press": 62.80098614718618,
+   "creativity": 71.69665818886783,
+   "physical": 76.21454545454546,
+   "avgOv": 80.36363636363636,
+   "synergyLabel": "Park The Bus",
+   "executionMult": 0.9072727272727272
+  },
+  "readout": [
+   "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions."
+  ]
+ },
+ {
+  "xiIndex": 5,
+  "style": "wingplay",
+  "familiarity": 59,
+  "profile": {
+   "attack": 99,
+   "defense": 73.70517555663746,
+   "defSolidity": 70.95374698520888,
+   "buildup": 76.33546819635225,
+   "press": 73.38016326530615,
+   "creativity": 93.59446837204622,
+   "physical": 76.45454545454545,
+   "avgOv": 80.36363636363636,
+   "synergyLabel": "Wing Play",
+   "executionMult": 0.9171428571428571
+  },
+  "readout": [
+   "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Crosses are coming in early and often from deep, wide areas — a genuine weapon if there's a physical presence and late runners to attack the ball.",
+   "Playing with real width stretches the opposition's back line horizontally, but can open gaps between your own units centrally."
+  ]
+ },
+ {
+  "xiIndex": 5,
+  "style": "balanced",
+  "familiarity": 61,
+  "profile": {
+   "attack": 81.61348002388466,
+   "defense": 77.27941663355074,
+   "defSolidity": 75.88889715303127,
+   "buildup": 73.8902502070207,
+   "press": 72.54759492888067,
+   "creativity": 78.15634748983925,
+   "physical": 76.45454545454545,
+   "avgOv": 80.36363636363636,
+   "synergyLabel": null,
+   "executionMult": 0.9270129870129871
+  },
+  "readout": [
+   "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
+  ]
+ },
+ {
+  "xiIndex": 6,
+  "style": "gegenpress",
+  "familiarity": 50,
+  "profile": {
+   "attack": 92.59422815431559,
+   "defense": 68.64551110101205,
+   "defSolidity": 70.56728724334414,
+   "buildup": 67.00601150978257,
+   "press": 74.98832900432902,
+   "creativity": 70.23173286132419,
+   "physical": 74.84727272727274,
+   "avgOv": 74.45454545454545,
+   "synergyLabel": "Gegenpress",
+   "executionMult": 0.8727272727272728
+  },
+  "readout": [
+   "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "An aggressive front-foot press with a high defensive line — devastating when the trigger is right, but there's real space in behind if the front line doesn't win the ball back quickly.",
+   "The offside trap is live with a high line to support it — a genuine edge if your back line's coordination holds up, but one mistimed step in behind and it's a straight run at goal."
+  ]
+ },
+ {
+  "xiIndex": 6,
+  "style": "possession",
+  "familiarity": 55,
+  "profile": {
+   "attack": 76.42574767666737,
+   "defense": 72.82988770005309,
+   "defSolidity": 74.57961219281123,
+   "buildup": 45.667081052315744,
+   "press": 63.85090702947848,
+   "creativity": 74.71491860952322,
+   "physical": 70.76727272727274,
+   "avgOv": 74.45454545454545,
+   "synergyLabel": "Possession Control",
+   "executionMult": 0.8974025974025974
+  },
+  "readout": [
+   "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
+  ]
+ },
+ {
+  "xiIndex": 6,
+  "style": "counter",
+  "familiarity": 55,
+  "profile": {
+   "attack": 79.03144286482504,
+   "defense": 81.48982276498816,
+   "defSolidity": 86.82438264954804,
+   "buildup": 52.63902552533448,
+   "press": 57.37166027623173,
+   "creativity": 62.32252248746797,
+   "physical": 72.32727272727273,
+   "avgOv": 74.45454545454545,
+   "synergyLabel": "Low Block Counter",
+   "executionMult": 0.8974025974025974
+  },
+  "readout": [
+   "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions.",
+   "Built explicitly to counter — soak up territory, then break vertically in transition, at the cost of sustained control of matches."
+  ]
+ },
+ {
+  "xiIndex": 6,
+  "style": "direct",
+  "familiarity": 55,
+  "profile": {
+   "attack": 91.21416051772997,
+   "defense": 71.0350825052479,
+   "defSolidity": 72.3811864013518,
+   "buildup": 46.72779782850465,
+   "press": 65.8610888476603,
+   "creativity": 67.76454714621518,
+   "physical": 73.16727272727273,
+   "avgOv": 74.45454545454545,
+   "synergyLabel": "Direct & Vertical",
+   "executionMult": 0.8974025974025974
+  },
+  "readout": [
+   "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Direct, vertical passing bypasses the midfield battle and wins territory fast, at the expense of sustained possession share."
+  ]
+ },
+ {
+  "xiIndex": 6,
+  "style": "parkbus",
+  "familiarity": 54,
+  "profile": {
+   "attack": 61.935713179115034,
+   "defense": 83.9422071854397,
+   "defSolidity": 89.42592435715687,
+   "buildup": 54.83927341594309,
+   "press": 54.807139476396635,
+   "creativity": 59.374552113731916,
+   "physical": 71.48727272727274,
+   "avgOv": 74.45454545454545,
+   "synergyLabel": "Park The Bus",
+   "executionMult": 0.8924675324675324
+  },
+  "readout": [
+   "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions."
+  ]
+ },
+ {
+  "xiIndex": 6,
+  "style": "wingplay",
+  "familiarity": 56,
+  "profile": {
+   "attack": 95.99257747605212,
+   "defense": 73.04993185103014,
+   "defSolidity": 70.34291886401715,
+   "buildup": 66.66560553968178,
+   "press": 65.14949536178109,
+   "creativity": 78.70386012873956,
+   "physical": 71.72727272727273,
+   "avgOv": 74.45454545454545,
+   "synergyLabel": "Wing Play",
+   "executionMult": 0.9023376623376623
+  },
+  "readout": [
+   "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Crosses are coming in early and often from deep, wide areas — a genuine weapon if there's a physical presence and late runners to attack the ball.",
+   "Playing with real width stretches the opposition's back line horizontally, but can open gaps between your own units centrally."
+  ]
+ },
+ {
+  "xiIndex": 6,
+  "style": "balanced",
+  "familiarity": 58,
+  "profile": {
+   "attack": 74.72714222079888,
+   "defense": 76.58560456856864,
+   "defSolidity": 75.21729288025696,
+   "buildup": 64.54141082679696,
+   "press": 64.26576293547724,
+   "creativity": 64.98225152355482,
+   "physical": 71.72727272727273,
+   "avgOv": 74.45454545454545,
+   "synergyLabel": null,
+   "executionMult": 0.9122077922077922
+  },
+  "readout": [
+   "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
+  ]
+ },
+ {
+  "xiIndex": 7,
+  "style": "gegenpress",
+  "familiarity": 55,
+  "profile": {
+   "attack": 99,
+   "defense": 74.55023749258802,
+   "defSolidity": 77.18566363807396,
+   "buildup": 78.74411488295176,
+   "press": 86.41151573902289,
+   "creativity": 84.20084140871994,
+   "physical": 84.40636363636364,
+   "avgOv": 84.72727272727273,
+   "synergyLabel": "Gegenpress",
+   "executionMult": 0.8974025974025974
+  },
+  "readout": [
+   "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "An aggressive front-foot press with a high defensive line — devastating when the trigger is right, but there's real space in behind if the front line doesn't win the ball back quickly.",
+   "The offside trap is live with a high line to support it — a genuine edge if your back line's coordination holds up, but one mistimed step in behind and it's a straight run at goal."
+  ]
+ },
+ {
+  "xiIndex": 7,
+  "style": "possession",
+  "familiarity": 60,
+  "profile": {
+   "attack": 85.66021272101511,
+   "defense": 78.90529411016945,
+   "defSolidity": 81.0462955023638,
+   "buildup": 52.81858845168727,
+   "press": 74.14082426303857,
+   "creativity": 89.43436327705882,
+   "physical": 80.32636363636364,
+   "avgOv": 84.72727272727273,
+   "synergyLabel": "Possession Control",
+   "executionMult": 0.922077922077922
+  },
+  "readout": [
+   "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
+  ]
+ },
+ {
+  "xiIndex": 7,
+  "style": "counter",
+  "familiarity": 60,
+  "profile": {
+   "attack": 88.65691532098167,
+   "defense": 87.80334605822141,
+   "defSolidity": 96.15327390814926,
+   "buildup": 62.10613950393535,
+   "press": 67.48342166563597,
+   "creativity": 76.03897054970403,
+   "physical": 81.88636363636363,
+   "avgOv": 84.72727272727273,
+   "synergyLabel": "Low Block Counter",
+   "executionMult": 0.922077922077922
+  },
+  "readout": [
+   "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions.",
+   "Built explicitly to counter — soak up territory, then break vertically in transition, at the cost of sustained control of matches."
+  ]
+ },
+ {
+  "xiIndex": 7,
+  "style": "direct",
+  "familiarity": 60,
+  "profile": {
+   "attack": 99,
+   "defense": 77.06113826601361,
+   "defSolidity": 78.44425514913048,
+   "buildup": 55.15406854345586,
+   "press": 76.20627880849311,
+   "creativity": 81.87045302993819,
+   "physical": 82.72636363636363,
+   "avgOv": 84.72727272727273,
+   "synergyLabel": "Direct & Vertical",
+   "executionMult": 0.922077922077922
+  },
+  "readout": [
+   "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Direct, vertical passing bypasses the midfield battle and wins territory fast, at the expense of sustained possession share."
+  ]
+ },
+ {
+  "xiIndex": 7,
+  "style": "parkbus",
+  "familiarity": 59,
+  "profile": {
+   "attack": 70.00929228230532,
+   "defense": 90.31412694249734,
+   "defSolidity": 98.90469837106876,
+   "buildup": 64.24652972065809,
+   "press": 64.81104278911567,
+   "creativity": 72.63007004212959,
+   "physical": 81.04636363636364,
+   "avgOv": 84.72727272727273,
+   "synergyLabel": "Park The Bus",
+   "executionMult": 0.9171428571428571
+  },
+  "readout": [
+   "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions."
+  ]
+ },
+ {
+  "xiIndex": 7,
+  "style": "wingplay",
+  "familiarity": 61,
+  "profile": {
+   "attack": 99,
+   "defense": 79.14220153758187,
+   "defSolidity": 76.3611625765429,
+   "buildup": 78.0443808623918,
+   "press": 75.51099794475368,
+   "creativity": 95.0470039084859,
+   "physical": 81.28636363636363,
+   "avgOv": 84.72727272727273,
+   "synergyLabel": "Wing Play",
+   "executionMult": 0.9270129870129871
+  },
+  "readout": [
+   "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Crosses are coming in early and often from deep, wide areas — a genuine weapon if there's a physical presence and late runners to attack the ball.",
+   "Playing with real width stretches the opposition's back line horizontally, but can open gaps between your own units centrally."
+  ]
+ },
+ {
+  "xiIndex": 7,
+  "style": "balanced",
+  "familiarity": 63,
+  "profile": {
+   "attack": 83.95298325769602,
+   "defense": 82.79549691188717,
+   "defSolidity": 81.39017223656249,
+   "buildup": 75.53585808409413,
+   "press": 74.67543621727481,
+   "creativity": 79.1457944537557,
+   "physical": 81.28636363636363,
+   "avgOv": 84.72727272727273,
+   "synergyLabel": null,
+   "executionMult": 0.9368831168831169
+  },
+  "readout": [
+   "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
+  ]
+ },
+ {
+  "xiIndex": 8,
+  "style": "gegenpress",
+  "familiarity": 51,
+  "profile": {
+   "attack": 91.40617321398148,
+   "defense": 67.96810024807293,
+   "defSolidity": 69.8336160060943,
+   "buildup": 66.61294471184262,
+   "press": 74.09475596051217,
+   "creativity": 69.42104580993121,
+   "physical": 72.12,
+   "avgOv": 73.36363636363636,
+   "synergyLabel": "Gegenpress",
+   "executionMult": 0.8776623376623377
+  },
+  "readout": [
+   "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "An aggressive front-foot press with a high defensive line — devastating when the trigger is right, but there's real space in behind if the front line doesn't win the ball back quickly.",
+   "The offside trap is live with a high line to support it — a genuine edge if your back line's coordination holds up, but one mistimed step in behind and it's a straight run at goal."
+  ]
+ },
+ {
+  "xiIndex": 8,
+  "style": "possession",
+  "familiarity": 56,
+  "profile": {
+   "attack": 75.0259056709757,
+   "defense": 72.13485577520056,
+   "defSolidity": 73.99233735602195,
+   "buildup": 45.45556647550469,
+   "press": 62.70960296846014,
+   "creativity": 74.04922656652445,
+   "physical": 68.04,
+   "avgOv": 73.36363636363636,
+   "synergyLabel": "Possession Control",
+   "executionMult": 0.9023376623376623
+  },
+  "readout": [
+   "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
+  ]
+ },
+ {
+  "xiIndex": 8,
+  "style": "counter",
+  "familiarity": 56,
+  "profile": {
+   "attack": 77.68485818686591,
+   "defense": 80.84241421675901,
+   "defSolidity": 86.4068298011746,
+   "buildup": 52.29918715185805,
+   "press": 56.19472504638222,
+   "creativity": 61.426648639509835,
+   "physical": 69.6,
+   "avgOv": 73.36363636363636,
+   "synergyLabel": "Low Block Counter",
+   "executionMult": 0.9023376623376623
+  },
+  "readout": [
+   "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions.",
+   "Built explicitly to counter — soak up territory, then break vertically in transition, at the cost of sustained control of matches."
+  ]
+ },
+ {
+  "xiIndex": 8,
+  "style": "direct",
+  "familiarity": 56,
+  "profile": {
+   "attack": 89.97135256055829,
+   "defense": 70.33018045052525,
+   "defSolidity": 71.68368694403173,
+   "buildup": 46.42437336762248,
+   "press": 64.7308393320965,
+   "creativity": 66.85392705268751,
+   "physical": 70.44,
+   "avgOv": 73.36363636363636,
+   "synergyLabel": "Direct & Vertical",
+   "executionMult": 0.9023376623376623
+  },
+  "readout": [
+   "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Direct, vertical passing bypasses the midfield battle and wins territory fast, at the expense of sustained possession share."
+  ]
+ },
+ {
+  "xiIndex": 8,
+  "style": "parkbus",
+  "familiarity": 55,
+  "profile": {
+   "attack": 60.3496270638598,
+   "defense": 83.31682934509973,
+   "defSolidity": 89.05023482850521,
+   "buildup": 54.52337410312461,
+   "press": 53.62593032364464,
+   "creativity": 58.47438171742241,
+   "physical": 68.76,
+   "avgOv": 73.36363636363636,
+   "synergyLabel": "Park The Bus",
+   "executionMult": 0.8974025974025974
+  },
+  "readout": [
+   "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions."
+  ]
+ },
+ {
+  "xiIndex": 8,
+  "style": "wingplay",
+  "familiarity": 57,
+  "profile": {
+   "attack": 94.73631522046328,
+   "defense": 72.34792116634038,
+   "defSolidity": 69.6261029845222,
+   "buildup": 66.28027909990999,
+   "press": 64.0052106782107,
+   "creativity": 78.01564589140195,
+   "physical": 69,
+   "avgOv": 73.36363636363636,
+   "synergyLabel": "Wing Play",
+   "executionMult": 0.9072727272727272
+  },
+  "readout": [
+   "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Crosses are coming in early and often from deep, wide areas — a genuine weapon if there's a physical presence and late runners to attack the ball.",
+   "Playing with real width stretches the opposition's back line horizontally, but can open gaps between your own units centrally."
+  ]
+ },
+ {
+  "xiIndex": 8,
+  "style": "balanced",
+  "familiarity": 59,
+  "profile": {
+   "attack": 73.2175157495443,
+   "defense": 75.88641558498367,
+   "defSolidity": 74.51070129926937,
+   "buildup": 64.164585572843,
+   "press": 63.09651700680275,
+   "creativity": 64.0727209123145,
+   "physical": 69,
+   "avgOv": 73.36363636363636,
+   "synergyLabel": null,
+   "executionMult": 0.9171428571428571
+  },
+  "readout": [
+   "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
+  ]
+ },
+ {
+  "xiIndex": 9,
+  "style": "gegenpress",
+  "familiarity": 55,
+  "profile": {
+   "attack": 99,
+   "defense": 70.0451988187836,
+   "defSolidity": 73.07752311108656,
+   "buildup": 78.11070856922774,
+   "press": 85.8520920531849,
+   "creativity": 85.18840719720085,
+   "physical": 81.02909090909091,
+   "avgOv": 81,
+   "synergyLabel": "Gegenpress",
+   "executionMult": 0.8974025974025974
+  },
+  "readout": [
+   "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "An aggressive front-foot press with a high defensive line — devastating when the trigger is right, but there's real space in behind if the front line doesn't win the ball back quickly.",
+   "The offside trap is live with a high line to support it — a genuine edge if your back line's coordination holds up, but one mistimed step in behind and it's a straight run at goal."
+  ]
+ },
+ {
+  "xiIndex": 9,
+  "style": "possession",
+  "familiarity": 60,
+  "profile": {
+   "attack": 86.52333135982049,
+   "defense": 74.2763831718176,
+   "defSolidity": 76.49313037936679,
+   "buildup": 52.43920904777695,
+   "press": 73.56601844980418,
+   "creativity": 90.3820331145247,
+   "physical": 76.94909090909091,
+   "avgOv": 81,
+   "synergyLabel": "Possession Control",
+   "executionMult": 0.922077922077922
+  },
+  "readout": [
+   "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
+  ]
+ },
+ {
+  "xiIndex": 9,
+  "style": "counter",
+  "familiarity": 60,
+  "profile": {
+   "attack": 89.53645075240067,
+   "defense": 83.17443511986954,
+   "defSolidity": 91.5243629697974,
+   "buildup": 61.59009308832386,
+   "press": 66.90861585240158,
+   "creativity": 77.00921347701366,
+   "physical": 78.5090909090909,
+   "avgOv": 81,
+   "synergyLabel": "Low Block Counter",
+   "executionMult": 0.922077922077922
+  },
+  "readout": [
+   "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions.",
+   "Built explicitly to counter — soak up territory, then break vertically in transition, at the cost of sustained control of matches."
+  ]
+ },
+ {
+  "xiIndex": 9,
+  "style": "direct",
+  "familiarity": 60,
+  "profile": {
+   "attack": 99,
+   "defense": 72.43222732766175,
+   "defSolidity": 73.81534421077863,
+   "buildup": 54.694538561254625,
+   "press": 75.63147299525872,
+   "creativity": 82.90448583706547,
+   "physical": 79.3490909090909,
+   "avgOv": 81,
+   "synergyLabel": "Direct & Vertical",
+   "executionMult": 0.922077922077922
+  },
+  "readout": [
+   "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Direct, vertical passing bypasses the midfield battle and wins territory fast, at the expense of sustained possession share."
+  ]
+ },
+ {
+  "xiIndex": 9,
+  "style": "parkbus",
+  "familiarity": 59,
+  "profile": {
+   "attack": 70.85025293458435,
+   "defense": 85.70999045705497,
+   "defSolidity": 94.3005618856264,
+   "buildup": 63.738764431534285,
+   "press": 64.23931340136056,
+   "creativity": 73.54855243615752,
+   "physical": 77.66909090909091,
+   "avgOv": 81,
+   "synergyLabel": "Park The Bus",
+   "executionMult": 0.9171428571428571
+  },
+  "readout": [
+   "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions."
+  ]
+ },
+ {
+  "xiIndex": 9,
+  "style": "wingplay",
+  "familiarity": 61,
+  "profile": {
+   "attack": 99,
+   "defense": 74.48851614632052,
+   "defSolidity": 71.70747718528156,
+   "buildup": 77.42949688707456,
+   "press": 74.93311570604001,
+   "creativity": 96.22365896353332,
+   "physical": 77.9090909090909,
+   "avgOv": 81,
+   "synergyLabel": "Wing Play",
+   "executionMult": 0.9270129870129871
+  },
+  "readout": [
+   "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Crosses are coming in early and often from deep, wide areas — a genuine weapon if there's a physical presence and late runners to attack the ball.",
+   "Playing with real width stretches the opposition's back line horizontally, but can open gaps between your own units centrally."
+  ]
+ },
+ {
+  "xiIndex": 9,
+  "style": "balanced",
+  "familiarity": 63,
+  "profile": {
+   "attack": 84.86857242618271,
+   "defense": 78.09226261480684,
+   "defSolidity": 76.68693793948216,
+   "buildup": 74.94073786935836,
+   "press": 74.09140112760257,
+   "creativity": 80.16177190542615,
+   "physical": 77.9090909090909,
+   "avgOv": 81,
+   "synergyLabel": null,
+   "executionMult": 0.9368831168831169
+  },
+  "readout": [
+   "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
+  ]
+ },
+ {
+  "xiIndex": 10,
+  "style": "gegenpress",
+  "familiarity": 54,
+  "profile": {
+   "attack": 94.41117493818511,
+   "defense": 73.83607983785888,
+   "defSolidity": 75.4446017951822,
+   "buildup": 68.23557165382668,
+   "press": 77.99686945646945,
+   "creativity": 69.97845023961558,
+   "physical": 75.02909090909091,
+   "avgOv": 77.63636363636364,
+   "synergyLabel": "Gegenpress",
+   "executionMult": 0.8924675324675324
+  },
+  "readout": [
+   "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "An aggressive front-foot press with a high defensive line — devastating when the trigger is right, but there's real space in behind if the front line doesn't win the ball back quickly.",
+   "The offside trap is live with a high line to support it — a genuine edge if your back line's coordination holds up, but one mistimed step in behind and it's a straight run at goal."
+  ]
+ },
+ {
+  "xiIndex": 10,
+  "style": "possession",
+  "familiarity": 59,
+  "profile": {
+   "attack": 77.57593753571825,
+   "defense": 78.17038854782794,
+   "defSolidity": 80.22352244951284,
+   "buildup": 46.500268134853265,
+   "press": 65.7888650793651,
+   "creativity": 75.45238328541461,
+   "physical": 70.94909090909091,
+   "avgOv": 77.63636363636364,
+   "synergyLabel": "Possession Control",
+   "executionMult": 0.9171428571428571
+  },
+  "readout": [
+   "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
+  ]
+ },
+ {
+  "xiIndex": 10,
+  "style": "counter",
+  "familiarity": 59,
+  "profile": {
+   "attack": 80.32008746755025,
+   "defense": 87.02081711925652,
+   "defSolidity": 93.28795997639936,
+   "buildup": 53.56384601503761,
+   "press": 59.16709365079367,
+   "creativity": 62.02257272739787,
+   "physical": 72.5090909090909,
+   "avgOv": 77.63636363636364,
+   "synergyLabel": "Low Block Counter",
+   "executionMult": 0.9171428571428571
+  },
+  "readout": [
+   "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions.",
+   "Built explicitly to counter — soak up territory, then break vertically in transition, at the cost of sustained control of matches."
+  ]
+ },
+ {
+  "xiIndex": 10,
+  "style": "direct",
+  "familiarity": 59,
+  "profile": {
+   "attack": 92.7023639003093,
+   "defense": 76.33610283354223,
+   "defSolidity": 77.71181711925651,
+   "buildup": 47.548115527528516,
+   "press": 67.84326507936508,
+   "creativity": 67.10298267958443,
+   "physical": 73.3490909090909,
+   "avgOv": 77.63636363636364,
+   "synergyLabel": "Direct & Vertical",
+   "executionMult": 0.9171428571428571
+  },
+  "readout": [
+   "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Direct, vertical passing bypasses the midfield battle and wins territory fast, at the expense of sustained possession share."
+  ]
+ },
+ {
+  "xiIndex": 10,
+  "style": "parkbus",
+  "familiarity": 58,
+  "profile": {
+   "attack": 62.37854877880131,
+   "defense": 89.51724109154843,
+   "defSolidity": 96.01418770049504,
+   "buildup": 55.822910505589505,
+   "press": 56.54995709475711,
+   "creativity": 59.25830847232643,
+   "physical": 71.66909090909091,
+   "avgOv": 77.63636363636364,
+   "synergyLabel": "Park The Bus",
+   "executionMult": 0.9122077922077922
+  },
+  "readout": [
+   "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions."
+  ]
+ },
+ {
+  "xiIndex": 10,
+  "style": "wingplay",
+  "familiarity": 60,
+  "profile": {
+   "attack": 96.99212921020796,
+   "defense": 78.4066009391724,
+   "defSolidity": 75.64036717293864,
+   "buildup": 67.84629938482571,
+   "press": 67.111050986051,
+   "creativity": 78.315529795591,
+   "physical": 71.9090909090909,
+   "avgOv": 77.63636363636364,
+   "synergyLabel": "Wing Play",
+   "executionMult": 0.922077922077922
+  },
+  "readout": [
+   "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Crosses are coming in early and often from deep, wide areas — a genuine weapon if there's a physical presence and late runners to attack the ball.",
+   "Playing with real width stretches the opposition's back line horizontally, but can open gaps between your own units centrally."
+  ]
+ },
+ {
+  "xiIndex": 10,
+  "style": "balanced",
+  "familiarity": 62,
+  "profile": {
+   "attack": 75.36352972248062,
+   "defense": 82.04172702056263,
+   "defSolidity": 80.64380494264056,
+   "buildup": 65.66926853791372,
+   "press": 66.19851370851372,
+   "creativity": 64.54016189166252,
+   "physical": 71.9090909090909,
+   "avgOv": 77.63636363636364,
+   "synergyLabel": null,
+   "executionMult": 0.931948051948052
+  },
+  "readout": [
+   "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
+  ]
+ },
+ {
+  "xiIndex": 11,
+  "style": "gegenpress",
+  "familiarity": 53,
+  "profile": {
+   "attack": 95.43474190017942,
+   "defense": 72.4614419362719,
+   "defSolidity": 74.61042996356012,
+   "buildup": 71.84436152351556,
+   "press": 81.90872784992787,
+   "creativity": 77.03421566124143,
+   "physical": 79.2109090909091,
+   "avgOv": 79,
+   "synergyLabel": "Gegenpress",
+   "executionMult": 0.8875324675324675
+  },
+  "readout": [
+   "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "An aggressive front-foot press with a high defensive line — devastating when the trigger is right, but there's real space in behind if the front line doesn't win the ball back quickly.",
+   "The offside trap is live with a high line to support it — a genuine edge if your back line's coordination holds up, but one mistimed step in behind and it's a straight run at goal."
+  ]
+ },
+ {
+  "xiIndex": 11,
+  "style": "possession",
+  "familiarity": 58,
+  "profile": {
+   "attack": 78.71903738428512,
+   "defense": 76.75654642818904,
+   "defSolidity": 78.73380005517942,
+   "buildup": 48.63825042488921,
+   "press": 70.10147955747958,
+   "creativity": 82.32801886591312,
+   "physical": 75.1309090909091,
+   "avgOv": 79,
+   "synergyLabel": "Possession Control",
+   "executionMult": 0.9122077922077922
+  },
+  "readout": [
+   "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
+  ]
+ },
+ {
+  "xiIndex": 11,
+  "style": "counter",
+  "familiarity": 58,
+  "profile": {
+   "attack": 81.45827699438505,
+   "defense": 85.55935162299424,
+   "defSolidity": 91.59005869370131,
+   "buildup": 56.52413965823652,
+   "press": 63.515339297739324,
+   "creativity": 69.20194083918001,
+   "physical": 76.69090909090909,
+   "avgOv": 79,
+   "synergyLabel": "Low Block Counter",
+   "executionMult": 0.9122077922077922
+  },
+  "readout": [
+   "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions.",
+   "Built explicitly to counter — soak up territory, then break vertically in transition, at the cost of sustained control of matches."
+  ]
+ },
+ {
+  "xiIndex": 11,
+  "style": "direct",
+  "familiarity": 58,
+  "profile": {
+   "attack": 93.87580471419058,
+   "defense": 74.93213084377345,
+   "defSolidity": 76.30044253208514,
+   "buildup": 50.185007922739416,
+   "press": 72.14482501202502,
+   "creativity": 74.49138608883331,
+   "physical": 77.53090909090909,
+   "avgOv": 79,
+   "synergyLabel": "Direct & Vertical",
+   "executionMult": 0.9122077922077922
+  },
+  "readout": [
+   "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Direct, vertical passing bypasses the midfield battle and wins territory fast, at the expense of sustained possession share."
+  ]
+ },
+ {
+  "xiIndex": 11,
+  "style": "parkbus",
+  "familiarity": 58,
+  "profile": {
+   "attack": 63.945760285884276,
+   "defense": 88.52402694766957,
+   "defSolidity": 95.02097355661618,
+   "buildup": 59.03649620708664,
+   "press": 61.216575661375686,
+   "creativity": 66.6276861687433,
+   "physical": 75.8509090909091,
+   "avgOv": 79,
+   "synergyLabel": "Park The Bus",
+   "executionMult": 0.9122077922077922
+  },
+  "readout": [
+   "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions."
+  ]
+ },
+ {
+  "xiIndex": 11,
+  "style": "wingplay",
+  "familiarity": 59,
+  "profile": {
+   "attack": 98.48079837574996,
+   "defense": 76.98837252137767,
+   "defSolidity": 74.2369439499491,
+   "buildup": 71.35410045112782,
+   "press": 71.44373015873018,
+   "creativity": 85.92522488644141,
+   "physical": 76.0909090909091,
+   "avgOv": 79,
+   "synergyLabel": "Wing Play",
+   "executionMult": 0.9171428571428571
+  },
+  "readout": [
+   "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Crosses are coming in early and often from deep, wide areas — a genuine weapon if there's a physical presence and late runners to attack the ball.",
+   "Playing with real width stretches the opposition's back line horizontally, but can open gaps between your own units centrally."
+  ]
+ },
+ {
+  "xiIndex": 11,
+  "style": "balanced",
+  "familiarity": 61,
+  "profile": {
+   "attack": 76.73066110092617,
+   "defense": 80.597946785677,
+   "defSolidity": 79.20742730515752,
+   "buildup": 69.06844826141601,
+   "press": 70.59032227032229,
+   "creativity": 71.92603070061229,
+   "physical": 76.0909090909091,
+   "avgOv": 79,
+   "synergyLabel": null,
+   "executionMult": 0.9270129870129871
+  },
+  "readout": [
+   "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
+  ]
+ },
+ {
+  "xiIndex": 12,
+  "style": "gegenpress",
+  "familiarity": 57,
+  "profile": {
+   "attack": 99,
+   "defense": 74.18333329199233,
+   "defSolidity": 76.7420140829153,
+   "buildup": 77.55447186664608,
+   "press": 84.331168013468,
+   "creativity": 83.72142168171847,
+   "physical": 80.48363636363636,
+   "avgOv": 81.0909090909091,
+   "synergyLabel": "Gegenpress",
+   "executionMult": 0.9072727272727272
+  },
+  "readout": [
+   "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "An aggressive front-foot press with a high defensive line — devastating when the trigger is right, but there's real space in behind if the front line doesn't win the ball back quickly.",
+   "The offside trap is live with a high line to support it — a genuine edge if your back line's coordination holds up, but one mistimed step in behind and it's a straight run at goal."
+  ]
+ },
+ {
+  "xiIndex": 12,
+  "style": "possession",
+  "familiarity": 62,
+  "profile": {
+   "attack": 84.64091274657557,
+   "defense": 78.53078620535494,
+   "defSolidity": 80.88033437913745,
+   "buildup": 52.15305663925208,
+   "press": 71.40706782106783,
+   "creativity": 89.67416611454749,
+   "physical": 76.40363636363637,
+   "avgOv": 81.0909090909091,
+   "synergyLabel": "Possession Control",
+   "executionMult": 0.931948051948052
+  },
+  "readout": [
+   "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
+  ]
+ },
+ {
+  "xiIndex": 12,
+  "style": "counter",
+  "familiarity": 62,
+  "profile": {
+   "attack": 87.65585626852267,
+   "defense": 87.52408490665366,
+   "defSolidity": 96.37759140016014,
+   "buildup": 61.09660133971291,
+   "press": 64.6784028860029,
+   "creativity": 75.67109688579616,
+   "physical": 77.96363636363635,
+   "avgOv": 81.0909090909091,
+   "synergyLabel": "Low Block Counter",
+   "executionMult": 0.931948051948052
+  },
+  "readout": [
+   "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions.",
+   "Built explicitly to counter — soak up territory, then break vertically in transition, at the cost of sustained control of matches."
+  ]
+ },
+ {
+  "xiIndex": 12,
+  "style": "direct",
+  "familiarity": 62,
+  "profile": {
+   "attack": 99,
+   "defense": 76.66689010145885,
+   "defSolidity": 78.06481217938092,
+   "buildup": 54.25348400679117,
+   "press": 73.49463145743147,
+   "creativity": 81.10651101478274,
+   "physical": 78.80363636363636,
+   "avgOv": 81.0909090909091,
+   "synergyLabel": "Direct & Vertical",
+   "executionMult": 0.931948051948052
+  },
+  "readout": [
+   "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Direct, vertical passing bypasses the midfield battle and wins territory fast, at the expense of sustained possession share."
+  ]
+ },
+ {
+  "xiIndex": 12,
+  "style": "parkbus",
+  "familiarity": 62,
+  "profile": {
+   "attack": 68.99639573430628,
+   "defense": 90.55291607548483,
+   "defSolidity": 99,
+   "buildup": 63.62731181266951,
+   "press": 62.32989379509381,
+   "creativity": 72.89641257332657,
+   "physical": 77.12363636363636,
+   "avgOv": 81.0909090909091,
+   "synergyLabel": "Park The Bus",
+   "executionMult": 0.931948051948052
+  },
+  "readout": [
+   "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions."
+  ]
+ },
+ {
+  "xiIndex": 12,
+  "style": "wingplay",
+  "familiarity": 63,
+  "profile": {
+   "attack": 99,
+   "defense": 78.7592638010145,
+   "defSolidity": 75.94861445036514,
+   "buildup": 76.88043133287766,
+   "press": 72.76892616642617,
+   "creativity": 93.9775103176409,
+   "physical": 77.36363636363636,
+   "avgOv": 81.0909090909091,
+   "synergyLabel": "Wing Play",
+   "executionMult": 0.9368831168831169
+  },
+  "readout": [
+   "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Crosses are coming in early and often from deep, wide areas — a genuine weapon if there's a physical presence and late runners to attack the ball.",
+   "Playing with real width stretches the opposition's back line horizontally, but can open gaps between your own units centrally."
+  ]
+ },
+ {
+  "xiIndex": 12,
+  "style": "balanced",
+  "familiarity": 66,
+  "profile": {
+   "attack": 82.94700070940486,
+   "defense": 82.85893035422687,
+   "defSolidity": 81.4313978866944,
+   "buildup": 74.78888646837034,
+   "press": 72.2534102934103,
+   "creativity": 79.01117922449053,
+   "physical": 77.36363636363636,
+   "avgOv": 81.0909090909091,
+   "synergyLabel": null,
+   "executionMult": 0.9516883116883117
+  },
+  "readout": [
+   "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
+  ]
+ },
+ {
+  "xiIndex": 13,
+  "style": "gegenpress",
+  "familiarity": 59,
+  "profile": {
+   "attack": 99,
+   "defense": 73.99575601855535,
+   "defSolidity": 76.2921780933447,
+   "buildup": 75.69649357070095,
+   "press": 83.36590793650794,
+   "creativity": 82.30255036136134,
+   "physical": 75.2109090909091,
+   "avgOv": 78.18181818181819,
+   "synergyLabel": "Gegenpress",
+   "executionMult": 0.9171428571428571
+  },
+  "readout": [
+   "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "An aggressive front-foot press with a high defensive line — devastating when the trigger is right, but there's real space in behind if the front line doesn't win the ball back quickly.",
+   "The offside trap is live with a high line to support it — a genuine edge if your back line's coordination holds up, but one mistimed step in behind and it's a straight run at goal."
+  ]
+ },
+ {
+  "xiIndex": 13,
+  "style": "possession",
+  "familiarity": 64,
+  "profile": {
+   "attack": 81.13815046908552,
+   "defense": 78.34112470214718,
+   "defSolidity": 80.89970427772822,
+   "buildup": 51.08815672651815,
+   "press": 69.8114006734007,
+   "creativity": 88.73384336813712,
+   "physical": 71.1309090909091,
+   "avgOv": 78.18181818181819,
+   "synergyLabel": "Possession Control",
+   "executionMult": 0.9418181818181819
+  },
+  "readout": [
+   "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
+  ]
+ },
+ {
+  "xiIndex": 13,
+  "style": "counter",
+  "familiarity": 63,
+  "profile": {
+   "attack": 83.68230227407219,
+   "defense": 86.97154447192233,
+   "defSolidity": 94.20636409674195,
+   "buildup": 59.231821654135345,
+   "press": 62.68129745069748,
+   "creativity": 73.8024773250129,
+   "physical": 72.69090909090909,
+   "avgOv": 78.18181818181819,
+   "synergyLabel": "Low Block Counter",
+   "executionMult": 0.9368831168831169
+  },
+  "readout": [
+   "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions.",
+   "Built explicitly to counter — soak up territory, then break vertically in transition, at the cost of sustained control of matches."
+  ]
+ },
+ {
+  "xiIndex": 13,
+  "style": "direct",
+  "familiarity": 64,
+  "profile": {
+   "attack": 97.32858240249735,
+   "defense": 76.45748833851083,
+   "defSolidity": 77.8702156112381,
+   "buildup": 52.86915782751112,
+   "press": 71.92107340067342,
+   "creativity": 79.44120974122487,
+   "physical": 73.53090909090909,
+   "avgOv": 78.18181818181819,
+   "synergyLabel": "Direct & Vertical",
+   "executionMult": 0.9418181818181819
+  },
+  "readout": [
+   "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Direct, vertical passing bypasses the midfield battle and wins territory fast, at the expense of sustained possession share."
+  ]
+ },
+ {
+  "xiIndex": 13,
+  "style": "parkbus",
+  "familiarity": 63,
+  "profile": {
+   "attack": 64.84205350190818,
+   "defense": 90.01641460179246,
+   "defSolidity": 99,
+   "buildup": 61.79946356624699,
+   "press": 60.32035199615203,
+   "creativity": 71.12939546097861,
+   "physical": 71.8509090909091,
+   "avgOv": 78.18181818181819,
+   "synergyLabel": "Park The Bus",
+   "executionMult": 0.9368831168831169
+  },
+  "readout": [
+   "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions."
+  ]
+ },
+ {
+  "xiIndex": 13,
+  "style": "wingplay",
+  "familiarity": 64,
+  "profile": {
+   "attack": 99,
+   "defense": 78.15276106578357,
+   "defSolidity": 75.32730652032902,
+   "buildup": 74.67818462519936,
+   "press": 70.80030976430979,
+   "creativity": 91.83797846325749,
+   "physical": 72.0909090909091,
+   "avgOv": 78.18181818181819,
+   "synergyLabel": "Wing Play",
+   "executionMult": 0.9418181818181819
+  },
+  "readout": [
+   "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Crosses are coming in early and often from deep, wide areas — a genuine weapon if there's a physical presence and late runners to attack the ball.",
+   "Playing with real width stretches the opposition's back line horizontally, but can open gaps between your own units centrally."
+  ]
+ },
+ {
+  "xiIndex": 13,
+  "style": "balanced",
+  "familiarity": 67,
+  "profile": {
+   "attack": 78.68485884642489,
+   "defense": 82.25117708113346,
+   "defSolidity": 80.8162420161984,
+   "buildup": 72.64063035888843,
+   "press": 70.23918566618569,
+   "creativity": 77.02847670037735,
+   "physical": 72.0909090909091,
+   "avgOv": 78.18181818181819,
+   "synergyLabel": null,
+   "executionMult": 0.9566233766233767
+  },
+  "readout": [
+   "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
+  ]
+ },
+ {
+  "xiIndex": 14,
+  "style": "gegenpress",
+  "familiarity": 56,
+  "profile": {
+   "attack": 96.09555369217826,
+   "defense": 72.50839756856304,
+   "defSolidity": 74.51860203101344,
+   "buildup": 67.45498964866712,
+   "press": 77.84517142857143,
+   "creativity": 70.86248319112107,
+   "physical": 74.12,
+   "avgOv": 75.45454545454545,
+   "synergyLabel": "Gegenpress",
+   "executionMult": 0.9023376623376623
+  },
+  "readout": [
+   "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "An aggressive front-foot press with a high defensive line — devastating when the trigger is right, but there's real space in behind if the front line doesn't win the ball back quickly.",
+   "The offside trap is live with a high line to support it — a genuine edge if your back line's coordination holds up, but one mistimed step in behind and it's a straight run at goal."
+  ]
+ },
+ {
+  "xiIndex": 14,
+  "style": "possession",
+  "familiarity": 61,
+  "profile": {
+   "attack": 78.78621453589876,
+   "defense": 76.8087445925185,
+   "defSolidity": 79.08482372140861,
+   "buildup": 46.08130599832915,
+   "press": 65.04283621933624,
+   "creativity": 76.65880640428354,
+   "physical": 70.04,
+   "avgOv": 75.45454545454545,
+   "synergyLabel": "Possession Control",
+   "executionMult": 0.9270129870129871
+  },
+  "readout": [
+   "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
+  ]
+ },
+ {
+  "xiIndex": 14,
+  "style": "counter",
+  "familiarity": 61,
+  "profile": {
+   "attack": 81.65412681472306,
+   "defense": 85.75441991719383,
+   "defSolidity": 92.50101443378834,
+   "buildup": 52.88970138072454,
+   "press": 58.34980245310247,
+   "creativity": 62.77112703297717,
+   "physical": 71.6,
+   "avgOv": 75.45454545454545,
+   "synergyLabel": "Low Block Counter",
+   "executionMult": 0.9270129870129871
+  },
+  "readout": [
+   "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions.",
+   "Built explicitly to counter — soak up territory, then break vertically in transition, at the cost of sustained control of matches."
+  ]
+ },
+ {
+  "xiIndex": 14,
+  "style": "direct",
+  "familiarity": 61,
+  "profile": {
+   "attack": 94.28548853729718,
+   "defense": 74.95471861849252,
+   "defSolidity": 76.34523809901201,
+   "buildup": 46.94619285182654,
+   "press": 67.11934531024532,
+   "creativity": 67.86977416197838,
+   "physical": 72.44,
+   "avgOv": 75.45454545454545,
+   "synergyLabel": "Direct & Vertical",
+   "executionMult": 0.9270129870129871
+  },
+  "readout": [
+   "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Direct, vertical passing bypasses the midfield battle and wins territory fast, at the expense of sustained possession share."
+  ]
+ },
+ {
+  "xiIndex": 14,
+  "style": "parkbus",
+  "familiarity": 61,
+  "profile": {
+   "attack": 63.44466561838864,
+   "defense": 88.76721212498605,
+   "defSolidity": 96.04941414518807,
+   "buildup": 55.49177804511278,
+   "press": 56.01372972582974,
+   "creativity": 60.267418232894734,
+   "physical": 70.76,
+   "avgOv": 75.45454545454545,
+   "synergyLabel": "Park The Bus",
+   "executionMult": 0.9270129870129871
+  },
+  "readout": [
+   "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions."
+  ]
+ },
+ {
+  "xiIndex": 14,
+  "style": "wingplay",
+  "familiarity": 62,
+  "profile": {
+   "attack": 98.64936703763645,
+   "defense": 77.03125555575116,
+   "defSolidity": 74.235411399907,
+   "buildup": 67.0824709774436,
+   "press": 66.36764502164503,
+   "creativity": 79.67027082209825,
+   "physical": 71,
+   "avgOv": 75.45454545454545,
+   "synergyLabel": "Wing Play",
+   "executionMult": 0.931948051948052
+  },
+  "readout": [
+   "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Crosses are coming in early and often from deep, wide areas — a genuine weapon if there's a physical presence and late runners to attack the ball.",
+   "Playing with real width stretches the opposition's back line horizontally, but can open gaps between your own units centrally."
+  ]
+ },
+ {
+  "xiIndex": 14,
+  "style": "balanced",
+  "familiarity": 65,
+  "profile": {
+   "attack": 76.84592077837175,
+   "defense": 81.09525597791664,
+   "defSolidity": 79.67512610778677,
+   "buildup": 65.26285714285713,
+   "press": 65.76516233766236,
+   "creativity": 65.67011122622523,
+   "physical": 71,
+   "avgOv": 75.45454545454545,
+   "synergyLabel": null,
+   "executionMult": 0.9467532467532468
+  },
+  "readout": [
+   "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
+  ]
+ },
+ {
+  "xiIndex": 15,
+  "style": "gegenpress",
+  "familiarity": 55,
+  "profile": {
+   "attack": 99,
+   "defense": 74.19592225145666,
+   "defSolidity": 76.6743227528833,
+   "buildup": 78.39589374660112,
+   "press": 84.44159595959596,
+   "creativity": 83.80364214735853,
+   "physical": 82.39272727272727,
+   "avgOv": 82.81818181818181,
+   "synergyLabel": "Gegenpress",
+   "executionMult": 0.8974025974025974
+  },
+  "readout": [
+   "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "An aggressive front-foot press with a high defensive line — devastating when the trigger is right, but there's real space in behind if the front line doesn't win the ball back quickly.",
+   "The offside trap is live with a high line to support it — a genuine edge if your back line's coordination holds up, but one mistimed step in behind and it's a straight run at goal."
+  ]
+ },
+ {
+  "xiIndex": 15,
+  "style": "possession",
+  "familiarity": 60,
+  "profile": {
+   "attack": 84.25288343772883,
+   "defense": 78.54123648180006,
+   "defSolidity": 80.68819518064045,
+   "buildup": 52.61002102146862,
+   "press": 72.11673881673883,
+   "creativity": 89.3965605967085,
+   "physical": 78.31272727272727,
+   "avgOv": 82.81818181818181,
+   "synergyLabel": "Possession Control",
+   "executionMult": 0.922077922077922
+  },
+  "readout": [
+   "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
+  ]
+ },
+ {
+  "xiIndex": 15,
+  "style": "counter",
+  "familiarity": 60,
+  "profile": {
+   "attack": 87.15891644496227,
+   "defense": 87.439288429852,
+   "defSolidity": 95.78921627977985,
+   "buildup": 61.8224380861244,
+   "press": 65.45933621933622,
+   "creativity": 75.87649717934569,
+   "physical": 79.87272727272726,
+   "avgOv": 82.81818181818181,
+   "synergyLabel": "Low Block Counter",
+   "executionMult": 0.922077922077922
+  },
+  "readout": [
+   "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions.",
+   "Built explicitly to counter — soak up territory, then break vertically in transition, at the cost of sustained control of matches."
+  ]
+ },
+ {
+  "xiIndex": 15,
+  "style": "direct",
+  "familiarity": 60,
+  "profile": {
+   "attack": 99,
+   "defense": 76.6970806376442,
+   "defSolidity": 78.08019752076109,
+   "buildup": 54.90143757164172,
+   "press": 74.18219336219336,
+   "creativity": 81.35566952448313,
+   "physical": 80.71272727272726,
+   "avgOv": 82.81818181818181,
+   "synergyLabel": "Direct & Vertical",
+   "executionMult": 0.922077922077922
+  },
+  "readout": [
+   "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Direct, vertical passing bypasses the midfield battle and wins territory fast, at the expense of sustained possession share."
+  ]
+ },
+ {
+  "xiIndex": 15,
+  "style": "parkbus",
+  "familiarity": 59,
+  "profile": {
+   "attack": 68.7063598226873,
+   "defense": 89.95201779157554,
+   "defSolidity": 98.54258922014697,
+   "buildup": 63.96738093077856,
+   "press": 62.79779047619049,
+   "creativity": 72.72565856429517,
+   "physical": 79.03272727272727,
+   "avgOv": 82.81818181818181,
+   "synergyLabel": "Park The Bus",
+   "executionMult": 0.9171428571428571
+  },
+  "readout": [
+   "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions."
+  ]
+ },
+ {
+  "xiIndex": 15,
+  "style": "wingplay",
+  "familiarity": 61,
+  "profile": {
+   "attack": 99,
+   "defense": 78.77619543176485,
+   "defSolidity": 75.99515647072589,
+   "buildup": 77.70634255748462,
+   "press": 73.47607936507937,
+   "creativity": 93.77233121359257,
+   "physical": 79.27272727272727,
+   "avgOv": 82.81818181818181,
+   "synergyLabel": "Wing Play",
+   "executionMult": 0.9270129870129871
+  },
+  "readout": [
+   "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Crosses are coming in early and often from deep, wide areas — a genuine weapon if there's a physical presence and late runners to attack the ball.",
+   "Playing with real width stretches the opposition's back line horizontally, but can open gaps between your own units centrally."
+  ]
+ },
+ {
+  "xiIndex": 15,
+  "style": "balanced",
+  "familiarity": 63,
+  "profile": {
+   "attack": 82.30980414573213,
+   "defense": 82.42559385117494,
+   "defSolidity": 81.02026917585026,
+   "buildup": 75.20868509426057,
+   "press": 72.61885137085137,
+   "creativity": 78.81416154905753,
+   "physical": 79.27272727272727,
+   "avgOv": 82.81818181818181,
+   "synergyLabel": null,
+   "executionMult": 0.9368831168831169
+  },
+  "readout": [
+   "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
+  ]
+ },
+ {
+  "xiIndex": 16,
+  "style": "gegenpress",
+  "familiarity": 56,
+  "profile": {
+   "attack": 99,
+   "defense": 72.96301580688603,
+   "defSolidity": 75.51661860690412,
+   "buildup": 76.80163928472209,
+   "press": 84.47317575757576,
+   "creativity": 82.92278538514617,
+   "physical": 79.84727272727274,
+   "avgOv": 79.81818181818181,
+   "synergyLabel": "Gegenpress",
+   "executionMult": 0.9023376623376623
+  },
+  "readout": [
+   "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "An aggressive front-foot press with a high defensive line — devastating when the trigger is right, but there's real space in behind if the front line doesn't win the ball back quickly.",
+   "The offside trap is live with a high line to support it — a genuine edge if your back line's coordination holds up, but one mistimed step in behind and it's a straight run at goal."
+  ]
+ },
+ {
+  "xiIndex": 16,
+  "style": "possession",
+  "familiarity": 61,
+  "profile": {
+   "attack": 84.67015678241548,
+   "defense": 77.27579482066322,
+   "defSolidity": 79.5442313094564,
+   "buildup": 51.67867266945468,
+   "press": 71.85208994708996,
+   "creativity": 88.72313970059675,
+   "physical": 75.76727272727274,
+   "avgOv": 79.81818181818181,
+   "synergyLabel": "Possession Control",
+   "executionMult": 0.9270129870129871
+  },
+  "readout": [
+   "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
+  ]
+ },
+ {
+  "xiIndex": 16,
+  "style": "counter",
+  "familiarity": 61,
+  "profile": {
+   "attack": 87.61783136009109,
+   "defense": 86.22147014533856,
+   "defSolidity": 94.82209063595904,
+   "buildup": 60.50345420369106,
+   "press": 65.1590561808562,
+   "creativity": 74.94513349021096,
+   "physical": 77.32727272727273,
+   "avgOv": 79.81818181818181,
+   "synergyLabel": "Low Block Counter",
+   "executionMult": 0.9270129870129871
+  },
+  "readout": [
+   "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions.",
+   "Built explicitly to counter — soak up territory, then break vertically in transition, at the cost of sustained control of matches."
+  ]
+ },
+ {
+  "xiIndex": 16,
+  "style": "direct",
+  "familiarity": 61,
+  "profile": {
+   "attack": 99,
+   "defense": 75.42176884663725,
+   "defSolidity": 76.81228832715674,
+   "buildup": 53.72610177741521,
+   "press": 73.92859903799905,
+   "creativity": 80.35370884803586,
+   "physical": 78.16727272727273,
+   "avgOv": 79.81818181818181,
+   "synergyLabel": "Direct & Vertical",
+   "executionMult": 0.9270129870129871
+  },
+  "readout": [
+   "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Direct, vertical passing bypasses the midfield battle and wins territory fast, at the expense of sustained possession share."
+  ]
+ },
+ {
+  "xiIndex": 16,
+  "style": "parkbus",
+  "familiarity": 61,
+  "profile": {
+   "attack": 69.2429372476206,
+   "defense": 89.23426235313077,
+   "defSolidity": 98.37049034735877,
+   "buildup": 63.02366255815494,
+   "press": 62.82298345358347,
+   "creativity": 72.21395443044139,
+   "physical": 76.48727272727274,
+   "avgOv": 79.81818181818181,
+   "synergyLabel": "Park The Bus",
+   "executionMult": 0.9270129870129871
+  },
+  "readout": [
+   "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions."
+  ]
+ },
+ {
+  "xiIndex": 16,
+  "style": "wingplay",
+  "familiarity": 62,
+  "profile": {
+   "attack": 99,
+   "defense": 77.50079218186023,
+   "defSolidity": 74.70494802601607,
+   "buildup": 76.1542168147642,
+   "press": 73.21314862914863,
+   "creativity": 92.88669930089274,
+   "physical": 76.72727272727273,
+   "avgOv": 79.81818181818181,
+   "synergyLabel": "Wing Play",
+   "executionMult": 0.931948051948052
+  },
+  "readout": [
+   "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Crosses are coming in early and often from deep, wide areas — a genuine weapon if there's a physical presence and late runners to attack the ball.",
+   "Playing with real width stretches the opposition's back line horizontally, but can open gaps between your own units centrally."
+  ]
+ },
+ {
+  "xiIndex": 16,
+  "style": "balanced",
+  "familiarity": 65,
+  "profile": {
+   "attack": 83.04372517319145,
+   "defense": 81.57225179791875,
+   "defSolidity": 80.15212192778888,
+   "buildup": 74.08853162966068,
+   "press": 72.71941558441559,
+   "creativity": 78.25062738210335,
+   "physical": 76.72727272727273,
+   "avgOv": 79.81818181818181,
+   "synergyLabel": null,
+   "executionMult": 0.9467532467532468
+  },
+  "readout": [
+   "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
+  ]
+ },
+ {
+  "xiIndex": 17,
+  "style": "gegenpress",
+  "familiarity": 55,
+  "profile": {
+   "attack": 94.13301132062308,
+   "defense": 73.55769831880338,
+   "defSolidity": 75.49772104262603,
+   "buildup": 68.79677705789402,
+   "press": 80.60852356902356,
+   "creativity": 70.18321798594812,
+   "physical": 76.39272727272727,
+   "avgOv": 75.72727272727273,
+   "synergyLabel": "Gegenpress",
+   "executionMult": 0.8974025974025974
+  },
+  "readout": [
+   "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "An aggressive front-foot press with a high defensive line — devastating when the trigger is right, but there's real space in behind if the front line doesn't win the ball back quickly.",
+   "The offside trap is live with a high line to support it — a genuine edge if your back line's coordination holds up, but one mistimed step in behind and it's a straight run at goal."
+  ]
+ },
+ {
+  "xiIndex": 17,
+  "style": "possession",
+  "familiarity": 60,
+  "profile": {
+   "attack": 77.10489845353301,
+   "defense": 77.88546370005788,
+   "defSolidity": 80.04315322623587,
+   "buildup": 46.860619589050835,
+   "press": 68.1782708032708,
+   "creativity": 75.91308157827928,
+   "physical": 72.31272727272727,
+   "avgOv": 75.72727272727273,
+   "synergyLabel": "Possession Control",
+   "executionMult": 0.922077922077922
+  },
+  "readout": [
+   "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
+  ]
+ },
+ {
+  "xiIndex": 17,
+  "style": "counter",
+  "familiarity": 60,
+  "profile": {
+   "attack": 79.8857049516229,
+   "defense": 86.78351564810983,
+   "defSolidity": 93.28928765388184,
+   "buildup": 54.001881749829124,
+   "press": 61.52086820586821,
+   "creativity": 62.22083171084405,
+   "physical": 73.87272727272726,
+   "avgOv": 75.72727272727273,
+   "synergyLabel": "Low Block Counter",
+   "executionMult": 0.922077922077922
+  },
+  "readout": [
+   "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions.",
+   "Built explicitly to counter — soak up territory, then break vertically in transition, at the cost of sustained control of matches."
+  ]
+ },
+ {
+  "xiIndex": 17,
+  "style": "direct",
+  "familiarity": 60,
+  "profile": {
+   "attack": 92.32164164941297,
+   "defense": 76.04130785590203,
+   "defSolidity": 77.42442473901892,
+   "buildup": 47.93737386476946,
+   "press": 70.24372534872535,
+   "creativity": 67.21341790262865,
+   "physical": 74.71272727272726,
+   "avgOv": 75.72727272727273,
+   "synergyLabel": "Direct & Vertical",
+   "executionMult": 0.922077922077922
+  },
+  "readout": [
+   "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Direct, vertical passing bypasses the midfield battle and wins territory fast, at the expense of sustained possession share."
+  ]
+ },
+ {
+  "xiIndex": 17,
+  "style": "parkbus",
+  "familiarity": 60,
+  "profile": {
+   "attack": 62.00110839463117,
+   "defense": 89.78026889486308,
+   "defSolidity": 96.79830641290062,
+   "buildup": 56.575119440830825,
+   "press": 59.19723184223185,
+   "creativity": 59.81845091106991,
+   "physical": 73.03272727272727,
+   "avgOv": 75.72727272727273,
+   "synergyLabel": "Park The Bus",
+   "executionMult": 0.922077922077922
+  },
+  "readout": [
+   "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions."
+  ]
+ },
+ {
+  "xiIndex": 17,
+  "style": "wingplay",
+  "familiarity": 61,
+  "profile": {
+   "attack": 96.4904495845133,
+   "defense": 78.11691288020491,
+   "defSolidity": 75.33587391916595,
+   "buildup": 68.38792734563683,
+   "press": 69.51653222703224,
+   "creativity": 78.50868805082708,
+   "physical": 73.27272727272727,
+   "avgOv": 75.72727272727273,
+   "synergyLabel": "Wing Play",
+   "executionMult": 0.9270129870129871
+  },
+  "readout": [
+   "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Crosses are coming in early and often from deep, wide areas — a genuine weapon if there's a physical presence and late runners to attack the ball.",
+   "Playing with real width stretches the opposition's back line horizontally, but can open gaps between your own units centrally."
+  ]
+ },
+ {
+  "xiIndex": 17,
+  "style": "balanced",
+  "familiarity": 64,
+  "profile": {
+   "attack": 75.14627970173444,
+   "defense": 82.18996171934722,
+   "defSolidity": 80.77723444661996,
+   "buildup": 66.53844183773217,
+   "press": 68.97858922558923,
+   "creativity": 65.05006579624623,
+   "physical": 73.27272727272727,
+   "avgOv": 75.72727272727273,
+   "synergyLabel": null,
+   "executionMult": 0.9418181818181819
+  },
+  "readout": [
+   "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
+  ]
+ },
+ {
+  "xiIndex": 18,
+  "style": "gegenpress",
+  "familiarity": 56,
+  "profile": {
+   "attack": 99,
+   "defense": 74.21102736321615,
+   "defSolidity": 76.54408322987506,
+   "buildup": 74.05354424783366,
+   "press": 83.57585108225109,
+   "creativity": 79.15591149542611,
+   "physical": 79.75636363636364,
+   "avgOv": 79.9090909090909,
+   "synergyLabel": "Gegenpress",
+   "executionMult": 0.9023376623376623
+  },
+  "readout": [
+   "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "An aggressive front-foot press with a high defensive line — devastating when the trigger is right, but there's real space in behind if the front line doesn't win the ball back quickly.",
+   "The offside trap is live with a high line to support it — a genuine edge if your back line's coordination holds up, but one mistimed step in behind and it's a straight run at goal."
+  ]
+ },
+ {
+  "xiIndex": 18,
+  "style": "possession",
+  "familiarity": 61,
+  "profile": {
+   "attack": 82.62818651448119,
+   "defense": 78.55793449957577,
+   "defSolidity": 80.80539052089583,
+   "buildup": 50.032939046443076,
+   "press": 70.93022703222705,
+   "creativity": 84.97031633784974,
+   "physical": 75.67636363636365,
+   "avgOv": 79.9090909090909,
+   "synergyLabel": "Possession Control",
+   "executionMult": 0.9270129870129871
+  },
+  "readout": [
+   "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
+  ]
+ },
+ {
+  "xiIndex": 18,
+  "style": "counter",
+  "familiarity": 61,
+  "profile": {
+   "attack": 85.54719996939414,
+   "defense": 87.50360982425109,
+   "defSolidity": 94.2502043408456,
+   "buildup": 58.264864210526305,
+   "press": 64.23719326599328,
+   "creativity": 71.15290108366528,
+   "physical": 77.23636363636363,
+   "avgOv": 79.9090909090909,
+   "synergyLabel": "Low Block Counter",
+   "executionMult": 0.9270129870129871
+  },
+  "readout": [
+   "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions.",
+   "Built explicitly to counter — soak up territory, then break vertically in transition, at the cost of sustained control of matches."
+  ]
+ },
+ {
+  "xiIndex": 18,
+  "style": "direct",
+  "familiarity": 61,
+  "profile": {
+   "attack": 98.32296983032258,
+   "defense": 76.70390852554979,
+   "defSolidity": 78.09442800606926,
+   "buildup": 51.732677952358905,
+   "press": 73.00673612313614,
+   "creativity": 76.45010940290366,
+   "physical": 78.07636363636364,
+   "avgOv": 79.9090909090909,
+   "synergyLabel": "Direct & Vertical",
+   "executionMult": 0.9270129870129871
+  },
+  "readout": [
+   "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Direct, vertical passing bypasses the midfield battle and wins territory fast, at the expense of sustained possession share."
+  ]
+ },
+ {
+  "xiIndex": 18,
+  "style": "parkbus",
+  "familiarity": 61,
+  "profile": {
+   "attack": 67.23175114857953,
+   "defense": 90.51640203204332,
+   "defSolidity": 99,
+   "buildup": 60.809143425131744,
+   "press": 61.901120538720555,
+   "creativity": 68.50345929992255,
+   "physical": 76.39636363636365,
+   "avgOv": 79.9090909090909,
+   "synergyLabel": "Park The Bus",
+   "executionMult": 0.9270129870129871
+  },
+  "readout": [
+   "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions."
+  ]
+ },
+ {
+  "xiIndex": 18,
+  "style": "wingplay",
+  "familiarity": 62,
+  "profile": {
+   "attack": 99,
+   "defense": 78.78975748528924,
+   "defSolidity": 75.99391332944509,
+   "buildup": 73.4869487901572,
+   "press": 72.28637806637808,
+   "creativity": 88.72299141899914,
+   "physical": 76.63636363636364,
+   "avgOv": 79.9090909090909,
+   "synergyLabel": "Wing Play",
+   "executionMult": 0.931948051948052
+  },
+  "readout": [
+   "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Crosses are coming in early and often from deep, wide areas — a genuine weapon if there's a physical presence and late runners to attack the ball.",
+   "Playing with real width stretches the opposition's back line horizontally, but can open gaps between your own units centrally."
+  ]
+ },
+ {
+  "xiIndex": 18,
+  "style": "balanced",
+  "familiarity": 65,
+  "profile": {
+   "attack": 80.89051423177078,
+   "defense": 82.88169397489723,
+   "defSolidity": 81.46156410476736,
+   "buildup": 71.49361332216169,
+   "press": 71.77792207792209,
+   "creativity": 74.32472237670576,
+   "physical": 76.63636363636364,
+   "avgOv": 79.9090909090909,
+   "synergyLabel": null,
+   "executionMult": 0.9467532467532468
+  },
+  "readout": [
+   "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
+  ]
+ },
+ {
+  "xiIndex": 19,
+  "style": "gegenpress",
+  "familiarity": 61,
+  "profile": {
+   "attack": 99,
+   "defense": 76.83645614104773,
+   "defSolidity": 79.6338280778799,
+   "buildup": 74.61271830073719,
+   "press": 86.43469090909092,
+   "creativity": 78.46252181050548,
+   "physical": 81.48363636363636,
+   "avgOv": 80.72727272727273,
+   "synergyLabel": "Gegenpress",
+   "executionMult": 0.9270129870129871
+  },
+  "readout": [
+   "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "An aggressive front-foot press with a high defensive line — devastating when the trigger is right, but there's real space in behind if the front line doesn't win the ball back quickly.",
+   "The offside trap is live with a high line to support it — a genuine edge if your back line's coordination holds up, but one mistimed step in behind and it's a straight run at goal."
+  ]
+ },
+ {
+  "xiIndex": 19,
+  "style": "possession",
+  "familiarity": 66,
+  "profile": {
+   "attack": 84.44117911601886,
+   "defense": 81.26091741715825,
+   "defSolidity": 83.98115579593087,
+   "buildup": 50.48747246807143,
+   "press": 72.34946031746034,
+   "creativity": 85.24016029628204,
+   "physical": 77.40363636363637,
+   "avgOv": 80.72727272727273,
+   "synergyLabel": "Possession Control",
+   "executionMult": 0.9516883116883117
+  },
+  "readout": [
+   "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
+  ]
+ },
+ {
+  "xiIndex": 19,
+  "style": "counter",
+  "familiarity": 66,
+  "profile": {
+   "attack": 87.62582074139303,
+   "defense": 90.44470962495046,
+   "defSolidity": 98.42831712855796,
+   "buildup": 58.6224973342447,
+   "press": 65.47827070707072,
+   "creativity": 70.17661604920906,
+   "physical": 78.96363636363635,
+   "avgOv": 80.72727272727273,
+   "synergyLabel": "Low Block Counter",
+   "executionMult": 0.9516883116883117
+  },
+  "readout": [
+   "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions.",
+   "Built explicitly to counter — soak up territory, then break vertically in transition, at the cost of sustained control of matches."
+  ]
+ },
+ {
+  "xiIndex": 19,
+  "style": "direct",
+  "familiarity": 66,
+  "profile": {
+   "attack": 99,
+   "defense": 79.35754079378162,
+   "defSolidity": 80.7850732613141,
+   "buildup": 52.047121032297255,
+   "press": 74.48124213564215,
+   "creativity": 75.31180659734618,
+   "physical": 79.80363636363636,
+   "avgOv": 80.72727272727273,
+   "synergyLabel": "Direct & Vertical",
+   "executionMult": 0.9516883116883117
+  },
+  "readout": [
+   "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Direct, vertical passing bypasses the midfield battle and wins territory fast, at the expense of sustained possession share."
+  ]
+ },
+ {
+  "xiIndex": 19,
+  "style": "parkbus",
+  "familiarity": 66,
+  "profile": {
+   "attack": 68.02576267044432,
+   "defense": 93.53769663793749,
+   "defSolidity": 99,
+   "buildup": 61.24733125482329,
+   "press": 63.080016161616186,
+   "creativity": 67.52383141666179,
+   "physical": 78.12363636363636,
+   "avgOv": 80.72727272727273,
+   "synergyLabel": "Park The Bus",
+   "executionMult": 0.9516883116883117
+  },
+  "readout": [
+   "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "A settled mid-to-low block that cedes territory by design — hard to break down through the middle, but you'll surrender the ball for long spells and lean on transitions."
+  ]
+ },
+ {
+  "xiIndex": 19,
+  "style": "wingplay",
+  "familiarity": 67,
+  "profile": {
+   "attack": 99,
+   "defense": 81.4909785035492,
+   "defSolidity": 78.62110837367908,
+   "buildup": 74.01109756208704,
+   "press": 73.72908946608949,
+   "creativity": 88.64235456150253,
+   "physical": 78.36363636363636,
+   "avgOv": 80.72727272727273,
+   "synergyLabel": "Wing Play",
+   "executionMult": 0.9566233766233767
+  },
+  "readout": [
+   "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
+   "Crosses are coming in early and often from deep, wide areas — a genuine weapon if there's a physical presence and late runners to attack the ball.",
+   "Playing with real width stretches the opposition's back line horizontally, but can open gaps between your own units centrally."
+  ]
+ },
+ {
+  "xiIndex": 19,
+  "style": "balanced",
+  "familiarity": 70,
+  "profile": {
+   "attack": 82.22487391394613,
+   "defense": 85.66646046402072,
+   "defSolidity": 84.20931760687786,
+   "buildup": 71.97450076804915,
+   "press": 73.17015873015875,
+   "creativity": 73.28860856810579,
+   "physical": 78.36363636363636,
+   "avgOv": 80.72727272727273,
+   "synergyLabel": null,
+   "executionMult": 0.9714285714285715
+  },
+  "readout": [
+   "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
+  ]
+ }
+]
