@@ -55,6 +55,10 @@ describe("save format", () => {
     expect(damaged((s) => { s.assignments[0].player.stats.pace = "fast"; })).toEqual({ ok: false, reason: SAVE_ERRORS.damaged });
     expect(damaged((s) => { s.careerSeed = -1; })).toEqual({ ok: false, reason: SAVE_ERRORS.damaged });
     expect(damaged((s) => { delete s.rngCounter; })).toEqual({ ok: false, reason: SAVE_ERRORS.damaged });
+    expect(damaged((s) => { s.draftDone = "yes"; })).toEqual({ ok: false, reason: SAVE_ERRORS.damaged });
+    expect(damaged((s) => { s.selectedStyle = "not-a-style"; })).toEqual({ ok: false, reason: SAVE_ERRORS.damaged });
+    expect(damaged((s) => { s.lastTransition = "corrupt"; })).toEqual({ ok: false, reason: SAVE_ERRORS.damaged });
+    expect(damaged((s) => { s.lastTransition = { relegated: ["A"], promoted: [1] }; })).toEqual({ ok: false, reason: SAVE_ERRORS.damaged });
   });
 
   it("resets a wheel that was saved mid-spin", () => {

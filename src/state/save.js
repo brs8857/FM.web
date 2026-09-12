@@ -1,6 +1,7 @@
 import { FORMATIONS } from "../engine/formations.js";
 import { careerSeasonLabel, CAREER_SEASONS } from "../engine/season.js";
 import { STAT_KEYS } from "../engine/players.js";
+import { STYLE_PRESETS } from "../engine/instructions.js";
 
 export const SAVE_VERSION = 1;
 export const APP_ID = "fm-web";
@@ -85,9 +86,16 @@ function isPlayerOrNull(p) {
   return p === null || isPlayer(p);
 }
 
+function isStringArray(v) {
+  return Array.isArray(v) && v.every((x) => typeof x === "string");
+}
+
 function isValidState(s) {
   if (!isObject(s)) return false;
   if (!Object.hasOwn(PHASE_LABELS, s.phase)) return false;
+  if (typeof s.draftDone !== "boolean") return false;
+  if (s.selectedStyle !== null && !STYLE_PRESETS.some((p) => p.key === s.selectedStyle)) return false;
+  if (s.lastTransition !== null && !(isObject(s.lastTransition) && isStringArray(s.lastTransition.relegated) && isStringArray(s.lastTransition.promoted))) return false;
   const formation = FORMATIONS[s.formationKey];
   if (!formation) return false;
   if (!Array.isArray(s.assignments) || s.assignments.length !== 11) return false;
