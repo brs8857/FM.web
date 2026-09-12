@@ -1,15 +1,15 @@
 import { clamp } from "./util.js";
 
 /* ============================== Simulation ================================ */
-export function poissonSample(lambda) {
+export function poissonSample(lambda, rng) {
   if (lambda <= 0) return 0;
   const L = Math.exp(-lambda);
   let k = 0, p = 1;
-  do { k++; p *= Math.random(); } while (p > L && k < 12);
+  do { k++; p *= rng.next(); } while (p > L && k < 12);
   return k - 1;
 }
 
-export function simulateMatch(profile, opp, isHome, familiarity) {
+export function simulateMatch(profile, opp, isHome, familiarity, rng) {
   const homeAdv = isHome ? 3 : 0;
   // Even a perfectly-drilled tactic still has an off day — the floor on
   // variance is higher than before, so no setup is ever fully "solved".
@@ -36,8 +36,8 @@ export function simulateMatch(profile, opp, isHome, familiarity) {
   xgFor = clamp(xgFor, 0.25, 3.4);
   xgAgainst = clamp(xgAgainst, 0.25, 3.0);
 
-  const noisyFor = clamp(xgFor * (1 + (Math.random() - 0.5) * noiseScale), 0.05, 5);
-  const noisyAgainst = clamp(xgAgainst * (1 + (Math.random() - 0.5) * noiseScale), 0.05, 5);
+  const noisyFor = clamp(xgFor * (1 + (rng.next() - 0.5) * noiseScale), 0.05, 5);
+  const noisyAgainst = clamp(xgAgainst * (1 + (rng.next() - 0.5) * noiseScale), 0.05, 5);
 
-  return { gf: poissonSample(noisyFor), ga: poissonSample(noisyAgainst) };
+  return { gf: poissonSample(noisyFor, rng), ga: poissonSample(noisyAgainst, rng) };
 }

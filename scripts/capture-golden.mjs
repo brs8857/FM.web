@@ -2,7 +2,7 @@
 //   node scripts/capture-golden.mjs            -> all four files from the v1 source (6495fb8)
 // Task 10 adds an --engine mode that re-records seasons/league from src/engine.
 import { execSync } from "node:child_process";
-import { mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, writeFileSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
@@ -94,14 +94,37 @@ function writeGolden(outDir, files) {
     const text = JSON.stringify(data, null, 1) + "\n";
     writeFileSync(join(outDir, name), text);
     const hash = createHash("sha256").update(text).digest("hex").slice(0, 16);
-    console.log(name.padEnd(14), String(text.length).padStart(9), "bytes", hash);
+    console.log(name.padEnd(14), String(Buffer.byteLength(text, "utf8")).padStart(9), "bytes", hash);
   }
 }
 
-function main() {
+async function recordFromEngine(outDir) {
+  const { simulateSeason } = await import("../src/engine/season.js");
+  const { applyPromotionRelegation } = await import("../src/engine/league.js");
+  const { createRng } = await import("../src/engine/rng.js");
+  const players = JSON.parse(readFileSync("src/data/players.json", "utf8"));
+  const championship = JSON.parse(readFileSync("src/data/championship.json", "utf8"));
+  const inputs = JSON.parse(readFileSync("tests/golden/seasons.json", "utf8"));
+  const seasons = inputs.map(({ seed, xiIndex, style, familiarity, profile }) => ({
+    seed, xiIndex, style, familiarity, profile,
+    result: simulateSeason(profile, familiarity, players.opponents, createRng(seed)),
+  }));
+  const league = seasons.map((s) => ({
+    seed: 1000 + s.seed,
+    table: s.result.table,
+    result: applyPromotionRelegation(players.opponents, s.result.table, championship, createRng(1000 + s.seed)),
+  }));
+  writeGolden(outDir, { "seasons.json": seasons, "league.json": league });
+}
+
+async function main() {
   const args = process.argv.slice(2);
   const outIndex = args.indexOf("--out");
   const outDir = outIndex >= 0 ? args[outIndex + 1] : "tests/golden";
+  if (args.includes("--engine")) {
+    await recordFromEngine(outDir);
+    return;
+  }
   const E = loadV1Engine(process.cwd());
   const xis = draftXIs(E);
   const profiles = captureProfiles(E, xis);
@@ -117,4 +140,4 @@ function main() {
   writeGolden(outDir, { "xis.json": xis, "profiles.json": profiles, "seasons.json": seasons, "league.json": league });
 }
 
-if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) main();
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) await main();

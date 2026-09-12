@@ -32,4 +32,13 @@ export default [
       }],
     },
   },
+  {
+    files: ["src/**/*.{js,jsx}"],
+    rules: {
+      "no-restricted-properties": ["error", {
+        object: "Math", property: "random",
+        message: "Use an Rng from src/engine/rng.js so results replay from the career seed.",
+      }],
+    },
+  },
 ];

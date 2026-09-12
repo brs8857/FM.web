@@ -1,7 +1,8 @@
 // @vitest-environment node
 import { describe, it, expect } from "vitest";
-import { roundRobinSchedule, buildUserFixtureList, seasonTier, careerSeasonLabel, CAREER_SEASONS } from "./season.js";
+import { roundRobinSchedule, buildUserFixtureList, seasonTier, careerSeasonLabel, CAREER_SEASONS, simulateSeason } from "./season.js";
 import { applyPromotionRelegation } from "./league.js";
+import { createRng } from "./rng.js";
 
 describe("fixtures", () => {
   it("schedules 38 rounds where every ordered home/away pair happens exactly once", () => {
@@ -73,14 +74,27 @@ describe("promotion and relegation", () => {
   const pool = Array.from({ length: 24 }, (_, i) => ({ name: `Challenger ${i + 1}` }));
 
   it("changes nothing without a table", () => {
-    expect(applyPromotionRelegation(opponents, null, pool)).toEqual({ opponents, relegated: [], promoted: [] });
+    expect(applyPromotionRelegation(opponents, null, pool, createRng(1))).toEqual({ opponents, relegated: [], promoted: [] });
   });
 
   it("relegates rivals finishing 18th-20th (never the user) and keeps 19 rivals", () => {
     const table = [...opponents.map((o, i) => ({ name: o.name, isUser: false, position: i + 2 })), { name: "Your XI", isUser: true, position: 1 }];
-    const result = applyPromotionRelegation(opponents, table, pool);
+    const result = applyPromotionRelegation(opponents, table, pool, createRng(1));
     expect(result.relegated).toEqual(["Rival 17", "Rival 18", "Rival 19"]);
     expect(result.promoted).toHaveLength(3);
     expect(result.opponents).toHaveLength(19);
+  });
+});
+
+describe("simulateSeason with an rng", () => {
+  const opponents = Array.from({ length: 19 }, (_, i) => ({ name: `Rival ${i + 1}`, ov: 70 + i, histMean: 72, weight: 1, vol: 8 }));
+  const profile = { attack: 80, defense: 78, defSolidity: 76, buildup: 70, press: 70, creativity: 72, physical: 75 };
+
+  it("replays exactly for the same seed and differs for another", () => {
+    const a = simulateSeason(profile, 65, opponents, createRng(9));
+    const b = simulateSeason(profile, 65, opponents, createRng(9));
+    const c = simulateSeason(profile, 65, opponents, createRng(10));
+    expect(b).toEqual(a);
+    expect(c.matches.map((m) => `${m.gf}-${m.ga}`)).not.toEqual(a.matches.map((m) => `${m.gf}-${m.ga}`));
   });
 });

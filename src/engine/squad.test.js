@@ -4,6 +4,7 @@ import { makeMiniDataset } from "../../tests/fixtures/miniDataset.js";
 import { createSquadLookup } from "./players.js";
 import { makeInitialAssignments } from "./formations.js";
 import { nextEmptySlotIndex, autoFillBench, generateShortlist, signToSlot, signToBench } from "./squad.js";
+import { createRng } from "./rng.js";
 
 const dataset = makeMiniDataset();
 const getSquad = createSquadLookup(dataset);
@@ -34,7 +35,7 @@ describe("squad", () => {
 
   it("builds a shortlist from the chosen era, excluding owned players", () => {
     const owned = new Set(getSquad("2000", "1").slice(0, 5).map((p) => p.id));
-    const list = generateShortlist(getSquad, dataset.index, { eraMin: 2000, eraMax: 2001 }, owned);
+    const list = generateShortlist(getSquad, dataset.index, { eraMin: 2000, eraMax: 2001 }, owned, createRng(7));
     expect(list).toHaveLength(5);
     for (const p of list) {
       expect(owned.has(p.id)).toBe(false);

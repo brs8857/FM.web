@@ -10,6 +10,7 @@ import { tacticalReadout, mentalityLabel } from "./engine/readout.js";
 import { simulateSeason, CAREER_SEASONS, careerSeasonLabel } from "./engine/season.js";
 import { applyPromotionRelegation } from "./engine/league.js";
 import { nextEmptySlotIndex, autoFillBench, generateShortlist, signToSlot, signToBench } from "./engine/squad.js";
+import { createRng } from "./engine/rng.js";
 
 /* =========================================================================
    FM.WEB — data, constants, and pure helper/simulation functions
@@ -46,6 +47,11 @@ function makeInitialState() {
   opponents: DATASET.opponents, // evolves each season via promotion/relegation
   lastTransition: null, // { relegated: [names], promoted: [names] } from the season just gone
   };
+}
+
+// Temporary until Task 12 stores a career seed in state.
+function freshRng() {
+  return createRng(crypto.getRandomValues(new Uint32Array(1))[0]);
 }
 
 function reducer(state, action) {
@@ -182,7 +188,7 @@ function reducer(state, action) {
       })).map((a) => ({ ...a, role: a.roleObj }));
       const familiarity = computeFamiliarity(assignmentsWithRole, state.instructions, state.formationKey);
       const profile = computeTeamProfile(assignmentsWithRole, state.instructions, familiarity);
-      const simulation = simulateSeason(profile, familiarity, state.opponents);
+      const simulation = simulateSeason(profile, familiarity, state.opponents, freshRng());
       // Ratings stay hidden through the draft and tactics phases — this is
       // the moment they're finally revealed, right before a ball is kicked.
       return { ...state, phase: "reveal", simulation: { ...simulation, profile, familiarity, instructions: state.instructions, season: state.season } };
@@ -191,9 +197,10 @@ function reducer(state, action) {
       return { ...state, phase: "result" };
     }
     case "GOTO_TRANSFER": {
-      const shortlist = generateShortlist(getSquad, DATASET.index, { eraMin: state.eraMin, eraMax: state.eraMax }, state.draftedIds)
+      const rng = freshRng();
+      const shortlist = generateShortlist(getSquad, DATASET.index, { eraMin: state.eraMin, eraMax: state.eraMax }, state.draftedIds, rng)
         .map((player) => ({ player, signed: false }));
-      const { opponents, relegated, promoted } = applyPromotionRelegation(state.opponents, state.simulation?.table, CHAMPIONSHIP_POOL);
+      const { opponents, relegated, promoted } = applyPromotionRelegation(state.opponents, state.simulation?.table, CHAMPIONSHIP_POOL, rng);
       return { ...state, phase: "transfer", shortlist, opponents, lastTransition: { relegated, promoted } };
     }
     case "SIGN_SHORTLIST_TO_BENCH": {
@@ -337,6 +344,7 @@ function WheelSpinner({ spinning, landed, onSpin, onDone, targetLabel, pool }) {
         onDone();
         return;
       }
+      // eslint-disable-next-line no-restricted-properties -- cosmetic flicker only; the real result comes from the reducer
       const r = idx[Math.floor(Math.random() * idx.length)];
       setFading(true);
       fadeRef.current = setTimeout(() => { setDisplay(r.label); setFading(false); }, 35);
@@ -1380,7 +1388,7 @@ export default function FMWeb() {
             eraMin={state.eraMin} eraMax={state.eraMax}
             onSpin={() => dispatch({ type: "SPIN" })}
             onDoneSpin={() => {
-              const r = eraIndex[Math.floor(Math.random() * eraIndex.length)];
+              const r = eraIndex[freshRng().int(eraIndex.length)];
               dispatch({ type: "LAND", year: r.y, clubId: r.c, label: r.label });
             }}
             onPick={(p) => dispatch({ type: "PICK_PLAYER", player: p })}

@@ -12,22 +12,21 @@
 // anyone currently already in the top flight (so a club can't be "promoted"
 // while it's still up) — once up, a club stays up until it goes down on its
 // own merit, same as anyone else; there's no scripted script to any of it.
-export function drawPromotedClubs(pool, count, currentNames) {
+export function drawPromotedClubs(pool, count, currentNames, rng) {
   const available = pool.filter((c) => !currentNames.has(c.name));
-  const shuffled = [...available].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, count).map((c) => ({ ...c, lastSeason: "promoted" }));
+  return rng.shuffle(available).slice(0, count).map((c) => ({ ...c, lastSeason: "promoted" }));
 }
 
 // After each season, whichever real clubs finished 18th-20th (excluding your
 // own XI's slot, wherever it landed) go down to the Championship, replaced by
 // an equal number of real clubs drawn up from it — the league genuinely
 // evolves under you across a career rather than staying static.
-export function applyPromotionRelegation(opponents, table, pool) {
+export function applyPromotionRelegation(opponents, table, pool, rng) {
   if (!table) return { opponents, relegated: [], promoted: [] };
   const relegatedNames = table.filter((r) => !r.isUser && r.position >= 18).map((r) => r.name);
   if (relegatedNames.length === 0) return { opponents, relegated: [], promoted: [] };
   const survivors = opponents.filter((o) => !relegatedNames.includes(o.name));
   const currentNames = new Set(survivors.map((o) => o.name));
-  const promotedClubs = drawPromotedClubs(pool, relegatedNames.length, currentNames);
+  const promotedClubs = drawPromotedClubs(pool, relegatedNames.length, currentNames, rng);
   return { opponents: [...survivors, ...promotedClubs], relegated: relegatedNames, promoted: promotedClubs.map((c) => c.name) };
 }

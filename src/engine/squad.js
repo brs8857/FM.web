@@ -29,12 +29,12 @@ export function autoFillBench(getSquad, assignments, draftedIds) {
 
 // Transfer window shortlist: candidates drawn from the career's era, excluding
 // anyone already at the club. Sampling 40 club-seasons keeps it instant.
-export function generateShortlist(getSquad, index, { eraMin, eraMax }, ownedIds, count = 5) {
+export function generateShortlist(getSquad, index, { eraMin, eraMax }, ownedIds, rng, count = 5) {
   const eraEntries = index.filter((e) => {
     const y = parseInt(e.y, 10);
     return y >= eraMin && y <= eraMax;
   });
-  const sampled = [...eraEntries].sort(() => Math.random() - 0.5).slice(0, 40);
+  const sampled = rng.shuffle(eraEntries).slice(0, 40);
   const pool = [];
   const seen = new Set();
   sampled.forEach((e) => {
@@ -42,7 +42,7 @@ export function generateShortlist(getSquad, index, { eraMin, eraMax }, ownedIds,
       if (!ownedIds.has(p.id) && !seen.has(p.id)) { seen.add(p.id); pool.push(p); }
     });
   });
-  return [...pool].sort(() => Math.random() - 0.5).slice(0, count);
+  return rng.shuffle(pool).slice(0, count);
 }
 
 // Sign a new player into the XI at a given slot, sending whoever was there

@@ -44,20 +44,20 @@ export function buildUserFixtureList(opponentNamesShuffled) {
 // sets how much light randomisation is layered on top — volatile clubs swing
 // further from their baseline, steady ones are more predictable — which is
 // what leaves room for upsets without it being pure noise.
-export function estimateClubPoints(opp) {
+export function estimateClubPoints(opp, rng) {
   const base = (20 + (opp.ov - 55) * 1.63) * opp.weight;
-  const noise = (Math.random() - 0.5) * opp.vol;
+  const noise = (rng.next() - 0.5) * opp.vol;
   return Math.round(clamp(base + noise, 17, 97));
 }
 
-export function simulateSeason(profile, familiarity, oppList) {
-  const shuffledNames = [...oppList].sort(() => Math.random() - 0.5).map((o) => o.name);
+export function simulateSeason(profile, familiarity, oppList, rng) {
+  const shuffledNames = rng.shuffle(oppList).map((o) => o.name);
   const fixtures = buildUserFixtureList(shuffledNames);
   const nameToOpp = Object.fromEntries(oppList.map((o) => [o.name, o]));
 
   let w = 0, d = 0, l = 0, gf = 0, ga = 0;
   const matches = fixtures.map((fx) => {
-    const res = simulateMatch(profile, nameToOpp[fx.name], fx.home, familiarity);
+    const res = simulateMatch(profile, nameToOpp[fx.name], fx.home, familiarity, rng);
     gf += res.gf; ga += res.ga;
     let outcome;
     if (res.gf > res.ga) { w++; outcome = "W"; }
@@ -68,7 +68,7 @@ export function simulateSeason(profile, familiarity, oppList) {
 
   const pts = w * 3 + d;
 
-  const table = oppList.map((o) => ({ name: o.name, pts: estimateClubPoints(o), isUser: false }));
+  const table = oppList.map((o) => ({ name: o.name, pts: estimateClubPoints(o, rng), isUser: false }));
   table.push({ name: "Your XI", pts, isUser: true, w, d, l, gf, ga });
   table.sort((a, b) => b.pts - a.pts);
   const position = table.findIndex((t) => t.isUser) + 1;
