@@ -7,6 +7,8 @@ import { STAT_KEYS, STAT_LABELS, createSquadLookup, buildPool } from "./engine/p
 import { playerContribution, computeTeamProfile } from "./engine/tactics.js";
 import { computeFamiliarity, familiarityLabel } from "./engine/familiarity.js";
 import { tacticalReadout, mentalityLabel } from "./engine/readout.js";
+import { simulateSeason, CAREER_SEASONS, careerSeasonLabel } from "./engine/season.js";
+import { applyPromotionRelegation } from "./engine/league.js";
 
 /* =========================================================================
    FM.WEB — data, constants, and pure helper/simulation functions
@@ -20,170 +22,7 @@ export function installDataset(dataset) {
   getSquad = createSquadLookup(dataset);
 }
 
-/* ============================== Simulation ================================ */
-function poissonSample(lambda) {
-  if (lambda <= 0) return 0;
-  const L = Math.exp(-lambda);
-  let k = 0, p = 1;
-  do { k++; p *= Math.random(); } while (p > L && k < 12);
-  return k - 1;
-}
-
-function simulateMatch(profile, opp, isHome, familiarity) {
-  const homeAdv = isHome ? 3 : 0;
-  // Even a perfectly-drilled tactic still has an off day — the floor on
-  // variance is higher than before, so no setup is ever fully "solved".
-  const noiseScale = clamp(1.1 - familiarity / 150, 0.28, 0.9);
-
-  // Blend this season's squad strength with the club's long-run historical
-  // pedigree (mean squad strength across every real PL season they've had) —
-  // a historically elite club plays a little tougher than a single season's
-  // number alone would suggest, and vice versa for a historically weaker one.
-  const effOv = opp.ov * 0.82 + opp.histMean * 0.18;
-
-  const attSkill = profile.attack + homeAdv + (profile.creativity - 50) * 0.15;
-  const defSkill = profile.defSolidity + homeAdv * 0.5;
-
-  // The raw quality gap is capped and run through a wider divisor than a
-  // pure stat-diff model would use — a stronger team is still favoured, but
-  // no gap (however large on paper) buys a guaranteed landslide. Real upsets
-  // stay genuinely possible even when you're clearly the better side.
-  const attGap = clamp(attSkill - effOv, -33, 33);
-  const defGap = clamp(effOv - defSkill, -33, 33);
-
-  let xgFor = 1.05 + attGap / 20;
-  let xgAgainst = 1.05 + defGap / 20;
-  xgFor = clamp(xgFor, 0.25, 3.4);
-  xgAgainst = clamp(xgAgainst, 0.25, 3.0);
-
-  const noisyFor = clamp(xgFor * (1 + (Math.random() - 0.5) * noiseScale), 0.05, 5);
-  const noisyAgainst = clamp(xgAgainst * (1 + (Math.random() - 0.5) * noiseScale), 0.05, 5);
-
-  return { gf: poissonSample(noisyFor), ga: poissonSample(noisyAgainst) };
-}
-
-// Standard "circle method" round-robin scheduler. Produces 2*(n-1) rounds for
-// n teams, each round a full set of pairings, second half mirrored home/away —
-// exactly how a real top-flight fixture list is constructed, rather than
-// randomly grouping matches by opponent.
-function roundRobinSchedule(teamIds) {
-  const n = teamIds.length;
-  const fixed = teamIds[0];
-  let rotating = teamIds.slice(1);
-  const firstHalf = [];
-  for (let r = 0; r < n - 1; r++) {
-    const roundTeams = [fixed, ...rotating];
-    const round = [];
-    for (let i = 0; i < n / 2; i++) {
-      const home = roundTeams[i], away = roundTeams[n - 1 - i];
-      round.push(r % 2 === 0 ? [home, away] : [away, home]);
-    }
-    firstHalf.push(round);
-    rotating.unshift(rotating.pop());
-  }
-  const secondHalf = firstHalf.map((round) => round.map(([h, a]) => [a, h]));
-  return [...firstHalf, ...secondHalf];
-}
-
-function buildUserFixtureList(opponentNamesShuffled) {
-  const teams = ["__USER__", ...opponentNamesShuffled];
-  const rounds = roundRobinSchedule(teams);
-  return rounds.map((round, i) => {
-    const pair = round.find(([h, a]) => h === "__USER__" || a === "__USER__");
-    const isHome = pair[0] === "__USER__";
-    return { week: i + 1, name: isHome ? pair[1] : pair[0], home: isHome };
-  });
-}
-
-// Estimated final points for the 19 real rivals, derived transparently from
-// their strength rating and historical pedigree (see DATASET.opponents /
-// build_final.py) rather than simulated match-by-match. `weight` (derived
-// from each club's long-run mean squad strength across every real PL season
-// on file) raises or lowers their expected baseline — consistently strong
-// clubs get a meaningfully better weighted chance, weaker-history clubs a
-// lower one. `vol` (derived from the historical spread of that same data)
-// sets how much light randomisation is layered on top — volatile clubs swing
-// further from their baseline, steady ones are more predictable — which is
-// what leaves room for upsets without it being pure noise.
-function estimateClubPoints(opp) {
-  const base = (20 + (opp.ov - 55) * 1.63) * opp.weight;
-  const noise = (Math.random() - 0.5) * opp.vol;
-  return Math.round(clamp(base + noise, 17, 97));
-}
-
-function simulateSeason(profile, familiarity, oppList) {
-  const shuffledNames = [...oppList].sort(() => Math.random() - 0.5).map((o) => o.name);
-  const fixtures = buildUserFixtureList(shuffledNames);
-  const nameToOpp = Object.fromEntries(oppList.map((o) => [o.name, o]));
-
-  let w = 0, d = 0, l = 0, gf = 0, ga = 0;
-  const matches = fixtures.map((fx) => {
-    const res = simulateMatch(profile, nameToOpp[fx.name], fx.home, familiarity);
-    gf += res.gf; ga += res.ga;
-    let outcome;
-    if (res.gf > res.ga) { w++; outcome = "W"; }
-    else if (res.gf === res.ga) { d++; outcome = "D"; }
-    else { l++; outcome = "L"; }
-    return { week: fx.week, opponent: fx.name, home: fx.home, gf: res.gf, ga: res.ga, outcome };
-  });
-
-  const pts = w * 3 + d;
-
-  const table = oppList.map((o) => ({ name: o.name, pts: estimateClubPoints(o), isUser: false }));
-  table.push({ name: "Your XI", pts, isUser: true, w, d, l, gf, ga });
-  table.sort((a, b) => b.pts - a.pts);
-  const position = table.findIndex((t) => t.isUser) + 1;
-  table.forEach((row, i) => { row.position = i + 1; });
-
-  let tier;
-  if (w === 38) tier = { name: "THE PERFECT SEASON", sub: "38 from 38 — a perfect points-per-game record with games to spare. No side in the league's history has ever managed it.", color: "amber" };
-  else if (l === 0 && position === 1) tier = { name: "Invincibles", sub: "Champions and unbeaten from August to May — a status only one Premier League side has ever achieved.", color: "amber" };
-  else if (pts >= 100) tier = { name: "Centurions", sub: "Past the 100-point mark — a ruthless, record-breaking points total that dwarfs most title-winning campaigns.", color: "amber" };
-  else if (position === 1) tier = { name: "Champions", sub: "Crowned champions of England — the trophy, the open-top bus, the lot.", color: "emerald" };
-  else if (position <= 5) tier = { name: "Champions League", sub: "A top-five finish and Champions League football to plan for next season.", color: "sky" };
-  else if (position <= 7) tier = { name: "Europa League", sub: "European qualification secured — a genuinely solid campaign in the top half.", color: "violet" };
-  else if (position === 8) tier = { name: "Conference League", sub: "Just enough for European football — a season that overachieved its underlying numbers.", color: "violet" };
-  else if (position <= 17) tier = { name: "Mid-Table Mediocrity", sub: "Comfortable and safe, but nothing to shout about — a season that will be forgotten by August.", color: "slate" };
-  else tier = { name: "Relegation Battle", sub: "A relegation dogfight that went the wrong way — back to the drawing board.", color: "rose" };
-
-  return { matches, w, d, l, gf, ga, pts, tier, position, table };
-}
-
-/* ===================== Promotion / relegation between seasons ============== */
-// The real 2026-27 EFL Championship's 24 clubs. Where a club has a Premier
-// League spell in our historical database (1992-2024), its numbers are
-// grounded in that real data — most recent-season squad strength (with a
-// gap penalty for time away), plus pedigree/volatility derived from every
-// season they've actually had. The handful with no top-flight history in
-// our window get a fixed, deliberately weaker generated profile instead of
-// nothing. Which of these get drawn each promotion is still random — this
-// only fixes *who's in the pool*, not who comes up.
 let CHAMPIONSHIP_POOL = null;
-
-
-// Draws `count` clubs at random from the Championship pool, excluding
-// anyone currently already in the top flight (so a club can't be "promoted"
-// while it's still up) — once up, a club stays up until it goes down on its
-// own merit, same as anyone else; there's no scripted script to any of it.
-function drawPromotedClubs(count, currentNames) {
-  const available = CHAMPIONSHIP_POOL.filter((c) => !currentNames.has(c.name));
-  const shuffled = [...available].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, count).map((c) => ({ ...c, lastSeason: "promoted" }));
-}
-
-// After each season, whichever real clubs finished 18th-20th (excluding your
-// own XI's slot, wherever it landed) go down to the Championship, replaced by
-// an equal number of real clubs drawn up from it — the league genuinely
-// evolves under you across a career rather than staying static.
-function applyPromotionRelegation(opponents, table) {
-  if (!table) return { opponents, relegated: [], promoted: [] };
-  const relegatedNames = table.filter((r) => !r.isUser && r.position >= 18).map((r) => r.name);
-  if (relegatedNames.length === 0) return { opponents, relegated: [], promoted: [] };
-  const survivors = opponents.filter((o) => !relegatedNames.includes(o.name));
-  const currentNames = new Set(survivors.map((o) => o.name));
-  const promotedClubs = drawPromotedClubs(relegatedNames.length, currentNames);
-  return { opponents: [...survivors, ...promotedClubs], relegated: relegatedNames, promoted: promotedClubs.map((c) => c.name) };
-}
 
 /* ================================ Reducer ================================= */
 function makeInitialState() {
@@ -207,9 +46,6 @@ function makeInitialState() {
   lastTransition: null, // { relegated: [names], promoted: [names] } from the season just gone
   };
 }
-
-const CAREER_SEASONS = 6;
-function careerSeasonLabel(season) { return seasonLabel(2025 + season); }
 
 function nextEmptySlotIndex(assignments) {
   return assignments.findIndex((a) => !a.player);
@@ -435,7 +271,7 @@ function reducer(state, action) {
     case "GOTO_TRANSFER": {
       const shortlist = generateShortlist(state.eraMin, state.eraMax, state.draftedIds)
         .map((player) => ({ player, signed: false }));
-      const { opponents, relegated, promoted } = applyPromotionRelegation(state.opponents, state.simulation?.table);
+      const { opponents, relegated, promoted } = applyPromotionRelegation(state.opponents, state.simulation?.table, CHAMPIONSHIP_POOL);
       return { ...state, phase: "transfer", shortlist, opponents, lastTransition: { relegated, promoted } };
     }
     case "SIGN_SHORTLIST_TO_BENCH": {
