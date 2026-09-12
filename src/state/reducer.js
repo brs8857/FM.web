@@ -206,6 +206,9 @@ export function createReducer(dataset) {
       case "NEW_GAME": {
         return makeInitialState(dataset, action.seed);
       }
+      case "LOAD_SAVE": {
+        return action.state;
+      }
       default: return state;
     }
   };

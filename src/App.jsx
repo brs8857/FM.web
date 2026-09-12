@@ -13,6 +13,11 @@ import { createReducer } from "./state/reducer.js";
 import { makeInitialState } from "./state/initialState.js";
 import { newCareerSeed } from "./state/rngState.js";
 import { selectEraIndex, liveAssignments, selectFamiliarity, selectProfile } from "./state/selectors.js";
+import { getStorage, readAutosave, clearAutosave, requestPersistentStorage } from "./state/storage.js";
+import { useAutosave } from "./state/useAutosave.js";
+import { hydrateState, describeSave } from "./state/save.js";
+import ResumeCard from "./components/app/ResumeCard.jsx";
+import StorageBanner from "./components/app/StorageBanner.jsx";
 
 /* ============================== UI atoms =================================== */
 
@@ -699,7 +704,7 @@ function DraftScreen({ formationKey, assignments, bench, wheel, pool, draftTarge
 }
 
 /* ================================ Result screen ============================= */
-function ResultCard({ simulation, formationKey, assignments, onReset, onContinue }) {
+function ResultCard({ simulation, formationKey, assignments, onReset, onContinue, instant }) {
   const { w, d, l, gf, ga, pts, tier, position, profile, familiarity, instructions, season } = simulation;
   const starName = [...assignments].sort((a, b) => (b.player?.ov || 0) - (a.player?.ov || 0))[0]?.player;
   const seasonLbl = careerSeasonLabel(season);
@@ -717,10 +722,14 @@ function ResultCard({ simulation, formationKey, assignments, onReset, onContinue
   // final table instantly — a running tally builds match by match, and the
   // final verdict only reveals once the season has actually finished.
   const total = simulation.matches.length;
-  const [revealed, setRevealed] = useState(0);
+  const [revealed, setRevealed] = useState(instant ? total : 0);
   const timerRef = useRef(null);
 
   useEffect(() => {
+    if (instant) {
+      setRevealed(total);
+      return undefined;
+    }
     setRevealed(0);
     let i = 0;
     function tick() {
@@ -934,9 +943,9 @@ function TransferScreen({ shortlist, assignments, season, lastTransition, onSign
 }
 
 /* ============================== Ratings Reveal ================================ */
-function RatingsRevealScreen({ assignments, season, onKickoff }) {
+function RatingsRevealScreen({ assignments, season, onKickoff, instant }) {
   const starters = useMemo(() => assignments.filter((a) => a.player).map((a) => a.player).sort((a, b) => a.ov - b.ov), [assignments]);
-  const [revealed, setRevealed] = useState(0);
+  const [revealed, setRevealed] = useState(instant ? starters.length : 0);
 
   useEffect(() => {
     if (revealed >= starters.length) return;
@@ -984,9 +993,57 @@ function RatingsRevealScreen({ assignments, season, onKickoff }) {
 }
 
 /* =================================== App ==================================== */
-export default function FMWeb({ dataset }) {
+export default function FMWeb({ dataset, storage: storageProp }) {
+  const [storage] = useState(() => (storageProp !== undefined ? storageProp : getStorage()));
+  const [boot] = useState(() => (storage ? readAutosave(storage) : { status: "none" }));
   const reducer = useMemo(() => createReducer(dataset), [dataset]);
   const [state, dispatch] = useReducer(reducer, dataset, (ds) => makeInitialState(ds, newCareerSeed()));
+  const [pendingSave, setPendingSave] = useState(boot.status === "ok" ? boot.save : null);
+  const [notice, setNotice] = useState(boot.status === "corrupt" ? "corrupt" : storage ? null : "unavailable");
+  const [resumed, setResumed] = useState(false);
+  const shownPhase = useRef(state.phase);
+  const persistRequested = useRef(false);
+
+  useAutosave({ state, storage, enabled: !pendingSave, onWriteError: () => setNotice("unavailable") });
+
+  useEffect(() => {
+    if (shownPhase.current !== state.phase) {
+      shownPhase.current = state.phase;
+      setResumed(false);
+    }
+  }, [state.phase]);
+
+  const loadCareer = (loaded) => {
+    shownPhase.current = loaded.phase;
+    setPendingSave(null);
+    setResumed(true);
+    dispatch({ type: "LOAD_SAVE", state: loaded });
+  };
+
+  const confirmReplaceSave = () => {
+    if (!pendingSave) return true;
+    const { season, seasonLabel } = describeSave(pendingSave);
+    if (!window.confirm(`Start a new career? Your saved career (Season ${season} · ${seasonLabel}) will be replaced.`)) return false;
+    clearAutosave(storage);
+    setPendingSave(null);
+    return true;
+  };
+
+  const startDraft = () => {
+    if (!confirmReplaceSave()) return;
+    if (!persistRequested.current) {
+      persistRequested.current = true;
+      requestPersistentStorage();
+    }
+    dispatch({ type: "START_DRAFT" });
+  };
+
+  const newGame = () => {
+    if (!window.confirm("Start a new career? Your current career will be replaced.")) return;
+    clearAutosave(storage);
+    setResumed(false);
+    dispatch({ type: "NEW_GAME", seed: newCareerSeed() });
+  };
   const { phase, formationKey, assignments, bench, draftedIds, wheel, pool, instructions } = state;
   const [activeSlotId, setActiveSlotId] = useState(null);
   const [dragInfo, setDragInfo] = useState(null); // { kind: 'slot'|'bench', id }
@@ -1150,10 +1207,15 @@ export default function FMWeb({ dataset }) {
           </div>
         </header>
 
+        {notice && <StorageBanner kind={notice} onDismiss={() => setNotice(null)} />}
+        {phase === "formation" && pendingSave && (
+          <ResumeCard summary={describeSave(pendingSave)} onContinue={() => loadCareer(hydrateState(pendingSave.state))} onNewGame={confirmReplaceSave} />
+        )}
+
         <div key={phase} className="fmweb-phase">
         {phase === "formation" && (
           <FormationSelect formationKey={formationKey} onPick={(k) => dispatch({ type: "SET_FORMATION", key: k })}
-            onStart={() => dispatch({ type: "START_DRAFT" })} assignments={assignments}
+            onStart={startDraft} assignments={assignments}
             eraMin={state.eraMin} eraMax={state.eraMax} onSetEra={(mn, mx) => dispatch({ type: "SET_ERA", min: mn, max: mx })} />
         )}
 
@@ -1213,12 +1275,12 @@ export default function FMWeb({ dataset }) {
         )}
 
         {phase === "reveal" && state.simulation && (
-          <RatingsRevealScreen assignments={assignments} season={state.season} onKickoff={() => dispatch({ type: "KICKOFF" })} />
+          <RatingsRevealScreen assignments={assignments} season={state.season} onKickoff={() => dispatch({ type: "KICKOFF" })} instant={resumed} />
         )}
 
         {phase === "result" && state.simulation && (
           <ResultCard simulation={state.simulation} formationKey={formationKey} assignments={assignments}
-            onReset={() => dispatch({ type: "NEW_GAME", seed: newCareerSeed() })} onContinue={() => dispatch({ type: "GOTO_TRANSFER" })} />
+            onReset={newGame} onContinue={() => dispatch({ type: "GOTO_TRANSFER" })} instant={resumed} />
         )}
         </div>
       </div>
