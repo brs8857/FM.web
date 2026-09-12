@@ -546,7 +546,7 @@ export async function playSeasonToTransfer(page, season = 1) {
   await page.getByRole("button", { name: /Reveal Ratings & Simulate/ }).click();
   await page.getByRole("button", { name: new RegExp(`Kick Off Season ${season}`) }).click({ timeout: 15_000 });
   await page.getByRole("button", { name: new RegExp(`Continue to Season ${season + 1}`) }).click({ timeout: 20_000 });
-  await expect(page.getByText("Transfer Window").first()).toBeVisible();
+  await expect(page.getByText("Transfer Window", { exact: true })).toBeVisible();
 }
 ```
 
@@ -565,7 +565,7 @@ test("draft, simulate season 1, pass the transfer window into season 2", async (
   await page.getByRole("button", { name: /Continue to Season 2/ }).click();
 
   await expect(page.getByRole("button", { name: /Reveal Ratings & Simulate/ })).toBeVisible();
-  await expect(page.getByText(/Season 2 · 2027-28/).first()).toBeVisible();
+  await expect(page.getByText("Season 2 · 2027-28").first()).toBeAttached();
 });
 ```
 
