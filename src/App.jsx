@@ -14,7 +14,7 @@ import { makeInitialState } from "./state/initialState.js";
 import { newCareerSeed } from "./state/rngState.js";
 import { selectEraIndex, liveAssignments, selectFamiliarity, selectProfile } from "./state/selectors.js";
 import { getStorage, readAutosave, clearAutosave, requestPersistentStorage } from "./state/storage.js";
-import { useAutosave } from "./state/useAutosave.js";
+import { useAutosave } from "./components/app/useAutosave.js";
 import { hydrateState, describeSave } from "./state/save.js";
 import ResumeCard from "./components/app/ResumeCard.jsx";
 import StorageBanner from "./components/app/StorageBanner.jsx";

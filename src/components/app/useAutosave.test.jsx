@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
-import { fakeStorage } from "../../tests/fixtures/saves.js";
+import { fakeStorage } from "../../../tests/fixtures/saves.js";
 import { useAutosave } from "./useAutosave.js";
-import { SAVE_KEY } from "./storage.js";
+import { SAVE_KEY } from "../../state/storage.js";
 
 const state = (phase, extra = {}) => ({ phase, draftedIds: new Set(), season: 1, ...extra });
 

@@ -1,8 +1,7 @@
-// eslint-disable-next-line no-restricted-imports -- useAutosave is a React hook; it belongs beside the storage/save modules it wraps.
 import { useCallback, useEffect, useRef } from "react";
-import { makeSaveEnvelope, serializeState, toSaveText } from "./save.js";
-import { writeAutosave } from "./storage.js";
-import { APP_VERSION } from "../version.js";
+import { makeSaveEnvelope, serializeState, toSaveText } from "../../state/save.js";
+import { writeAutosave } from "../../state/storage.js";
+import { APP_VERSION } from "../../version.js";
 
 export function useAutosave({ state, storage, enabled, onWriteError, delayMs = 500 }) {
   const lastWritten = useRef(null);
