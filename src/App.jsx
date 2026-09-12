@@ -14,15 +14,10 @@ import { APP_VERSION } from "./version.js";
 import ResumeCard from "./components/app/ResumeCard.jsx";
 import StorageBanner from "./components/app/StorageBanner.jsx";
 import SaveMenu from "./components/app/SaveMenu.jsx";
-import Pitch from "./components/pitch/Pitch.jsx";
-import BenchStrip from "./components/pitch/BenchStrip.jsx";
 import { usePitchDrag } from "./components/pitch/usePitchDrag.js";
 import FormationSelect from "./components/screens/FormationSelect.jsx";
 import DraftScreen from "./components/screens/DraftScreen.jsx";
-import RoleEditor from "./components/screens/RoleEditor.jsx";
-import StyleSelector from "./components/screens/StyleSelector.jsx";
-import InstructionsPanel from "./components/screens/InstructionsPanel.jsx";
-import TacticsSummary from "./components/screens/TacticsSummary.jsx";
+import TacticsScreen from "./components/screens/TacticsScreen.jsx";
 import ResultCard from "./components/screens/ResultCard.jsx";
 import TransferScreen from "./components/screens/TransferScreen.jsx";
 import RatingsRevealScreen from "./components/screens/RatingsRevealScreen.jsx";
@@ -110,75 +105,11 @@ export default function FMWeb({ dataset, storage: storageProp }) {
   const profile = useMemo(() => selectProfile(live, instructions, familiarity), [live, instructions, familiarity]);
   const eraIndex = useMemo(() => selectEraIndex(dataset.index, state.eraMin, state.eraMax), [dataset, state.eraMin, state.eraMax]);
 
-  const activeAssignment = assignments.find((a) => a.slotId === activeSlotId);
-
   return (
-    <>
-      <style>{`
-        .fmweb-root, .fmweb-root *, .fmweb-root *::before, .fmweb-root *::after {
-          box-sizing: border-box;
-        }
-        .fmweb-root button {
-          min-width: 0;
-        }
-        .fmweb-root p, .fmweb-root span, .fmweb-root div, .fmweb-root button {
-          overflow-wrap: break-word;
-          word-break: normal;
-        }
-        .fmweb-root img, .fmweb-root svg {
-          max-width: 100%;
-        }
-        .fmweb-root {
-          scroll-behavior: smooth;
-        }
-        .fmweb-root ::selection {
-          background: rgba(16, 185, 129, 0.3);
-          color: #f5f5f4;
-        }
-        .fmweb-root ::-webkit-scrollbar {
-          width: 9px;
-          height: 9px;
-        }
-        .fmweb-root ::-webkit-scrollbar-track {
-          background: #0a0f0c;
-        }
-        .fmweb-root ::-webkit-scrollbar-thumb {
-          background: #2a3330;
-          border-radius: 999px;
-          border: 2px solid #0a0f0c;
-        }
-        .fmweb-root ::-webkit-scrollbar-thumb:hover {
-          background: #3a453f;
-        }
-        .fmweb-root button, .fmweb-root a, .fmweb-root [role="button"] {
-          transition: filter 0.12s ease, box-shadow 0.15s ease, border-color 0.15s ease, background-color 0.15s ease, opacity 0.15s ease;
-        }
-        .fmweb-root button:active {
-          filter: brightness(0.92);
-        }
-        @keyframes fmweb-fade-in {
-          from { opacity: 0; transform: translateY(6px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .fmweb-phase {
-          animation: fmweb-fade-in 0.32s ease-out;
-        }
-        .fmweb-cta {
-          box-shadow: 0 1px 0 0 rgba(255,255,255,0.15) inset, 0 2px 8px rgba(0,0,0,0.45);
-        }
-        .fmweb-cta:hover {
-          filter: brightness(1.08);
-        }
-        .fmweb-panel {
-          background: linear-gradient(180deg, #121815 0%, #0d1310 100%);
-          border: 1px solid #242e29;
-          box-shadow: 0 1px 0 0 rgba(255,255,255,0.03) inset, 0 8px 20px -8px rgba(0,0,0,0.6);
-        }
-      `}</style>
-      <div className="fmweb-root min-h-screen w-full text-neutral-100" style={{
-        fontFamily: "'Inter', ui-sans-serif, system-ui",
-        background: "linear-gradient(180deg, #0c1310 0%, #090d0b 55%, #07100c 100%)",
-      }}>
+    <div className="fmweb-root min-h-screen w-full text-neutral-100" style={{
+      fontFamily: "'Inter', ui-sans-serif, system-ui",
+      background: "linear-gradient(180deg, #0c1310 0%, #090d0b 55%, #07100c 100%)",
+    }}>
       <div className="max-w-5xl mx-auto px-4 py-6">
         <header className="flex items-center justify-between mb-6 pb-4 border-b border-neutral-800">
           <div className="flex items-center gap-3">
@@ -239,40 +170,9 @@ export default function FMWeb({ dataset, storage: storageProp }) {
         )}
 
         {phase === "tactics" && (
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", alignItems: "flex-start", width: "100%" }}>
-            <div style={{ flex: "1 1 260px", minWidth: 0, maxWidth: "100%", boxSizing: "border-box" }} className="space-y-3">
-              <Pitch assignments={assignments} activeSlotId={activeSlotId} mode="tactics" dragHint
-                onSlotClick={(id) => setActiveSlotId(id === activeSlotId ? null : id)}
-                onDragStart={startDrag}
-                draggingId={dragInfo?.kind === "slot" ? dragInfo.id : null} />
-              <div style={{ display: "flex", gap: "0.5rem" }}>
-                <p className="text-xs text-neutral-500" style={{ flex: "1 1 auto", minWidth: 0 }}>Drag any player anywhere on the pitch to reposition, or drop him on a teammate to swap. Tap to edit role, duty, and sliders.</p>
-                <button onClick={() => dispatch({ type: "RESET_POSITIONS" })} style={{ flexShrink: 0 }} className="text-xs px-2 py-1 h-fit rounded-md border border-neutral-700 text-neutral-300 hover:border-emerald-500 transition">Reset shape</button>
-              </div>
-              <BenchStrip bench={bench} draggable
-                onDragStart={startDrag}
-                draggingId={dragInfo?.kind === "bench" ? dragInfo.id : null} />
-              <button onClick={() => dispatch({ type: "SIMULATE" })}
-                className="w-full px-4 py-3 rounded-md font-bold uppercase tracking-wide text-sm transition fmweb-cta" style={{ background: "#059669", color: "#fff" }}>
-                Reveal Ratings &amp; Simulate
-              </button>
-            </div>
-            <div style={{ flex: "2 1 320px", minWidth: 0, maxWidth: "100%", boxSizing: "border-box" }} className="space-y-4">
-              <StyleSelector selectedStyle={state.selectedStyle} onSelect={(key) => dispatch({ type: "SET_STYLE", key })} />
-              {activeAssignment?.player ? (
-                <RoleEditor assignment={{ ...activeAssignment, role: activeAssignment.role }}
-                  onSetRole={(k) => dispatch({ type: "SET_ROLE", slotId: activeSlotId, roleKey: k })}
-                  onSetDuty={(d) => dispatch({ type: "SET_DUTY", slotId: activeSlotId, duty: d })}
-                  onSetSlider={(key, v) => dispatch({ type: "SET_SLIDER", slotId: activeSlotId, key, value: v })}
-                />
-              ) : (
-                <InstructionsPanel instructions={instructions} onSet={(k, v) => dispatch({ type: "SET_INSTRUCTION", key: k, value: v })} />
-              )}
-            </div>
-            <div style={{ flex: "1 1 260px", minWidth: 0, maxWidth: "100%", boxSizing: "border-box" }}>
-              <TacticsSummary profile={profile} familiarity={familiarity} instructions={instructions} />
-            </div>
-          </div>
+          <TacticsScreen state={state} dispatch={dispatch} activeSlotId={activeSlotId}
+            onSelectSlot={(id) => setActiveSlotId(id === activeSlotId ? null : id)}
+            dragInfo={dragInfo} onDragStart={startDrag} profile={profile} familiarity={familiarity} />
         )}
 
         {phase === "transfer" && (
@@ -292,7 +192,6 @@ export default function FMWeb({ dataset, storage: storageProp }) {
         )}
         </div>
       </div>
-      </div>
-    </>
+    </div>
   );
 }
