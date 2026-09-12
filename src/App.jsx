@@ -13,11 +13,14 @@ import { createReducer } from "./state/reducer.js";
 import { makeInitialState } from "./state/initialState.js";
 import { newCareerSeed } from "./state/rngState.js";
 import { selectEraIndex, liveAssignments, selectFamiliarity, selectProfile } from "./state/selectors.js";
-import { getStorage, readAutosave, clearAutosave, requestPersistentStorage } from "./state/storage.js";
+import { getStorage, readAutosave, clearAutosave, requestPersistentStorage, writeAutosave } from "./state/storage.js";
 import { useAutosave } from "./components/app/useAutosave.js";
-import { hydrateState, describeSave } from "./state/save.js";
+import { hydrateState, describeSave, makeSaveEnvelope, toSaveText } from "./state/save.js";
+import { saveFileName, exportSaveText, readImportFile } from "./state/exportImport.js";
+import { APP_VERSION } from "./version.js";
 import ResumeCard from "./components/app/ResumeCard.jsx";
 import StorageBanner from "./components/app/StorageBanner.jsx";
+import SaveMenu from "./components/app/SaveMenu.jsx";
 
 /* ============================== UI atoms =================================== */
 
@@ -1044,6 +1047,23 @@ export default function FMWeb({ dataset, storage: storageProp }) {
     setResumed(false);
     dispatch({ type: "NEW_GAME", seed: newCareerSeed() });
   };
+
+  const exportCareer = () => {
+    exportSaveText(toSaveText(makeSaveEnvelope(state, { gameVersion: APP_VERSION })), saveFileName(state));
+  };
+
+  const importCareer = async (file) => {
+    const result = await readImportFile(file);
+    if (!result.ok) return result;
+    const hasCareer = state.phase !== "formation" || pendingSave;
+    const currentSeason = pendingSave ? pendingSave.state.season : state.season;
+    if (hasCareer && !window.confirm(`Replace your current career (Season ${currentSeason})?`)) return { ok: false };
+    const loaded = hydrateState(result.save.state);
+    if (storage) writeAutosave(storage, toSaveText(makeSaveEnvelope(loaded, { gameVersion: APP_VERSION })));
+    loadCareer(loaded);
+    const { season, seasonLabel } = describeSave(result.save);
+    return { ok: true, message: `Loaded Season ${season} · ${seasonLabel}.` };
+  };
   const { phase, formationKey, assignments, bench, draftedIds, wheel, pool, instructions } = state;
   const [activeSlotId, setActiveSlotId] = useState(null);
   const [dragInfo, setDragInfo] = useState(null); // { kind: 'slot'|'bench', id }
@@ -1184,26 +1204,29 @@ export default function FMWeb({ dataset, storage: storageProp }) {
               <div className="text-xs text-neutral-500 font-semibold -mt-0.5 uppercase tracking-wide">Football Manager, in your browser</div>
             </div>
           </div>
-          <div className="hidden sm:flex items-center text-xs uppercase font-bold tracking-wide">
-            {state.season === 1 && phase !== "transfer" && phase !== "reveal" ? (
-              ["formation", "draft", "tactics", "result"].map((p, i) => {
-                const order = ["formation", "draft", "tactics", "result"];
-                const currentIdx = order.indexOf(phase);
-                const thisIdx = order.indexOf(p);
-                const done = thisIdx < currentIdx;
-                const active = thisIdx === currentIdx;
-                return (
-                  <div key={p} className="flex items-center">
-                    {i > 0 && <div className={`w-4 h-px ${done || active ? "bg-emerald-600" : "bg-neutral-800"}`} />}
-                    <div className={`px-2.5 py-1 rounded border ${active ? "bg-emerald-600 text-white border-emerald-600" : done ? "border-emerald-800 text-emerald-600" : "border-neutral-800 text-neutral-600"}`}>{p}</div>
-                  </div>
-                );
-              })
-            ) : (
-              <div className="px-3 py-1.5 rounded border border-emerald-800 text-emerald-500">
-                Season {state.season} · {careerSeasonLabel(state.season)}{phase === "transfer" ? " · Transfer Window" : phase === "reveal" ? " · Squad Reveal" : ""}
-              </div>
-            )}
+          <div className="flex items-center gap-3">
+            <div className="hidden sm:flex items-center text-xs uppercase font-bold tracking-wide">
+              {state.season === 1 && phase !== "transfer" && phase !== "reveal" ? (
+                ["formation", "draft", "tactics", "result"].map((p, i) => {
+                  const order = ["formation", "draft", "tactics", "result"];
+                  const currentIdx = order.indexOf(phase);
+                  const thisIdx = order.indexOf(p);
+                  const done = thisIdx < currentIdx;
+                  const active = thisIdx === currentIdx;
+                  return (
+                    <div key={p} className="flex items-center">
+                      {i > 0 && <div className={`w-4 h-px ${done || active ? "bg-emerald-600" : "bg-neutral-800"}`} />}
+                      <div className={`px-2.5 py-1 rounded border ${active ? "bg-emerald-600 text-white border-emerald-600" : done ? "border-emerald-800 text-emerald-600" : "border-neutral-800 text-neutral-600"}`}>{p}</div>
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="px-3 py-1.5 rounded border border-emerald-800 text-emerald-500">
+                  Season {state.season} · {careerSeasonLabel(state.season)}{phase === "transfer" ? " · Transfer Window" : phase === "reveal" ? " · Squad Reveal" : ""}
+                </div>
+              )}
+            </div>
+            <SaveMenu canExport={phase !== "formation"} onExport={exportCareer} onImportFile={importCareer} version={APP_VERSION} />
           </div>
         </header>
 
