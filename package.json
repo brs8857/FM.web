@@ -13,7 +13,8 @@
     "test:watch": "vitest",
     "e2e": "playwright test",
     "golden:capture": "node scripts/capture-golden.mjs",
-    "golden:engine": "node scripts/capture-golden.mjs --engine"
+    "golden:engine": "node scripts/capture-golden.mjs --engine",
+    "sim": "node scripts/sim.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",
