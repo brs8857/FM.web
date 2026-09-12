@@ -1,37 +1,21 @@
 import React, { useReducer, useMemo, useState, useEffect, useRef } from "react";
+import { clamp, seasonLabel } from "./engine/util.js";
+import { FORMATIONS, SLOT_TYPE_LABEL, makeInitialAssignments } from "./engine/formations.js";
+import { ROLES, DUTY_INFO, defaultRoleFor, defaultDutyFor } from "./engine/roles.js";
+import { DEFAULT_INSTRUCTIONS, STYLE_PRESETS } from "./engine/instructions.js";
+import { STAT_KEYS, STAT_LABELS, createSquadLookup, buildPool } from "./engine/players.js";
 
 /* =========================================================================
    FM.WEB — data, constants, and pure helper/simulation functions
    ========================================================================= */
 
 let DATASET = null; // installed at startup by installDataset() — temporary until Task 11
-
+let getSquad = null;
 export function installDataset(dataset) {
   DATASET = dataset;
   CHAMPIONSHIP_POOL = dataset.championship;
+  getSquad = createSquadLookup(dataset);
 }
-
-const STAT_KEYS = ["pace", "shooting", "passing", "dribbling", "defending", "physical"];
-const STAT_LABELS = { pace: "Pace", shooting: "Shooting", passing: "Passing", dribbling: "Dribbling", defending: "Defending", physical: "Physical" };
-
-function rowToPlayer(row, seasonKey) {
-  const [name, slot, side, age, nat, ov, pace, shooting, passing, dribbling, defending, physical] = row;
-  return {
-    id: `${seasonKey}__${name}__${ov}__${slot}`,
-    name, slot, side: side || null, age, nat, ov,
-    stats: { pace, shooting, passing, dribbling, defending, physical },
-    seasonKey,
-  };
-}
-
-function getSquad(year, clubId) {
-  const key = `${year}_${clubId}`;
-  const rows = DATASET.squads[key] || [];
-  return rows.map((r) => rowToPlayer(r, key));
-}
-
-function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
-function seasonLabel(year) { return `${year}-${String(year + 1).slice(2)}`; }
 
 // Diminishing returns above a threshold. A real Premier League squad rarely
 // sits much above the high-70s/low-80s on these scales; a team stacked with
@@ -56,200 +40,6 @@ function executionMultiplier(familiarity) {
   return 0.70 + t * (1.08 - 0.70);
 }
 
-/* ---------------------------- Formations -------------------------------- */
-// Pitch coordinate system: x 0-100 (left-right), y 8 (opponent goal, top) -> 92 (own goal, bottom)
-const FORMATIONS = {
-  "4-3-3": { label: "4-3-3", slots: [
-    { id: "GK", type: "GK", x: 50, y: 92 },
-    { id: "LB", type: "FB", side: "L", x: 14, y: 72 },
-    { id: "CB1", type: "CB", x: 36, y: 79 },
-    { id: "CB2", type: "CB", x: 64, y: 79 },
-    { id: "RB", type: "FB", side: "R", x: 86, y: 72 },
-    { id: "CM1", type: "CM", x: 28, y: 52 },
-    { id: "CM2", type: "CM", x: 50, y: 46 },
-    { id: "CM3", type: "CM", x: 72, y: 52 },
-    { id: "LW", type: "WIDE", side: "L", x: 16, y: 22 },
-    { id: "ST", type: "ST", x: 50, y: 12 },
-    { id: "RW", type: "WIDE", side: "R", x: 84, y: 22 },
-  ]},
-  "4-4-2": { label: "4-4-2", slots: [
-    { id: "GK", type: "GK", x: 50, y: 92 },
-    { id: "LB", type: "FB", side: "L", x: 14, y: 72 },
-    { id: "CB1", type: "CB", x: 36, y: 79 },
-    { id: "CB2", type: "CB", x: 64, y: 79 },
-    { id: "RB", type: "FB", side: "R", x: 86, y: 72 },
-    { id: "LM", type: "WIDE", side: "L", x: 14, y: 46 },
-    { id: "CM1", type: "CM", x: 38, y: 50 },
-    { id: "CM2", type: "CM", x: 62, y: 50 },
-    { id: "RM", type: "WIDE", side: "R", x: 86, y: 46 },
-    { id: "ST1", type: "ST", x: 40, y: 15 },
-    { id: "ST2", type: "ST", x: 60, y: 15 },
-  ]},
-  "4-2-3-1": { label: "4-2-3-1", slots: [
-    { id: "GK", type: "GK", x: 50, y: 92 },
-    { id: "LB", type: "FB", side: "L", x: 14, y: 72 },
-    { id: "CB1", type: "CB", x: 36, y: 79 },
-    { id: "CB2", type: "CB", x: 64, y: 79 },
-    { id: "RB", type: "FB", side: "R", x: 86, y: 72 },
-    { id: "DM1", type: "DM", x: 37, y: 58 },
-    { id: "DM2", type: "DM", x: 63, y: 58 },
-    { id: "AML", type: "AM", x: 20, y: 33 },
-    { id: "AMC", type: "AM", x: 50, y: 30 },
-    { id: "AMR", type: "AM", x: 80, y: 33 },
-    { id: "ST", type: "ST", x: 50, y: 12 },
-  ]},
-  "3-5-2": { label: "3-5-2", slots: [
-    { id: "GK", type: "GK", x: 50, y: 92 },
-    { id: "CB1", type: "CB", x: 26, y: 77 },
-    { id: "CB2", type: "CB", x: 50, y: 81 },
-    { id: "CB3", type: "CB", x: 74, y: 77 },
-    { id: "WBL", type: "FB", side: "L", x: 8, y: 50 },
-    { id: "CM1", type: "CM", x: 34, y: 53 },
-    { id: "CM2", type: "CM", x: 50, y: 46 },
-    { id: "CM3", type: "CM", x: 66, y: 53 },
-    { id: "WBR", type: "FB", side: "R", x: 92, y: 50 },
-    { id: "ST1", type: "ST", x: 40, y: 15 },
-    { id: "ST2", type: "ST", x: 60, y: 15 },
-  ]},
-  "3-4-3": { label: "3-4-3", slots: [
-    { id: "GK", type: "GK", x: 50, y: 92 },
-    { id: "CB1", type: "CB", x: 26, y: 77 },
-    { id: "CB2", type: "CB", x: 50, y: 81 },
-    { id: "CB3", type: "CB", x: 74, y: 77 },
-    { id: "WBL", type: "FB", side: "L", x: 8, y: 50 },
-    { id: "CM1", type: "CM", x: 38, y: 50 },
-    { id: "CM2", type: "CM", x: 62, y: 50 },
-    { id: "WBR", type: "FB", side: "R", x: 92, y: 50 },
-    { id: "LW", type: "WIDE", side: "L", x: 18, y: 19 },
-    { id: "ST", type: "ST", x: 50, y: 12 },
-    { id: "RW", type: "WIDE", side: "R", x: 82, y: 19 },
-  ]},
-  "5-3-2": { label: "5-3-2", slots: [
-    { id: "GK", type: "GK", x: 50, y: 92 },
-    { id: "WBL", type: "FB", side: "L", x: 8, y: 68 },
-    { id: "CB1", type: "CB", x: 30, y: 78 },
-    { id: "CB2", type: "CB", x: 50, y: 82 },
-    { id: "CB3", type: "CB", x: 70, y: 78 },
-    { id: "WBR", type: "FB", side: "R", x: 92, y: 68 },
-    { id: "CM1", type: "CM", x: 30, y: 48 },
-    { id: "CM2", type: "CM", x: 50, y: 43 },
-    { id: "CM3", type: "CM", x: 70, y: 48 },
-    { id: "ST1", type: "ST", x: 40, y: 15 },
-    { id: "ST2", type: "ST", x: 60, y: 15 },
-  ]},
-  "4-1-4-1": { label: "4-1-4-1", slots: [
-    { id: "GK", type: "GK", x: 50, y: 92 },
-    { id: "LB", type: "FB", side: "L", x: 14, y: 72 },
-    { id: "CB1", type: "CB", x: 36, y: 79 },
-    { id: "CB2", type: "CB", x: 64, y: 79 },
-    { id: "RB", type: "FB", side: "R", x: 86, y: 72 },
-    { id: "DM", type: "DM", x: 50, y: 61 },
-    { id: "LM", type: "WIDE", side: "L", x: 16, y: 40 },
-    { id: "CM1", type: "CM", x: 38, y: 38 },
-    { id: "CM2", type: "CM", x: 62, y: 38 },
-    { id: "RM", type: "WIDE", side: "R", x: 84, y: 40 },
-    { id: "ST", type: "ST", x: 50, y: 12 },
-  ]},
-};
-
-const SLOT_TYPE_LABEL = { GK: "Goalkeeper", CB: "Centre-Back", FB: "Full-Back / Wing-Back", DM: "Defensive Mid", CM: "Central Mid", AM: "Attacking Mid", WIDE: "Winger", ST: "Striker" };
-
-/* ------------------------------ Roles ------------------------------------
-   Each role carries emphasis weights (0-1ish) toward five phase contributions:
-   att (attacking threat), def (defensive solidity), build (buildup passing),
-   press (pressing/work-rate), create (chance creation). Duties then scale
-   att/def further. This is what makes role+duty *mechanically* matter,
-   not just flavor text. */
-const ROLES = {
-  GK: [
-    { key: "GK", label: "Goalkeeper", duties: ["Defend"], desc: "Old-school shot-stopper — commands his six-yard box, deals with crosses, and doesn't complicate his distribution.", att: 0.05, def: 1.00, build: 0.30, press: 0.10, create: 0.05 },
-    { key: "SK", label: "Sweeper Keeper", duties: ["Defend", "Support"], desc: "Plays right up to the edge of the box, snuffs out through-balls in behind a high line, and is comfortable enough on the ball to act as an auxiliary passing outlet.", att: 0.10, def: 0.90, build: 0.65, press: 0.30, create: 0.15 },
-  ],
-  CB: [
-    { key: "NCB", label: "No-Nonsense Centre-Back", duties: ["Defend"], desc: "First to every header, first to hoof it clear — zero interest in playing out from the back under pressure.", att: 0.05, def: 1.10, build: 0.20, press: 0.20, create: 0.05 },
-    { key: "STP", label: "Stopper", duties: ["Defend"], desc: "Steps out of the line to meet the striker early and win the physical duel before it develops — high risk if he's turned.", att: 0.10, def: 1.05, build: 0.30, press: 0.50, create: 0.10 },
-    { key: "CVR", label: "Cover CB", duties: ["Defend"], desc: "The reader of the pairing — sits off, covers the space in behind a more aggressive partner, and mops up through balls.", att: 0.05, def: 1.10, build: 0.40, press: 0.15, create: 0.10 },
-    { key: "BPD", label: "Ball-Playing Defender", duties: ["Defend", "Support"], desc: "Comfortable stepping into midfield with the ball at his feet to break the first press line and progress play into the half-spaces.", att: 0.15, def: 0.95, build: 0.90, press: 0.25, create: 0.35 },
-  ],
-  FB: [
-    { key: "FB", label: "Full-Back", duties: ["Defend", "Support"], desc: "Disciplined and positionally sound — holds the width, tracks his winger, and only joins the attack when the coast is clear.", att: 0.30, def: 0.90, build: 0.50, press: 0.35, create: 0.25 },
-    { key: "IFB", label: "Inverted Full-Back", duties: ["Defend", "Support"], desc: "Tucks infield into midfield when his side has the ball, forming an auxiliary pivot and protecting against the counter — a Guardiola-era staple.", att: 0.30, def: 0.80, build: 0.85, press: 0.30, create: 0.40 },
-    { key: "OFB", label: "Overlapping Full-Back", duties: ["Support", "Attack"], desc: "Bombs down the outside of his winger to provide natural width and get crosses in from the byline.", att: 0.60, def: 0.65, build: 0.55, press: 0.30, create: 0.45 },
-    { key: "WB", label: "Wing-Back", duties: ["Support", "Attack"], desc: "Covers the entire flank box-to-box in a back three — the primary source of width in the system.", att: 0.65, def: 0.60, build: 0.55, press: 0.35, create: 0.45 },
-    { key: "CWB", label: "Complete Wing-Back", duties: ["Attack"], desc: "A relentless every-blade-of-grass outlet — overlaps, underlaps, delivers crosses, and still recovers to defend his channel.", att: 0.75, def: 0.55, build: 0.60, press: 0.40, create: 0.55 },
-  ],
-  DM: [
-    { key: "ANC", label: "Anchor Man", duties: ["Defend"], desc: "Screens the back line and holds his zone religiously — the pure defensive pivot that lets everyone else take risks in front of him.", att: 0.10, def: 1.05, build: 0.40, press: 0.30, create: 0.10 },
-    { key: "DLP", label: "Deep-Lying Playmaker", duties: ["Defend", "Support"], desc: "Drops between the centre-backs to receive the ball under pressure and dictate the tempo of build-up from deep — the Pirlo/Busquets archetype.", att: 0.20, def: 0.75, build: 1.10, press: 0.20, create: 0.60 },
-    { key: "BWM", label: "Ball-Winning Midfielder", duties: ["Defend", "Support"], desc: "Hunts the ball aggressively and breaks up the opposition's rhythm before it can develop — the engine room enforcer.", att: 0.25, def: 1.00, build: 0.40, press: 0.90, create: 0.15 },
-    { key: "RPM", label: "Roaming Playmaker", duties: ["Support"], desc: "Ignores his zonal discipline to hunt pockets of space wherever the game is being decided, dragging opponents out of position.", att: 0.35, def: 0.70, build: 0.90, press: 0.40, create: 0.65 },
-  ],
-  CM: [
-    { key: "CM", label: "Central Midfielder", duties: ["Defend", "Support", "Attack"], desc: "The honest, balanced pivot — covers ground, recycles possession, contributes at both ends without a defined specialism.", att: 0.40, def: 0.75, build: 0.75, press: 0.40, create: 0.40 },
-    { key: "B2B", label: "Box-to-Box", duties: ["Support"], desc: "Covers every blade of grass — tracks back to defend his own box, then arrives late into the opposition's to get on the end of things.", att: 0.55, def: 0.70, build: 0.65, press: 0.55, create: 0.35 },
-    { key: "MEZ", label: "Mezzala", duties: ["Support", "Attack"], desc: "Drifts into the half-space between the lines to combine, overload the opposition full-back, and shoot from range.", att: 0.65, def: 0.50, build: 0.70, press: 0.35, create: 0.60 },
-    { key: "APM", label: "Advanced Playmaker", duties: ["Support", "Attack"], desc: "The creative fulcrum in central midfield — always available for the ball, always scanning for the incisive line-breaking pass.", att: 0.55, def: 0.40, build: 0.85, press: 0.20, create: 0.85 },
-  ],
-  AM: [
-    { key: "AMD", label: "Attacking Midfielder", duties: ["Support", "Attack"], desc: "Operates in the pocket just off the striker — the connective tissue between midfield and the final third.", att: 0.70, def: 0.35, build: 0.65, press: 0.25, create: 0.70 },
-    { key: "APM2", label: "Advanced Playmaker", duties: ["Support"], desc: "Sits centrally in the number 10 space and pulls the strings for the runners around him rather than making the runs himself.", att: 0.55, def: 0.30, build: 0.80, press: 0.20, create: 0.90 },
-    { key: "SS", label: "Shadow Striker", duties: ["Attack"], desc: "Times late, disguised runs beyond the front man to arrive in the box just as the ball does — a genuine second scoring threat.", att: 0.85, def: 0.20, build: 0.40, press: 0.20, create: 0.45 },
-    { key: "ENG", label: "Enganche", duties: ["Support"], desc: "The classic South American number 10 — sits in the hole, receives on the half-turn, and picks passes nobody else on the pitch sees.", att: 0.50, def: 0.20, build: 0.70, press: 0.10, create: 0.85 },
-  ],
-  WIDE: [
-    { key: "WNG", label: "Winger", duties: ["Support", "Attack"], desc: "Traditional touchline threat — isolates his full-back one-on-one and whips crosses in from the byline.", att: 0.65, def: 0.35, build: 0.45, press: 0.30, create: 0.55 },
-    { key: "IW", label: "Inverted Winger", duties: ["Support", "Attack"], desc: "Plays on the 'wrong' side to cut inside onto his stronger foot, threatening the shot or the disguised through-ball.", att: 0.75, def: 0.30, build: 0.50, press: 0.25, create: 0.60 },
-    { key: "WP", label: "Wide Playmaker", duties: ["Support"], desc: "Drops off the touchline into deeper pockets to help build play before drifting infield to link the attack.", att: 0.50, def: 0.40, build: 0.70, press: 0.25, create: 0.70 },
-    { key: "TW", label: "Touchline Winger", duties: ["Attack"], desc: "Stays glued to the touchline and direct — pure pace in behind and end product delivered from the byline.", att: 0.75, def: 0.25, build: 0.35, press: 0.20, create: 0.45 },
-  ],
-  ST: [
-    { key: "POA", label: "Poacher", duties: ["Attack"], desc: "Lives off the last shoulder in the 18-yard box — minimal involvement in build-up, pure predatory finishing instinct.", att: 0.95, def: 0.10, build: 0.20, press: 0.15, create: 0.15 },
-    { key: "TM", label: "Target Man", duties: ["Support", "Attack"], desc: "Wins the aerial duel, holds the ball up with his back to goal, and lays it off to bring runners into the game.", att: 0.75, def: 0.20, build: 0.50, press: 0.25, create: 0.35 },
-    { key: "F9", label: "False 9", duties: ["Support"], desc: "Drops off the front line into midfield to drag his marker out of position, opening the channel for others to exploit.", att: 0.55, def: 0.25, build: 0.70, press: 0.30, create: 0.75 },
-    { key: "PF", label: "Pressing Forward", duties: ["Attack", "Defend"], desc: "The first line of the press — hounds centre-backs into rushed clearances and forces mistakes high up the pitch.", att: 0.70, def: 0.40, build: 0.35, press: 0.85, create: 0.20 },
-    { key: "DLF", label: "Deep-Lying Forward", duties: ["Support"], desc: "Drops short to link play between the lines before turning provider for the runners beyond him.", att: 0.65, def: 0.25, build: 0.65, press: 0.25, create: 0.60 },
-    { key: "CF", label: "Complete Forward", duties: ["Support", "Attack"], desc: "The total centre-forward — finishes, creates, holds the ball up, and presses from the front. No weaknesses in his game.", att: 0.85, def: 0.25, build: 0.55, press: 0.35, create: 0.55 },
-  ],
-};
-
-const DUTY_INFO = {
-  Defend: { label: "Defend", desc: "Conservative brief — holds his position, prioritises shape and rest defence over joining the attack.", attMul: 0.72, defMul: 1.28 },
-  Support: { label: "Support", desc: "The balanced middle ground — splits his attention between both boxes rather than committing fully either way.", attMul: 1.00, defMul: 1.00 },
-  Attack: { label: "Attack", desc: "Licence to commit — gets forward in numbers and takes on risk in transition, at the expense of defensive solidity.", attMul: 1.32, defMul: 0.70 },
-};
-
-function defaultRoleFor(slotType) { return ROLES[slotType][0]; }
-function defaultDutyFor(role) { return role.duties.includes("Support") ? "Support" : role.duties[0]; }
-
-/* -------------------------- Pool / slot matching -------------------------- */
-function slotAccepts(slotType, player) {
-  if (slotType === "ANY") return true;
-  return player.slot === slotType;
-}
-
-function buildPool(year, clubId, slotType, side, draftedIds) {
-  const squad = getSquad(year, clubId);
-  // Strict position matching: a GK slot only offers goalkeepers from that exact
-  // club season, a CB slot only offers centre-backs, etc. The only fallback is
-  // for the rare case a squad has zero tagged players of that exact category
-  // left (older seasons occasionally have sparse position data) — then we open
-  // up to the rest of the available squad rather than showing an empty pool.
-  let pool = squad.filter((p) => !draftedIds.has(p.id) && slotAccepts(slotType, p));
-  let relaxed = false;
-  if (pool.length === 0) { pool = squad.filter((p) => !draftedIds.has(p.id)); relaxed = true; }
-  // prefer matching side first, then by overall
-  pool.sort((a, b) => {
-    if (side) {
-      const aSide = a.side === side ? 1 : 0;
-      const bSide = b.side === side ? 1 : 0;
-      if (aSide !== bSide) return bSide - aSide;
-    }
-    return b.ov - a.ov;
-  });
-  pool.relaxed = relaxed;
-  return pool;
-}
-
 /* ============================ Team Tactics Engine =========================
    Combines each starter's stats + role emphasis + duty + personal sliders +
    their exact freeform pitch position with team-wide instructions into the
@@ -257,48 +47,6 @@ function buildPool(year, clubId, slotType, side, draftedIds) {
    simulation. Every number here is derived transparently from inputs — this
    deliberately swings hard: tactics are meant to be the main lever, not a
    cosmetic layer on top of raw player quality. */
-
-const DEFAULT_INSTRUCTIONS = {
-  mentality: 50,       // 0 very defensive .. 100 very attacking (master dial)
-  tempo: 50,           // 0 slow build-up .. 100 high tempo
-  directness: 50,      // 0 short passing .. 100 long/direct
-  width: 50,           // 0 narrow .. 100 wide
-  focus: 50,           // 0 through the middle .. 100 down the flanks
-  press: 50,           // 0 drop off .. 100 high press / high engagement line
-  line: 50,            // 0 deep block .. 100 high line
-  tackling: 50,        // 0 cautious .. 100 aggressive tackling
-  counter: 50,         // 0 reset shape .. 100 sprint on the counter
-  crossing: 50,        // 0 cut inside .. 100 cross early and often
-  gkDistribution: 50,  // 0 play out short .. 100 go long
-  offsideTrap: false,  // high-risk, high-reward defensive line trap
-  marking: "zonal",    // 'zonal' | 'man'
-  shape: "structured", // 'structured' | 'fluid'
-};
-
-// Style of Play presets — the first choice on the tactics board. Each one
-// heavily pre-sets every single instruction below it to a coherent, real
-// -world identity; picking one is meant to visibly rewrite the whole
-// tactics screen at once, not just nudge a couple of sliders. You can still
-// fine-tune every slider afterward, but the starting point is deliberate.
-// The first five map directly onto a named bonus in identitySynergy() —
-// stick close to the preset and that bonus stays active; drag things too
-// far from it and you lose the identity (and its bonus) entirely.
-const STYLE_PRESETS = [
-  { key: "gegenpress", label: "Gegenpress", desc: "Klopp-school counter-pressing: collapse on the ball the instant it's lost, force turnovers in the opposition half, and punish the disorganised transition before a rest defence can form.",
-    instructions: { mentality: 72, tempo: 82, directness: 58, width: 58, focus: 50, press: 84, line: 76, tackling: 76, counter: 66, crossing: 52, gkDistribution: 58, offsideTrap: true, marking: "man", shape: "fluid" } },
-  { key: "possession", label: "Possession Control", desc: "Guardiola-style control football: circulate patiently, manipulate the opposition's shape with rotations and overloads, and only commit numbers forward once the press has been broken.",
-    instructions: { mentality: 58, tempo: 42, directness: 20, width: 54, focus: 32, press: 52, line: 58, tackling: 42, counter: 22, crossing: 32, gkDistribution: 22, offsideTrap: false, marking: "zonal", shape: "structured" } },
-  { key: "counter", label: "Low Block Counter", desc: "A disciplined mid-to-low block that cedes territory on purpose, then breaks vertically in transition the moment the ball is regained — classic backs-to-the-wall, weaponised counter-attacking.",
-    instructions: { mentality: 28, tempo: 55, directness: 64, width: 44, focus: 50, press: 30, line: 26, tackling: 55, counter: 82, crossing: 42, gkDistribution: 66, offsideTrap: false, marking: "zonal", shape: "structured" } },
-  { key: "direct", label: "Direct & Vertical", desc: "Skip the midfield battle entirely — quick vertical progression into the channels, second balls won through sheer aggression, territory and tempo over intricate build-up.",
-    instructions: { mentality: 68, tempo: 72, directness: 80, width: 58, focus: 60, press: 56, line: 55, tackling: 62, counter: 56, crossing: 58, gkDistribution: 78, offsideTrap: false, marking: "zonal", shape: "structured" } },
-  { key: "parkbus", label: "Park The Bus", desc: "Two banks of four (or five) dropped deep, minimal defensive lines to split, zero risk in possession — a rearguard set-up built purely to protect a scoreline against a stronger side.",
-    instructions: { mentality: 16, tempo: 38, directness: 55, width: 34, focus: 50, press: 24, line: 20, tackling: 48, counter: 34, crossing: 28, gkDistribution: 52, offsideTrap: false, marking: "zonal", shape: "structured" } },
-  { key: "wingplay", label: "Wing Play", desc: "Old-school touchline-to-touchline football — full-backs and wingers stretch the back four, early delivery into the box, and a physical presence in the mixer to attack the cross.",
-    instructions: { mentality: 60, tempo: 60, directness: 48, width: 88, focus: 82, press: 55, line: 54, tackling: 50, counter: 44, crossing: 84, gkDistribution: 50, offsideTrap: false, marking: "zonal", shape: "fluid" } },
-  { key: "balanced", label: "Balanced", desc: "No imposed philosophy — every instruction sits neutral so you can build a bespoke system from first principles rather than inherit someone else's blueprint.",
-    instructions: { ...DEFAULT_INSTRUCTIONS } },
-];
 
 // Given a player's exact pitch position (0-100, y=8 is the opponent's goal,
 // y=92 is your own goal), derive how advanced/wide they're actually standing.
@@ -806,13 +554,6 @@ function applyPromotionRelegation(opponents, table) {
 }
 
 /* ================================ Reducer ================================= */
-function makeInitialAssignments(formationKey) {
-  return FORMATIONS[formationKey].slots.map((s) => ({
-    slotId: s.id, type: s.type, side: s.side || null, player: null,
-    role: null, duty: null, sliderAtt: 50, sliderDef: 50, pos: { x: s.x, y: s.y },
-  }));
-}
-
 function makeInitialState() {
   return {
   phase: "formation", // formation | draft | tactics | result | transfer
@@ -935,7 +676,7 @@ function reducer(state, action) {
       const idx = nextEmptySlotIndex(state.assignments);
       let slotType = "GK", side = null;
       if (idx >= 0) { slotType = state.assignments[idx].type; side = state.assignments[idx].side; }
-      const pool = buildPool(action.year, action.clubId, slotType, side, state.draftedIds);
+      const pool = buildPool(getSquad, action.year, action.clubId, slotType, side, state.draftedIds);
       return { ...state, wheel: { spinning: false, landed: action }, pool };
     }
     case "PICK_PLAYER": {
