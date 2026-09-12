@@ -45,6 +45,22 @@ describe("season tiers", () => {
     expect(seasonTier(input).name).toBe(name);
   });
 
+  // The golden season recordings never reach these two outcomes (no 38-win or
+  // unbeaten-champion season among the 20 seeds), so their text is frozen here
+  // instead. Strings copied from v1 (6495fb8:src/App.jsx:754-755).
+  it("keeps the full tier object for the two outcomes the recordings never reach", () => {
+    expect(seasonTier({ w: 38, l: 0, pts: 114, position: 1 })).toEqual({
+      name: "THE PERFECT SEASON",
+      sub: "38 from 38 — a perfect points-per-game record with games to spare. No side in the league's history has ever managed it.",
+      color: "amber",
+    });
+    expect(seasonTier({ w: 30, l: 0, pts: 98, position: 1 })).toEqual({
+      name: "Invincibles",
+      sub: "Champions and unbeaten from August to May — a status only one Premier League side has ever achieved.",
+      color: "amber",
+    });
+  });
+
   it("labels career seasons from 2026-27", () => {
     expect(CAREER_SEASONS).toBe(6);
     expect(careerSeasonLabel(1)).toBe("2026-27");
