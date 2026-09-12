@@ -1,19 +1,26 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
+// Global pointer-up coordinator for the pitch/bench drag system. Pointer events
+// cover mouse, pen and touch, so no separate touch listeners are needed (having
+// both ran every touch drop twice — bug #7). On release we hit-test whatever
+// DOM element is under the pointer: land on another player -> swap; land on
+// open pitch space -> move there; land on the bench -> swap on/off the pitch.
 export function usePitchDrag({ assignments, dispatch }) {
   const [dragInfo, setDragInfo] = useState(null); // { kind: 'slot'|'bench', id }
+  const handled = useRef(false);
 
-  // Global pointer-up coordinator for the pitch/bench drag system. Using
-  // pointer events (rather than HTML5 drag-and-drop) means this works with
-  // touch on mobile too. On release we hit-test whatever DOM element is under
-  // the pointer: land on another player -> swap identities; land on open
-  // pitch space -> move that player to the exact drop point; land on the
-  // bench -> swap on/off the pitch.
+  const startDrag = useCallback((kind, id) => {
+    handled.current = false;
+    setDragInfo({ kind, id });
+  }, []);
+
   useEffect(() => {
-    if (!dragInfo) return;
+    if (!dragInfo) return undefined;
+
     function onUp(e) {
-      const point = e.changedTouches ? e.changedTouches[0] : e;
-      const el = document.elementFromPoint(point.clientX, point.clientY);
+      if (handled.current) return;
+      handled.current = true;
+      const el = document.elementFromPoint(e.clientX, e.clientY);
       if (el) {
         const slotEl = el.closest("[data-slot-id]");
         const benchEl = el.closest("[data-bench-idx]");
@@ -28,12 +35,12 @@ export function usePitchDrag({ assignments, dispatch }) {
           dispatch({ type: "SWAP_PLAYERS", fromKind: dragInfo.kind, fromId: dragInfo.id, toKind: "bench", toId });
         } else if (pitchZone) {
           const rect = pitchZone.getBoundingClientRect();
-          const x = ((point.clientX - rect.left) / rect.width) * 100;
-          const y = ((point.clientY - rect.top) / rect.height) * 100;
+          const x = ((e.clientX - rect.left) / rect.width) * 100;
+          const y = ((e.clientY - rect.top) / rect.height) * 100;
           if (dragInfo.kind === "slot") {
             dispatch({ type: "MOVE_PLAYER", slotId: dragInfo.id, x, y });
           } else {
-            // bench player dropped on open pitch space -> swap into the nearest slot
+            // bench player dropped on open pitch -> swap into the nearest slot
             let nearest = null, nearestDist = Infinity;
             assignments.forEach((a) => {
               const d = Math.hypot(a.pos.x - x, a.pos.y - y);
@@ -45,10 +52,19 @@ export function usePitchDrag({ assignments, dispatch }) {
       }
       setDragInfo(null);
     }
+
+    function onCancel() {
+      handled.current = true;
+      setDragInfo(null);
+    }
+
     window.addEventListener("pointerup", onUp);
-    window.addEventListener("touchend", onUp);
-    return () => { window.removeEventListener("pointerup", onUp); window.removeEventListener("touchend", onUp); };
+    window.addEventListener("pointercancel", onCancel);
+    return () => {
+      window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointercancel", onCancel);
+    };
   }, [dragInfo, assignments, dispatch]);
 
-  return { dragInfo, startDrag: (kind, id) => setDragInfo({ kind, id }) };
+  return { dragInfo, startDrag };
 }

@@ -68,4 +68,25 @@ describe("usePitchDrag", () => {
     act(() => release(100, 30)); // (50, 10) → nearest is ST at (50, 12)
     expect(dispatch).toHaveBeenCalledWith({ type: "SWAP_PLAYERS", fromKind: "bench", fromId: 1, toKind: "slot", toId: "ST" });
   });
+
+  it("handles a touch drop exactly once even when touchend and a duplicate pointerup follow (bug #7)", () => {
+    const { dispatch, hook } = start("slot", "GK");
+    pointAt("st");
+    act(() => {
+      release();
+      const touchEnd = new Event("touchend");
+      touchEnd.changedTouches = [{ clientX: 100, clientY: 150 }];
+      window.dispatchEvent(touchEnd);
+      release();
+    });
+    expect(dispatch).toHaveBeenCalledTimes(1);
+    expect(hook.result.current.dragInfo).toBeNull();
+  });
+
+  it("cancels the drag without dropping when the browser cancels the pointer", () => {
+    const { dispatch, hook } = start("slot", "GK");
+    act(() => { window.dispatchEvent(new PointerEvent("pointercancel")); });
+    expect(dispatch).not.toHaveBeenCalled();
+    expect(hook.result.current.dragInfo).toBeNull();
+  });
 });
