@@ -1,10 +1,15 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-// base: "./" makes the build use relative asset paths, so it works whether
-// it's deployed at the root of a domain or under a GitHub Pages project
-// path like https://username.github.io/fm-web/ — no config needed either way.
+// base: "./" keeps asset paths relative so the build works under the
+// GitHub Pages project path (https://brs8857.github.io/FM.web/).
 export default defineConfig({
   plugins: [react()],
   base: "./",
+  json: { stringify: true },
+  test: {
+    environment: "jsdom",
+    include: ["src/**/*.test.{js,jsx}", "tests/unit/**/*.test.{js,jsx}"],
+    setupFiles: ["tests/setup.js"],
+  },
 });

@@ -1,0 +1,35 @@
+import react from "eslint-plugin-react";
+import reactHooks from "eslint-plugin-react-hooks";
+import globals from "globals";
+
+export default [
+  { ignores: ["dist/**", "standalone/**", "coverage/**", "playwright-report/**", "test-results/**", "tests/golden/**", "src/data/**"] },
+  {
+    files: ["**/*.{js,jsx,mjs}"],
+    languageOptions: {
+      ecmaVersion: 2024,
+      sourceType: "module",
+      globals: { ...globals.browser, ...globals.node },
+      parserOptions: { ecmaFeatures: { jsx: true } },
+    },
+    plugins: { react, "react-hooks": reactHooks },
+    settings: { react: { version: "18.3" } },
+    rules: {
+      "no-undef": "error",
+      // Raised to "error" in Task 28 once the four known leftovers are removed.
+      "no-unused-vars": "warn",
+      "react/jsx-uses-vars": "error",
+      "react/jsx-uses-react": "error",
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
+    },
+  },
+  {
+    files: ["src/engine/**/*.js", "src/state/**/*.js"],
+    rules: {
+      "no-restricted-imports": ["error", {
+        patterns: [{ group: ["react", "react-dom", "react/*", "react-dom/*"], message: "engine/ and state/ must not import React." }],
+      }],
+    },
+  },
+];

@@ -4,3 +4,6 @@ dist
 *.local
 .vscode
 .superpowers/
+coverage
+playwright-report
+test-results
