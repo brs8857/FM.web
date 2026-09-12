@@ -46,6 +46,5 @@ export function buildPool(getSquad, year, clubId, slotType, side, draftedIds) {
     }
     return b.ov - a.ov;
   });
-  pool.relaxed = relaxed;
-  return pool;
+  return { players: pool, relaxed };
 }

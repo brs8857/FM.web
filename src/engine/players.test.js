@@ -23,21 +23,21 @@ describe("players", () => {
 
   it("builds a strict-position pool, side-matched first then by rating, excluding drafted players", () => {
     const getSquad = createSquadLookup(makeMiniDataset());
-    const all = buildPool(getSquad, "2000", "1", "FB", "R", new Set());
-    expect(all.relaxed).toBe(false);
+    const { players: all, relaxed } = buildPool(getSquad, "2000", "1", "FB", "R", new Set());
+    expect(relaxed).toBe(false);
     expect(all.every((p) => p.slot === "FB")).toBe(true);
     expect(all[0].side).toBe("R");
     const lefts = all.filter((p) => p.side === "L");
     expect(lefts[0].ov).toBeGreaterThanOrEqual(lefts[1].ov);
 
     const without = buildPool(getSquad, "2000", "1", "FB", "R", new Set([all[0].id]));
-    expect(without.map((p) => p.id)).not.toContain(all[0].id);
+    expect(without.players.map((p) => p.id)).not.toContain(all[0].id);
   });
 
   it("relaxes to the whole squad when no player of that position is left", () => {
     const getSquad = createSquadLookup(makeMiniDataset());
-    const pool = buildPool(getSquad, "2005", "3", "DM", null, new Set());
-    expect(pool.relaxed).toBe(true);
-    expect(pool.length).toBe(getSquad("2005", "3").length);
+    const { players, relaxed } = buildPool(getSquad, "2005", "3", "DM", null, new Set());
+    expect(relaxed).toBe(true);
+    expect(players.length).toBe(getSquad("2005", "3").length);
   });
 });

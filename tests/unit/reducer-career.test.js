@@ -47,4 +47,22 @@ describe("reducer career walkthrough", () => {
     const fresh = reducer(played, { type: "NEW_GAME", seed: 99 });
     expect(fresh).toEqual(makeInitialState(dataset, 99));
   });
+
+  it("flags a relaxed pool when the landed squad has no player for the slot", () => {
+    const dataset = makeMiniDataset();
+    const reducer = createReducer(dataset);
+    let state = makeInitialState(dataset, 3);
+    state = reducer(state, { type: "SET_FORMATION", key: "4-1-4-1" }); // slot 6 is the DM
+    state = reducer(state, { type: "SET_ERA", min: 2005, max: 2005 }); // only Gamma Town 2005-06, which has no DM
+    state = reducer(state, { type: "START_DRAFT" });
+    for (let pick = 0; pick < 5; pick++) {
+      state = reducer(reducer(state, { type: "SPIN" }), { type: "LAND" });
+      expect(state.poolRelaxed).toBe(false);
+      state = reducer(state, { type: "PICK_PLAYER", player: state.pool[0] });
+    }
+    state = reducer(reducer(state, { type: "SPIN" }), { type: "LAND" });
+    expect(state.poolRelaxed).toBe(true);
+    state = reducer(state, { type: "PICK_PLAYER", player: state.pool[0] });
+    expect(state.poolRelaxed).toBe(false);
+  });
 });

@@ -53,10 +53,11 @@ export function validateSave(value) {
 }
 
 export function hydrateState(saveState) {
-  const state = { ...saveState, draftedIds: new Set(saveState.draftedIds) };
+  const state = { ...saveState, draftedIds: new Set(saveState.draftedIds), poolRelaxed: Boolean(saveState.poolRelaxed) };
   if (state.wheel.spinning) {
     state.wheel = { spinning: false, landed: null };
     state.pool = [];
+    state.poolRelaxed = false;
   }
   return state;
 }

@@ -159,7 +159,7 @@ export default function FMWeb({ dataset, storage: storageProp }) {
         )}
 
         {phase === "draft" && (
-          <DraftScreen formationKey={formationKey} assignments={assignments} bench={bench} wheel={wheel} pool={pool}
+          <DraftScreen formationKey={formationKey} assignments={assignments} bench={bench} wheel={wheel} pool={pool} poolRelaxed={state.poolRelaxed}
             draftTargetSlotId={draftTargetSlotId} draftTargetLabel={draftTargetLabel} draftComplete={draftComplete}
             eraMin={state.eraMin} eraMax={state.eraMax} eraIndex={eraIndex}
             onSpin={() => dispatch({ type: "SPIN" })}

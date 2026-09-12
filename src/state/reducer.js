@@ -35,7 +35,7 @@ export function createReducer(dataset) {
         return { ...state, phase: "draft" };
       }
       case "SPIN": {
-        return { ...state, wheel: { spinning: true, landed: null }, pool: [] };
+        return { ...state, wheel: { spinning: true, landed: null }, pool: [], poolRelaxed: false };
       }
       case "LAND": {
         const eraIndex = selectEraIndex(dataset.index, state.eraMin, state.eraMax);
@@ -45,8 +45,8 @@ export function createReducer(dataset) {
         const idx = nextEmptySlotIndex(state.assignments);
         let slotType = "GK", side = null;
         if (idx >= 0) { slotType = state.assignments[idx].type; side = state.assignments[idx].side; }
-        const pool = buildPool(getSquad, entry.y, entry.c, slotType, side, state.draftedIds);
-        return { ...next, wheel: { spinning: false, landed: { year: entry.y, clubId: entry.c, label: entry.label } }, pool };
+        const { players, relaxed } = buildPool(getSquad, entry.y, entry.c, slotType, side, state.draftedIds);
+        return { ...next, wheel: { spinning: false, landed: { year: entry.y, clubId: entry.c, label: entry.label } }, pool: players, poolRelaxed: relaxed };
       }
       case "PICK_PLAYER": {
         const idx = nextEmptySlotIndex(state.assignments);
@@ -64,13 +64,13 @@ export function createReducer(dataset) {
           return {
             ...state, assignments, draftedIds: withBench,
             draftedIdentities: [...draftedIdentities, ...bench.map((b) => playerIdentity(b.player))],
-            wheel: { spinning: false, landed: null }, pool: [], draftDone, bench,
+            wheel: { spinning: false, landed: null }, pool: [], poolRelaxed: false, draftDone, bench,
           };
         }
-        return { ...state, assignments, draftedIds, draftedIdentities, wheel: { spinning: false, landed: null }, pool: [], draftDone };
+        return { ...state, assignments, draftedIds, draftedIdentities, wheel: { spinning: false, landed: null }, pool: [], poolRelaxed: false, draftDone };
       }
       case "SKIP_TO_TACTICS": {
-        return { ...state, phase: "tactics", wheel: { spinning: false, landed: null }, pool: [] };
+        return { ...state, phase: "tactics", wheel: { spinning: false, landed: null }, pool: [], poolRelaxed: false };
       }
       case "SET_ROLE": {
         const assignments = state.assignments.map((a) => {

@@ -14,6 +14,7 @@ export function makeInitialState(dataset, careerSeed) {
     draftedIdentities: [],
     wheel: { spinning: false, landed: null },
     pool: [],
+    poolRelaxed: false,
     instructions: { ...DEFAULT_INSTRUCTIONS },
     selectedStyle: null,
     eraMin: 1992,

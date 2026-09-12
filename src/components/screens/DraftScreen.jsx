@@ -5,7 +5,9 @@ import PlayerMiniCard from "../ui/PlayerMiniCard.jsx";
 import WheelSpinner from "./WheelSpinner.jsx";
 
 /* ================================ Draft screen =============================== */
-export default function DraftScreen({ formationKey, assignments, bench, wheel, pool, draftTargetSlotId, draftTargetLabel, draftComplete, eraMin, eraMax, eraIndex, onSpin, onDoneSpin, onPick, onGotoTactics }) {
+export default function DraftScreen({ formationKey, assignments, bench, wheel, pool, poolRelaxed, draftTargetSlotId, draftTargetLabel, draftComplete, eraMin, eraMax, eraIndex, onSpin, onDoneSpin, onPick, onGotoTactics }) {
+  const targetType = assignments.find((a) => a.slotId === draftTargetSlotId)?.type;
+  const targetLabel = SLOT_TYPE_LABEL[targetType] || "";
   return (
     <div style={{ display: "flex", flexWrap: "wrap", gap: "1.5rem", width: "100%", alignItems: "flex-start" }}>
       <div style={{ flex: "1 1 260px", minWidth: 0, maxWidth: "320px", boxSizing: "border-box" }} className="space-y-3">
@@ -52,12 +54,21 @@ export default function DraftScreen({ formationKey, assignments, bench, wheel, p
 
         {!draftComplete && wheel.landed && pool.length > 0 && (
           <div>
-            <div className="text-xs uppercase tracking-wide text-neutral-400 font-bold mb-2">
-              Squad pool — only {SLOT_TYPE_LABEL[assignments.find((a) => a.slotId === draftTargetSlotId)?.type] || ""}s from this club season — pick one
-            </div>
+            {poolRelaxed ? (
+              <p role="note" className="text-xs text-amber-300 bg-amber-500/10 border border-amber-500/30 rounded-md px-2 py-1.5 mb-2">
+                No {targetLabel}s in {wheel.landed.label}. Showing the whole squad.
+              </p>
+            ) : (
+              <div className="text-xs uppercase tracking-wide text-neutral-400 font-bold mb-2">
+                Squad pool — only {targetLabel}s from this club season — pick one
+              </div>
+            )}
             <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
               {pool.map((p) => (
-                <div key={p.id} style={{ flex: "1 1 220px", minWidth: 0 }}><PlayerMiniCard player={p} onClick={() => onPick(p)} hideRating /></div>
+                <div key={p.id} style={{ flex: "1 1 220px", minWidth: 0 }}>
+                  <PlayerMiniCard player={p} onClick={() => onPick(p)} hideRating
+                    positionMismatch={poolRelaxed && p.slot !== targetType ? { title: `Not a ${targetLabel}` } : undefined} />
+                </div>
               ))}
             </div>
           </div>
