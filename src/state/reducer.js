@@ -8,13 +8,9 @@ import { computeFamiliarity } from "../engine/familiarity.js";
 import { simulateSeason } from "../engine/season.js";
 import { applyPromotionRelegation } from "../engine/league.js";
 import { nextEmptySlotIndex, autoFillBench, generateShortlist, signToSlot, signToBench } from "../engine/squad.js";
-import { createRng } from "../engine/rng.js";
 import { makeInitialState } from "./initialState.js";
-
-// Temporary until Task 12 stores a career seed in state.
-function freshRng() {
-  return createRng(crypto.getRandomValues(new Uint32Array(1))[0]);
-}
+import { takeRng } from "./rngState.js";
+import { selectEraIndex } from "./selectors.js";
 
 export function createReducer(dataset) {
   const getSquad = createSquadLookup(dataset);
@@ -22,7 +18,14 @@ export function createReducer(dataset) {
   return function reducer(state, action) {
     switch (action.type) {
       case "SET_FORMATION": {
-        return { ...makeInitialState(dataset), formationKey: action.key, assignments: makeInitialAssignments(action.key), eraMin: state.eraMin, eraMax: state.eraMax };
+        return {
+          ...makeInitialState(dataset, state.careerSeed),
+          rngCounter: state.rngCounter,
+          formationKey: action.key,
+          assignments: makeInitialAssignments(action.key),
+          eraMin: state.eraMin,
+          eraMax: state.eraMax,
+        };
       }
       case "SET_ERA": {
         return { ...state, eraMin: action.min, eraMax: action.max };
@@ -34,11 +37,15 @@ export function createReducer(dataset) {
         return { ...state, wheel: { spinning: true, landed: null }, pool: [] };
       }
       case "LAND": {
+        const eraIndex = selectEraIndex(dataset.index, state.eraMin, state.eraMax);
+        if (eraIndex.length === 0) return state;
+        const [rng, next] = takeRng(state);
+        const entry = rng.pick(eraIndex);
         const idx = nextEmptySlotIndex(state.assignments);
         let slotType = "GK", side = null;
         if (idx >= 0) { slotType = state.assignments[idx].type; side = state.assignments[idx].side; }
-        const pool = buildPool(getSquad, action.year, action.clubId, slotType, side, state.draftedIds);
-        return { ...state, wheel: { spinning: false, landed: action }, pool };
+        const pool = buildPool(getSquad, entry.y, entry.c, slotType, side, state.draftedIds);
+        return { ...next, wheel: { spinning: false, landed: { year: entry.y, clubId: entry.c, label: entry.label } }, pool };
       }
       case "PICK_PLAYER": {
         const idx = nextEmptySlotIndex(state.assignments);
@@ -147,26 +154,27 @@ export function createReducer(dataset) {
         return state;
       }
       case "SIMULATE": {
+        const [rng, next] = takeRng(state);
         const assignmentsWithRole = state.assignments.map((a) => ({
           ...a,
           roleObj: ROLES[a.type].find((r) => r.key === a.role),
         })).map((a) => ({ ...a, role: a.roleObj }));
         const familiarity = computeFamiliarity(assignmentsWithRole, state.instructions, state.formationKey);
         const profile = computeTeamProfile(assignmentsWithRole, state.instructions, familiarity);
-        const simulation = simulateSeason(profile, familiarity, state.opponents, freshRng());
+        const simulation = simulateSeason(profile, familiarity, state.opponents, rng);
         // Ratings stay hidden through the draft and tactics phases — this is
         // the moment they're finally revealed, right before a ball is kicked.
-        return { ...state, phase: "reveal", simulation: { ...simulation, profile, familiarity, instructions: state.instructions, season: state.season } };
+        return { ...next, phase: "reveal", simulation: { ...simulation, profile, familiarity, instructions: state.instructions, season: state.season } };
       }
       case "KICKOFF": {
         return { ...state, phase: "result" };
       }
       case "GOTO_TRANSFER": {
-        const rng = freshRng();
+        const [rng, next] = takeRng(state);
         const shortlist = generateShortlist(getSquad, dataset.index, { eraMin: state.eraMin, eraMax: state.eraMax }, state.draftedIds, rng)
           .map((player) => ({ player, signed: false }));
         const { opponents, relegated, promoted } = applyPromotionRelegation(state.opponents, state.simulation?.table, dataset.championship, rng);
-        return { ...state, phase: "transfer", shortlist, opponents, lastTransition: { relegated, promoted } };
+        return { ...next, phase: "transfer", shortlist, opponents, lastTransition: { relegated, promoted } };
       }
       case "SIGN_SHORTLIST_TO_BENCH": {
         const entry = state.shortlist[action.index];
@@ -187,8 +195,8 @@ export function createReducer(dataset) {
       case "CONTINUE_SEASON": {
         return { ...state, phase: "tactics", season: state.season + 1, shortlist: [], simulation: null };
       }
-      case "RESET": {
-        return makeInitialState(dataset);
+      case "NEW_GAME": {
+        return makeInitialState(dataset, action.seed);
       }
       default: return state;
     }

@@ -1,5 +1,5 @@
 // Drives the reducer through a whole career the way a player would.
-export function playCareer({ reducer, initialState, index, seasons = 6, check = () => {} }) {
+export function playCareer({ reducer, initialState, seasons = 6, check = () => {} }) {
   let state = initialState;
   let step = 0;
   const dispatch = (action) => {
@@ -13,8 +13,7 @@ export function playCareer({ reducer, initialState, index, seasons = 6, check = 
   dispatch({ type: "START_DRAFT" });
   while (!state.draftDone) {
     dispatch({ type: "SPIN" });
-    const entry = index[step % index.length];
-    dispatch({ type: "LAND", year: entry.y, clubId: entry.c, label: entry.label });
+    dispatch({ type: "LAND" });
     if (state.pool.length === 0) throw new Error(`Empty draft pool after ${step} actions`);
     dispatch({ type: "PICK_PLAYER", player: state.pool[0] });
   }

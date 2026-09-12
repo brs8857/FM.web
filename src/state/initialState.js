@@ -1,8 +1,10 @@
 import { makeInitialAssignments } from "../engine/formations.js";
 import { DEFAULT_INSTRUCTIONS } from "../engine/instructions.js";
 
-export function makeInitialState(dataset) {
+export function makeInitialState(dataset, careerSeed) {
   return {
+    careerSeed,
+    rngCounter: 0,
     phase: "formation", // formation | draft | tactics | reveal | result | transfer
     formationKey: "4-3-3",
     assignments: makeInitialAssignments("4-3-3"),

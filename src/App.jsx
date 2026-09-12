@@ -9,9 +9,9 @@ import { familiarityLabel } from "./engine/familiarity.js";
 import { tacticalReadout, mentalityLabel } from "./engine/readout.js";
 import { CAREER_SEASONS, careerSeasonLabel } from "./engine/season.js";
 import { nextEmptySlotIndex } from "./engine/squad.js";
-import { createRng } from "./engine/rng.js";
 import { createReducer } from "./state/reducer.js";
 import { makeInitialState } from "./state/initialState.js";
+import { newCareerSeed } from "./state/rngState.js";
 import { selectEraIndex, liveAssignments, selectFamiliarity, selectProfile } from "./state/selectors.js";
 
 /* ============================== UI atoms =================================== */
@@ -986,7 +986,7 @@ function RatingsRevealScreen({ assignments, season, onKickoff }) {
 /* =================================== App ==================================== */
 export default function FMWeb({ dataset }) {
   const reducer = useMemo(() => createReducer(dataset), [dataset]);
-  const [state, dispatch] = useReducer(reducer, dataset, makeInitialState);
+  const [state, dispatch] = useReducer(reducer, dataset, (ds) => makeInitialState(ds, newCareerSeed()));
   const { phase, formationKey, assignments, bench, draftedIds, wheel, pool, instructions } = state;
   const [activeSlotId, setActiveSlotId] = useState(null);
   const [dragInfo, setDragInfo] = useState(null); // { kind: 'slot'|'bench', id }
@@ -1162,10 +1162,7 @@ export default function FMWeb({ dataset }) {
             draftTargetSlotId={draftTargetSlotId} draftTargetLabel={draftTargetLabel} draftComplete={draftComplete}
             eraMin={state.eraMin} eraMax={state.eraMax} eraIndex={eraIndex}
             onSpin={() => dispatch({ type: "SPIN" })}
-            onDoneSpin={() => {
-              const r = eraIndex[createRng(crypto.getRandomValues(new Uint32Array(1))[0]).int(eraIndex.length)];
-              dispatch({ type: "LAND", year: r.y, clubId: r.c, label: r.label });
-            }}
+            onDoneSpin={() => dispatch({ type: "LAND" })}
             onPick={(p) => dispatch({ type: "PICK_PLAYER", player: p })}
             onGotoTactics={() => dispatch({ type: "SKIP_TO_TACTICS" })}
           />
@@ -1221,7 +1218,7 @@ export default function FMWeb({ dataset }) {
 
         {phase === "result" && state.simulation && (
           <ResultCard simulation={state.simulation} formationKey={formationKey} assignments={assignments}
-            onReset={() => dispatch({ type: "RESET" })} onContinue={() => dispatch({ type: "GOTO_TRANSFER" })} />
+            onReset={() => dispatch({ type: "NEW_GAME", seed: newCareerSeed() })} onContinue={() => dispatch({ type: "GOTO_TRANSFER" })} />
         )}
         </div>
       </div>
