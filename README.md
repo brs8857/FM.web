@@ -18,6 +18,9 @@ It's a single self-contained file with React, the game, and all its styling
 already bundled in — no install, no server, works offline. This is the
 fastest way to just try the game out.
 
+`standalone/index.html` is still the v1.0 build; it will be regenerated
+automatically in v2.0.
+
 ## Running the real dev project
 
 This is a normal [Vite](https://vitejs.dev) + React project, so if you want
@@ -39,6 +42,17 @@ npm run preview   # sanity-check the production build locally
 
 The build output goes to `dist/`.
 
+## Checks
+
+```bash
+npm run lint      # ESLint, zero warnings allowed
+npm test          # Vitest unit, component and golden-master tests
+npm run e2e       # Playwright (first run: npx playwright install chromium webkit)
+npm run sim       # balance report (title / relegation odds by style)
+```
+
+Careers autosave in the browser. Use **Menu → Export save** to back one up or move it to another device.
+
 ## Deploying to GitHub Pages
 
 **Automatic (recommended):** this repo already includes a GitHub Actions
@@ -59,19 +73,15 @@ and you're done with no build step at all.
 ## Project structure
 
 ```
-fm-web/
-├── src/
-│   ├── App.jsx        # the entire game (single component)
-│   ├── main.jsx        # React entry point
-│   └── index.css       # Tailwind entry
-├── index.html           # Vite entry HTML
-├── standalone/
-│   └── index.html      # fully self-contained build — no install needed
-├── .github/workflows/
-│   └── deploy.yml       # auto-deploy to GitHub Pages on push to main
-├── vite.config.js
-├── tailwind.config.js
-└── package.json
+src/
+├── data/          # player dataset + Championship pool (JSON, loaded on demand)
+├── engine/        # pure game logic: tactics, familiarity, simulation, league, squad, rng
+├── state/         # reducer, save format, autosave, export/import
+├── components/    # ui/, pitch/, screens/, app/ (error boundary, save menu, loading gate)
+├── App.jsx        # header and screen switching
+└── main.jsx       # entry point
+scripts/           # golden-master capture, balance report, one-off data extraction
+tests/             # fixtures, golden files, unit and Playwright tests
 ```
 
 ## Notes on the data

@@ -10,7 +10,7 @@ gets its own design cycle before any code is written:
 
 | Phase | Theme | Release | Status |
 |---|---|---|---|
-| 1 | Foundation, then Reach & Polish | v2.0 | **Next** |
+| 1 | Foundation, then Reach & Polish | v2.0 | v1.1 foundation shipped; v2.0 in progress |
 | 2 | Deeper Career + Sharper Draft & Tactics | v3.0 | Waiting on Phase 1 |
 | 3 | Match-Day Experience | v4.0 | Waiting on Phase 2 |
 
