@@ -43,6 +43,8 @@ export default function ResultCard({ simulation, formationKey, assignments, onRe
     }
     timerRef.current = setTimeout(tick, 250);
     return () => clearTimeout(timerRef.current);
+    // `instant` stays in here on purpose: it flips false when a reveal you resumed into
+    // is kicked off, and re-running to play that season out match by match is the point.
   }, [simulation, total, instant]);
 
   const live = simulation.matches.slice(0, revealed);
