@@ -3,7 +3,7 @@ import reactHooks from "eslint-plugin-react-hooks";
 import globals from "globals";
 
 export default [
-  { ignores: ["dist/**", "standalone/**", "coverage/**", "playwright-report/**", "test-results/**", "tests/golden/**", "src/data/**"] },
+  { ignores: ["dist/**", "standalone/**", "coverage/**", "playwright-report/**", "test-results/**", "tests/golden/**", "src/data/*.json"] },
   {
     files: ["**/*.{js,jsx,mjs}"],
     languageOptions: {
@@ -25,7 +25,7 @@ export default [
     },
   },
   {
-    files: ["src/engine/**/*.js", "src/state/**/*.js"],
+    files: ["src/engine/**/*.{js,jsx}", "src/state/**/*.{js,jsx}"],
     rules: {
       "no-restricted-imports": ["error", {
         patterns: [{ group: ["react", "react-dom", "react/*", "react-dom/*"], message: "engine/ and state/ must not import React." }],

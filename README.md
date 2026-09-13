@@ -56,7 +56,7 @@ Careers autosave in the browser. Use **Menu → Export save** to back one up or 
 ## Deploying to GitHub Pages
 
 **Automatic (recommended):** this repo already includes a GitHub Actions
-workflow at `.github/workflows/deploy.yml`. Once you push it to GitHub:
+workflow at `.github/workflows/ci.yml`. Once you push it to GitHub:
 
 1. Go to your repo's **Settings → Pages**.
 2. Under **Build and deployment → Source**, choose **GitHub Actions**.
