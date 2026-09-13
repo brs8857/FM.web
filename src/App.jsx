@@ -91,7 +91,7 @@ export default function FMWeb({ dataset, storage: storageProp }) {
     const { season, seasonLabel } = describeSave(result.save);
     return { ok: true, message: `Loaded Season ${season} · ${seasonLabel}.` };
   };
-  const { phase, formationKey, assignments, bench, draftedIds, wheel, pool, instructions } = state;
+  const { phase, formationKey, assignments, bench, wheel, pool, instructions } = state;
   const { dragInfo, startDrag } = usePitchDrag({ assignments, dispatch });
   const [activeSlotId, setActiveSlotId] = useState(null);
 
@@ -159,7 +159,7 @@ export default function FMWeb({ dataset, storage: storageProp }) {
         )}
 
         {phase === "draft" && (
-          <DraftScreen formationKey={formationKey} assignments={assignments} bench={bench} wheel={wheel} pool={pool} poolRelaxed={state.poolRelaxed}
+          <DraftScreen assignments={assignments} bench={bench} wheel={wheel} pool={pool} poolRelaxed={state.poolRelaxed}
             draftTargetSlotId={draftTargetSlotId} draftTargetLabel={draftTargetLabel} draftComplete={draftComplete}
             eraMin={state.eraMin} eraMax={state.eraMax} eraIndex={eraIndex}
             onSpin={() => dispatch({ type: "SPIN" })}

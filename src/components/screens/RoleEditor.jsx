@@ -9,7 +9,6 @@ import Slider from "../ui/Slider.jsx";
 export default function RoleEditor({ assignment, onSetRole, onSetSlider, onSetDuty }) {
   const roleOptions = ROLES[assignment.type];
   const role = roleOptions.find((r) => r.key === assignment.role) || roleOptions[0];
-  const neutralRole = { att: 0.5, def: 0.5 }; // baseline for showing deltas
   const c = playerContribution({ ...assignment, role, duty: "Support", sliderAtt: 50, sliderDef: 50 });
   const cActual = playerContribution({ ...assignment, role });
 

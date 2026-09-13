@@ -7,18 +7,24 @@ export default function WheelSpinner({ spinning, landed, onSpin, onDone, targetL
   const [justLanded, setJustLanded] = useState(false);
   const timerRef = useRef(null);
   const fadeRef = useRef(null);
+  const poolRef = useRef(pool);
+  const onDoneRef = useRef(onDone);
+  useEffect(() => {
+    poolRef.current = pool;
+    onDoneRef.current = onDone;
+  });
 
   useEffect(() => {
     if (!spinning) return;
     let i = 0;
-    const idx = pool;
+    const idx = poolRef.current;
     const total = 14; // fewer, faster ticks than before — a quick, confident spin rather than a long crawl
     function tick() {
       i++;
       if (i >= total) {
         // last tick — don't bother fading to another random label, the real
         // result is about to land via the `landed` prop a moment later
-        onDone();
+        onDoneRef.current();
         return;
       }
       // eslint-disable-next-line no-restricted-properties -- cosmetic flicker only; the real result comes from the reducer
@@ -31,7 +37,6 @@ export default function WheelSpinner({ spinning, landed, onSpin, onDone, targetL
     }
     tick();
     return () => { clearTimeout(timerRef.current); clearTimeout(fadeRef.current); };
-    // eslint-disable-next-line
   }, [spinning]);
 
   useEffect(() => {

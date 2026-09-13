@@ -16,8 +16,7 @@ export default [
     settings: { react: { version: "18.3" } },
     rules: {
       "no-undef": "error",
-      // Raised to "error" in Task 28 once the four known leftovers are removed.
-      "no-unused-vars": "warn",
+      "no-unused-vars": "error",
       "react/jsx-uses-vars": "error",
       "react/jsx-uses-react": "error",
       "react/jsx-no-undef": "error",

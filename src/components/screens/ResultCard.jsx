@@ -43,8 +43,7 @@ export default function ResultCard({ simulation, formationKey, assignments, onRe
     }
     timerRef.current = setTimeout(tick, 250);
     return () => clearTimeout(timerRef.current);
-    // eslint-disable-next-line
-  }, [simulation]);
+  }, [simulation, total, instant]);
 
   const live = simulation.matches.slice(0, revealed);
   const lw = live.filter((m) => m.outcome === "W").length;

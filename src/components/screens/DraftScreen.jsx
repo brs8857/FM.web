@@ -5,7 +5,7 @@ import PlayerMiniCard from "../ui/PlayerMiniCard.jsx";
 import WheelSpinner from "./WheelSpinner.jsx";
 
 /* ================================ Draft screen =============================== */
-export default function DraftScreen({ formationKey, assignments, bench, wheel, pool, poolRelaxed, draftTargetSlotId, draftTargetLabel, draftComplete, eraMin, eraMax, eraIndex, onSpin, onDoneSpin, onPick, onGotoTactics }) {
+export default function DraftScreen({ assignments, bench, wheel, pool, poolRelaxed, draftTargetSlotId, draftTargetLabel, draftComplete, eraMin, eraMax, eraIndex, onSpin, onDoneSpin, onPick, onGotoTactics }) {
   const targetType = assignments.find((a) => a.slotId === draftTargetSlotId)?.type;
   const targetLabel = SLOT_TYPE_LABEL[targetType] || "";
   return (

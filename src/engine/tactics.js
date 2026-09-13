@@ -209,7 +209,7 @@ export function computeTeamProfile(assignments, instructions, familiarity = 60) 
 // need the system reasonably well-drilled for the identity to actually pay
 // off, mirroring how a real "philosophy" only clicks once a squad knows it.
 export function identitySynergy(instructions, familiarity, physical) {
-  const { mentality: men, press: pr, line: ln, tempo: tem, directness: dir, width: wid, focus: foc, tackling: tk, counter: ctr, crossing: crs, shape } = instructions;
+  const { mentality: men, press: pr, line: ln, tempo: tem, directness: dir, width: wid, tackling: tk, counter: ctr, crossing: crs, shape } = instructions;
   const gate = clamp((familiarity - 35) / 45, 0, 1); // 0 below ~35 familiarity, 1 by ~80
   let attack = 0, defense = 0, press_ = 0, creativity = 0, label = null;
 
