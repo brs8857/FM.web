@@ -5,6 +5,7 @@ import { makeMiniDataset } from "../../tests/fixtures/miniDataset.js";
 import { fakeStorage, makeSaveText } from "../../tests/fixtures/saves.js";
 import { SAVE_KEY } from "../state/storage.js";
 import { DEFAULT_PREFS, PREFS_KEY } from "../state/prefs.js";
+import { encodeCareerCode } from "./careerCode.js";
 
 const prefs = { ...DEFAULT_PREFS, layout: "v2" };
 
@@ -66,6 +67,44 @@ describe("V2Root", () => {
     fireEvent.click(screen.getByRole("radio", { name: "Dark" }));
     expect(JSON.parse(storage.data.get(PREFS_KEY)).theme).toBe("dark");
     expect(document.documentElement.dataset.theme).toBe("dark");
+  });
+
+  it("imports a save, asking before it replaces a career", async () => {
+    const storage = fakeStorage();
+    const { unmount } = render(<V2Root dataset={makeMiniDataset()} storage={storage} prefs={prefs} />);
+    fireEvent.click(screen.getByRole("button", { name: "New career" }));
+    fireEvent.click(screen.getByRole("button", { name: "Choose a shape" }));
+    fireEvent.click(screen.getByRole("button", { name: "Start the draft" }));
+    const saved = JSON.parse(storage.data.get(SAVE_KEY));
+    expect(saved.state.phase).toBe("draft");
+    unmount();
+
+    const club = fakeStorage({ [SAVE_KEY]: makeSaveText() });
+    render(<V2Root dataset={makeMiniDataset()} storage={club} prefs={prefs} />);
+    fireEvent.click(screen.getByRole("button", { name: "Club" }));
+    fireEvent.click(screen.getByRole("button", { name: "Saves" }));
+    const file = new File([JSON.stringify(saved)], "save.json", { type: "application/json" });
+    fireEvent.change(screen.getByTestId("import-save-input"), { target: { files: [file] } });
+    expect(await screen.findByRole("heading", { name: "Replace your career with this save?" })).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Load the save" }));
+    expect(JSON.parse(club.data.get(SAVE_KEY)).state.phase).toBe("draft");
+    expect(screen.getAllByRole("heading", { level: 1, name: "Draft" }).length).toBeGreaterThan(0);
+  });
+
+  it("starts a career from a code with its era and shape", () => {
+    const storage = fakeStorage({ [SAVE_KEY]: makeSaveText() });
+    render(<V2Root dataset={makeMiniDataset()} storage={storage} prefs={prefs} />);
+    fireEvent.click(screen.getByRole("button", { name: "Club" }));
+    const code = encodeCareerCode({ seed: 77, eraMin: 2005, eraMax: 2011, formationKey: "5-3-2" });
+    fireEvent.change(screen.getByLabelText("Start a career from a code"), { target: { value: code } });
+    fireEvent.click(screen.getByRole("button", { name: "Start from code" }));
+    expect(screen.getByRole("heading", { name: "Start a career from this code?" })).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Start over" }));
+    expect(screen.getByRole("heading", { level: 1, name: "New career" })).toBeTruthy();
+    expect(screen.getByText("2005-06 to 2011-12")).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Choose a shape" }));
+    expect(screen.getByRole("radio", { name: "5-3-2", checked: true })).toBeTruthy();
+    expect(storage.data.has(SAVE_KEY)).toBe(false);
   });
 
   it("renders the gallery route", () => {

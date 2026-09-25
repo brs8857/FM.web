@@ -3,8 +3,12 @@ import { createReducer } from "../state/reducer.js";
 import { makeInitialState } from "../state/initialState.js";
 import { newCareerSeed } from "../state/rngState.js";
 import { selectNextAction, liveAssignments, selectFamiliarity, selectProfile, tacticUntouched } from "../state/selectors.js";
-import { getStorage, readAutosave, clearAutosave, requestPersistentStorage } from "../state/storage.js";
-import { hydrateState } from "../state/save.js";
+import { getStorage, readAutosave, clearAutosave, requestPersistentStorage, writeAutosave } from "../state/storage.js";
+import { hydrateState, makeSaveEnvelope, toSaveText, describeSave } from "../state/save.js";
+import { saveFileName, exportSaveText, readImportFile } from "../state/exportImport.js";
+import { summarizeSeason } from "../state/reducer.js";
+import { selectSeasonHistory } from "../state/selectors.js";
+import { APP_VERSION } from "../version.js";
 import { careerSeasonLabel } from "../engine/season.js";
 import { cohesionLabel, identityLabel } from "../content/labels.js";
 import { clubSeasonLabel } from "../content/clubs.js";
@@ -23,10 +27,10 @@ import Draft from "../screens/Draft/Draft.jsx";
 import SquadTab from "../screens/Squad/SquadTab.jsx";
 import BoardTab from "../screens/Board/BoardTab.jsx";
 import SeasonTab from "../screens/Season/SeasonTab.jsx";
+import ClubTab from "../screens/Club/ClubTab.jsx";
 import Settings from "../screens/Club/Settings.jsx";
 import About from "../screens/Club/About.jsx";
 import terms from "../content/terms.json";
-import { PRODUCT_NAME } from "../content/product.js";
 import { t } from "../content/t.js";
 import { TermsProvider } from "../ui/Term.jsx";
 import LiveRegion from "../ui/LiveRegion.jsx";
@@ -34,7 +38,6 @@ import NextPill from "../ui/NextPill.jsx";
 import Button from "../ui/Button.jsx";
 import IconButton from "../ui/IconButton.jsx";
 import Sheet from "../ui/Sheet.jsx";
-import Slip from "../ui/Slip.jsx";
 import { HomeIcon } from "../ui/icons.jsx";
 
 const TITLES = { squad: "Squad", board: "Board", season: "Season", club: "Club" };
@@ -78,6 +81,7 @@ function Game({ dataset, storageProp, initialPrefs }) {
   const [prefs, setPrefs, markSeen] = usePrefs(storage, initialPrefs);
   const [notice, setNotice] = useState(boot.status === "corrupt" ? "corrupt" : storage ? null : "unavailable");
   const [confirmNew, setConfirmNew] = useState(false);
+  const [pending, setPending] = useState(null); // { kind: "import", state } | { kind: "code", ...decoded }
   const [homeSheet, setHomeSheet] = useState(null);
   const [feedDoneSeason, setFeedDoneSeason] = useState(null);
   const [resumed, setResumed] = useResumed(state.phase, boot.status === "ok");
@@ -101,17 +105,54 @@ function Game({ dataset, storageProp, initialPrefs }) {
   const careerCode = encodeCareerCode({ seed: state.careerSeed, eraMin: state.eraMin, eraMax: state.eraMax, formationKey: state.formationKey });
   const feedDone = state.phase === "result" && (instant || feedDoneSeason === state.season);
 
-  const startNewCareer = useCallback(() => {
+  const inProgress = state.phase !== "formation";
+
+  const startNewCareer = useCallback((seed = newCareerSeed(), setup = null) => {
     clearAutosave(storage);
-    dispatch({ type: "NEW_GAME", seed: newCareerSeed() });
+    dispatch({ type: "NEW_GAME", seed });
+    if (setup) {
+      dispatch({ type: "SET_ERA", min: setup.eraMin, max: setup.eraMax });
+      dispatch({ type: "SET_FORMATION", key: setup.formationKey });
+    }
     setResumed(false);
     navDispatch({ type: "LEAVE_HOME" });
     setConfirmNew(false);
+    setPending(null);
   }, [storage, navDispatch, setResumed]);
 
   const onNewCareer = () => {
-    if (state.phase === "formation") navDispatch({ type: "LEAVE_HOME" });
-    else setConfirmNew(true);
+    if (inProgress) setConfirmNew(true);
+    else navDispatch({ type: "LEAVE_HOME" });
+  };
+
+  const onStartFromCode = (decoded) => {
+    if (inProgress) setPending({ kind: "code", ...decoded });
+    else startNewCareer(decoded.seed, decoded);
+  };
+
+  const loadCareer = useCallback((loaded) => {
+    if (storage) writeAutosave(storage, toSaveText(makeSaveEnvelope(loaded, { gameVersion: APP_VERSION })));
+    dispatch({ type: "LOAD_SAVE", state: loaded });
+    setResumed(true);
+    setPending(null);
+    navDispatch({ type: "LEAVE_HOME" });
+  }, [storage, navDispatch, setResumed]);
+
+  const onImportFile = async (file) => {
+    const result = await readImportFile(file);
+    if (!result.ok) return { ok: false, message: result.reason };
+    const loaded = hydrateState(result.save.state);
+    const { season, seasonLabel } = describeSave(result.save);
+    if (inProgress) { setPending({ kind: "import", state: loaded }); return { ok: true }; }
+    loadCareer(loaded);
+    return { ok: true, message: `Loaded season ${season} · ${seasonLabel}.` };
+  };
+
+  const exportCareer = () => exportSaveText(toSaveText(makeSaveEnvelope(state, { gameVersion: APP_VERSION })), saveFileName(state));
+
+  const confirmPending = () => {
+    if (pending?.kind === "import") loadCareer(pending.state);
+    else if (pending?.kind === "code") startNewCareer(pending.seed, pending);
   };
 
   const startDraft = () => {
@@ -136,7 +177,7 @@ function Game({ dataset, storageProp, initialPrefs }) {
           onContinue={() => { navDispatch({ type: "LEAVE_HOME" }); if (next.tab) goTab(next.tab); }}
           onNewCareer={onNewCareer} onClub={() => { navDispatch({ type: "LEAVE_HOME" }); goTab("club"); }}
           onSettings={() => setHomeSheet("settings")} onAbout={() => setHomeSheet("about")} />
-        <ConfirmSheet open={confirmNew} title="Start a new career?" confirmLabel="Start over" onConfirm={startNewCareer} onClose={() => setConfirmNew(false)}>
+        <ConfirmSheet open={confirmNew} title="Start a new career?" confirmLabel="Start over" onConfirm={() => startNewCareer()} onClose={() => setConfirmNew(false)}>
           <p>Your current career ({t("shell.season", { season: state.season, label: careerSeasonLabel(state.season) })}) will be replaced. Export it from the Club tab first if you want to keep it.</p>
         </ConfirmSheet>
         <Sheet open={homeSheet === "settings"} onClose={() => setHomeSheet(null)} title="Settings"><Settings prefs={prefs} setPrefs={setPrefs} /></Sheet>
@@ -198,10 +239,17 @@ function Game({ dataset, storageProp, initialPrefs }) {
           clubSeason={clubSeason} clubName={clubName} prefs={prefs} onDismissNote={markSeen} onGoBoard={() => goTab("board")} />
       )}
       {nav.tab === "club" && (
-        <Slip kicker={PRODUCT_NAME} title="Club">
-          <p>Phase: <span className="mono">{state.phase}</span> · Next: {next.label}</p>
-        </Slip>
+        <ClubTab history={selectSeasonHistory(state, summarizeSeason)} careerComplete={next.key === "careerComplete"} careerCode={careerCode}
+          prefs={prefs} setPrefs={setPrefs} onDismissNote={markSeen} canExport={inProgress} storageAvailable={Boolean(storage)}
+          onExport={exportCareer} onImportFile={onImportFile} onStartFromCode={onStartFromCode} onNewCareer={onNewCareer} />
       )}
+      <ConfirmSheet open={confirmNew} title="Start a new career?" confirmLabel="Start over" onConfirm={() => startNewCareer()} onClose={() => setConfirmNew(false)}>
+        <p>Your current career ({t("shell.season", { season: state.season, label: careerSeasonLabel(state.season) })}) will be replaced. Export it first if you want to keep it.</p>
+      </ConfirmSheet>
+      <ConfirmSheet open={Boolean(pending)} title={pending?.kind === "import" ? "Replace your career with this save?" : "Start a career from this code?"}
+        confirmLabel={pending?.kind === "import" ? "Load the save" : "Start over"} onConfirm={confirmPending} onClose={() => setPending(null)}>
+        <p>Your current career ({t("shell.season", { season: state.season, label: careerSeasonLabel(state.season) })}) will be replaced.</p>
+      </ConfirmSheet>
     </Shell>
   );
 }

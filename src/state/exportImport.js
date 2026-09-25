@@ -1,8 +1,9 @@
 import { careerSeasonLabel } from "../engine/season.js";
+import { EXPORT_PREFIX, PRODUCT_NAME } from "../content/product.js";
 import { parseSaveText } from "./save.js";
 
 export function saveFileName(state) {
-  return `fmweb-season${state.season}-${careerSeasonLabel(state.season)}.json`;
+  return `${EXPORT_PREFIX}-season${state.season}-${careerSeasonLabel(state.season)}.json`;
 }
 
 export async function exportSaveText(text, fileName, { nav = navigator, win = window, doc = document } = {}) {
@@ -10,7 +11,7 @@ export async function exportSaveText(text, fileName, { nav = navigator, win = wi
   const touch = win.matchMedia?.("(pointer: coarse)").matches;
   if (touch && nav.canShare?.({ files: [file] })) {
     try {
-      await nav.share({ files: [file], title: "FM.WEB save" });
+      await nav.share({ files: [file], title: `${PRODUCT_NAME} save` });
       return "shared";
     } catch (error) {
       if (error?.name === "AbortError") return "cancelled";
