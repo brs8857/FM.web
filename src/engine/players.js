@@ -41,6 +41,45 @@ export function rowToPlayer(row, seasonKey) {
   };
 }
 
+/* ------------------------------ Ageing ------------------------------------ */
+export const RETIREMENT_AGE = 36;
+const YOUNGEST_KNOWN_AGE = 15;
+
+// Mean change per stat for a player turning `age`, fitted to how the
+// archive's overalls run with age: growth to the mid-twenties, a plateau at
+// 26–29, decline from 30 that steepens, and pace going first.
+export function ageDrift(age) {
+  if (age == null || age < YOUNGEST_KNOWN_AGE) return { general: 0, pace: 0 };
+  if (age <= 20) return { general: 3, pace: 0 };
+  if (age <= 22) return { general: 2, pace: 0 };
+  if (age <= 24) return { general: 1, pace: 0 };
+  if (age <= 25) return { general: 0.5, pace: 0 };
+  if (age <= 29) return { general: 0, pace: 0 };
+  if (age <= 31) return { general: -0.5, pace: -1 };
+  if (age <= 33) return { general: -1.5, pace: -1.5 };
+  if (age <= 35) return { general: -2.5, pace: -2 };
+  return { general: -3.5, pace: -2 };
+}
+
+// One summer older. Each stat moves by the curve's mean plus at most a point
+// of noise, and the overall moves by what the stats imply for the position,
+// so a player's rating never jumps away from his numbers.
+export function progressPlayer(player, rng) {
+  if (player.age == null || player.age < YOUNGEST_KNOWN_AGE) return player;
+  const age = player.age + 1;
+  const { general, pace } = ageDrift(age);
+  const stats = Object.fromEntries(STAT_KEYS.map((k) => {
+    const mean = general + (k === "pace" ? pace : 0);
+    return [k, clamp(Math.round(player.stats[k] + mean + (rng.next() * 2 - 1)), 1, 99)];
+  }));
+  const ov = clamp(player.ov + ovFromStats(player.slot, stats) - ovFromStats(player.slot, player.stats), 1, 99);
+  return { ...player, age, stats, ov };
+}
+
+export function retires(player) {
+  return player.age != null && player.age >= RETIREMENT_AGE;
+}
+
 /* -------------------------- Pool / slot matching -------------------------- */
 export function slotAccepts(slotType, player) {
   if (slotType === "ANY") return true;

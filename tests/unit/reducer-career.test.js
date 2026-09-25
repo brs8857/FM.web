@@ -193,6 +193,42 @@ describe("the draw", () => {
   });
 });
 
+describe("the summer", () => {
+  it("CONTINUE_SEASON ages the XI and the bench a year and records who retired", () => {
+    const dataset = makeMiniDataset();
+    const reducer = createReducer(dataset);
+    let state = playCareer({ reducer, initialState: makeInitialState(dataset, 4242), seasons: 1 });
+    state = reducer(state, { type: "GOTO_TRANSFER" });
+    const before = [...state.assignments, ...state.bench].map((e) => e.player).filter(Boolean);
+    const next = reducer(state, { type: "CONTINUE_SEASON" });
+    expect(next.rngCounter).toBe(state.rngCounter + 1);
+    expect(next.lastTransition).toEqual({ ...state.lastTransition, retired: [] });
+    const after = [...next.assignments, ...next.bench].map((e) => e.player).filter(Boolean);
+    expect(after).toHaveLength(before.length);
+    for (const p of after) {
+      const was = before.find((b) => b.id === p.id);
+      expect(p.age).toBe(was.age + 1);
+      expect(p.seasonKey).toBe(was.seasonKey);
+    }
+    expect(after.some((p) => p.ov !== before.find((b) => b.id === p.id).ov)).toBe(true);
+  });
+
+  it("retires a 36-year-old over the summer and takes his place from the bench", () => {
+    const dataset = makeMiniDataset();
+    const reducer = createReducer(dataset);
+    let state = playCareer({ reducer, initialState: makeInitialState(dataset, 4242), seasons: 1 });
+    state = reducer(state, { type: "GOTO_TRANSFER" });
+    const st = state.assignments.find((a) => a.slotId === "ST");
+    const veteran = { ...st.player, age: 35 };
+    state = { ...state, assignments: state.assignments.map((a) => (a.slotId === "ST" ? { ...a, player: veteran } : a)) };
+    const next = reducer(state, { type: "CONTINUE_SEASON" });
+    expect(next.lastTransition.retired).toEqual([veteran.name]);
+    expect(next.assignments.find((a) => a.slotId === "ST").player.id).not.toBe(veteran.id);
+    expect(next.bench).toHaveLength(state.bench.length - 1);
+    expect(next.draftedIds.has(veteran.id)).toBe(true);
+  });
+});
+
 describe("the record", () => {
   it("GOTO_TRANSFER appends the season summary and CONTINUE_SEASON keeps it", () => {
     const dataset = makeMiniDataset();

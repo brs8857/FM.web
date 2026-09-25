@@ -16,5 +16,7 @@
   "season.position": "Week {week} · {position} · {pts, plural, one {# pt} other {# pts}}",
   "season.unbeaten": "{count, plural, =0 {No unbeaten run} one {Unbeaten in # match} other {Unbeaten in # matches}}",
   "window.changes": "{relegated} went down; {promoted} came up.",
+  "season.retired": "{names} {count, plural, one {has} other {have}} hung up the boots.",
+  "season.emptySlots": "{count, plural, one {One place in the XI is empty} other {# places in the XI are empty}}: fill it from the Squad tab before kick-off.",
   "club.titles": "{count, plural, =0 {No titles} one {# title} other {# titles}}"
 }

@@ -81,6 +81,16 @@ describe("SeasonTab", () => {
     expect(spy.onGoBoard).toHaveBeenCalledOnce();
   });
 
+  it("names who retired over the summer and any empty place in the XI", () => {
+    const base = makeSeason3TacticsState();
+    const retired = { ...base, lastTransition: { ...base.lastTransition, retired: ["Alpha FC GK0 2000", "Beta United ST19 2001"] } };
+    render(<Harness initial={retired} />);
+    expect(screen.getByRole("note", { name: "Retired" }).textContent).toBe("RetiredAlpha FC GK0 2000, Beta United ST19 2001 have hung up the boots.");
+    const hole = { ...retired, assignments: base.assignments.map((a, i) => (i === 0 ? { ...a, player: null, role: null, duty: null } : a)) };
+    render(<Harness initial={hole} />);
+    expect(screen.getAllByRole("note", { name: "Retired" })[1].textContent).toMatch(/One place in the XI is empty: fill it from the Squad tab before kick-off\.$/);
+  });
+
   it("marks the promoted clubs in pre-season", () => {
     const state = makeSeason3TacticsState();
     render(<Harness initial={state} />);

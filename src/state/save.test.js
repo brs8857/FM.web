@@ -118,7 +118,7 @@ describe("save format", () => {
     next = reducer(next, { type: "SIMULATE" });
     expect(next.phase).toBe("reveal");
     expect(next.simulation.matches).toHaveLength(38);
-    expect(next.rngCounter).toBe(envelope.state.rngCounter + 1);
+    expect(next.rngCounter).toBe(envelope.state.rngCounter + 2); // the summer and the season each take a draw
     next = reducer(next, { type: "KICKOFF" });
     next = reducer(next, { type: "GOTO_TRANSFER" });
     expect(next.shortlist.every((e) => /^\d{4}_[a-z-]+$/.test(e.player.seasonKey))).toBe(true);

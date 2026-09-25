@@ -7,7 +7,7 @@ import { computeTeamProfile } from "../engine/tactics.js";
 import { computeFamiliarity } from "../engine/familiarity.js";
 import { simulateSeason } from "../engine/season.js";
 import { applyPromotionRelegation } from "../engine/league.js";
-import { nextEmptySlotIndex, autoFillBench, generateShortlist, signToSlot, signToBench } from "../engine/squad.js";
+import { nextEmptySlotIndex, autoFillBench, generateShortlist, signToSlot, signToBench, progressSquad } from "../engine/squad.js";
 import { playerIdentity } from "../engine/identity.js";
 import { makeInitialState, DRAW_OPTIONS } from "./initialState.js";
 import { takeRng } from "./rngState.js";
@@ -235,7 +235,10 @@ export function createReducer(dataset) {
         return { ...state, assignments, bench, draftedIds, draftedIdentities, shortlist };
       }
       case "CONTINUE_SEASON": {
-        return { ...state, phase: "tactics", season: state.season + 1, shortlist: [], simulation: null };
+        const [rng, next] = takeRng(state);
+        const { assignments, bench, retired } = progressSquad(state.assignments, state.bench, rng);
+        const lastTransition = { relegated: [], promoted: [], ...state.lastTransition, retired };
+        return { ...next, phase: "tactics", season: state.season + 1, shortlist: [], simulation: null, assignments, bench, lastTransition };
       }
       case "NEW_GAME": {
         return makeInitialState(dataset, action.seed);

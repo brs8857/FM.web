@@ -158,7 +158,8 @@ function isValidState(s) {
   if (!Object.hasOwn(PHASE_LABELS, s.phase)) return false;
   if (typeof s.draftDone !== "boolean") return false;
   if (s.selectedStyle !== null && !STYLE_PRESETS.some((p) => p.key === s.selectedStyle)) return false;
-  if (s.lastTransition !== null && !(isObject(s.lastTransition) && isStringArray(s.lastTransition.relegated) && isStringArray(s.lastTransition.promoted))) return false;
+  if (s.lastTransition !== null && !(isObject(s.lastTransition) && isStringArray(s.lastTransition.relegated) && isStringArray(s.lastTransition.promoted)
+    && (s.lastTransition.retired === undefined || isStringArray(s.lastTransition.retired)))) return false;
   const formation = FORMATIONS[s.formationKey];
   if (!formation) return false;
   if (!Array.isArray(s.assignments) || s.assignments.length !== 11) return false;

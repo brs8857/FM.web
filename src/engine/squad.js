@@ -1,5 +1,6 @@
 import { defaultRoleFor, defaultDutyFor } from "./roles.js";
 import { isOwnedIdentity, playerIdentity } from "./identity.js";
+import { progressPlayer, retires } from "./players.js";
 
 export function nextEmptySlotIndex(assignments) {
   return assignments.findIndex((a) => !a.player);
@@ -76,6 +77,39 @@ export function signToSlot(assignments, bench, slotId, newPlayer) {
     }
   }
   return { assignments: newAssignments, bench: newBench };
+}
+
+function benchFitIndex(bench, slotType) {
+  const fits = (b, strict) => b.player && (strict ? b.player.slot === slotType : (slotType === "GK") === (b.player.slot === "GK"));
+  for (const strict of [true, false]) {
+    let best = -1;
+    bench.forEach((b, i) => { if (fits(b, strict) && (best < 0 || b.player.ov > bench[best].player.ov)) best = i; });
+    if (best >= 0) return best;
+  }
+  return -1;
+}
+
+// The summer: everyone ages a year, anyone at retirement age goes. The bench
+// retires first; a retiring starter's place goes to the best bench player who
+// fits it, so a slot only stays empty when the bench has nobody left for it.
+export function progressSquad(assignments, bench, rng) {
+  const agedXI = assignments.map((a) => (a.player ? { ...a, player: progressPlayer(a.player, rng) } : a));
+  const agedBench = bench.map((b) => (b.player ? { ...b, player: progressPlayer(b.player, rng) } : b));
+  const retired = [];
+  const remaining = agedBench.filter((b) => {
+    if (b.player && retires(b.player)) { retired.push(b.player); return false; }
+    return true;
+  });
+  const nextXI = agedXI.map((a) => {
+    if (!a.player || !retires(a.player)) return a;
+    retired.push(a.player);
+    const idx = benchFitIndex(remaining, a.type);
+    if (idx < 0) return { ...a, player: null, role: null, duty: null, sliderAtt: 50, sliderDef: 50 };
+    const [replacement] = remaining.splice(idx, 1);
+    const role = defaultRoleFor(a.type);
+    return { ...a, player: replacement.player, role: role.key, duty: defaultDutyFor(role), sliderAtt: 50, sliderDef: 50 };
+  });
+  return { assignments: nextXI, bench: remaining, retired: retired.map((p) => p.name) };
 }
 
 export function signToBench(bench, newPlayer) {

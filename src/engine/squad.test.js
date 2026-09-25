@@ -3,7 +3,7 @@ import { describe, it, expect } from "vitest";
 import { makeMiniDataset } from "../../tests/fixtures/miniDataset.js";
 import { createSquadLookup } from "./players.js";
 import { makeInitialAssignments } from "./formations.js";
-import { nextEmptySlotIndex, autoFillBench, generateShortlist, signToSlot, signToBench } from "./squad.js";
+import { nextEmptySlotIndex, autoFillBench, generateShortlist, signToSlot, signToBench, progressSquad } from "./squad.js";
 import { createRng } from "./rng.js";
 import { playerIdentity, isSameRealPlayer } from "./identity.js";
 
@@ -86,5 +86,50 @@ describe("bug #4: bench and shortlist never duplicate a real player", () => {
       const ids = list.map(playerIdentity);
       ids.forEach((a, i) => ids.slice(i + 1).forEach((b) => expect(isSameRealPlayer(a, b)).toBe(false)));
     }
+  });
+});
+
+describe("the summer", () => {
+  const withAge = (player, age) => ({ ...player, age });
+
+  it("ages everyone a year, retires the bench first, and fills a retiring starter's place from the bench", () => {
+    const squad = getSquad("2000", "1");
+    const assignments = makeInitialAssignments("4-3-3").map((a, i) => ({ ...a, player: withAge(squad[i], a.slotId === "ST" ? 35 : 27), role: "X", duty: "Y", sliderAtt: 70, sliderDef: 30 }));
+    const st = assignments.find((a) => a.slotId === "ST");
+    const others = getSquad("2001", "2");
+    const spareStrikers = others.filter((p) => p.slot === "ST");
+    const bench = [
+      entry(withAge(others.find((p) => p.slot === "GK"), 35)),
+      entry(withAge(spareStrikers[0], 30)),
+      entry(withAge(spareStrikers[1], 24)),
+      entry(withAge(others.find((p) => p.slot === "CB"), 28)),
+    ];
+    const better = spareStrikers[0].ov >= spareStrikers[1].ov ? spareStrikers[0] : spareStrikers[1];
+    const result = progressSquad(assignments, bench, createRng(3));
+    expect(result.retired).toEqual([bench[0].player.name, st.player.name]);
+    expect(result.bench).toHaveLength(2);
+    for (const b of result.bench) expect(b.player.age).toBe(bench.find((x) => x.player.id === b.player.id).player.age + 1);
+    const newSt = result.assignments.find((a) => a.slotId === "ST");
+    expect(newSt.player.id).toBe(better.id);
+    expect(newSt).toMatchObject({ role: "POA", duty: "Attack", sliderAtt: 50, sliderDef: 50 });
+    for (const a of result.assignments.filter((x) => x.slotId !== "ST")) {
+      expect(a.player.age).toBe(28);
+      expect(a).toMatchObject({ role: "X", duty: "Y", sliderAtt: 70, sliderDef: 30 });
+    }
+  });
+
+  it("leaves a starter's slot empty when nobody on the bench fits, and a keeper's slot only takes a keeper", () => {
+    const squad = getSquad("2000", "1");
+    const assignments = makeInitialAssignments("4-3-3").map((a, i) => ({ ...a, player: withAge(squad[i], a.type === "GK" ? 36 : 26) }));
+    const outfield = entry(withAge(getSquad("2001", "2").find((p) => p.slot === "CM"), 25));
+    const result = progressSquad(assignments, [outfield], createRng(1));
+    expect(result.retired).toEqual([squad[0].name]);
+    expect(result.assignments[0]).toMatchObject({ slotId: "GK", player: null, role: null, duty: null });
+    expect(result.bench).toHaveLength(1);
+    const fbSlot = assignments.find((a) => a.type === "FB").slotId;
+    const fb = makeInitialAssignments("4-3-3").map((a, i) => ({ ...a, player: withAge(squad[i], a.slotId === fbSlot ? 37 : 26) }));
+    const filled = progressSquad(fb, [outfield], createRng(1));
+    expect(filled.assignments.find((a) => a.slotId === fbSlot).player.id).toBe(outfield.player.id);
+    expect(filled.bench).toEqual([]);
   });
 });
