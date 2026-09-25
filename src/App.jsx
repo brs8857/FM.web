@@ -14,7 +14,7 @@ import { APP_VERSION } from "./version.js";
 import ResumeCard from "./components/app/ResumeCard.jsx";
 import StorageBanner from "./components/app/StorageBanner.jsx";
 import SaveMenu from "./components/app/SaveMenu.jsx";
-import { usePitchDrag } from "./components/pitch/usePitchDrag.js";
+import { usePitchDrag } from "./pitch/usePitchDrag.js";
 import FormationSelect from "./components/screens/FormationSelect.jsx";
 import DraftScreen from "./components/screens/DraftScreen.jsx";
 import TacticsScreen from "./components/screens/TacticsScreen.jsx";

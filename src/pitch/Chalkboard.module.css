@@ -1,0 +1,54 @@
+.board {
+  --board-max-h: 100vh;
+  background: var(--slate);
+  color: var(--chalk);
+  border-radius: var(--radius-paper);
+  overflow: hidden;
+  width: 100%;
+}
+.compact {
+  --board-max-h: 42vh;
+}
+.draft {
+  --board-max-h: 38vh;
+}
+.pitch {
+  position: relative;
+  width: min(100%, calc(var(--board-max-h) * 0.68));
+  aspect-ratio: 68 / 100;
+  margin: 0 auto;
+  overscroll-behavior: none;
+}
+.trail {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  stroke: var(--chalk);
+  stroke-width: 2px;
+  stroke-dasharray: 3 3;
+  vector-effect: non-scaling-stroke;
+  opacity: 0.8;
+}
+.trail line {
+  vector-effect: non-scaling-stroke;
+}
+.ghost {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--chalk);
+  color: var(--slate);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-xs);
+  pointer-events: none;
+  z-index: 30;
+  box-shadow: 0 0 0 3px var(--signal), 0 8px 14px rgba(0, 0, 0, 0.4);
+}
