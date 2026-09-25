@@ -18,10 +18,10 @@ describe("design tokens", () => {
     }
   });
 
-  it("uses the spec's newsprint and floodlit values", () => {
+  it("uses the pitch and floodlit values", () => {
     const themes = parseThemes(tokens);
-    expect(themes.light).toMatchObject({ paper: "#F4EFE4", ink: "#1A1A1A", signal: "#E8A33D", slate: "#1E3D2F", chalk: "#F7F3EA" });
-    expect(themes.dark).toMatchObject({ paper: "#15181C", ink: "#ECE7DA", signal: "#E8A33D", slate: "#17302A", action: "#ECE7DA" });
+    expect(themes.light).toMatchObject({ paper: "#F5F6F3", ink: "#14181A", signal: "#2ECC71", slate: "#1E3D2F", chalk: "#F5F7F4" });
+    expect(themes.dark).toMatchObject({ paper: "#14181A", ink: "#ECEFE9", signal: "#34C759", slate: "#17302A", action: "#22A155" });
   });
 
   it("guards system dark behind an explicit light theme", () => {

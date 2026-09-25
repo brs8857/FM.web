@@ -130,7 +130,7 @@ describe("App", () => {
 
   it("renders the gallery route and reads stored preferences by default", () => {
     render(<App dataset={makeMiniDataset()} storage={fakeStorage()} search="?gallery=1" />);
-    expect(screen.getByRole("heading", { level: 1, name: "Newsprint" })).toBeTruthy();
+    expect(screen.getByRole("heading", { level: 1, name: "Pitch" })).toBeTruthy();
     cleanup();
     const storage = fakeStorage({ [PREFS_KEY]: JSON.stringify({ theme: "dark", seenNotes: ["first-run"] }) });
     render(<App dataset={makeMiniDataset()} storage={storage} search="" />);

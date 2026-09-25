@@ -5,7 +5,7 @@ import Gallery from "./Gallery.jsx";
 describe("Gallery", () => {
   it("renders every primitive in both themes", () => {
     render(<Gallery />);
-    expect(screen.getByRole("heading", { level: 1, name: "Newsprint" })).toBeTruthy();
+    expect(screen.getByRole("heading", { level: 1, name: "Pitch" })).toBeTruthy();
     expect(screen.getByRole("heading", { level: 1, name: "Floodlit" })).toBeTruthy();
     expect(screen.getAllByRole("radiogroup", { name: "Style" })).toHaveLength(2);
     expect(screen.getAllByRole("tablist")).toHaveLength(4);

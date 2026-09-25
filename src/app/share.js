@@ -23,8 +23,8 @@ function wrap(ctx, text, maxWidth) {
 // Draws the verdict slip (spec 04 §7) at 1080×1350 in the current theme's
 // colours: kicker, headline, standfirst, record, the eleven, the code.
 export function renderSlip(ctx, slip) {
-  const paper = cssVar("--paper", "#F4EFE4"), ink = cssVar("--ink", "#1A1A1A"), ink2 = cssVar("--ink-2", "#5C5749");
-  const rule = cssVar("--rule", "#C9C1B1"), signal = cssVar("--signal", "#E8A33D");
+  const paper = cssVar("--paper", "#F5F6F3"), ink = cssVar("--ink", "#14181A"), ink2 = cssVar("--ink-2", "#4B5148");
+  const rule = cssVar("--rule", "#D2D6CF"), signal = cssVar("--signal", "#2ECC71");
   const display = '"Barlow Condensed", "Barlow", sans-serif', body = '"Barlow", sans-serif', mono = '"IBM Plex Mono", monospace';
   const margin = 80, width = SHARE_WIDTH - margin * 2;
   ctx.fillStyle = paper;

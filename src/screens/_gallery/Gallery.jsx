@@ -157,7 +157,7 @@ export default function Gallery() {
       <LiveRegion>
         <div className={styles.gallery}>
           <div className={styles.column} data-theme="light">
-            <h1 className={styles.title}>Newsprint</h1>
+            <h1 className={styles.title}>Pitch</h1>
             <Samples />
           </div>
           <div className={styles.column} data-theme="dark">
