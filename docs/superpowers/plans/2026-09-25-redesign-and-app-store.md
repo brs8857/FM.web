@@ -231,3 +231,73 @@ axe check, visual snapshot at 375/1280 in both themes.
 | IAP plugin abandoned | `entitlements.native.js` is ~100 lines against a StoreKit-shaped interface; swapping plugins is contained |
 | iCloud KVS 1 MB | Save measured at 16.5 KB; a guard refuses to sync above 512 KB and shows a notice |
 | Dataset rights review demands changes late | C4 slug rekey and the club-name toggle make the data a file change; do them in B10, before v2 saves exist |
+
+---
+
+## Milestone F — Match day, part 1 (proposed 2026-09-25, **pending owner approval**)
+
+> **Status: proposed, not approved.** Appended after the plan's sign-off;
+> nothing in milestones A–E or the §2 decision table changes. Spec:
+> [07 Match-day experience](../specs/2026-09-25-07-match-day-experience.md).
+> Decisions M1–M14 are in that spec's §14; the defaults below assume them.
+> No task here starts until the owner has reviewed 07 and confirmed the
+> release slot (M10: after C, before E, as web release v2.7).
+
+**Goal:** replace the one-batch season with a fixture-by-fixture loop
+(set the team up, play one match, read a report with scorers, repeat) and
+give the record a match-by-match memory, without changing `simulateMatch`
+or the balance.
+
+**Depends on:** C1 (rival results per round) and C3 (the `memory`
+argument to `computeFamiliarity`) merged; C5's thresholds in CI so F's
+settling assertion can join them; C6's save version known (F takes the
+next one).
+
+**Global constraints added:** `tests/golden/seasons.json` may also change
+in **F1**, in its own commit stating the reason (per-fixture seeding),
+after C1's re-record. `profiles.json` still never changes here.
+`rngCounter` must not advance during a season (every fixture derives from
+`campaign.seed`).
+
+### F1. Engine: per-fixture seeding and match events
+- `engine/season.js`: `fixtureRng`, `eventRng`, `roundRng` (`deriveSeed(seasonSeed, week)`, `+1000`, `+2000`), `simulateFixture(profile, familiarity, opp, fixture, seasonSeed)`, `playSeason(profile, familiarity, oppList, order, seasonSeed)`; `simulateSeason` becomes the batch wrapper (shuffle → `order`, `rng.int(2**32)` → seed → `playSeason`). C1's rival rounds move onto `roundRng` (07 §10.1) so they derive from the seed.
+- `engine/match.js`: `matchEvents({ gf, ga }, starters, rng)` → `{ goals }` per 07 §5.2; `engine/util.js` `weightedPick`. `simulateMatch` unchanged.
+- Re-record `seasons.json` in its own commit: "Re-record seasons after per-fixture seeding; simulateMatch unchanged".
+- Tests: events invariants (count, sides, minutes 1–95 ascending distinct, no GK); scorer-weight sanity over 400 seeds; `playSeason` equals `simulateSeason` given the same order and seed; `sim.mjs` cells unchanged from C5's table.
+
+### F2. State: the campaign, the loop, settling, save v4
+- `state/initialState.js`: `campaign: null`; `cohesionMemory.matches` (introducing `cohesionMemory` if C3 hasn't).
+- `state/reducer.js`: `SIMULATE` → `START_SEASON` (draws `order` and `seed`, phase `reveal`, no simulation); `KICKOFF` → phase `matchday`; `PLAY_MATCH` (07 §9.2: live board → signature → settling modifier → familiarity/profile → `simulateFixture` + `matchEvents` → append → week+1; week 38 assembles `simulation`, phase `result`); `PLAY_TO { until: "half" | "end" | "defeat" }`; `GOTO_TRANSFER` clears `campaign` and records `matches` + `topScorer` on the summary.
+- `state/selectors.js`: `selectTable(state, week)` (shared tie-break with C1), `selectNextFixture`, `selectSettling`, `selectTopScorers`; `selectNextAction` for `matchday` (`playMatch`, label from `season.play`).
+- `engine/familiarity.js`: settling modifier through the `memory` argument (C3's), table in 07 §4.3.
+- `state/save.js`: next `SAVE_VERSION` with `migrations[n]` per 07 §9.5 (`campaign: null`, `cohesionMemory.matches`, `seasonHistory[].matches = []`, `reveal` → `tactics`); `isCampaign` validator; `PHASE_LABELS.matchday`.
+- Tests: `reducer-career.test.js` walkthrough drives `START_SEASON`/`KICKOFF`/`PLAY_TO` and one hand-played season with a dial change at week 10 (asserting `played.changed` and the modifier); `reducer-determinism.test.js` batch equivalence (`PLAY_MATCH × 38` = `PLAY_TO end × 2` = `playSeason`); `save.test.js` migrates v2 and v3 fixtures in `reveal`, `matchday` (new fixture) and `result`; `playCareer.js` fixture updated.
+
+### F3. Screens: match day, report, fast-forward
+- New `screens/Season/MatchDay.jsx`, `MatchReport.jsx`, `FixtureCard.jsx`, `PlayToSheet.jsx` per 07 §7.2–7.5, from `Slip`, `Cutting`, `Ticker`, `Table`, `Disclosure`, `Sheet`, `ChipRow`, `StrengthBars`, `Meter`, `Term`, `LiveRegion` only.
+- `Vidiprinter.jsx` becomes the fast-forward feed (range of weeks, real position bar from `selectTable`; `runningPosition` removed); `BackPage.jsx` expandable report rows, top-scorer line, no "estimated" footnote; `Preseason.jsx` kick-off line; `Strengths.jsx` `reference` prop; `SeasonTab.jsx` new phase; `App.jsx` `NEXT_ACTIONS.playMatch`, sticky "Play week N" on Season/Board/Squad in `matchday`, `feedDoneSeason` removed; `useShortcuts` K = Play.
+- Content: `terms.json` `settling`; `notes.json` `season`; strings in 07 Appendix B.
+- Tests: RTL render tests on fixture states (week 1, mid-season with a report, week 38); Playwright `career-smoke` plays season one by `Play to…` twice and season two with three single steps and a style change; axe on every new screen and sheet; snapshots at 375/1280 in both themes; the pacing measurement (07 §12).
+
+### F4. Record
+- `Club/Record.jsx`: tappable rows → season `Sheet` (form strip, top scorers, matches with expandable reports; "No match log" for migrated seasons); career top scorer (via `playerIdentity`) and biggest win; career-complete slip lists per-season top scorers.
+- Tests: RTL on a six-season fixture including one migrated season; axe.
+
+### F5. Discipline  *(M3, separable)*
+- `matchEvents` cards (yellows Poisson(1.6) × tackling scale, red 0.05, carrier by `def + press`); `discipline` state; bans block `PLAY_MATCH`/`PLAY_TO`; `selectNextAction` `replaceSuspended` → Squad tab; `Marker` suspended mark; report cards line; bans clear at `GOTO_TRANSFER`.
+- Tests: fifth yellow and a red each ban for one match; a banned starter blocks Play and the swap unblocks it; migration adds `discipline: {}`.
+
+### F6. Release
+- `scripts/sim.mjs --assert` gains the settling check (weekly style change must not out-point keeping it); ten-season soak with random weekly changes and swaps; `CHANGELOG` (including the `reveal`-save restart note); version bump (v2.7 per M10, owner to confirm); tag; roadmap Phase 3 status line updated to "first slice shipped".
+
+**Verification (added to §4):** F1 `seasons.json` diff reviewed with `sim.mjs` cells unchanged; F2 batch equivalence green; F3 pacing measurement ≤ v2.0 vidiprinter path; F6 soak green and owner sign-off after a hand-played season.
+
+**Risks (added to §5):**
+
+| Risk | Mitigation |
+|---|---|
+| C1 lands with rival rounds on the shared stream | F1 moves them to `roundRng`; the numbers are the same, only the seeding differs; one re-record |
+| C3 and F disagree on `memory`'s shape | Agree `{ seasons, matches }` before the second of the two starts; both are one-line additions to `computeFamiliarity` |
+| Stepping every match is too slow for some players | `Play to…` keeps the old pace two taps away; the pacing criterion is measured in CI |
+| The settling numbers make change never worth it (or always) | The `sim.mjs` assertion bounds it; tune the table in 07 §4.3, not the synergy |
+| Save size with the match log | Lean entries, `order` not fixtures, rivals derived; ~55 KB for six seasons against the 512 KB guard |
