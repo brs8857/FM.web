@@ -19,6 +19,7 @@ import { useDocumentPrefs } from "./useDocumentPrefs.js";
 import { encodeCareerCode } from "./careerCode.js";
 import Shell from "./Shell.jsx";
 import ConfirmSheet from "./ConfirmSheet.jsx";
+import FirstRun, { FIRST_RUN_NOTE } from "./FirstRun.jsx";
 import Gallery from "../screens/_gallery/Gallery.jsx";
 import Home from "../screens/Home/Home.jsx";
 import Era from "../screens/NewCareer/Era.jsx";
@@ -169,6 +170,14 @@ function Game({ dataset, storageProp, initialPrefs }) {
     if (next.tab && next.tab !== nav.tab) goTab(next.tab);
     else if (action) dispatch(action);
   };
+
+  if (nav.home && !inProgress && !prefs.seenNotes.includes(FIRST_RUN_NOTE)) {
+    return (
+      <Shell mode="home">
+        <FirstRun onDone={() => { markSeen(FIRST_RUN_NOTE); navDispatch({ type: "LEAVE_HOME" }); }} />
+      </Shell>
+    );
+  }
 
   if (nav.home) {
     return (

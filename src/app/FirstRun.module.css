@@ -1,0 +1,60 @@
+.firstRun {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  max-width: 28rem;
+  margin: 0 auto;
+  padding-top: var(--space-6);
+  min-height: calc(100dvh - var(--space-8));
+  justify-content: center;
+}
+.kicker {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-xl);
+  text-align: center;
+}
+.slip {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.visual {
+  display: flex;
+  justify-content: center;
+}
+.visual > * {
+  width: 100%;
+}
+.board {
+  position: relative;
+  width: 100%;
+  height: 120px;
+  background: var(--slate);
+  border-radius: var(--radius-paper);
+}
+.text {
+  font-size: var(--text-lg);
+  text-align: center;
+  max-width: 34ch;
+  margin: 0 auto;
+}
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+}
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid var(--ink);
+}
+.current {
+  background: var(--ink);
+}
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-3);
+}

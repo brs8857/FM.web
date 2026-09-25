@@ -7,9 +7,32 @@ import { SAVE_KEY } from "../state/storage.js";
 import { DEFAULT_PREFS, PREFS_KEY } from "../state/prefs.js";
 import { encodeCareerCode } from "./careerCode.js";
 
-const prefs = { ...DEFAULT_PREFS, layout: "v2" };
+const prefs = { ...DEFAULT_PREFS, layout: "v2", seenNotes: ["first-run"] };
 
 describe("V2Root", () => {
+  it("shows the three first-run slips once, then goes straight into New career", () => {
+    const storage = fakeStorage();
+    render(<V2Root dataset={makeMiniDataset()} storage={storage} prefs={{ ...DEFAULT_PREFS, layout: "v2" }} />);
+    expect(screen.getByRole("region", { name: "1 of 3" })).toBeTruthy();
+    expect(screen.queryByRole("heading", { level: 1, name: "Era XI" })).toBeNull();
+    fireEvent.click(screen.getByRole("button", { name: "Next" }));
+    fireEvent.click(screen.getByRole("button", { name: "Next" }));
+    expect(screen.getByRole("region", { name: "3 of 3" })).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Start a career" }));
+    expect(screen.getByRole("heading", { level: 1, name: "New career" })).toBeTruthy();
+    expect(JSON.parse(storage.data.get(PREFS_KEY)).seenNotes).toContain("first-run");
+    fireEvent.click(screen.getByRole("button", { name: "Back" }));
+    expect(screen.getByRole("heading", { level: 1, name: "Era XI" })).toBeTruthy();
+  });
+
+  it("dismisses a coach's note for good", () => {
+    const storage = fakeStorage({ [SAVE_KEY]: makeSaveText() });
+    render(<V2Root dataset={makeMiniDataset()} storage={storage} prefs={prefs} />);
+    fireEvent.click(screen.getByRole("button", { name: "Dismiss note" }));
+    expect(screen.queryByRole("note")).toBeNull();
+    expect(JSON.parse(storage.data.get(PREFS_KEY)).seenNotes).toEqual(["first-run", "home"]);
+  });
+
   it("boots on Home, resumes a save into Club mode on the tab the next action needs", () => {
     const storage = fakeStorage({ [SAVE_KEY]: makeSaveText() });
     const { unmount } = render(<V2Root dataset={makeMiniDataset()} storage={storage} prefs={{ ...prefs, theme: "dark" }} />);
