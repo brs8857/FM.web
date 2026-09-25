@@ -9,8 +9,9 @@ export const RAIL_QUERY = "(min-width: 1024px)";
 
 // The app frame (spec 04 §6): top bar, the tab panel, an optional sticky bar
 // above the tabs, and the Club tab bar (bottom on phones and tablets, a left
-// rail at 1024 px and up). Set-up and draft modes have no tab bar.
-export default function Shell({ mode, tab, onTab, title, subtitle, onBack, next, end, sticky, children }) {
+// rail at 1024 px and up). Set-up and draft modes have no tab bar; Home has
+// no top bar (it carries its own masthead).
+export default function Shell({ mode, tab, onTab, title, subtitle, onBack, start, next, end, sticky, children }) {
   const rail = useMediaQuery(RAIL_QUERY);
   const club = mode === "club";
   const tabs = club && <TabBar tabs={TABS} value={tab} onChange={onTab} orientation={rail ? "vertical" : "horizontal"} />;
@@ -18,7 +19,11 @@ export default function Shell({ mode, tab, onTab, title, subtitle, onBack, next,
     <div className={cx(styles.shell, club && rail && styles.withRail)} data-mode={mode}>
       {club && rail && <div className={styles.rail}>{tabs}</div>}
       <div className={styles.column}>
-        <TopBar title={title} subtitle={subtitle} onBack={onBack} next={next} end={end} />
+        {title !== undefined && (
+          <div className={styles.top}>
+            <TopBar title={title} subtitle={subtitle} onBack={onBack} start={start} next={next} end={end} />
+          </div>
+        )}
         <main className={styles.main} id={club ? `panel-${tab}` : undefined} role={club ? "tabpanel" : undefined} aria-labelledby={club ? `tab-${tab}` : undefined} tabIndex={-1}>
           {children}
         </main>

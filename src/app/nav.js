@@ -1,8 +1,10 @@
 import { useEffect, useReducer } from "react";
 
 // UI navigation state (spec 04 §4.1). Never saved. `mode` follows the phase:
-// set-up (formation), the draft flow, or Club with its four tabs. `sheet`
-// is whichever bottom sheet is open, as { kind, id } or null.
+// set-up (formation), the draft flow, or Club with its four tabs. `home` puts
+// the Home screen over any mode (boot, Pause in the draft, the top-bar mark in
+// Club); `step` is the set-up flow's screen. `sheet` is whichever bottom sheet
+// is open, as { kind, id } or null.
 export const TABS = [
   { key: "squad", label: "Squad" },
   { key: "board", label: "Board" },
@@ -11,6 +13,7 @@ export const TABS = [
 ];
 
 export const TAB_KEYS = TABS.map((t) => t.key);
+export const STEPS = ["era", "formation"];
 
 export function modeFor(phase) {
   if (phase === "formation") return "setup";
@@ -19,7 +22,7 @@ export function modeFor(phase) {
 }
 
 export function initialNav(phase, tab = "season") {
-  return { mode: modeFor(phase), tab, sheet: null, history: [] };
+  return { mode: modeFor(phase), tab, sheet: null, history: [], home: true, step: "era" };
 }
 
 export function navReducer(nav, action) {
@@ -27,7 +30,15 @@ export function navReducer(nav, action) {
     case "PHASE": {
       const mode = modeFor(action.phase);
       if (mode === nav.mode) return nav;
-      return { ...nav, mode, sheet: null, history: [], tab: action.tab ?? nav.tab };
+      return { ...nav, mode, sheet: null, history: [], tab: action.tab ?? nav.tab, home: false, step: "era" };
+    }
+    case "HOME":
+      return nav.home ? nav : { ...nav, home: true, sheet: null };
+    case "LEAVE_HOME":
+      return nav.home ? { ...nav, home: false, sheet: null, step: "era" } : nav;
+    case "STEP": {
+      if (!STEPS.includes(action.step) || action.step === nav.step) return nav;
+      return { ...nav, step: action.step, sheet: null };
     }
     case "TAB": {
       if (!TAB_KEYS.includes(action.tab) || action.tab === nav.tab) return nav;
@@ -35,6 +46,10 @@ export function navReducer(nav, action) {
     }
     case "BACK": {
       if (nav.sheet) return { ...nav, sheet: null };
+      if (nav.mode === "setup" && !nav.home) {
+        const i = STEPS.indexOf(nav.step);
+        return i > 0 ? { ...nav, step: STEPS[i - 1] } : { ...nav, home: true };
+      }
       if (nav.history.length === 0) return nav;
       const history = nav.history.slice(0, -1);
       return { ...nav, tab: nav.history[nav.history.length - 1], history };

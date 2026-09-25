@@ -21,3 +21,18 @@ export function PlusIcon() {
 export function ArrowIcon() {
   return <svg {...base}><path d="M4 10h12M11 5l5 5-5 5" /></svg>;
 }
+export function HomeIcon() {
+  return <svg {...base}><path d="M3 9.5 10 4l7 5.5V16a1 1 0 0 1-1 1h-4v-5H8v5H4a1 1 0 0 1-1-1z" /></svg>;
+}
+export function ShareIcon() {
+  return <svg {...base}><path d="M10 3v9M6.5 6.5 10 3l3.5 3.5M4 11v5a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-5" /></svg>;
+}
+export function CopyIcon() {
+  return <svg {...base}><rect x="7" y="7" width="10" height="10" rx="1.5" /><path d="M13 7V4.5A1.5 1.5 0 0 0 11.5 3h-7A1.5 1.5 0 0 0 3 4.5v7A1.5 1.5 0 0 0 4.5 13H7" /></svg>;
+}
+export function PauseIcon() {
+  return <svg {...base}><path d="M7 4v12M13 4v12" /></svg>;
+}
+export function PlayIcon() {
+  return <svg {...base}><path d="M6 4l10 6-10 6z" /></svg>;
+}

@@ -1,0 +1,32 @@
+.era {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: var(--measure);
+  margin: 0 auto;
+}
+.heading {
+  font-size: var(--text-2xl);
+}
+.lede {
+  color: var(--ink-2);
+}
+.range {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-2);
+  border-top: 1px solid var(--rule);
+  padding-top: var(--space-3);
+}
+.years {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-xl);
+}
+.count {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+}

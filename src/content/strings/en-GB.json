@@ -1,6 +1,7 @@
 {
   "shell.season": "Season {season} · {label}",
   "shell.preview": "{product} · redesign preview",
+  "era.count": "{count, plural, =0 {No club-seasons} one {# club-season} other {# club-seasons}}",
   "draft.progress": "Draft in progress: pick {pick} of 11",
   "draft.picked": "{count, plural, =0 {Nobody picked yet} one {# picked} other {# picked}}",
   "draft.spread": "{count, plural, one {# from the {decade}} other {# from the {decade}}}",

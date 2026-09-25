@@ -18,7 +18,7 @@
   min-width: 0;
   min-height: 100dvh;
 }
-.column > :first-child {
+.top {
   position: sticky;
   top: 0;
   z-index: 20;
