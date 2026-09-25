@@ -2,8 +2,9 @@ import { FORMATIONS } from "../engine/formations.js";
 import { careerSeasonLabel, CAREER_SEASONS } from "../engine/season.js";
 import { STAT_KEYS } from "../engine/players.js";
 import { STYLE_PRESETS } from "../engine/instructions.js";
+import { REDRAWS } from "./initialState.js";
 
-export const SAVE_VERSION = 1;
+export const SAVE_VERSION = 2;
 export const APP_ID = "fm-web";
 export const SAVE_ERRORS = {
   notFmWeb: "This isn't an FM.WEB save.",
@@ -16,8 +17,18 @@ const PHASE_LABELS = {
   reveal: "Ratings reveal", result: "Season result", transfer: "Transfer window",
 };
 
-// migrations[n] upgrades a version-n save to version n+1. Empty in v1.1.
-const migrations = {};
+// migrations[n] upgrades a version-n save to version n+1.
+const migrations = {
+  // v1 (1.1.0): the wheel and its pool become a one-option draw; the record starts empty.
+  1(save) {
+    const { wheel, pool, poolRelaxed, ...rest } = save.state;
+    const landed = wheel?.landed;
+    const options = landed && Array.isArray(pool) && pool.length > 0
+      ? [{ year: String(landed.year), clubId: String(landed.clubId), label: landed.label, players: pool, relaxed: Boolean(poolRelaxed) }]
+      : [];
+    return { ...save, saveVersion: 2, state: { ...rest, draw: { spinning: false, options, redrawsLeft: REDRAWS }, seasonHistory: [] } };
+  },
+};
 
 export function serializeState(state) {
   return { ...state, draftedIds: [...state.draftedIds] };
@@ -47,18 +58,15 @@ export function validateSave(value) {
   if (value.saveVersion > SAVE_VERSION) return { ok: false, reason: SAVE_ERRORS.newer };
   let save = value;
   while (save.saveVersion < SAVE_VERSION) {
+    if (!isObject(save.state)) return { ok: false, reason: SAVE_ERRORS.damaged };
     save = migrations[save.saveVersion](save);
   }
   return isValidState(save.state) ? { ok: true, save } : { ok: false, reason: SAVE_ERRORS.damaged };
 }
 
 export function hydrateState(saveState) {
-  const state = { ...saveState, draftedIds: new Set(saveState.draftedIds), poolRelaxed: Boolean(saveState.poolRelaxed) };
-  if (state.wheel.spinning) {
-    state.wheel = { spinning: false, landed: null };
-    state.pool = [];
-    state.poolRelaxed = false;
-  }
+  const state = { ...saveState, draftedIds: new Set(saveState.draftedIds) };
+  if (state.draw.spinning) state.draw = { ...state.draw, spinning: false, options: [] };
   return state;
 }
 
@@ -91,6 +99,23 @@ function isStringArray(v) {
   return Array.isArray(v) && v.every((x) => typeof x === "string");
 }
 
+function isDrawOption(o) {
+  return isObject(o) && typeof o.year === "string" && typeof o.clubId === "string" && typeof o.label === "string"
+    && typeof o.relaxed === "boolean" && Array.isArray(o.players) && o.players.length > 0 && o.players.every(isPlayer);
+}
+
+function isDraw(d) {
+  return isObject(d) && typeof d.spinning === "boolean"
+    && Number.isInteger(d.redrawsLeft) && d.redrawsLeft >= 0 && d.redrawsLeft <= REDRAWS
+    && Array.isArray(d.options) && d.options.every(isDrawOption);
+}
+
+function isSeasonSummary(s) {
+  return isObject(s) && Number.isInteger(s.season) && s.season >= 1 && s.season <= CAREER_SEASONS
+    && Number.isInteger(s.position) && ["pts", "w", "d", "l", "gf", "ga", "familiarity"].every((k) => Number.isInteger(s[k]))
+    && typeof s.tier === "string" && (s.identity === null || typeof s.identity === "string") && isUint32(s.seed);
+}
+
 function isValidState(s) {
   if (!isObject(s)) return false;
   if (!Object.hasOwn(PHASE_LABELS, s.phase)) return false;
@@ -105,9 +130,10 @@ function isValidState(s) {
   if (!Array.isArray(s.opponents) || s.opponents.length !== 19 || !s.opponents.every((o) => isObject(o) && typeof o.name === "string")) return false;
   if (!Array.isArray(s.draftedIds) || !s.draftedIds.every((id) => typeof id === "string")) return false;
   if (!Array.isArray(s.draftedIdentities)) return false;
-  if (!Array.isArray(s.pool) || !s.pool.every(isPlayer)) return false;
+  if (!isDraw(s.draw)) return false;
+  if (!Array.isArray(s.seasonHistory) || !s.seasonHistory.every(isSeasonSummary)) return false;
   if (!Array.isArray(s.shortlist) || !s.shortlist.every((e) => isObject(e) && isPlayer(e.player))) return false;
-  if (!isObject(s.wheel) || !isObject(s.instructions)) return false;
+  if (!isObject(s.instructions)) return false;
   if (!isUint32(s.careerSeed) || !Number.isInteger(s.rngCounter) || s.rngCounter < 0) return false;
   if (!Number.isInteger(s.season) || s.season < 1 || s.season > CAREER_SEASONS) return false;
   if (!Number.isInteger(s.eraMin) || !Number.isInteger(s.eraMax)) return false;

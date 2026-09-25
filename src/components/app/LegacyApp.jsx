@@ -5,7 +5,7 @@ import { nextEmptySlotIndex } from "../../engine/squad.js";
 import { createReducer } from "../../state/reducer.js";
 import { makeInitialState } from "../../state/initialState.js";
 import { newCareerSeed } from "../../state/rngState.js";
-import { selectEraIndex, liveAssignments, selectFamiliarity, selectProfile } from "../../state/selectors.js";
+import { selectEraIndex, liveAssignments, selectFamiliarity, selectProfile, selectLegacyWheel } from "../../state/selectors.js";
 import { getStorage, readAutosave, clearAutosave, requestPersistentStorage, writeAutosave } from "../../state/storage.js";
 import { useAutosave } from "../../app/useAutosave.js";
 import { hydrateState, describeSave, makeSaveEnvelope, toSaveText } from "../../state/save.js";
@@ -91,7 +91,8 @@ export default function LegacyApp({ dataset, storage: storageProp }) {
     const { season, seasonLabel } = describeSave(result.save);
     return { ok: true, message: `Loaded Season ${season} · ${seasonLabel}.` };
   };
-  const { phase, formationKey, assignments, bench, wheel, pool, instructions } = state;
+  const { phase, formationKey, assignments, bench, instructions } = state;
+  const { wheel, pool, poolRelaxed } = selectLegacyWheel(state);
   const { dragInfo, startDrag } = usePitchDrag({ assignments, dispatch });
   const [activeSlotId, setActiveSlotId] = useState(null);
 
@@ -159,10 +160,10 @@ export default function LegacyApp({ dataset, storage: storageProp }) {
         )}
 
         {phase === "draft" && (
-          <DraftScreen assignments={assignments} bench={bench} wheel={wheel} pool={pool} poolRelaxed={state.poolRelaxed}
+          <DraftScreen assignments={assignments} bench={bench} wheel={wheel} pool={pool} poolRelaxed={poolRelaxed}
             draftTargetSlotId={draftTargetSlotId} draftTargetLabel={draftTargetLabel} draftComplete={draftComplete}
             eraMin={state.eraMin} eraMax={state.eraMax} eraIndex={eraIndex}
-            onSpin={() => dispatch({ type: "SPIN" })}
+            onSpin={() => dispatch({ type: "DRAW" })}
             onDoneSpin={() => dispatch({ type: "LAND" })}
             onPick={(p) => dispatch({ type: "PICK_PLAYER", player: p })}
             onGotoTactics={() => dispatch({ type: "SKIP_TO_TACTICS" })}

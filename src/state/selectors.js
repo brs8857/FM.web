@@ -27,6 +27,27 @@ export function selectProfile(live, instructions, familiarity) {
   return computeTeamProfile(live, instructions, familiarity);
 }
 
+// The v1 draft screen still speaks wheel/pool; the first cutting stands in
+// for the landed club-season until B11 retires it.
+export function selectLegacyWheel(state) {
+  const { spinning, options } = state.draw;
+  const first = options[0];
+  return {
+    wheel: { spinning, landed: first ? { year: first.year, clubId: first.clubId, label: first.label } : null },
+    pool: first ? first.players : [],
+    poolRelaxed: first ? first.relaxed : false,
+  };
+}
+
+// The record: every completed season, plus the one just played while its
+// result is still on screen (it joins seasonHistory when the window opens).
+export function selectSeasonHistory(state, summarize) {
+  if (state.phase === "result" && state.simulation && !state.seasonHistory.some((s) => s.season === state.season)) {
+    return [...state.seasonHistory, summarize(state)];
+  }
+  return state.seasonHistory;
+}
+
 function tacticUntouched(state) {
   return state.selectedStyle === null
     && Object.keys(DEFAULT_INSTRUCTIONS).every((k) => state.instructions[k] === DEFAULT_INSTRUCTIONS[k]);

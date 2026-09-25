@@ -9,12 +9,47 @@ import { simulateSeason } from "../engine/season.js";
 import { applyPromotionRelegation } from "../engine/league.js";
 import { nextEmptySlotIndex, autoFillBench, generateShortlist, signToSlot, signToBench } from "../engine/squad.js";
 import { playerIdentity } from "../engine/identity.js";
-import { makeInitialState } from "./initialState.js";
+import { makeInitialState, DRAW_OPTIONS } from "./initialState.js";
 import { takeRng } from "./rngState.js";
 import { selectEraIndex } from "./selectors.js";
 
+const idleDraw = (draw) => ({ ...draw, spinning: false, options: [] });
+
+export function summarizeSeason(state) {
+  const { simulation: s, season, careerSeed } = state;
+  return {
+    season, position: s.position, pts: s.pts, w: s.w, d: s.d, l: s.l, gf: s.gf, ga: s.ga,
+    tier: s.tier.name, identity: s.profile.synergyLabel, familiarity: s.familiarity, seed: careerSeed,
+  };
+}
+
 export function createReducer(dataset) {
   const getSquad = createSquadLookup(dataset);
+
+  // Draws up to three distinct club-seasons from the era, each with the
+  // players it can offer for the next empty slot. Squads with nobody left
+  // are passed over so a draw is never a dead end.
+  function land(state) {
+    const eraIndex = selectEraIndex(dataset.index, state.eraMin, state.eraMax);
+    if (eraIndex.length === 0) return state;
+    const [rng, next] = takeRng(state);
+    const idx = nextEmptySlotIndex(state.assignments);
+    let slotType = "GK", side = null;
+    if (idx >= 0) { slotType = state.assignments[idx].type; side = state.assignments[idx].side; }
+    const want = Math.min(DRAW_OPTIONS, eraIndex.length);
+    const seen = new Set();
+    const options = [];
+    for (let tries = 0; options.length < want && seen.size < eraIndex.length && tries < eraIndex.length * 4; tries++) {
+      const entry = rng.pick(eraIndex);
+      const key = `${entry.y}_${entry.c}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      const { players, relaxed } = buildPool(getSquad, entry.y, entry.c, slotType, side, state.draftedIds, state.draftedIdentities);
+      if (players.length === 0) continue;
+      options.push({ year: entry.y, clubId: entry.c, label: entry.label, players, relaxed });
+    }
+    return { ...next, draw: { ...state.draw, spinning: false, options } };
+  }
 
   return function reducer(state, action) {
     switch (action.type) {
@@ -34,22 +69,17 @@ export function createReducer(dataset) {
       case "START_DRAFT": {
         return { ...state, phase: "draft" };
       }
-      case "SPIN": {
-        return { ...state, wheel: { spinning: true, landed: null }, pool: [], poolRelaxed: false };
+      case "DRAW": {
+        if (state.draftDone || state.draw.options.length > 0) return state;
+        return { ...state, draw: { ...state.draw, spinning: true, options: [] } };
       }
       case "LAND": {
-        const eraIndex = selectEraIndex(dataset.index, state.eraMin, state.eraMax);
-        if (eraIndex.length === 0) return state;
-        const [rng, next] = takeRng(state);
-        const entry = rng.pick(eraIndex);
-        const idx = nextEmptySlotIndex(state.assignments);
-        let slotType = "GK", side = null;
-        if (idx >= 0) { slotType = state.assignments[idx].type; side = state.assignments[idx].side; }
-        const { players, relaxed } = buildPool(getSquad, entry.y, entry.c, slotType, side, state.draftedIds, state.draftedIdentities);
-        if (players.length === 0) {
-          return { ...next, wheel: { spinning: false, landed: null }, pool: [], poolRelaxed: false };
-        }
-        return { ...next, wheel: { spinning: false, landed: { year: entry.y, clubId: entry.c, label: entry.label } }, pool: players, poolRelaxed: relaxed };
+        if (state.draftDone) return state;
+        return land(state);
+      }
+      case "REDRAW": {
+        if (state.draftDone || state.draw.redrawsLeft <= 0 || state.draw.options.length === 0) return state;
+        return land({ ...state, draw: { ...state.draw, redrawsLeft: state.draw.redrawsLeft - 1 } });
       }
       case "PICK_PLAYER": {
         const idx = nextEmptySlotIndex(state.assignments);
@@ -67,13 +97,13 @@ export function createReducer(dataset) {
           return {
             ...state, assignments, draftedIds: withBench,
             draftedIdentities: [...draftedIdentities, ...bench.map((b) => playerIdentity(b.player))],
-            wheel: { spinning: false, landed: null }, pool: [], poolRelaxed: false, draftDone, bench,
+            draw: idleDraw(state.draw), draftDone, bench,
           };
         }
-        return { ...state, assignments, draftedIds, draftedIdentities, wheel: { spinning: false, landed: null }, pool: [], poolRelaxed: false, draftDone };
+        return { ...state, assignments, draftedIds, draftedIdentities, draw: idleDraw(state.draw), draftDone };
       }
       case "SKIP_TO_TACTICS": {
-        return { ...state, phase: "tactics", wheel: { spinning: false, landed: null }, pool: [], poolRelaxed: false };
+        return { ...state, phase: "tactics", draw: idleDraw(state.draw) };
       }
       case "SET_ROLE": {
         const assignments = state.assignments.map((a) => {
@@ -183,7 +213,8 @@ export function createReducer(dataset) {
         const shortlist = generateShortlist(getSquad, dataset.index, { eraMin: state.eraMin, eraMax: state.eraMax }, state.draftedIds, rng, { ownedIdentities: state.draftedIdentities })
           .map((player) => ({ player, signed: false }));
         const { opponents, relegated, promoted } = applyPromotionRelegation(state.opponents, state.simulation?.table, dataset.championship, rng);
-        return { ...next, phase: "transfer", shortlist, opponents, lastTransition: { relegated, promoted } };
+        const seasonHistory = state.simulation ? [...state.seasonHistory, summarizeSeason(state)] : state.seasonHistory;
+        return { ...next, phase: "transfer", shortlist, opponents, lastTransition: { relegated, promoted }, seasonHistory };
       }
       case "SIGN_SHORTLIST_TO_BENCH": {
         const entry = state.shortlist[action.index];
