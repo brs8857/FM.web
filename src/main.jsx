@@ -1,11 +1,13 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
+import { registerSW } from "virtual:pwa-register";
 import "./index.css";
 import "./styles/tokens.css";
 import "./styles/base.css";
 import FMWeb from "./App.jsx";
 import DatasetGate from "./components/app/DatasetGate.jsx";
 import ErrorBoundary from "./components/app/ErrorBoundary.jsx";
+import UpdatePrompt from "./app/UpdatePrompt.jsx";
 import { loadDataset } from "./data/loadDataset.js";
 
 createRoot(document.getElementById("root")).render(
@@ -14,6 +16,7 @@ createRoot(document.getElementById("root")).render(
       <DatasetGate load={loadDataset}>
         {(dataset) => <FMWeb dataset={dataset} />}
       </DatasetGate>
+      <UpdatePrompt register={registerSW} />
     </ErrorBoundary>
   </React.StrictMode>
 );

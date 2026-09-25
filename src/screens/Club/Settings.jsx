@@ -1,5 +1,7 @@
 import Segmented from "../../ui/Segmented.jsx";
 import Toggle from "../../ui/Toggle.jsx";
+import Button from "../../ui/Button.jsx";
+import { useInstallPrompt } from "../../app/useInstallPrompt.js";
 import styles from "./Club.module.css";
 
 const THEMES = [{ key: "system", label: "System" }, { key: "light", label: "Light" }, { key: "dark", label: "Dark" }];
@@ -8,8 +10,17 @@ const CLUB_NAMES = [{ key: "real", label: "Real" }, { key: "edited", label: "Edi
 
 // Per-device preferences (spec 04 §5.7).
 export default function Settings({ prefs, setPrefs }) {
+  const { canInstall, install, installed, iosHint } = useInstallPrompt();
   return (
     <div className={styles.settings}>
+      {canInstall && (
+        <div className={styles.setting}>
+          <Button variant="secondary" onClick={install}>Install app</Button>
+          <p className={styles.hint}>Installed apps open full screen and keep their saves outside the browser's storage limits.</p>
+        </div>
+      )}
+      {iosHint && <p className={styles.hint}>To install on iPhone, tap Share, then Add to Home Screen. Installed apps keep saves safe from Safari's seven-day storage limit.</p>}
+      {installed && <p className={styles.hint}>Installed. Saves live with the app.</p>}
       <div className={styles.setting}>
         <span className={styles.settingLabel}>Theme</span>
         <Segmented label="Theme" options={THEMES} value={prefs.theme} onChange={(theme) => setPrefs({ theme })} />

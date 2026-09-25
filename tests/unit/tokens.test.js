@@ -48,7 +48,7 @@ describe("design tokens", () => {
 });
 
 describe("bundled fonts", () => {
-  const files = [...base.matchAll(/url\("\/fonts\/([^"]+)"\)/g)].map((m) => m[1]);
+  const files = [...base.matchAll(/url\("\.\/fonts\/([^"]+)"\)/g)].map((m) => m[1]);
 
   it("declares the six faces from the spec", () => {
     expect(files).toEqual([
@@ -58,10 +58,10 @@ describe("bundled fonts", () => {
     ]);
   });
 
-  it("ships each face and its licence under public/fonts", () => {
-    for (const f of files) expect(existsSync(`public/fonts/${f}`), f).toBe(true);
+  it("ships each face and its licence beside the stylesheet, so the standalone build inlines them", () => {
+    for (const f of files) expect(existsSync(`src/styles/fonts/${f}`), f).toBe(true);
     for (const l of ["LICENSE-Barlow.txt", "LICENSE-BarlowCondensed.txt", "LICENSE-IBMPlexMono.txt"]) {
-      expect(readFileSync(`public/fonts/${l}`, "utf8")).toContain("SIL OPEN FONT LICENSE Version 1.1");
+      expect(readFileSync(`src/styles/fonts/${l}`, "utf8")).toContain("SIL OPEN FONT LICENSE Version 1.1");
     }
   });
 

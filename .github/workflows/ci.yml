@@ -26,6 +26,8 @@ jobs:
       - run: npm run check:contrast
       - run: npm test
       - run: npm run build
+      - run: npm run check:bundle
+      - run: npm run build:standalone
       - run: npx playwright install --with-deps chromium webkit
       - run: npm run e2e
       - if: failure()
