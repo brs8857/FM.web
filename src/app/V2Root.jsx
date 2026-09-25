@@ -9,7 +9,7 @@ import { careerSeasonLabel } from "../engine/season.js";
 import { cohesionLabel, identityLabel } from "../content/labels.js";
 import { useAutosave } from "./useAutosave.js";
 import { useNav } from "./nav.js";
-import { usePrefs } from "./usePrefs.js";
+import { usePrefs, useReducedMotion } from "./usePrefs.js";
 import { useDocumentPrefs } from "./useDocumentPrefs.js";
 import Shell from "./Shell.jsx";
 import ConfirmSheet from "./ConfirmSheet.jsx";
@@ -17,6 +17,7 @@ import Gallery from "../screens/_gallery/Gallery.jsx";
 import Home from "../screens/Home/Home.jsx";
 import Era from "../screens/NewCareer/Era.jsx";
 import Formation from "../screens/NewCareer/Formation.jsx";
+import Draft from "../screens/Draft/Draft.jsx";
 import Settings from "../screens/Club/Settings.jsx";
 import About from "../screens/Club/About.jsx";
 import terms from "../content/terms.json";
@@ -65,6 +66,7 @@ function Game({ dataset, storageProp, initialPrefs }) {
   const next = selectNextAction(state);
   const [nav, navDispatch] = useNav(state.phase, next.tab ?? "season");
   const persistRequested = useRef(false);
+  const reducedMotion = useReducedMotion(prefs);
 
   useDocumentPrefs(prefs);
   useAutosave({ state, storage, enabled: true, onWriteError: () => setNotice("unavailable") });
@@ -138,7 +140,7 @@ function Game({ dataset, storageProp, initialPrefs }) {
       <Shell mode="draft" title="Draft" subtitle={state.draftDone ? "XI complete" : `Pick ${next.pick} of 11`}
         end={<Button variant="ghost" size="sm" onClick={() => navDispatch({ type: "HOME" })}>Pause</Button>}
         sticky={state.draftDone ? <Button block onClick={() => dispatch({ type: "SKIP_TO_TACTICS" })}>Go to the board</Button> : undefined}>
-        <Slip kicker={PRODUCT_NAME} title={next.label}><p>The draft screen arrives in B2.</p></Slip>
+        <Draft state={state} dataset={dataset} dispatch={dispatch} instant={reducedMotion} prefs={prefs} onDismissNote={markSeen} />
       </Shell>
     );
   }

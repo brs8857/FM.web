@@ -1,9 +1,51 @@
 import { ROLES } from "../engine/roles.js";
 import { DEFAULT_INSTRUCTIONS } from "../engine/instructions.js";
-import { computeFamiliarity } from "../engine/familiarity.js";
+import { computeFamiliarity, eraSpread, eraSpreadPenalty, SIDE_MISMATCH_PENALTY } from "../engine/familiarity.js";
 import { computeTeamProfile } from "../engine/tactics.js";
 import { CAREER_SEASONS } from "../engine/season.js";
 import { nextEmptySlotIndex } from "../engine/squad.js";
+
+const DECADE_LABEL = { 1990: "'90s", 2000: "2000s", 2010: "2010s", 2020: "2020s" };
+
+function seasonYear(player) {
+  return parseInt(String(player.seasonKey).split("_")[0], 10);
+}
+
+// The squad strip during the draft (spec 04 §5.2): how many picked, which
+// decades they come from, and the era-spread cost so far. Cohesion itself is
+// only defined for a full XI, so it appears once the eleventh pick is in.
+export function selectDraftSummary(state) {
+  const players = state.assignments.map((a) => a.player).filter(Boolean);
+  const counts = new Map();
+  for (const p of players) {
+    const decade = Math.floor(seasonYear(p) / 10) * 10;
+    counts.set(decade, (counts.get(decade) ?? 0) + 1);
+  }
+  const decades = [...counts.entries()].sort((a, b) => a[0] - b[0]).map(([decade, count]) => ({ label: DECADE_LABEL[decade] ?? `${decade}s`, count }));
+  const spread = eraSpread(players);
+  const complete = players.length === 11;
+  const cohesion = complete ? computeFamiliarity(liveAssignments(state.assignments), state.instructions, state.formationKey) : null;
+  return { picked: players.length, decades, spread, eraPenalty: Math.round(eraSpreadPenalty(spread) * 10) / 10, complete, cohesion };
+}
+
+// What picking `player` for the next empty slot does to the squad strip: the
+// era spread before and after, and the cohesion costs it adds. Uses the same
+// pieces computeFamiliarity charges, on the hypothetical squad.
+export function previewPick(state, player) {
+  const idx = nextEmptySlotIndex(state.assignments);
+  const slot = idx >= 0 ? state.assignments[idx] : null;
+  const players = state.assignments.map((a) => a.player).filter(Boolean);
+  const before = eraSpread(players);
+  const after = eraSpread([...players, player]);
+  const eraDelta = -Math.round((eraSpreadPenalty(after) - eraSpreadPenalty(before)) * 10) / 10;
+  const sideMismatch = Boolean(slot?.side && player.side && slot.side !== player.side);
+  return {
+    slotId: slot?.slotId ?? null, type: slot?.type ?? null, slotSide: slot?.side ?? null,
+    first: players.length === 0, spreadBefore: before, spreadAfter: after, eraDelta,
+    sideMismatch, sideDelta: sideMismatch ? -SIDE_MISMATCH_PENALTY : 0,
+    offPosition: Boolean(slot && player.slot !== slot.type),
+  };
+}
 
 export function selectEraIndex(index, eraMin, eraMax) {
   return index.filter((e) => {

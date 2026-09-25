@@ -2,6 +2,17 @@ import { clamp } from "./util.js";
 import { FORMATIONS } from "./formations.js";
 
 /* ------------------------------ Familiarity ------------------------------- */
+export const SIDE_MISMATCH_PENALTY = 2;
+
+export function eraSpreadPenalty(spread) {
+  return clamp(spread / 4.5, 0, 16);
+}
+
+export function eraSpread(players) {
+  const years = players.map((p) => parseInt((p.seasonKey || "2010_0").split("_")[0], 10)).filter((y) => !isNaN(y));
+  return years.length > 1 ? Math.max(...years) - Math.min(...years) : 0;
+}
+
 export function computeFamiliarity(assignments, instructions, formationKey) {
   const list = assignments.filter((a) => a && a.player);
   if (list.length < 11) return 50;
@@ -11,7 +22,7 @@ export function computeFamiliarity(assignments, instructions, formationKey) {
     const slotDef = FORMATIONS[formationKey].slots.find((s) => s.id === a.slotId);
     if (!slotDef) return;
     // side mismatches (e.g. a natural right-footed RB played on the left) cost a little cohesion
-    if (slotDef.side && a.player.side && slotDef.side !== a.player.side) fam -= 2;
+    if (slotDef.side && a.player.side && slotDef.side !== a.player.side) fam -= SIDE_MISMATCH_PENALTY;
     // dragging a player far from his template position is bold — costs familiarity,
     // proportional to how far he's wandered from his original slot.
     if (a.pos) {
@@ -37,11 +48,7 @@ export function computeFamiliarity(assignments, instructions, formationKey) {
   // (peak-90s legends lining up next to 2020s players) hasn't actually played
   // a minute of football together in real life — the wider the spread of
   // seasons drafted from, the less battle-tested the group really is.
-  const years = list.map((a) => parseInt((a.player.seasonKey || "2010_0").split("_")[0], 10)).filter((y) => !isNaN(y));
-  if (years.length > 1) {
-    const spread = Math.max(...years) - Math.min(...years);
-    fam -= clamp(spread / 4.5, 0, 16);
-  }
+  fam -= eraSpreadPenalty(eraSpread(list.map((a) => a.player)));
 
   // attacking role variety on the same duty spectrum in defense = coherent; wild swings cost a little
   const cbDuties = list.filter((a) => a.player.slot === "CB").map((a) => a.duty);
