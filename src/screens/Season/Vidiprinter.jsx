@@ -25,12 +25,12 @@ export function resultLine(match, clubName) {
   return { id: match.week, tone: TONE[match.outcome], text: `WK ${String(match.week).padStart(2)}  ${pad(`${clubName(match.opponent).toUpperCase()} ${venue}`, 26)} ${match.gf}-${match.ga}  ${match.outcome}` };
 }
 
-// The running position: your points so far against each rival's estimated
-// final points scaled to the week played (the table is estimated anyway).
+// The running position: your points so far against each rival's points
+// after the same week.
 export function runningPosition(simulation, week) {
   const played = simulation.matches.slice(0, week);
   const pts = played.reduce((sum, m) => sum + (m.outcome === "W" ? 3 : m.outcome === "D" ? 1 : 0), 0);
-  const rivals = simulation.table.filter((r) => !r.isUser).map((r) => Math.round((r.pts * week) / simulation.matches.length));
+  const rivals = simulation.table.filter((r) => !r.isUser).map((r) => (week > 0 ? r.weekly[week - 1] : 0));
   const position = 1 + rivals.filter((p) => p > pts).length;
   const w = played.filter((m) => m.outcome === "W").length, d = played.filter((m) => m.outcome === "D").length, l = played.length - w - d;
   return { pts, position, w, d, l };

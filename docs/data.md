@@ -96,7 +96,10 @@ For the nineteen rivals (`players.json` `opponents`) and the promotion pool
   below its last squad.
 - `weight` (pedigree) and `vol` (volatility) are `histMean` and `histStd`
   min-max scaled across the pool the club sits in: rivals to 0.8–1.22 and
-  5–15, the promotion pool to 0.78–1.18 and 6–17.
+  5–15, the promotion pool to 0.78–1.18 and 6–17. Since the league became
+  real (C1) the engine reads `ov` and `histMean` for a rival's strength and
+  `vol` for its match-to-match swing; `weight` and `histStd` are kept in the
+  data but nothing reads them.
 - Pool clubs with no top-flight season on file (Millwall, Bristol City,
   Lincoln City, Preston North End, Wrexham) carry a fixed, deliberately
   weaker profile: `ov` doubles as `histMean`, and `histStd` is given.

@@ -112,11 +112,6 @@
   font-size: var(--text-lg);
   max-width: 44ch;
 }
-.footnote {
-  font-size: var(--text-xs);
-  color: var(--ink-2);
-  margin-top: var(--space-2);
-}
 .replaceBar {
   display: flex;
   align-items: center;

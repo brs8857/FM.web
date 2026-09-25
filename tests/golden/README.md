@@ -12,5 +12,9 @@ They prove the refactor doesn't change the game.
   re-recorded season ever reaches 38 wins (today's recordings peak at 34).
   Re-recorded 2026-09 by `npm run golden:engine` when the engine switched to an
   explicit seeded rng and Fisher–Yates shuffles (Task 10).
+  Re-recorded 2026-09-25 (plan C1) when the league became real: every rival
+  fixture is simulated, so the rivals' points, the table order and every row's
+  record and weekly points changed; the user's fixture list is unchanged.
+  Plan §3 allows one more re-record, in C5, once the balance is tuned.
 
 Compare through `JSON.parse(JSON.stringify(value))` — `toEqual` distinguishes `-0` from `0`.

@@ -67,7 +67,6 @@ export default function BackPage({ state, careerCode, clubName, opponents }) {
       </div>
       <Disclosure title="Final table" summary={`${ordinal(s.position)} of 20`} defaultOpen={rail}>
         <Table caption={`Final table · ${careerSeasonLabel(s.season)}`} captionHidden columns={COLUMNS} rows={rows} rowKey={(r) => r.name} isHighlighted={(r) => r.isUser} dense />
-        <p className={styles.footnote}>Rivals' points are estimated from squad strength; yours are the results above.</p>
       </Disclosure>
       <Disclosure title="Matches" summary="All 38, in order">
         <Ticker lines={s.matches.map((m) => resultLine(m, clubName))} label="Results" />

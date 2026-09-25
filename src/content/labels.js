@@ -40,9 +40,8 @@ export const APPROACH_DIALS = ["mentality", "tempo", "directness"];
 export const IN_POSSESSION_DIALS = ["width", "focus", "counter", "crossing", "gkDistribution"];
 export const OUT_OF_POSSESSION_DIALS = ["press", "line", "tackling"];
 
-// seasonTier's names are keys here: the engine copy is locked by the golden
-// season files until C1, so the back page reads its headline and standfirst
-// from this map instead.
+// seasonTier's names are keys here: the engine keeps its own headline and
+// standfirst for the record, and the back page reads its words from this map.
 export const TIER_LABEL = {
   "THE PERFECT SEASON": "Perfect season",
   "Invincibles": "Invincibles",

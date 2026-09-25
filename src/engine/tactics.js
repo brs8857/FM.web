@@ -1,7 +1,7 @@
 import { clamp } from "./util.js";
 import { DUTY_INFO } from "./roles.js";
 
-// Diminishing returns above a threshold. A real Premier League squad rarely
+// Diminishing returns above a threshold. A real top-flight squad rarely
 // sits much above the high-70s/low-80s on these scales; a team stacked with
 // peak legends drafted across every era of the league can clear 90+ on raw
 // numbers, which is exactly the "too easy" problem. This doesn't cap what

@@ -16,6 +16,7 @@ import { tacticUntouched } from "../../state/selectors.js";
 import { clubSeasonLabel } from "../../content/clubs.js";
 import { DEFAULT_PREFS } from "../../state/prefs.js";
 import { DEFAULT_INSTRUCTIONS } from "../../engine/instructions.js";
+import { tierLabel } from "../../content/labels.js";
 import * as share from "../../app/share.js";
 
 const dataset = makeMiniDataset();
@@ -126,7 +127,7 @@ describe("SeasonTab", () => {
     ticks(2, TICK_MS + 1);
     expect(log.querySelectorAll("li")).toHaveLength(HALF_SEASON + 2);
     fireEvent.click(screen.getByRole("button", { name: "Skip to end" }));
-    expect(screen.getByRole("heading", { level: 2, name: state.simulation.tier.name === "Champions" ? "Champions" : /./ })).toBeTruthy();
+    expect(screen.getByRole("heading", { level: 2, name: tierLabel(state.simulation.tier).name })).toBeTruthy();
     expect(screen.getByRole("button", { name: "Share" })).toBeTruthy();
     expect(screen.getByRole("button", { name: /Final table/ }).getAttribute("aria-expanded")).toBe("false");
     fireEvent.click(screen.getByRole("button", { name: /Final table/ }));

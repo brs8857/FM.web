@@ -4,13 +4,12 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 // Spec 04 §11 / plan §3: product copy never uses these marks. Since B11 the
-// scan covers all of src/ and index.html. Two exclusions, both deliberate:
-// src/engine holds the tier copy the golden season files lock until C1
-// re-records them (the UI reads its own words from content/labels.js), and
+// scan covers all of src/ and index.html, and since C1 the engine too. Two
+// exclusions, both deliberate: src/data holds the archive's real names, and
 // the save envelope's app id stays "fm-web" so 1.1.0 saves still load.
 const BANNED = /football manager|premier league|\bFM\b/i;
 const ROOT = "src";
-const SKIP_DIRS = new Set(["src/engine", "src/data"]);
+const SKIP_DIRS = new Set(["src/data"]);
 const FILES = ["index.html", "README.md", "package.json"];
 const ALLOWED_LINES = [/APP_ID = "fm-web"/, /"name": "fm-web"/, /github\.io\/FM\.web\//];
 
@@ -30,6 +29,7 @@ describe("copy lint", () => {
   it("scans the whole source tree, the page, the README and the manifest", () => {
     expect(files.length).toBeGreaterThan(120);
     expect(files.some((f) => f.startsWith("src/state/"))).toBe(true);
+    expect(files.some((f) => f.startsWith("src/engine/"))).toBe(true);
     expect(files.some((f) => f.startsWith("src/screens/"))).toBe(true);
   });
 
