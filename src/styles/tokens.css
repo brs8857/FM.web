@@ -1,0 +1,105 @@
+/* Design tokens (spec 04 §3.2–3.4). Semantic names only; components never use raw hex.
+   Light "Newsprint" is the default; dark "Floodlit" applies under [data-theme="dark"]
+   or when the system prefers dark and no explicit theme is set. */
+
+:root {
+  --paper: #F4EFE4;
+  --paper-2: #EBE4D5;
+  --rule: #C9C1B1;
+  --ink: #1A1A1A;
+  --ink-2: #5C5749;
+  --signal: #E8A33D;
+  --signal-ink: #1A1A1A;
+  --slate: #1E3D2F;
+  --chalk: #F7F3EA;
+  --win: #256B44;
+  --draw: #646464;
+  --loss: #B0413E;
+  --action: #1A1A1A;
+
+  --font-body: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Barlow Condensed", "Barlow", system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --text-xs: 0.8125rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2.25rem;
+  --text-3xl: 3.5rem;
+  --measure: 60ch;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-8: 3rem;
+
+  --radius-paper: 4px;
+  --radius-chip: 999px;
+  --hit: 44px;
+  --tab-bar: 49px;
+
+  --motion-slip: 160ms;
+  --motion-type: 20ms;
+  --motion-stamp: 120ms;
+  --motion-stamp-hold: 30ms;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #15181C;
+    --paper-2: #1E2227;
+    --rule: #3A3F46;
+    --ink: #ECE7DA;
+    --ink-2: #A9A395;
+    --signal: #E8A33D;
+    --signal-ink: #1A1A1A;
+    --slate: #17302A;
+    --chalk: #F7F3EA;
+    --win: #6FCF97;
+    --draw: #9AA0A6;
+    --loss: #E07A74;
+    --action: #ECE7DA;
+    color-scheme: dark;
+  }
+}
+
+[data-theme="dark"] {
+  --paper: #15181C;
+  --paper-2: #1E2227;
+  --rule: #3A3F46;
+  --ink: #ECE7DA;
+  --ink-2: #A9A395;
+  --signal: #E8A33D;
+  --signal-ink: #1A1A1A;
+  --slate: #17302A;
+  --chalk: #F7F3EA;
+  --win: #6FCF97;
+  --draw: #9AA0A6;
+  --loss: #E07A74;
+  --action: #ECE7DA;
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-slip: 0ms;
+    --motion-type: 0ms;
+    --motion-stamp: 0ms;
+    --motion-stamp-hold: 0ms;
+  }
+}
+
+[data-reduce-motion="true"] {
+  --motion-slip: 0ms;
+  --motion-type: 0ms;
+  --motion-stamp: 0ms;
+  --motion-stamp-hold: 0ms;
+}
