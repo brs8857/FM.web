@@ -98,5 +98,17 @@
   "career-code": {
     "title": "Career code",
     "body": "Every career comes from one seed. Share the code and someone else can start the same draft and see whether they build a better XI."
+  },
+  "attacking-freedom": {
+    "title": "Attacking freedom",
+    "body": "How far a player may drift from his zone to combine and join attacks. More freedom adds threat and costs defensive shape."
+  },
+  "defensive-discipline": {
+    "title": "Defensive discipline",
+    "body": "How rigorously a player tracks his runner and holds his line instead of being drawn out of position. Stricter is safer and less creative."
+  },
+  "stat-bands": {
+    "title": "Stat bands",
+    "body": "Every stat shows as one of five bands, from weak to elite, and the overall rating stays hidden until kick-off. Knowing the player is the edge; reading a number is not."
   }
 }

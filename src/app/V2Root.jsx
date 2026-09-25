@@ -18,6 +18,8 @@ import Home from "../screens/Home/Home.jsx";
 import Era from "../screens/NewCareer/Era.jsx";
 import Formation from "../screens/NewCareer/Formation.jsx";
 import Draft from "../screens/Draft/Draft.jsx";
+import SquadTab from "../screens/Squad/SquadTab.jsx";
+import { clubSeasonLabel } from "../content/clubs.js";
 import Settings from "../screens/Club/Settings.jsx";
 import About from "../screens/Club/About.jsx";
 import terms from "../content/terms.json";
@@ -101,9 +103,10 @@ function Game({ dataset, storageProp, initialPrefs }) {
     else if (action) dispatch(action);
   };
 
-  const club = nav.mode === "club";
   const identity = identityLabel(profile.synergyLabel, state.instructions);
   const cohesion = cohesionLabel(familiarity);
+  const clubSeason = useCallback((seasonKey) => clubSeasonLabel(dataset, seasonKey), [dataset]);
+  const revealed = state.phase === "reveal" || state.phase === "result";
 
   if (nav.home) {
     return (
@@ -154,9 +157,12 @@ function Game({ dataset, storageProp, initialPrefs }) {
       onBack={nav.history.length > 0 ? () => navDispatch({ type: "BACK" }) : undefined}
       next={<NextPill label={next.label} onClick={goNext} />}
       sticky={action && onNextTab ? <Button block onClick={goNext}>{next.label}</Button> : undefined}>
-      <Slip kicker={PRODUCT_NAME} title={club ? TITLES[nav.tab] : next.label}>
-        <p>Phase: <span className="mono">{state.phase}</span> · Next: {next.label}</p>
-      </Slip>
+      {nav.tab === "squad" && <SquadTab state={state} dispatch={dispatch} clubSeason={clubSeason} revealed={revealed} prefs={prefs} onDismissNote={markSeen} />}
+      {nav.tab !== "squad" && (
+        <Slip kicker={PRODUCT_NAME} title={TITLES[nav.tab]}>
+          <p>Phase: <span className="mono">{state.phase}</span> · Next: {next.label}</p>
+        </Slip>
+      )}
     </Shell>
   );
 }

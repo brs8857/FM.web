@@ -1,0 +1,50 @@
+/* Shared Club-tab layout (spec 04 §6): pinned chalkboard above the content on
+   phones, a fixed 360 px column from 600 px, up to 440 px beside a 60ch column
+   from 1024 px. */
+.tab {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.board {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+.heading {
+  font-size: var(--text-xl);
+}
+.subheading {
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+.rows {
+  list-style: none;
+  padding: 0;
+}
+@media (min-width: 600px) {
+  .tab {
+    display: grid;
+    grid-template-columns: 360px minmax(0, 1fr);
+    gap: var(--space-5);
+    align-items: start;
+  }
+  .board {
+    position: sticky;
+    top: calc(var(--hit) + var(--space-3) + env(safe-area-inset-top));
+  }
+}
+@media (min-width: 1024px) {
+  .tab {
+    grid-template-columns: minmax(0, 440px) minmax(0, var(--measure));
+  }
+  .wide {
+    grid-template-columns: minmax(0, 440px) minmax(0, var(--measure)) minmax(200px, 320px);
+  }
+}
