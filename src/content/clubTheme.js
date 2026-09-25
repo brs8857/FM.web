@@ -96,7 +96,7 @@ function roles(primaryHex, secondaryHex) {
 
 export function deriveClubTheme(primaryHex, secondaryHex) {
   const { tint, accent, board, action } = roles(primaryHex, secondaryHex);
-  const signalBase = chromatic(accent) ? { h: accent.h, s: Math.max(accent.s, 0.55), l: accent.l } : { h: 0, s: 0, l: 0.75 };
+  const signalBase = chromatic(accent) ? { h: accent.h, s: Math.min(0.9, Math.max(accent.s, 0.55)), l: accent.l } : { h: 0, s: 0, l: 0.75 };
   const chalk = tone(accent, 0.3, 0.96);
 
   const light = {};
