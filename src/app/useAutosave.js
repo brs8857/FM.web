@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
-import { makeSaveEnvelope, serializeState, toSaveText } from "../../state/save.js";
-import { writeAutosave } from "../../state/storage.js";
-import { APP_VERSION } from "../../version.js";
+import { makeSaveEnvelope, serializeState, toSaveText } from "../state/save.js";
+import { writeAutosave } from "../state/storage.js";
+import { APP_VERSION } from "../version.js";
 
 export function useAutosave({ state, storage, enabled, onWriteError, delayMs = 500 }) {
   const lastWritten = useRef(null);
