@@ -10,7 +10,7 @@ Each phase gets its own design cycle before any code is written:
 | Phase | Theme | Release | Status |
 |---|---|---|---|
 | 1A | Foundation | v1.1 | Shipped 2026-09-13 |
-| 1B | ~~Reach & Polish~~ → **Redesign** ("Back page and chalkboard") | v2.0 | Specs drafted 2026-09-25, awaiting owner review |
+| 1B | ~~Reach & Polish~~ → **Redesign** ("Back page and chalkboard") | v2.0 | Owner approved 2026-09-25; milestone A (foundations) built behind `?layout=v2`, milestone B (screens) next |
 | 1C | Career depth, part 1 (moved forward from Phase 2) | v2.5 | Specced in 06 §1; waiting on 1B |
 | 1D | App Store release (free + one-time unlock) | v3.0 | Specced in 05; waiting on 1C |
 | 2 | Deeper Career + Sharper Draft & Tactics (remainder) | v4.0 | Waiting on 1D |

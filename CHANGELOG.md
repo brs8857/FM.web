@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+- The tactics vocabulary: jobs and briefs (Hold / Link / Push) replace roles and duties, mentality runs Contain to All-out, cohesion (Clicking / Settled / Rough / Strangers) replaces tactical familiarity, and the neutral style is "Blank slate". The keys, weights and formulas behind them are unchanged.
+- The page title is now "Era XI", the working name.
+- The draft draws three club-seasons at a time with two redraws per draft, and the save format is version 2 (1.1.0 saves migrate). The current screens still show the first of the three.
+
+### Added (behind `?layout=v2`)
+- The redesign foundations: design tokens, bundled fonts, the primitive library and its gallery (`?layout=v2&gallery=1`), the chalkboard with keyboard control, the app shell, and a season-by-season record in the save. The screens follow in the next milestone.
+
 ## 1.1.0 — 2026-09-13
 
 ### Added
