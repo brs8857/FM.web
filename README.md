@@ -49,6 +49,7 @@ npm run check:bundle     # app code ≤ 120 KB gzipped, data chunk separate
 npm run e2e              # Playwright on Pixel 7, iPhone 13 and desktop Chrome
                          # (first run: npx playwright install chromium webkit)
 npm run sim              # balance report: title and relegation odds by style
+npm run data:check       # rebuilds the club-strength fields from the squads and diffs them
 ```
 
 Visual snapshots are opt-in: `VISUAL=1 npx playwright test --update-snapshots`
@@ -67,7 +68,7 @@ src/
 ├── pitch/       # the chalkboard: markers, bench rail, drag and keyboard models
 ├── screens/     # Home, New career, Draft, Squad, Board, Season, Club
 └── app/         # shell, navigation, autosave, share, career codes, first run
-scripts/         # icons, bundle budget, contrast check, club rekey, golden capture, balance sim
+scripts/         # icons, bundle budget, contrast check, club rekey, golden capture, balance sim, data rebuild
 tests/           # fixtures, golden files, unit and Playwright tests
 docs/            # roadmap, specs, plans, data notes
 ```

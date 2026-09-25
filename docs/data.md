@@ -1,7 +1,8 @@
 # The data
 
-_Written 2026-09-25 for milestone B (plan B10). Milestone C0 revisits this
-once the original pipeline is recovered or rebuilt._
+_Written 2026-09-25 for milestone B (plan B10); the derivation and rebuild
+sections were added by milestone C0 after the original pipeline turned out
+to be unrecoverable._
 
 ## What is in the repository
 
@@ -26,26 +27,105 @@ turns a row into the player object the game uses, with the id
 ## Where the numbers come from
 
 The original build script (`build_final.py`) and its inputs are not in this
-repository; plan task C0 tries to recover them. From the notes that survive:
+repository, and milestone C0 confirmed they are not in any branch, tag or
+deleted path of its history either: no Python file was ever committed. What
+follows is reconstructed from the surviving notes and from the data itself,
+and `scripts/derive-ratings.mjs` implements it. The club-strength part is
+exact: `npm run data:check` rebuilds every `ov`, `histMean`, `histStd`,
+`weight` and `vol` of the nineteen rivals and the promotion pool from the
+shipped squads and matches all 43 clubs. The player part reproduces the
+shape of the data (its ranges, the position profiles, the noise), not the
+individual numbers, because the market values it started from are gone.
 
-- **Squads** are each club's top-flight squad for the season, trimmed to
-  about 22 players, with names, positions, preferred side, age and
-  nationality from public squad records.
-- **Overall rating (`ov`)** is engineered from each player's market value in
-  that season, compared with the distribution of values across the whole
-  league that season rather than a fixed multiplier, so inflation across
-  three decades does not favour the recent seasons, blended with the
-  player's age in that season.
-- **The six stats** are derived from `ov` and a position-archetype profile
-  (a striker's shooting sits above his defending, and so on), with small
-  per-player variation. They are estimates, not observed attributes.
-- **Opponent strength** (`ov`, `histMean`, `histStd`, `weight`, `vol`) for
-  the nineteen rivals and the promotion pool comes from the same squad data:
-  `ov` is the club's most recent squad strength, `histMean` and `histStd`
-  the mean and spread of its squad strength across every top-flight season on
-  file, `weight` a pedigree factor from that mean, and `vol` a volatility
-  factor from that spread. Clubs in the promotion pool with no top-flight
-  season on file have a fixed, deliberately weaker generated profile.
+### Squads
+
+Each club's top-flight squad for the season, trimmed to about 22 players,
+with names, positions, preferred side, age and nationality from public
+squad records.
+
+### Overall rating (`ov`)
+
+Engineered from the player's market value in that season, ranked against
+every other player in the league that season rather than converted with a
+fixed multiplier, so three decades of inflation cancel out. The rebuild:
+
+1. `score = ln(value) − ageValuePremium(age)`, where the premium is
+   `clamp((27 − age) × 0.06, −0.3, 0.6)`: a young player's value prices in
+   what he might become, and the overall is meant to rate the season he had.
+2. Rank the scores within the season; `pct` runs from 0 (lowest) to 1.
+3. `ov = round(38 + 58 × pct^0.45)`. The curve puts the season mean in the
+   high 70s and the top at 96, which is what the shipped seasons show
+   (1992-93: 55–93, mean 80; 2024-25: 38–96, mean 76).
+
+### The six stats
+
+`stat = clamp(round(ov + offset[position] + uniform(−5, 5)), 1, 99)`. The
+offsets are the position archetypes, fitted to the shipped data
+(`engine/players.js` `ARCHETYPES`, in the order pace, shooting, passing,
+dribbling, defending, physical):
+
+| Position | Pace | Shooting | Passing | Dribbling | Defending | Physical |
+|---|---|---|---|---|---|---|
+| GK | −14 | −24 | −10 | −17 | +5 | −2 |
+| CB | −8 | −19 | −10 | −14 | +6 | +2 |
+| FB | +1 | −16 | −5 | −3 | −2 | −5 |
+| DM | −8 | −14 | −2 | −8 | +3 | 0 |
+| CM | −5 | −10 | +3 | −3 | −8 | −5 |
+| AM | −3 | −2 | +3 | +4 | −18 | −11 |
+| WIDE | +6 | −5 | −5 | +5 | −19 | −11 |
+| ST | 0 | +8 | −13 | −1 | −22 | −1 |
+
+The stats are estimates, not observed attributes. `ovFromStats` inverts the
+table (the mean of `stat − offset` over the six), which is how the engine
+recomputes a player's overall after his stats drift with age (C2); on the
+shipped data it recovers `ov` to within a point on average.
+
+### Club strength
+
+For the nineteen rivals (`players.json` `opponents`) and the promotion pool
+(`championship.json`), all from the squads:
+
+- A club's **season strength** is the mean `ov` of its squad that season.
+- `histMean` and `histStd` are the mean and population standard deviation of
+  its season strengths across every top-flight season on file, to one place.
+- `ov` is its most recent season strength less a penalty for seasons away
+  from the top flight. The two pools were built with different yardsticks
+  and both are kept: rivals lose 2.5 per season since 2024-25, capped at 14
+  (Sunderland, last on file in 2016-17); pool clubs lose 2.2 per season
+  since 2025-26, capped at 16, so a club relegated in 2024-25 starts 2.2
+  below its last squad.
+- `weight` (pedigree) and `vol` (volatility) are `histMean` and `histStd`
+  min-max scaled across the pool the club sits in: rivals to 0.8–1.22 and
+  5–15, the promotion pool to 0.78–1.18 and 6–17.
+- Pool clubs with no top-flight season on file (Millwall, Bristol City,
+  Lincoln City, Preston North End, Wrexham) carry a fixed, deliberately
+  weaker profile: `ov` doubles as `histMean`, and `histStd` is given.
+
+Rounding is half-to-even, as Python's `round` does.
+
+## Rebuilding the data
+
+`node scripts/derive-ratings.mjs raw.json [--out src/data]` writes
+`players.json` and `championship.json` from a JSON file of this shape:
+
+```json
+{
+  "clubs": { "arsenal": "Arsenal FC" },
+  "rows": [
+    { "year": 2024, "club": "arsenal", "name": "Kai Havertz", "slot": "ST", "side": "", "age": 25, "nat": "Germany", "value": 75000000 }
+  ],
+  "rivals": ["arsenal", "..."],
+  "pool": ["burnley", "...", { "name": "Wrexham", "ov": 46.5, "histStd": 8.3 }]
+}
+```
+
+`rows` holds one entry per player per season; `value` is the market value
+in any one currency (only its rank within the season matters). `rivals`
+lists the nineteen slugs for season 1 and `pool` the 24 promotion-pool
+entries, either a slug with history on file or a fixed profile. The output
+is deterministic: the stat noise is seeded from the season key, name and
+position. `npm run data:check` runs the club-strength reconstruction against
+the shipped files and fails on any field that differs.
 
 ## Club identifiers
 

@@ -18,6 +18,7 @@
     "e2e": "playwright test",
     "golden:capture": "node scripts/capture-golden.mjs",
     "golden:engine": "node scripts/capture-golden.mjs --engine",
+    "data:check": "node scripts/derive-ratings.mjs --check",
     "sim": "node scripts/sim.mjs"
   },
   "dependencies": {
