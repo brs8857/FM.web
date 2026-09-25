@@ -6,12 +6,14 @@ export const DEFAULT_PREFS = {
   reduceMotion: "system", // "system" | "on" | "off"
   haptics: true,
   clubNames: "real", // "real" | "edited"
+  club: null, // favourite club slug whose colours theme the app, or null for the pitch theme
   seenNotes: [], // coach's notes dismissed on this device
 };
 
 const THEMES = new Set(["system", "light", "dark"]);
 const MOTION = new Set(["system", "on", "off"]);
 const CLUB_NAMES = new Set(["real", "edited"]);
+const SLUG = /^[a-z][a-z0-9-]*$/;
 
 export function sanitizePrefs(value) {
   const v = value && typeof value === "object" && !Array.isArray(value) ? value : {};
@@ -20,6 +22,7 @@ export function sanitizePrefs(value) {
     reduceMotion: MOTION.has(v.reduceMotion) ? v.reduceMotion : DEFAULT_PREFS.reduceMotion,
     haptics: typeof v.haptics === "boolean" ? v.haptics : DEFAULT_PREFS.haptics,
     clubNames: CLUB_NAMES.has(v.clubNames) ? v.clubNames : DEFAULT_PREFS.clubNames,
+    club: typeof v.club === "string" && SLUG.test(v.club) ? v.club : DEFAULT_PREFS.club,
     seenNotes: Array.isArray(v.seenNotes) ? v.seenNotes.filter((n) => typeof n === "string") : DEFAULT_PREFS.seenNotes,
   };
 }
