@@ -1,6 +1,8 @@
 # Implementation Plan: Redesign, career depth and App Store release (v2.0 → v3.0)
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task once the owner has approved it. Steps use checkbox (`- [ ]`) syntax for tracking. **No task in this plan starts until the owner has reviewed the six specs and the decision table in §2.**
+>
+> **Owner sign-off (2026-09-25):** all decisions in §2 approved as defaulted, with one change — **A10 (Android) is out of scope, not deferred.** This plan targets iOS only; no Android build, no Play Store listing, no Google Billing integration. Nothing below should be read as leaving Android "for later" — treat any Android-shaped task as not part of this plan unless the owner revisits it explicitly.
 
 **Goal:** Replace the v1.1 UI with the "Back page and chalkboard" design, make the career worth paying for, and ship the game on the Apple App Store as a free download with a one-time "Full career" unlock, without introducing a backend or accounts.
 
@@ -26,7 +28,7 @@
 | B. Screens and v2.0 | **v2.0** (web + PWA) | every screen, accessibility, PWA/perf, housekeeping, old UI deleted | A |
 | C. Career depth, part 1 | **v2.5** (web) | real league, ageing, cohesion memory, window constraint, balance thresholds | B (UI has the record book and strengths bars ready) |
 | D. Native shell | **v3.0 beta** (TestFlight) | platform adapter, Capacitor project, native storage, IAP + free-tier gate, privacy manifest, policy | B (native-feel), C (career worth buying) |
-| E. App Store release | **v3.0** | listing, age rating, rights sign-off, submission; then iCloud sync, Android, dailies | D |
+| E. App Store release | **v3.0** | listing, age rating, rights sign-off, submission; then iCloud sync, dailies (Android: out of scope, see owner sign-off above) | D |
 
 The roadmap's Phase 2 remainder (own-club relegation, matchups,
 difficulty, open-ended careers) and Phase 3 (match day) follow as v4.0
@@ -57,7 +59,7 @@ alters the tasks marked with the decision id.
 | A7 | iCloud KVS sync | v3.1, not v3.0 | 05 §5 |
 | A8 | IAP plugin | StoreKit-only plugin (Capawesome or Cap-go), not RevenueCat | 05 §6 |
 | A9 | Analytics | None in v3.0 | 05 §6, 06 §2 |
-| A10 | Android | After iOS is stable | 05 §10 |
+| A10 | Android | **Out of scope (owner decision, 2026-09-25)** — was "after iOS is stable" | 05 §10 |
 | X1 | Career depth part 1 before the App Store | Yes (milestone C) | 06 §1 |
 | X3 | Localisation | en-GB, strings externalised | 06 §3 |
 | X4 | Daily draw in free tier | First daily each week free | 06 §4 |
@@ -201,8 +203,8 @@ axe check, visual snapshot at 375/1280 in both themes.
 - App Review notes as 06 §8; submit; on rejection, fix and resubmit (common risks and prepared answers: 4.2 native feel, 3.1.1 restore visible, 5.1.1 no data).
 ### E4. After release
 - v3.1 iCloud KVS sync (A7): `cloud.native.js`, conflict prompt, Settings toggle default on.
-- v3.2 Android (A10): `npx cap add android`, Play Billing via the same plugin, Play listing.
 - v3.x Today's draw and challenge modifiers (06 §4), first localisation (06 §3), opt-in telemetry only if the owner decides (X2).
+- Android (A10): out of scope. Not planned; would need a fresh owner decision to revisit.
 
 ---
 

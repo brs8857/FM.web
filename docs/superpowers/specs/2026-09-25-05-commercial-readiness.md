@@ -322,4 +322,4 @@ dataset excluded; font licences (OFL) noted in About; the rights review in
 | A7 | iCloud KVS sync | v1.1 (after first release) | — |
 | A8 | IAP plugin | Capawesome Purchases or Cap-go native-purchases (StoreKit-only, keeps "Data Not Collected"); not RevenueCat | Privacy label |
 | A9 | Analytics in v1 | None | ⚠ 5.1.1(ii) consent rule |
-| A10 | Android release | After iOS is stable; same Capacitor project | Google Play's own 15% small-developer rate applies |
+| A10 | Android release | **Out of scope (owner decision, 2026-09-25)** — iOS only | — |
