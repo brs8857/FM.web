@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+### Added
+- **Your colours.** A third New career step (and a Colours setting) picks the club you follow; its two kit colours become the whole theme, paper, ink and chalkboard included, in light and dark. Every club's derived theme is checked against the same WCAG AA pairs as the default pitch theme, which stays as it is until a club is chosen. The gallery previews any club.
+
 ## 2.0.0 — 2026-09-25
 
 The "Back page and chalkboard" redesign, now called **Era XI**. Every

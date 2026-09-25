@@ -4,10 +4,12 @@ import {
   Term, TermsProvider, Callout, Toast, Meter, StrengthBars, Stamp, Ticker, Cutting, TeamSheetRow, Slip, Table,
   LiveRegion, useAnnounce, CloseIcon, InfoIcon,
 } from "../../ui/index.js";
+import { CLUBS, clubTheme, clubThemeVars } from "../../content/clubTheme.js";
 import styles from "./Gallery.module.css";
 
 // Manual gallery for the primitive library, at ?gallery=1. Renders
-// every primitive in both themes side by side. Not a Storybook; no deps.
+// every primitive in both themes side by side, under the pitch theme or
+// any club's derived colours. Not a Storybook; no deps.
 
 const TERMS = {
   cohesion: { title: "Cohesion", body: "How well the eleven know the system.\n\nEach player's [[brief]] shapes it." },
@@ -152,16 +154,28 @@ function Samples() {
 }
 
 export default function Gallery() {
+  const [club, setClub] = useState("");
+  const theme = club ? clubTheme(club) : null;
+  const name = CLUBS.find((c) => c.key === club)?.name;
   return (
     <TermsProvider terms={TERMS}>
       <LiveRegion>
         <div className={styles.gallery}>
-          <div className={styles.column} data-theme="light">
+          <label className={styles.toolbar}>
+            <span>Colours</span>
+            <select value={club} onChange={(e) => setClub(e.target.value)} className={styles.select}>
+              <option value="">Pitch</option>
+              {CLUBS.map((c) => <option key={c.key} value={c.key}>{c.name}</option>)}
+            </select>
+          </label>
+          <div className={styles.column} data-theme="light" data-testid="gallery-light" style={theme ? clubThemeVars(theme.light) : undefined}>
             <h1 className={styles.title}>Pitch</h1>
+            {name && <p className={styles.club}>{name} · light</p>}
             <Samples />
           </div>
-          <div className={styles.column} data-theme="dark">
+          <div className={styles.column} data-theme="dark" data-testid="gallery-dark" style={theme ? clubThemeVars(theme.dark) : undefined}>
             <h1 className={styles.title}>Floodlit</h1>
+            {name && <p className={styles.club}>{name} · dark</p>}
             <Samples />
           </div>
         </div>

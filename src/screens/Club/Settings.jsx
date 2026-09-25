@@ -1,6 +1,9 @@
 import Segmented from "../../ui/Segmented.jsx";
 import Toggle from "../../ui/Toggle.jsx";
 import Button from "../../ui/Button.jsx";
+import Disclosure from "../../ui/Disclosure.jsx";
+import ClubPicker from "../NewCareer/ClubPicker.jsx";
+import { clubDisplayName } from "../../content/clubTheme.js";
 import { useInstallPrompt } from "../../app/useInstallPrompt.js";
 import styles from "./Club.module.css";
 
@@ -25,6 +28,12 @@ export default function Settings({ prefs, setPrefs }) {
         <span className={styles.settingLabel}>Theme</span>
         <Segmented label="Theme" options={THEMES} value={prefs.theme} onChange={(theme) => setPrefs({ theme })} />
       </div>
+      <Disclosure title="Colours" summary={clubDisplayName(prefs.club, prefs.clubNames) ?? "Pitch green"}>
+        <div className={styles.setting}>
+          <ClubPicker value={prefs.club} mode={prefs.clubNames} onChange={(club) => setPrefs({ club })} />
+          <p className={styles.hint}>Your club's two colours become the paper, the ink and the chalkboard, in light and dark.</p>
+        </div>
+      </Disclosure>
       <div className={styles.setting}>
         <span className={styles.settingLabel}>Motion</span>
         <Segmented label="Motion" options={MOTION} value={prefs.reduceMotion} onChange={(reduceMotion) => setPrefs({ reduceMotion })} />

@@ -61,7 +61,7 @@ src/
 ├── data/        # the archive and promotion pool (JSON, loaded on demand)
 ├── engine/      # pure game logic: tactics, cohesion, simulation, league, squad, rng
 ├── state/       # reducer, save format and migrations, prefs, export/import
-├── content/     # vocabulary, term sheets, coach's notes, strings, club names
+├── content/     # vocabulary, term sheets, coach's notes, strings, club names and colours
 ├── styles/      # design tokens, base styles, bundled fonts
 ├── ui/          # the primitive library (buttons, sheets, dials, ticker…)
 ├── pitch/       # the chalkboard: markers, bench rail, drag and keyboard models

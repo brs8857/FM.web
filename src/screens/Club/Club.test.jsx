@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import ClubTab from "./ClubTab.jsx";
 import { recordSummary } from "./Record.jsx";
 import { TermsProvider } from "../../ui/Term.jsx";
@@ -77,6 +77,27 @@ describe("ClubTab", () => {
     fireEvent.change(screen.getByTestId("import-save-input"), { target: { files: [file] } });
     expect(onImportFile).toHaveBeenCalledWith(file);
     expect(await screen.findByText("That file is damaged.")).toBeTruthy();
+  });
+
+  it("changes the favourite club from Settings and names the current one in the chosen name mode", () => {
+    const { setPrefs } = renderClub();
+    fireEvent.click(screen.getByRole("button", { name: "Settings" }));
+    const fold = screen.getByRole("button", { name: /Colours/ });
+    expect(fold.textContent).toContain("Pitch green");
+    fireEvent.click(fold);
+    fireEvent.click(screen.getByRole("radio", { name: "Aston Villa" }));
+    expect(setPrefs).toHaveBeenCalledWith({ club: "aston-villa" });
+    cleanup();
+    render(
+      <TermsProvider terms={terms}>
+        <ClubTab history={history} careerComplete={false} careerCode={code} prefs={{ ...DEFAULT_PREFS, club: "arsenal", clubNames: "edited" }} setPrefs={() => {}}
+          onDismissNote={() => {}} canExport storageAvailable onExport={() => {}} onImportFile={() => {}} onStartFromCode={() => {}} onNewCareer={() => {}} />
+      </TermsProvider>,
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Settings" }));
+    expect(screen.getByRole("button", { name: /Colours/ }).textContent).toContain("Islington Reds");
+    fireEvent.click(screen.getByRole("button", { name: /Colours/ }));
+    expect(screen.getByRole("radio", { name: "Islington Reds", checked: true })).toBeTruthy();
   });
 
   it("shows the record as a slip with a new-career button when the career is complete", () => {
