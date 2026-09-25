@@ -4,6 +4,7 @@ import { makeInitialState } from "../state/initialState.js";
 import { newCareerSeed } from "../state/rngState.js";
 import { selectNextAction, liveAssignments, selectFamiliarity, selectProfile, tacticUntouched } from "../state/selectors.js";
 import { getStorage, readAutosave, clearAutosave, requestPersistentStorage, writeAutosave } from "../state/storage.js";
+import { readPrefs } from "../state/prefs.js";
 import { hydrateState, makeSaveEnvelope, toSaveText, describeSave } from "../state/save.js";
 import { saveFileName, exportSaveText, readImportFile } from "../state/exportImport.js";
 import { summarizeSeason } from "../state/reducer.js";
@@ -53,12 +54,18 @@ const NEXT_ACTIONS = {
   closeWindow: { type: "CONTINUE_SEASON" },
 };
 
-export default function V2Root({ dataset, storage: storageProp, prefs: initialPrefs, gallery = false }) {
-  if (gallery) return <Gallery />;
+// The app: owns the reducer, autosave, navigation and preferences, and
+// renders the screens inside the shell. `?gallery=1` shows the primitive
+// gallery instead. `prefs` overrides what storage holds (tests).
+export default function App({ dataset, storage: storageProp, prefs, search }) {
+  const [storage] = useState(() => (storageProp !== undefined ? storageProp : getStorage()));
+  const [query] = useState(() => new URLSearchParams(search ?? (typeof window === "undefined" ? "" : window.location.search)));
+  const [initialPrefs] = useState(() => prefs ?? readPrefs(storage));
+  if (query.get("gallery") === "1") return <Gallery />;
   return (
     <TermsProvider terms={terms}>
       <LiveRegion>
-        <Game dataset={dataset} storageProp={storageProp} initialPrefs={initialPrefs} />
+        <Game dataset={dataset} storageProp={storage} initialPrefs={initialPrefs} />
       </LiveRegion>
     </TermsProvider>
   );

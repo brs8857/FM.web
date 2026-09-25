@@ -10,8 +10,8 @@ Each phase gets its own design cycle before any code is written:
 | Phase | Theme | Release | Status |
 |---|---|---|---|
 | 1A | Foundation | v1.1 | Shipped 2026-09-13 |
-| 1B | ~~Reach & Polish~~ → **Redesign** ("Back page and chalkboard") | v2.0 | Owner approved 2026-09-25; milestone A (foundations) built behind `?layout=v2`, milestone B (screens) next |
-| 1C | Career depth, part 1 (moved forward from Phase 2) | v2.5 | Specced in 06 §1; waiting on 1B |
+| 1B | ~~Reach & Polish~~ → **Redesign** ("Back page and chalkboard") | v2.0 | Built 2026-09-25 (milestones A and B; tagged v2.0.0); device checklist and owner sign-off outstanding |
+| 1C | Career depth, part 1 (moved forward from Phase 2) | v2.5 | Specced in 06 §1; next |
 | 1D | App Store release (free + one-time unlock) | v3.0 | Specced in 05; waiting on 1C |
 | 2 | Deeper Career + Sharper Draft & Tactics (remainder) | v4.0 | Waiting on 1D |
 | 3 | Match-Day Experience | v5.0 | Waiting on Phase 2 |
@@ -56,7 +56,7 @@ data inline, no tests, and no saves.
   - `data/`: player dataset and Championship pool as JSON, loaded on demand
   - `engine/`: pure modules (ratings, tactics profile, familiarity, simulation, promotion)
   - `state/`: reducer and actions
-  - `components/`: one screen or widget per file
+  - `components/`: one screen or widget per file _(replaced by `ui/`, `pitch/`, `screens/` and `app/` in v2.0)_
 - **Tests** with Vitest for the engine and reducer, run in CI before every deploy.
 - **Seeded random numbers**, replacing the biased `sort(() => Math.random() - 0.5)` shuffles.
   Runs become reproducible, which later phases need for daily and shareable seeds.

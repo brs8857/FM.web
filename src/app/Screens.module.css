@@ -1,0 +1,40 @@
+/* The loading and crash screens, outside the shell. */
+.screen {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-6) var(--space-4);
+  background: var(--paper);
+  color: var(--ink);
+  text-align: center;
+}
+.panel {
+  width: 100%;
+  max-width: 28rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-paper);
+  background: var(--paper-2);
+  text-align: left;
+}
+.title {
+  font-size: var(--text-xl);
+}
+.text {
+  overflow-wrap: anywhere;
+}
+.meta {
+  font-size: var(--text-xs);
+  color: var(--ink-2);
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}

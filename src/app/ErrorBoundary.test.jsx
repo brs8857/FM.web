@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import ErrorBoundary from "./ErrorBoundary.jsx";
-import { fakeStorage, makeSaveText } from "../../../tests/fixtures/saves.js";
-import { SAVE_KEY, CORRUPT_KEY } from "../../state/storage.js";
-import { APP_VERSION } from "../../version.js";
+import { fakeStorage, makeSaveText } from "../../tests/fixtures/saves.js";
+import { SAVE_KEY, CORRUPT_KEY } from "../state/storage.js";
+import { APP_VERSION } from "../version.js";
 
 function Boom() {
   throw new Error("boom");
@@ -25,7 +25,7 @@ describe("ErrorBoundary", () => {
     expect(screen.getByText(new RegExp(`Career seed ${JSON.parse(text).state.careerSeed}`))).toBeTruthy();
 
     fireEvent.click(screen.getByRole("button", { name: "Export save" }));
-    expect(exportFn).toHaveBeenCalledWith(text, "fmweb-save.json");
+    expect(exportFn).toHaveBeenCalledWith(text, "era-xi-save.json");
   });
 
   it("Start new game keeps the save aside and reloads", () => {

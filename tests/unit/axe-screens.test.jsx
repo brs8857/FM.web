@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import axe from "axe-core";
-import V2Root from "../../src/app/V2Root.jsx";
+import App from "../../src/app/App.jsx";
 import { makeMiniDataset } from "../fixtures/miniDataset.js";
 import { fakeStorage, makeSaveText, makeSeason3TacticsState } from "../fixtures/saves.js";
 import { createReducer } from "../../src/state/reducer.js";
@@ -14,8 +14,8 @@ import { DEFAULT_PREFS } from "../../src/state/prefs.js";
 // has no layout to compute it from; the Playwright run covers it for real.
 const dataset = makeMiniDataset();
 const reducer = createReducer(dataset);
-const prefs = { ...DEFAULT_PREFS, layout: "v2", seenNotes: ["first-run"] };
-const firstRunPrefs = { ...DEFAULT_PREFS, layout: "v2" };
+const prefs = { ...DEFAULT_PREFS, seenNotes: ["first-run"] };
+const firstRunPrefs = { ...DEFAULT_PREFS };
 
 // Serious and critical are the gate (spec 04 §8.11); moderate and minor are
 // held at zero too, so a regression in landmarks or heading order shows up.
@@ -36,7 +36,7 @@ const resultState = () => reducer(reducer(makeSeason3TacticsState(), { type: "SI
 
 function mount(state, extra = {}) {
   const storage = fakeStorage(state ? { [SAVE_KEY]: makeSaveText(state) } : {});
-  render(<V2Root dataset={dataset} storage={storage} prefs={{ ...prefs, ...extra }} />);
+  render(<App dataset={dataset} storage={storage} prefs={{ ...prefs, ...extra }} />);
 }
 
 afterEach(cleanup);

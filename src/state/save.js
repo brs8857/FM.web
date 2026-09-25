@@ -4,12 +4,13 @@ import { STAT_KEYS } from "../engine/players.js";
 import { STYLE_PRESETS } from "../engine/instructions.js";
 import { REDRAWS } from "./initialState.js";
 import legacyClubIds from "../data/legacyClubIds.json";
+import { PRODUCT_NAME } from "../content/product.js";
 
 export const SAVE_VERSION = 2;
-export const APP_ID = "fm-web";
+export const APP_ID = "fm-web"; // the envelope id from 1.1.0, kept so old saves load
 export const SAVE_ERRORS = {
-  notFmWeb: "This isn't an FM.WEB save.",
-  newer: "Made with a newer FM.WEB. Refresh to update.",
+  notFmWeb: `This isn't an ${PRODUCT_NAME} save.`,
+  newer: `Made with a newer ${PRODUCT_NAME}. Refresh to update.`,
   damaged: "This save file is damaged.",
 };
 

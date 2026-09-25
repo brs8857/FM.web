@@ -2,7 +2,6 @@
 export const PREFS_KEY = "fmweb.prefs";
 
 export const DEFAULT_PREFS = {
-  layout: "v1", // "v1" | "v2" — the redesign preview flag until B11 makes v2 the default
   theme: "system", // "system" | "light" | "dark"
   reduceMotion: "system", // "system" | "on" | "off"
   haptics: true,
@@ -10,7 +9,6 @@ export const DEFAULT_PREFS = {
   seenNotes: [], // coach's notes dismissed on this device
 };
 
-const LAYOUTS = new Set(["v1", "v2"]);
 const THEMES = new Set(["system", "light", "dark"]);
 const MOTION = new Set(["system", "on", "off"]);
 const CLUB_NAMES = new Set(["real", "edited"]);
@@ -18,7 +16,6 @@ const CLUB_NAMES = new Set(["real", "edited"]);
 export function sanitizePrefs(value) {
   const v = value && typeof value === "object" && !Array.isArray(value) ? value : {};
   return {
-    layout: LAYOUTS.has(v.layout) ? v.layout : DEFAULT_PREFS.layout,
     theme: THEMES.has(v.theme) ? v.theme : DEFAULT_PREFS.theme,
     reduceMotion: MOTION.has(v.reduceMotion) ? v.reduceMotion : DEFAULT_PREFS.reduceMotion,
     haptics: typeof v.haptics === "boolean" ? v.haptics : DEFAULT_PREFS.haptics,
@@ -46,13 +43,4 @@ export function writePrefs(storage, prefs) {
     // Storage blocked or full; the preference still applies for this visit.
   }
   return next;
-}
-
-// `?layout=v2` saves the preview flag, `?layout=v1` clears it (Phase 1 spec §10).
-// Returns the prefs in force for this visit.
-export function applyLayoutFlag(search, storage) {
-  const prefs = readPrefs(storage);
-  const layout = new URLSearchParams(search).get("layout");
-  if (!LAYOUTS.has(layout) || layout === prefs.layout) return prefs;
-  return writePrefs(storage, { ...prefs, layout });
 }

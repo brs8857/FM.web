@@ -1,8 +1,6 @@
 import { expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
-export const LAYOUT = "?layout=v2";
-
 // Opens the app on Home with the first-run slips already seen.
 export async function openHome(page, path = "./") {
   await page.addInitScript(() => {
@@ -10,9 +8,9 @@ export async function openHome(page, path = "./") {
     const prefs = raw ? JSON.parse(raw) : {};
     const seen = new Set(prefs.seenNotes ?? []);
     seen.add("first-run");
-    window.localStorage.setItem("fmweb.prefs", JSON.stringify({ ...prefs, layout: "v2", seenNotes: [...seen] }));
+    window.localStorage.setItem("fmweb.prefs", JSON.stringify({ ...prefs, seenNotes: [...seen] }));
   });
-  await page.goto(`${path}${LAYOUT}`);
+  await page.goto(path);
   await expect(page.getByRole("heading", { level: 1, name: "Era XI" })).toBeVisible();
 }
 

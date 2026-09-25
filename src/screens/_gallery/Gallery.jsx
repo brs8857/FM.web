@@ -6,7 +6,7 @@ import {
 } from "../../ui/index.js";
 import styles from "./Gallery.module.css";
 
-// Manual gallery for the primitive library, at ?layout=v2&gallery=1. Renders
+// Manual gallery for the primitive library, at ?gallery=1. Renders
 // every primitive in both themes side by side. Not a Storybook; no deps.
 
 const TERMS = {

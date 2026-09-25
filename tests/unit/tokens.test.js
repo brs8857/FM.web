@@ -42,7 +42,7 @@ describe("design tokens", () => {
   });
 
   it("scales type from the root so system text size applies", () => {
-    expect(base).toMatch(/html\[data-layout="v2"\]\s*\{[^}]*font-size:\s*100%/);
+    expect(base).toMatch(/html\s*\{[^}]*font-size:\s*100%/);
     expect(tokens).toMatch(/--text-3xl:\s*3\.5rem/);
   });
 });

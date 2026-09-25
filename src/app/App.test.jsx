@@ -1,18 +1,18 @@
 import { describe, it, expect } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
-import V2Root from "./V2Root.jsx";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
+import App from "./App.jsx";
 import { makeMiniDataset } from "../../tests/fixtures/miniDataset.js";
 import { fakeStorage, makeSaveText } from "../../tests/fixtures/saves.js";
 import { SAVE_KEY } from "../state/storage.js";
 import { DEFAULT_PREFS, PREFS_KEY } from "../state/prefs.js";
 import { encodeCareerCode } from "./careerCode.js";
 
-const prefs = { ...DEFAULT_PREFS, layout: "v2", seenNotes: ["first-run"] };
+const prefs = { ...DEFAULT_PREFS, seenNotes: ["first-run"] };
 
-describe("V2Root", () => {
+describe("App", () => {
   it("shows the three first-run slips once, then goes straight into New career", () => {
     const storage = fakeStorage();
-    render(<V2Root dataset={makeMiniDataset()} storage={storage} prefs={{ ...DEFAULT_PREFS, layout: "v2" }} />);
+    render(<App dataset={makeMiniDataset()} storage={storage} prefs={{ ...DEFAULT_PREFS }} />);
     expect(screen.getByRole("region", { name: "1 of 3" })).toBeTruthy();
     expect(screen.queryByRole("heading", { level: 1, name: "Era XI" })).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: "Next" }));
@@ -27,7 +27,7 @@ describe("V2Root", () => {
 
   it("dismisses a coach's note for good", () => {
     const storage = fakeStorage({ [SAVE_KEY]: makeSaveText() });
-    render(<V2Root dataset={makeMiniDataset()} storage={storage} prefs={prefs} />);
+    render(<App dataset={makeMiniDataset()} storage={storage} prefs={prefs} />);
     fireEvent.click(screen.getByRole("button", { name: "Dismiss note" }));
     expect(screen.queryByRole("note")).toBeNull();
     expect(JSON.parse(storage.data.get(PREFS_KEY)).seenNotes).toEqual(["first-run", "home"]);
@@ -35,8 +35,7 @@ describe("V2Root", () => {
 
   it("boots on Home, resumes a save into Club mode on the tab the next action needs", () => {
     const storage = fakeStorage({ [SAVE_KEY]: makeSaveText() });
-    const { unmount } = render(<V2Root dataset={makeMiniDataset()} storage={storage} prefs={{ ...prefs, theme: "dark" }} />);
-    expect(document.documentElement.dataset.layout).toBe("v2");
+    const { unmount } = render(<App dataset={makeMiniDataset()} storage={storage} prefs={{ ...prefs, theme: "dark" }} />);
     expect(document.documentElement.dataset.theme).toBe("dark");
     expect(screen.getByText("Season 3 · 2028-29")).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "Kick off season 3" }));
@@ -52,13 +51,12 @@ describe("V2Root", () => {
     fireEvent.click(screen.getByRole("button", { name: "Home" }));
     expect(screen.getByRole("heading", { level: 1, name: "Era XI" })).toBeTruthy();
     unmount();
-    expect(document.documentElement.dataset.layout).toBeUndefined();
     expect(document.documentElement.dataset.theme).toBeUndefined();
   });
 
   it("walks a new career from Home through era and shape into the draft", () => {
     const storage = fakeStorage();
-    render(<V2Root dataset={makeMiniDataset()} storage={storage} prefs={prefs} />);
+    render(<App dataset={makeMiniDataset()} storage={storage} prefs={prefs} />);
     expect(screen.queryByRole("tablist")).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: "New career" }));
     expect(screen.getByRole("heading", { level: 1, name: "New career" })).toBeTruthy();
@@ -77,7 +75,7 @@ describe("V2Root", () => {
 
   it("asks before a new career replaces a saved one, and writes preference changes", () => {
     const storage = fakeStorage({ [SAVE_KEY]: makeSaveText() });
-    render(<V2Root dataset={makeMiniDataset()} storage={storage} prefs={prefs} />);
+    render(<App dataset={makeMiniDataset()} storage={storage} prefs={prefs} />);
     fireEvent.click(screen.getByRole("button", { name: "New career" }));
     fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
     expect(storage.data.has(SAVE_KEY)).toBe(true);
@@ -94,7 +92,7 @@ describe("V2Root", () => {
 
   it("imports a save, asking before it replaces a career", async () => {
     const storage = fakeStorage();
-    const { unmount } = render(<V2Root dataset={makeMiniDataset()} storage={storage} prefs={prefs} />);
+    const { unmount } = render(<App dataset={makeMiniDataset()} storage={storage} prefs={prefs} />);
     fireEvent.click(screen.getByRole("button", { name: "New career" }));
     fireEvent.click(screen.getByRole("button", { name: "Choose a shape" }));
     fireEvent.click(screen.getByRole("button", { name: "Start the draft" }));
@@ -103,7 +101,7 @@ describe("V2Root", () => {
     unmount();
 
     const club = fakeStorage({ [SAVE_KEY]: makeSaveText() });
-    render(<V2Root dataset={makeMiniDataset()} storage={club} prefs={prefs} />);
+    render(<App dataset={makeMiniDataset()} storage={club} prefs={prefs} />);
     fireEvent.click(screen.getByRole("button", { name: "Club" }));
     fireEvent.click(screen.getByRole("button", { name: "Saves" }));
     const file = new File([JSON.stringify(saved)], "save.json", { type: "application/json" });
@@ -116,7 +114,7 @@ describe("V2Root", () => {
 
   it("starts a career from a code with its era and shape", () => {
     const storage = fakeStorage({ [SAVE_KEY]: makeSaveText() });
-    render(<V2Root dataset={makeMiniDataset()} storage={storage} prefs={prefs} />);
+    render(<App dataset={makeMiniDataset()} storage={storage} prefs={prefs} />);
     fireEvent.click(screen.getByRole("button", { name: "Club" }));
     const code = encodeCareerCode({ seed: 77, eraMin: 2005, eraMax: 2011, formationKey: "5-3-2" });
     fireEvent.change(screen.getByLabelText("Start a career from a code"), { target: { value: code } });
@@ -130,8 +128,13 @@ describe("V2Root", () => {
     expect(storage.data.has(SAVE_KEY)).toBe(false);
   });
 
-  it("renders the gallery route", () => {
-    render(<V2Root dataset={makeMiniDataset()} storage={fakeStorage()} prefs={prefs} gallery />);
+  it("renders the gallery route and reads stored preferences by default", () => {
+    render(<App dataset={makeMiniDataset()} storage={fakeStorage()} search="?gallery=1" />);
     expect(screen.getByRole("heading", { level: 1, name: "Newsprint" })).toBeTruthy();
+    cleanup();
+    const storage = fakeStorage({ [PREFS_KEY]: JSON.stringify({ theme: "dark", seenNotes: ["first-run"] }) });
+    render(<App dataset={makeMiniDataset()} storage={storage} search="" />);
+    expect(document.documentElement.dataset.theme).toBe("dark");
+    expect(screen.getByRole("heading", { level: 1, name: "Era XI" })).toBeTruthy();
   });
 });
