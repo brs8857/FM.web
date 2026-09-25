@@ -160,14 +160,18 @@ describe("SeasonTab", () => {
 
   it("runs the window: sign to bench, replace through the highlighted board, and league changes", () => {
     const spy = {};
-    const state = reducer(resultState(), { type: "GOTO_TRANSFER" });
+    const opened = reducer(resultState(), { type: "GOTO_TRANSFER" });
+    const state = { ...opened, transferBudget: { points: 9, spent: 0 } };
     render(<Harness initial={state} spy={spy} />);
     expect(screen.getByRole("note", { name: "League changes" }).textContent).toMatch(/went down; .* came up\./);
+    expect(screen.getByText("9 wage points of 9 left.")).toBeTruthy();
     const candidates = screen.getAllByRole("button", { name: "Sign to bench" });
-    expect(candidates).toHaveLength(5);
+    expect(candidates).toHaveLength(8);
     fireEvent.click(candidates[0]);
     expect(spy.state.shortlist[0].signed).toBe(true);
+    expect(spy.state.transferBudget.spent).toBe(state.shortlist[0].cost);
     expect(screen.getByText("Signed")).toBeTruthy();
+    expect(screen.getByText(`${9 - state.shortlist[0].cost} wage points of 9 left.`)).toBeTruthy();
     fireEvent.click(screen.getAllByRole("button", { name: "Replace…" })[0]);
     const board = screen.getByRole("group", { name: "Chalkboard" });
     const highlighted = [...board.querySelectorAll('[class*="highlighted"]')];
@@ -183,5 +187,14 @@ describe("SeasonTab", () => {
     fireEvent.pointerDown(other, { button: 0, clientX: 1, clientY: 1 });
     fireEvent.pointerUp(other, { clientX: 1, clientY: 1 });
     expect(screen.getByRole("dialog")).toBeTruthy();
+  });
+
+  it("puts candidates the budget cannot cover out of reach", () => {
+    const opened = reducer(resultState(), { type: "GOTO_TRANSFER" });
+    const state = { ...opened, transferBudget: { points: 1, spent: 0 } };
+    render(<Harness initial={state} />);
+    const cheap = state.shortlist.filter((e) => e.cost <= 1).length;
+    expect(screen.queryAllByRole("button", { name: "Sign to bench" })).toHaveLength(cheap);
+    expect(screen.getAllByText("Out of reach")).toHaveLength(8 - cheap);
   });
 });

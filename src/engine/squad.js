@@ -31,9 +31,30 @@ export function autoFillBench(getSquad, assignments, draftedIds, ownedIdentities
   return { bench: bench.map((p) => ({ player: p, role: null, duty: null })), draftedIds: dids };
 }
 
+/* --------------------------- The window's budget -------------------------- */
+export const WINDOW_CANDIDATES = 8;
+const COST_BANDS = [[90, 5], [84, 4], [78, 3], [72, 2]];
+const BUDGET_BY_FINISH = [[1, 9], [4, 8], [7, 7], [17, 6]];
+
+// Wage points: what a candidate costs, from his rating band. The best cost
+// five, a squad player one.
+export function wageCost(player) {
+  return COST_BANDS.find(([floor]) => player.ov >= floor)?.[1] ?? 1;
+}
+
+// The budget last season's finish earns: nine for the champions, five for a
+// club that went down. Any one candidate is affordable; two stars are not.
+export function windowBudget(position) {
+  return BUDGET_BY_FINISH.find(([last]) => position <= last)?.[1] ?? 5;
+}
+
+export function budgetLeft(budget) {
+  return budget ? budget.points - budget.spent : 0;
+}
+
 // Transfer window shortlist: candidates drawn from the career's era, excluding
 // anyone already at the club. Sampling 40 club-seasons keeps it instant.
-export function generateShortlist(getSquad, index, { eraMin, eraMax }, ownedIds, rng, { count = 5, ownedIdentities = [] } = {}) {
+export function generateShortlist(getSquad, index, { eraMin, eraMax }, ownedIds, rng, { count = WINDOW_CANDIDATES, ownedIdentities = [] } = {}) {
   const eraEntries = index.filter((e) => {
     const y = parseInt(e.y, 10);
     return y >= eraMin && y <= eraMax;

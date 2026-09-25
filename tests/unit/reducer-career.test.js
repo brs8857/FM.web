@@ -8,6 +8,7 @@ import { playerIdentity, isSameRealPlayer } from "../../src/engine/identity.js";
 import { createSquadLookup } from "../../src/engine/players.js";
 import { makeInitialAssignments } from "../../src/engine/formations.js";
 import { computeFamiliarity } from "../../src/engine/familiarity.js";
+import { wageCost, windowBudget } from "../../src/engine/squad.js";
 import { liveAssignments } from "../../src/state/selectors.js";
 
 export function checkInvariants(state, action, previous) {
@@ -251,6 +252,32 @@ describe("cohesion memory", () => {
     const parkbus = computeFamiliarity(liveAssignments(state.assignments), changed.instructions, state.formationKey);
     expect(changed.simulation.familiarity).toBe(parkbus - 4);
     expect(changed.cohesionMemory).toEqual({ formationKey: "4-3-3", styleKey: "Park The Bus", seasons: 1 });
+  });
+});
+
+describe("the window's budget", () => {
+  it("opens with eight costed candidates and a budget from the finish, and refuses what it cannot afford", () => {
+    const dataset = makeMiniDataset();
+    const reducer = createReducer(dataset);
+    const played = playCareer({ reducer, initialState: makeInitialState(dataset, 4242), seasons: 1 });
+    const opened = reducer(played, { type: "GOTO_TRANSFER" });
+    expect(opened.shortlist).toHaveLength(8);
+    for (const entry of opened.shortlist) expect(entry).toMatchObject({ signed: false, cost: wageCost(entry.player) });
+    expect(opened.transferBudget).toEqual({ points: windowBudget(played.simulation.position), spent: 0 });
+
+    const tight = { ...opened, transferBudget: { points: 3, spent: 0 }, shortlist: opened.shortlist.map((e, i) => ({ ...e, cost: i === 0 ? 2 : i === 1 ? 2 : 4 })) };
+    const one = reducer(tight, { type: "SIGN_SHORTLIST_TO_BENCH", index: 0 });
+    expect(one.transferBudget).toEqual({ points: 3, spent: 2 });
+    expect(one.shortlist[0].signed).toBe(true);
+    expect(reducer(one, { type: "SIGN_SHORTLIST_TO_BENCH", index: 1 })).toBe(one);
+    expect(reducer(one, { type: "SIGN_SHORTLIST_TO_XI", index: 2, slotId: "ST" })).toBe(one);
+    expect(reducer(tight, { type: "SIGN_SHORTLIST_TO_XI", index: 2, slotId: "ST" })).toBe(tight);
+    const xi = reducer(one, { type: "SIGN_SHORTLIST_TO_XI", index: 1, slotId: "ST" });
+    expect(xi).toBe(one);
+    const cheaper = { ...one, shortlist: one.shortlist.map((e, i) => (i === 1 ? { ...e, cost: 1 } : e)) };
+    const signed = reducer(cheaper, { type: "SIGN_SHORTLIST_TO_XI", index: 1, slotId: "ST" });
+    expect(signed.transferBudget).toEqual({ points: 3, spent: 3 });
+    expect(signed.assignments.find((a) => a.slotId === "ST").player.id).toBe(cheaper.shortlist[1].player.id);
   });
 });
 

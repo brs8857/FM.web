@@ -8,13 +8,33 @@ import { computeFamiliarity, nextMemory, EMPTY_MEMORY } from "../engine/familiar
 import { identityKey } from "../engine/tactics.js";
 import { simulateSeason } from "../engine/season.js";
 import { applyPromotionRelegation } from "../engine/league.js";
-import { nextEmptySlotIndex, autoFillBench, generateShortlist, signToSlot, signToBench, progressSquad } from "../engine/squad.js";
+import { nextEmptySlotIndex, autoFillBench, generateShortlist, signToSlot, signToBench, progressSquad, wageCost, windowBudget, budgetLeft } from "../engine/squad.js";
 import { playerIdentity } from "../engine/identity.js";
 import { makeInitialState, DRAW_OPTIONS } from "./initialState.js";
 import { takeRng } from "./rngState.js";
 import { selectEraIndex } from "./selectors.js";
 
 const idleDraw = (draw) => ({ ...draw, spinning: false, options: [] });
+
+// A shortlist entry the club can still sign, with the state changes every
+// signing shares: the entry marked, the cost spent, the player owned.
+function affordableSigning(state, index) {
+  const entry = state.shortlist[index];
+  if (!entry || entry.signed) return null;
+  const cost = entry.cost ?? 0;
+  const transferBudget = state.transferBudget ?? { points: cost, spent: 0 };
+  if (cost > budgetLeft(transferBudget)) return null;
+  const draftedIds = new Set(state.draftedIds); draftedIds.add(entry.player.id);
+  return {
+    entry,
+    changes: {
+      draftedIds,
+      draftedIdentities: [...state.draftedIdentities, playerIdentity(entry.player)],
+      shortlist: state.shortlist.map((s, i) => (i === index ? { ...s, signed: true } : s)),
+      transferBudget: { ...transferBudget, spent: transferBudget.spent + cost },
+    },
+  };
+}
 
 export function summarizeSeason(state) {
   const { simulation: s, season, careerSeed } = state;
@@ -214,28 +234,23 @@ export function createReducer(dataset) {
       case "GOTO_TRANSFER": {
         const [rng, next] = takeRng(state);
         const shortlist = generateShortlist(getSquad, dataset.index, { eraMin: state.eraMin, eraMax: state.eraMax }, state.draftedIds, rng, { ownedIdentities: state.draftedIdentities })
-          .map((player) => ({ player, signed: false }));
+          .map((player) => ({ player, signed: false, cost: wageCost(player) }));
         const { opponents, relegated, promoted } = applyPromotionRelegation(state.opponents, state.simulation?.table, dataset.championship, rng);
         const seasonHistory = state.simulation ? [...state.seasonHistory, summarizeSeason(state)] : state.seasonHistory;
-        return { ...next, phase: "transfer", shortlist, opponents, lastTransition: { relegated, promoted }, seasonHistory };
+        const transferBudget = { points: windowBudget(state.simulation?.position ?? 20), spent: 0 };
+        return { ...next, phase: "transfer", shortlist, transferBudget, opponents, lastTransition: { relegated, promoted }, seasonHistory };
       }
       case "SIGN_SHORTLIST_TO_BENCH": {
-        const entry = state.shortlist[action.index];
-        if (!entry || entry.signed) return state;
-        const bench = signToBench(state.bench, entry.player);
-        const draftedIds = new Set(state.draftedIds); draftedIds.add(entry.player.id);
-        const draftedIdentities = [...state.draftedIdentities, playerIdentity(entry.player)];
-        const shortlist = state.shortlist.map((s, i) => i === action.index ? { ...s, signed: true } : s);
-        return { ...state, bench, draftedIds, draftedIdentities, shortlist };
+        const signing = affordableSigning(state, action.index);
+        if (!signing) return state;
+        const bench = signToBench(state.bench, signing.entry.player);
+        return { ...state, ...signing.changes, bench };
       }
       case "SIGN_SHORTLIST_TO_XI": {
-        const entry = state.shortlist[action.index];
-        if (!entry || entry.signed) return state;
-        const { assignments, bench } = signToSlot(state.assignments, state.bench, action.slotId, entry.player);
-        const draftedIds = new Set(state.draftedIds); draftedIds.add(entry.player.id);
-        const draftedIdentities = [...state.draftedIdentities, playerIdentity(entry.player)];
-        const shortlist = state.shortlist.map((s, i) => i === action.index ? { ...s, signed: true } : s);
-        return { ...state, assignments, bench, draftedIds, draftedIdentities, shortlist };
+        const signing = affordableSigning(state, action.index);
+        if (!signing) return state;
+        const { assignments, bench } = signToSlot(state.assignments, state.bench, action.slotId, signing.entry.player);
+        return { ...state, ...signing.changes, assignments, bench };
       }
       case "CONTINUE_SEASON": {
         const [rng, next] = takeRng(state);

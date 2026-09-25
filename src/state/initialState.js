@@ -25,7 +25,8 @@ export function makeInitialState(dataset, careerSeed) {
     simulation: null,
     season: 1, // 1 = 2026-27, up to 6 = 2031-32, then the career ends
     seasonHistory: [], // one summary per completed season, appended when the window opens
-    shortlist: [], // { player, signed }[] — current transfer window's 5 candidates
+    shortlist: [], // { player, signed, cost }[] — the current window's eight candidates
+    transferBudget: null, // { points, spent } wage points for the open window, set from last season's finish
     opponents: dataset.opponents, // evolves each season via promotion/relegation
     lastTransition: null, // { relegated: [names], promoted: [names] } from the season just gone
   };

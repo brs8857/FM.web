@@ -145,6 +145,17 @@
   color: var(--win);
   font-weight: 600;
 }
+.unaffordable {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  color: var(--ink-2);
+  font-weight: 600;
+}
+.budget {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  margin-top: var(--space-2);
+}
 @media (min-width: 600px) {
   .headline {
     font-size: 4.5rem;

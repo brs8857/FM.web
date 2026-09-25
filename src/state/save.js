@@ -170,7 +170,8 @@ function isValidState(s) {
   if (!Array.isArray(s.draftedIdentities)) return false;
   if (!isDraw(s.draw)) return false;
   if (!Array.isArray(s.seasonHistory) || !s.seasonHistory.every(isSeasonSummary)) return false;
-  if (!Array.isArray(s.shortlist) || !s.shortlist.every((e) => isObject(e) && isPlayer(e.player))) return false;
+  if (!Array.isArray(s.shortlist) || !s.shortlist.every((e) => isObject(e) && isPlayer(e.player) && (e.cost === undefined || Number.isInteger(e.cost)))) return false;
+  if (s.transferBudget !== undefined && s.transferBudget !== null && !(isObject(s.transferBudget) && Number.isInteger(s.transferBudget.points) && Number.isInteger(s.transferBudget.spent))) return false;
   if (!isObject(s.instructions)) return false;
   if (!isUint32(s.careerSeed) || !Number.isInteger(s.rngCounter) || s.rngCounter < 0) return false;
   if (!Number.isInteger(s.season) || s.season < 1 || s.season > CAREER_SEASONS) return false;
