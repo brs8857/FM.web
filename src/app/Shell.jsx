@@ -24,8 +24,8 @@ export default function Shell({ mode, tab, onTab, title, subtitle, onBack, start
             <TopBar title={title} subtitle={subtitle} onBack={onBack} start={start} next={next} end={end} />
           </div>
         )}
-        <main className={styles.main} id={club ? `panel-${tab}` : undefined} role={club ? "tabpanel" : undefined} aria-labelledby={club ? `tab-${tab}` : undefined} tabIndex={-1}>
-          {children}
+        <main className={styles.main} tabIndex={-1}>
+          {club ? <div id={`panel-${tab}`} role="tabpanel" aria-labelledby={`tab-${tab}`}>{children}</div> : children}
         </main>
         {sticky && <div className={styles.sticky}>{sticky}</div>}
         {club && !rail && tabs}

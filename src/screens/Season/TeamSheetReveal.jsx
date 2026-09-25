@@ -27,10 +27,10 @@ export default function TeamSheetReveal({ state, instant, onKickoff }) {
 
   return (
     <div className={styles.stack}>
-      <header>
+      <div>
         <h2 className={styles.heading}>Team sheet · {careerSeasonLabel(state.season)}</h2>
         <p className={styles.lede}>Hidden through the draft and the board. This is what you built.</p>
-      </header>
+      </div>
       <ul className={styles.rows} aria-label="Ratings revealed">
         {starters.map((a, i) => (
           <TeamSheetRow key={a.slotId} code={a.type} name={a.player.name} meta={playerMeta(a.player)}

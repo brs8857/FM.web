@@ -47,7 +47,7 @@ export default function BoardTab({ state, dispatch, profile, familiarity, clubSe
         <CoachNote id="board" prefs={prefs} onDismiss={onDismissNote} />
         <IdentityLine identity={identity} familiarity={familiarity} />
         <section className={styles.section} aria-labelledby="board-style">
-          <h3 id="board-style" className={styles.subheading}>Style</h3>
+          <h2 id="board-style" className={styles.subheading}>Style</h2>
           <StyleRow selectedStyle={state.selectedStyle} onSelect={onStyle} />
         </section>
         <Approach instructions={state.instructions} pulse={pulse} onSet={onSet} />

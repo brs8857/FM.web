@@ -60,10 +60,10 @@ export default function Window({ state, dispatch, clubSeason, clubName, prefs, o
         )}
       </div>
       <div className={layout.content}>
-        <header>
+        <div>
           <h2 className={styles.heading}>The window · before {careerSeasonLabel(state.season + 1)}</h2>
           <p className={styles.lede}>Five players have become available. Sign them to the bench, or straight into the XI in someone's place.</p>
-        </header>
+        </div>
         <CoachNote id="window" prefs={prefs} onDismiss={onDismissNote} />
         {changes && changes.relegated.length > 0 && (
           <Callout title="League changes">

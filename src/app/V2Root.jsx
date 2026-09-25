@@ -17,6 +17,7 @@ import { useNav } from "./nav.js";
 import { usePrefs, useReducedMotion } from "./usePrefs.js";
 import { useDocumentPrefs } from "./useDocumentPrefs.js";
 import { encodeCareerCode } from "./careerCode.js";
+import { useShortcuts } from "./useShortcuts.js";
 import Shell from "./Shell.jsx";
 import ConfirmSheet from "./ConfirmSheet.jsx";
 import FirstRun, { FIRST_RUN_NOTE } from "./FirstRun.jsx";
@@ -30,6 +31,7 @@ import BoardTab from "../screens/Board/BoardTab.jsx";
 import SeasonTab from "../screens/Season/SeasonTab.jsx";
 import ClubTab from "../screens/Club/ClubTab.jsx";
 import Settings from "../screens/Club/Settings.jsx";
+import Saves from "../screens/Club/Saves.jsx";
 import About from "../screens/Club/About.jsx";
 import terms from "../content/terms.json";
 import { t } from "../content/t.js";
@@ -136,6 +138,7 @@ function Game({ dataset, storageProp, initialPrefs }) {
     dispatch({ type: "LOAD_SAVE", state: loaded });
     setResumed(true);
     setPending(null);
+    setHomeSheet(null);
     navDispatch({ type: "LEAVE_HOME" });
   }, [storage, navDispatch, setResumed]);
 
@@ -164,12 +167,38 @@ function Game({ dataset, storageProp, initialPrefs }) {
     dispatch({ type: "START_DRAFT" });
   };
 
-  const goTab = (tab) => navDispatch({ type: "TAB", tab });
+  const goTab = useCallback((tab) => navDispatch({ type: "TAB", tab }), [navDispatch]);
   const goNext = () => {
     const action = NEXT_ACTIONS[next.key];
     if (next.tab && next.tab !== nav.tab) goTab(next.tab);
     else if (action) dispatch(action);
   };
+
+  const sticky = stickyFor();
+  function stickyFor() {
+    if (nav.mode !== "club") return null;
+    if (state.phase === "tactics" && (nav.tab === "board" || nav.tab === "season")) {
+      return { label: `Kick off season ${state.season}`, run: () => { dispatch({ type: "SIMULATE" }); goTab("season"); } };
+    }
+    if (nav.tab !== next.tab) return null;
+    if (state.phase === "result") {
+      if (!feedDone) return null;
+      if (next.key === "careerComplete") return { label: next.label, run: () => goTab("club") };
+    }
+    const action = NEXT_ACTIONS[next.key];
+    return action ? { label: next.label, run: () => dispatch(action) } : null;
+  }
+
+  const primary = () => {
+    if (nav.mode === "setup") { if (nav.step === "era") navDispatch({ type: "STEP", step: "formation" }); else startDraft(); }
+    else if (nav.mode === "draft") { if (state.draftDone) dispatch({ type: "SKIP_TO_TACTICS" }); }
+    else if (sticky) sticky.run();
+    else goNext();
+  };
+  const draw = () => {
+    if (nav.mode === "draft" && !state.draftDone && !state.draw.spinning && state.draw.options.length === 0) dispatch({ type: "DRAW" });
+  };
+  useShortcuts({ enabled: !nav.home, onTab: nav.mode === "club" ? goTab : null, onPrimary: primary, onDraw: nav.mode === "draft" ? draw : null });
 
   if (nav.home && !inProgress && !prefs.seenNotes.includes(FIRST_RUN_NOTE)) {
     return (
@@ -185,10 +214,16 @@ function Game({ dataset, storageProp, initialPrefs }) {
         <Home state={state} next={next} identity={identity} cohesion={cohesion} notice={notice} prefs={prefs} onDismissNote={markSeen}
           onContinue={() => { navDispatch({ type: "LEAVE_HOME" }); if (next.tab) goTab(next.tab); }}
           onNewCareer={onNewCareer} onClub={() => { navDispatch({ type: "LEAVE_HOME" }); goTab("club"); }}
-          onSettings={() => setHomeSheet("settings")} onAbout={() => setHomeSheet("about")} />
+          onSaves={() => setHomeSheet("saves")} onSettings={() => setHomeSheet("settings")} onAbout={() => setHomeSheet("about")} />
         <ConfirmSheet open={confirmNew} title="Start a new career?" confirmLabel="Start over" onConfirm={() => startNewCareer()} onClose={() => setConfirmNew(false)}>
           <p>Your current career ({t("shell.season", { season: state.season, label: careerSeasonLabel(state.season) })}) will be replaced. Export it from the Club tab first if you want to keep it.</p>
         </ConfirmSheet>
+        <ConfirmSheet open={Boolean(pending)} title="Replace your career with this save?" confirmLabel="Load the save" onConfirm={confirmPending} onClose={() => setPending(null)}>
+          <p>Your current career ({t("shell.season", { season: state.season, label: careerSeasonLabel(state.season) })}) will be replaced.</p>
+        </ConfirmSheet>
+        <Sheet open={homeSheet === "saves"} onClose={() => setHomeSheet(null)} title="Saves">
+          <Saves canExport={inProgress} storageAvailable={Boolean(storage)} onExport={exportCareer} onImportFile={onImportFile} />
+        </Sheet>
         <Sheet open={homeSheet === "settings"} onClose={() => setHomeSheet(null)} title="Settings"><Settings prefs={prefs} setPrefs={setPrefs} /></Sheet>
         <Sheet open={homeSheet === "about"} onClose={() => setHomeSheet(null)} title="About"><About /></Sheet>
       </Shell>
@@ -217,20 +252,6 @@ function Game({ dataset, storageProp, initialPrefs }) {
         <Draft state={state} dataset={dataset} dispatch={dispatch} instant={reducedMotion} prefs={prefs} onDismissNote={markSeen} />
       </Shell>
     );
-  }
-
-  const sticky = stickyFor();
-  function stickyFor() {
-    if (state.phase === "tactics" && (nav.tab === "board" || nav.tab === "season")) {
-      return { label: `Kick off season ${state.season}`, run: () => { dispatch({ type: "SIMULATE" }); goTab("season"); } };
-    }
-    if (nav.tab !== next.tab) return null;
-    if (state.phase === "result") {
-      if (!feedDone) return null;
-      if (next.key === "careerComplete") return { label: next.label, run: () => goTab("club") };
-    }
-    const action = NEXT_ACTIONS[next.key];
-    return action ? { label: next.label, run: () => dispatch(action) } : null;
   }
 
   return (

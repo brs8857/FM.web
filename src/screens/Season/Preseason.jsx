@@ -10,10 +10,10 @@ export default function Preseason({ state, identity, familiarity, tacticUntouche
   const promoted = new Set(state.lastTransition?.promoted ?? []);
   return (
     <div className={styles.stack}>
-      <header>
+      <div>
         <h2 className={styles.heading}>Season {state.season} · {careerSeasonLabel(state.season)}</h2>
         <p className={styles.lede}>Thirty-eight matches, home and away against nineteen rivals. The ratings are revealed at kick-off.</p>
-      </header>
+      </div>
       {tacticUntouched && (
         <Callout title="Nothing on the board yet">
           Every dial sits at neutral, which the engine reads as no plan at all. Set a style before you kick off.{" "}

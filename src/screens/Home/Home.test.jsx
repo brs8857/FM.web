@@ -8,7 +8,7 @@ import { selectNextAction } from "../../state/selectors.js";
 import { DEFAULT_PREFS } from "../../state/prefs.js";
 
 function renderHome(state, props = {}) {
-  const handlers = { onDismissNote: vi.fn(), onContinue: vi.fn(), onNewCareer: vi.fn(), onClub: vi.fn(), onSettings: vi.fn(), onAbout: vi.fn(), ...props };
+  const handlers = { onDismissNote: vi.fn(), onContinue: vi.fn(), onNewCareer: vi.fn(), onClub: vi.fn(), onSaves: vi.fn(), onSettings: vi.fn(), onAbout: vi.fn(), ...props };
   render(<Home state={state} next={selectNextAction(state)} identity="Gegenpress" cohesion="Settled" prefs={DEFAULT_PREFS} {...handlers} />);
   return handlers;
 }
@@ -37,13 +37,15 @@ describe("Home", () => {
   });
 
   it("offers only a new career, settings and about with no career, and shows the coach's note once", () => {
-    const { onNewCareer, onSettings, onAbout, onDismissNote } = renderHome(makeInitialState(makeMiniDataset(), 1), { notice: "unavailable" });
+    const { onNewCareer, onSaves, onSettings, onAbout, onDismissNote } = renderHome(makeInitialState(makeMiniDataset(), 1), { notice: "unavailable" });
     expect(screen.queryByRole("button", { name: "Club" })).toBeNull();
     expect(screen.getByRole("status").textContent).toMatch(/Saving isn't available/);
     fireEvent.click(screen.getByRole("button", { name: "New career" }));
+    fireEvent.click(screen.getByRole("button", { name: "Saves" }));
     fireEvent.click(screen.getByRole("button", { name: "Settings" }));
     fireEvent.click(screen.getByRole("button", { name: "About" }));
     expect(onNewCareer).toHaveBeenCalledOnce();
+    expect(onSaves).toHaveBeenCalledOnce();
     expect(onSettings).toHaveBeenCalledOnce();
     expect(onAbout).toHaveBeenCalledOnce();
     fireEvent.click(screen.getByRole("button", { name: "Dismiss note" }));

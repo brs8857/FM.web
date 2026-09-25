@@ -57,14 +57,14 @@ export default function BackPage({ state, careerCode, clubName, opponents }) {
 
   return (
     <article className={styles.stack} aria-labelledby="backpage-headline">
-      <header className={styles.backPage}>
+      <div className={styles.backPage}>
         <p className={styles.kicker}>Season {s.season} · {careerSeasonLabel(s.season)}{finalSeason ? " · The last season" : ""}</p>
         <h2 id="backpage-headline" className={styles.headline}>{tier.name}</h2>
         <p className={styles.standfirst}>{tier.sub}</p>
         <p className={styles.mono}>{t("season.record", s)} · {s.pts} pts · Finished {ordinal(s.position)}</p>
         <p className={styles.mono}>Scored {s.gf} · Conceded {s.ga} · {gd >= 0 ? "+" : ""}{gd}</p>
         <Button variant="secondary" onClick={share}><ShareIcon /> Share</Button>
-      </header>
+      </div>
       <Disclosure title="Final table" summary={`${ordinal(s.position)} of 20`} defaultOpen={rail}>
         <Table caption={`Final table · ${careerSeasonLabel(s.season)}`} captionHidden columns={COLUMNS} rows={rows} rowKey={(r) => r.name} isHighlighted={(r) => r.isUser} dense />
         <p className={styles.footnote}>Rivals' points are estimated from squad strength; yours are the results above.</p>

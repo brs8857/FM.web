@@ -18,7 +18,7 @@ export default function Strengths({ profile, familiarity, instructions, opponent
   const readout = tacticalReadout(profile, instructions, familiarity).slice(0, notes);
   return (
     <section className={styles.section} aria-labelledby="board-strengths">
-      <h3 id="board-strengths" className={styles.subheading}><Term term="strengths">Strengths</Term></h3>
+      <h2 id="board-strengths" className={styles.subheading}><Term term="strengths">Strengths</Term></h2>
       <StrengthBars bars={bars} referenceLabel="average opponent" />
       <ul className={styles.notes}>
         {readout.map((note) => <li key={note}>{note}</li>)}

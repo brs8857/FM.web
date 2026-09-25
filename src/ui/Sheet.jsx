@@ -78,10 +78,10 @@ export default function Sheet({ open, onClose, title, children, footer, size = "
         <div className={styles.grip} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp}>
           <span className={styles.handle} aria-hidden="true" />
         </div>
-        <header className={styles.header}>
+        <div className={styles.header}>
           <h2 id={titleId} className={styles.title}>{title}</h2>
           <IconButton label="Close" onClick={onClose}><CloseIcon /></IconButton>
-        </header>
+        </div>
         <div className={styles.body}>{children}</div>
         {footer && <footer className={styles.footer}>{footer}</footer>}
       </div>

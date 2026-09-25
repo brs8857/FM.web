@@ -13,7 +13,7 @@ const NOTICES = {
 
 // Home (spec 04 §5.1): the resume card with the one next action, New career,
 // and the settings and about links.
-export default function Home({ state, next, identity, cohesion, notice, prefs, onDismissNote, onContinue, onNewCareer, onClub, onSettings, onAbout }) {
+export default function Home({ state, next, identity, cohesion, notice, prefs, onDismissNote, onContinue, onNewCareer, onClub, onSaves, onSettings, onAbout }) {
   const inProgress = state.phase !== "formation";
   const drafting = state.phase === "draft";
   return (
@@ -47,6 +47,7 @@ export default function Home({ state, next, identity, cohesion, notice, prefs, o
       <CoachNote id="home" prefs={prefs} onDismiss={onDismissNote} />
 
       <footer className={styles.footer}>
+        <Button variant="ghost" onClick={onSaves}>Saves</Button>
         <Button variant="ghost" onClick={onSettings}>Settings</Button>
         <Button variant="ghost" onClick={onAbout}>About</Button>
       </footer>
