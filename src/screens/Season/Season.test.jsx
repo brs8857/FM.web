@@ -91,11 +91,13 @@ describe("SeasonTab", () => {
     expect(screen.getAllByRole("note", { name: "Retired" })[1].textContent).toMatch(/One place in the XI is empty: fill it from the Squad tab before kick-off\.$/);
   });
 
-  it("marks the promoted clubs in pre-season", () => {
+  it("marks the promoted clubs in pre-season and says what the seasons in this system are worth", () => {
     const state = makeSeason3TacticsState();
     render(<Harness initial={state} />);
     expect(screen.queryByRole("note", { name: "Nothing on the board yet" })).toBeNull();
     expect(screen.getAllByText("promoted")).toHaveLength(state.lastTransition.promoted.length);
+    expect(state.cohesionMemory.seasons).toBe(2);
+    expect(screen.getByText("2 seasons in this system already: cohesion +4.")).toBeTruthy();
   });
 
   it("stamps the ratings in one at a time, then the average and Start season", () => {

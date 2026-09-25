@@ -7,6 +7,8 @@ import { makeInitialState, DRAW_OPTIONS, REDRAWS } from "../../src/state/initial
 import { playerIdentity, isSameRealPlayer } from "../../src/engine/identity.js";
 import { createSquadLookup } from "../../src/engine/players.js";
 import { makeInitialAssignments } from "../../src/engine/formations.js";
+import { computeFamiliarity } from "../../src/engine/familiarity.js";
+import { liveAssignments } from "../../src/state/selectors.js";
 
 export function checkInvariants(state, action, previous) {
   const label = action.type;
@@ -226,6 +228,29 @@ describe("the summer", () => {
     expect(next.assignments.find((a) => a.slotId === "ST").player.id).not.toBe(veteran.id);
     expect(next.bench).toHaveLength(state.bench.length - 1);
     expect(next.draftedIds.has(veteran.id)).toBe(true);
+  });
+});
+
+describe("cohesion memory", () => {
+  it("remembers the system across seasons and pays the seasons already played in it", () => {
+    const dataset = makeMiniDataset();
+    const reducer = createReducer(dataset);
+    const played = playCareer({ reducer, initialState: makeInitialState(dataset, 7), seasons: 3 });
+    expect(played.cohesionMemory).toEqual({ formationKey: "4-3-3", styleKey: "Gegenpress", seasons: 3 });
+    expect(played.seasonHistory.map((s) => s.familiarity)).toHaveLength(2);
+    const one = playCareer({ reducer, initialState: makeInitialState(dataset, 7), seasons: 1 });
+    expect(one.cohesionMemory.seasons).toBe(1);
+    const fresh = computeFamiliarity(liveAssignments(one.assignments), one.instructions, one.formationKey);
+    expect(one.simulation.familiarity).toBe(fresh);
+    let state = reducer(one, { type: "GOTO_TRANSFER" });
+    state = reducer(state, { type: "CONTINUE_SEASON" });
+    const second = reducer(state, { type: "SIMULATE" });
+    const withoutMemory = computeFamiliarity(liveAssignments(state.assignments), state.instructions, state.formationKey);
+    expect(second.simulation.familiarity).toBe(withoutMemory + 2);
+    const changed = reducer(reducer(state, { type: "SET_STYLE", key: "parkbus" }), { type: "SIMULATE" });
+    const parkbus = computeFamiliarity(liveAssignments(state.assignments), changed.instructions, state.formationKey);
+    expect(changed.simulation.familiarity).toBe(parkbus - 4);
+    expect(changed.cohesionMemory).toEqual({ formationKey: "4-3-3", styleKey: "Park The Bus", seasons: 1 });
   });
 });
 

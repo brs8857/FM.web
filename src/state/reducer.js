@@ -4,7 +4,8 @@ import { ROLES, defaultRoleFor, defaultDutyFor } from "../engine/roles.js";
 import { STYLE_PRESETS } from "../engine/instructions.js";
 import { createSquadLookup, buildPool } from "../engine/players.js";
 import { computeTeamProfile } from "../engine/tactics.js";
-import { computeFamiliarity } from "../engine/familiarity.js";
+import { computeFamiliarity, nextMemory, EMPTY_MEMORY } from "../engine/familiarity.js";
+import { identityKey } from "../engine/tactics.js";
 import { simulateSeason } from "../engine/season.js";
 import { applyPromotionRelegation } from "../engine/league.js";
 import { nextEmptySlotIndex, autoFillBench, generateShortlist, signToSlot, signToBench, progressSquad } from "../engine/squad.js";
@@ -198,12 +199,14 @@ export function createReducer(dataset) {
           ...a,
           roleObj: ROLES[a.type].find((r) => r.key === a.role),
         })).map((a) => ({ ...a, role: a.roleObj }));
-        const familiarity = computeFamiliarity(assignmentsWithRole, state.instructions, state.formationKey);
+        const memory = state.cohesionMemory ?? EMPTY_MEMORY;
+        const familiarity = computeFamiliarity(assignmentsWithRole, state.instructions, state.formationKey, memory);
         const profile = computeTeamProfile(assignmentsWithRole, state.instructions, familiarity);
         const simulation = simulateSeason(profile, familiarity, state.opponents, rng);
+        const cohesionMemory = nextMemory(memory, state.formationKey, identityKey(state.instructions));
         // Ratings stay hidden through the draft and tactics phases — this is
         // the moment they're finally revealed, right before a ball is kicked.
-        return { ...next, phase: "reveal", simulation: { ...simulation, profile, familiarity, instructions: state.instructions, season: state.season } };
+        return { ...next, phase: "reveal", cohesionMemory, simulation: { ...simulation, profile, familiarity, instructions: state.instructions, season: state.season } };
       }
       case "KICKOFF": {
         return { ...state, phase: "result" };

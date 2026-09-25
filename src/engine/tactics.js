@@ -209,7 +209,7 @@ export function computeTeamProfile(assignments, instructions, familiarity = 60) 
 // need the system reasonably well-drilled for the identity to actually pay
 // off, mirroring how a real "philosophy" only clicks once a squad knows it.
 export function identitySynergy(instructions, familiarity, physical) {
-  const { mentality: men, press: pr, line: ln, tempo: tem, directness: dir, width: wid, tackling: tk, counter: ctr, crossing: crs, shape } = instructions;
+  const { mentality: men, press: pr, line: ln, tempo: tem, directness: dir, width: wid, counter: ctr, crossing: crs, shape } = instructions;
   const gate = clamp((familiarity - 35) / 45, 0, 1); // 0 below ~35 familiarity, 1 by ~80
   let attack = 0, defense = 0, press_ = 0, creativity = 0, label = null;
 
@@ -260,18 +260,33 @@ export function identitySynergy(instructions, familiarity, physical) {
   // reward the named identities get. Sitting on the fence is the one thing
   // that's actively punished.
   if (!label) {
-    const dials = [men, tem, dir, wid, pr, ln, tk];
-    const extremity = dials.reduce((sum, v) => sum + Math.abs(v - 50), 0) / dials.length / 50; // 0 (dead neutral) .. 1 (maxed out)
-    if (extremity < 0.16) {
+    const extremity = dialExtremity(instructions);
+    if (extremity < NEUTRAL_EXTREMITY) {
       // no plan at all — genuinely there for the opposition to read and exploit
       attack -= 5; defense -= 5; creativity -= 3;
     } else {
       // a real, decisive setup that just isn't one of the six named templates —
       // rewarded, scaled by how committed it actually is and how well-drilled
-      const bespoke = clamp((extremity - 0.16) / 0.5, 0, 1) * gate;
+      const bespoke = clamp((extremity - NEUTRAL_EXTREMITY) / 0.5, 0, 1) * gate;
       attack += 4 * bespoke; defense += 4 * bespoke; creativity += 2 * bespoke;
     }
   }
 
   return { attack, defense, press: press_, creativity, label };
+}
+
+export const NEUTRAL_EXTREMITY = 0.16;
+
+// 0 (every dial dead neutral) .. 1 (every dial maxed out).
+export function dialExtremity(instructions) {
+  const dials = ["mentality", "tempo", "directness", "width", "press", "line", "tackling"].map((k) => instructions[k]);
+  return dials.reduce((sum, v) => sum + Math.abs(v - 50), 0) / dials.length / 50;
+}
+
+// What a set of instructions is, for the record and for cohesion memory: a
+// named identity, a bespoke one, or no plan at all.
+export function identityKey(instructions) {
+  const { label } = identitySynergy(instructions, 100, 70);
+  if (label) return label;
+  return dialExtremity(instructions) < NEUTRAL_EXTREMITY ? "none" : "bespoke";
 }

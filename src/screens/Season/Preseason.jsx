@@ -2,6 +2,7 @@ import Button from "../../ui/Button.jsx";
 import Callout from "../../ui/Callout.jsx";
 import IdentityLine from "../Board/IdentityLine.jsx";
 import { careerSeasonLabel } from "../../engine/season.js";
+import { selectMemory } from "../../state/selectors.js";
 import { t } from "../../content/t.js";
 import styles from "./Season.module.css";
 
@@ -30,7 +31,7 @@ export default function Preseason({ state, identity, familiarity, tacticUntouche
           <Button variant="ghost" size="sm" onClick={onGoBoard}>Go to the board</Button>
         </Callout>
       )}
-      <IdentityLine identity={identity} familiarity={familiarity} />
+      <IdentityLine identity={identity} familiarity={familiarity} memory={selectMemory(state)} />
       <section>
         <h3 className={styles.subheading}>The opposition</h3>
         <ol className={styles.opponents}>

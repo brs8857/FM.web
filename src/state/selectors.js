@@ -1,7 +1,7 @@
 import { ROLES } from "../engine/roles.js";
 import { DEFAULT_INSTRUCTIONS } from "../engine/instructions.js";
-import { computeFamiliarity, eraSpread, eraSpreadPenalty, SIDE_MISMATCH_PENALTY } from "../engine/familiarity.js";
-import { computeTeamProfile } from "../engine/tactics.js";
+import { computeFamiliarity, eraSpread, eraSpreadPenalty, memoryBonus, EMPTY_MEMORY, SIDE_MISMATCH_PENALTY } from "../engine/familiarity.js";
+import { computeTeamProfile, identityKey } from "../engine/tactics.js";
 import { CAREER_SEASONS } from "../engine/season.js";
 import { nextEmptySlotIndex } from "../engine/squad.js";
 
@@ -24,7 +24,7 @@ export function selectDraftSummary(state) {
   const decades = [...counts.entries()].sort((a, b) => a[0] - b[0]).map(([decade, count]) => ({ label: DECADE_LABEL[decade] ?? `${decade}s`, count }));
   const spread = eraSpread(players);
   const complete = players.length === 11;
-  const cohesion = complete ? computeFamiliarity(liveAssignments(state.assignments), state.instructions, state.formationKey) : null;
+  const cohesion = complete ? computeFamiliarity(liveAssignments(state.assignments), state.instructions, state.formationKey, state.cohesionMemory) : null;
   return { picked: players.length, decades, spread, eraPenalty: Math.round(eraSpreadPenalty(spread) * 10) / 10, complete, cohesion };
 }
 
@@ -61,8 +61,14 @@ export function liveAssignments(assignments) {
   }));
 }
 
-export function selectFamiliarity(live, instructions, formationKey) {
-  return computeFamiliarity(live, instructions, formationKey);
+export function selectFamiliarity(live, instructions, formationKey, memory = null) {
+  return computeFamiliarity(live, instructions, formationKey, memory);
+}
+
+// The part of cohesion that comes from seasons in the same system.
+export function selectMemory(state) {
+  const memory = state.cohesionMemory ?? EMPTY_MEMORY;
+  return { seasons: memory.seasons, bonus: memoryBonus(memory, state.formationKey, identityKey(state.instructions)) };
 }
 
 export function selectProfile(live, instructions, familiarity) {

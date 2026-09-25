@@ -4,6 +4,7 @@
 import { ROLES, DUTY_INFO } from "../engine/roles.js";
 import { familiarityLabel } from "../engine/familiarity.js";
 import { mentalityLabel } from "../engine/readout.js";
+import { dialExtremity, NEUTRAL_EXTREMITY } from "../engine/tactics.js";
 
 export const POSITION_LABEL = {
   GK: "Goalkeeper", CB: "Centre-back", FB: "Full-back", DM: "Defensive midfielder",
@@ -84,7 +85,5 @@ export { mentalityLabel };
 // (the same neutrality test identitySynergy applies).
 export function identityLabel(synergyLabel, instructions) {
   if (synergyLabel) return synergyLabel;
-  const dials = ["mentality", "tempo", "directness", "width", "press", "line", "tackling"].map((k) => instructions[k]);
-  const extremity = dials.reduce((sum, v) => sum + Math.abs(v - 50), 0) / dials.length / 50;
-  return extremity < 0.16 ? IDENTITY_LABEL.none : IDENTITY_LABEL.bespoke;
+  return dialExtremity(instructions) < NEUTRAL_EXTREMITY ? IDENTITY_LABEL.none : IDENTITY_LABEL.bespoke;
 }
