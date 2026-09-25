@@ -90,7 +90,7 @@ export function selectSeasonHistory(state, summarize) {
   return state.seasonHistory;
 }
 
-function tacticUntouched(state) {
+export function tacticUntouched(state) {
   return state.selectedStyle === null
     && Object.keys(DEFAULT_INSTRUCTIONS).every((k) => state.instructions[k] === DEFAULT_INSTRUCTIONS[k]);
 }

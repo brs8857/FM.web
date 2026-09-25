@@ -1,16 +1,18 @@
-import { useCallback, useMemo, useReducer, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { createReducer } from "../state/reducer.js";
 import { makeInitialState } from "../state/initialState.js";
 import { newCareerSeed } from "../state/rngState.js";
-import { selectNextAction, liveAssignments, selectFamiliarity, selectProfile } from "../state/selectors.js";
+import { selectNextAction, liveAssignments, selectFamiliarity, selectProfile, tacticUntouched } from "../state/selectors.js";
 import { getStorage, readAutosave, clearAutosave, requestPersistentStorage } from "../state/storage.js";
 import { hydrateState } from "../state/save.js";
 import { careerSeasonLabel } from "../engine/season.js";
 import { cohesionLabel, identityLabel } from "../content/labels.js";
+import { clubSeasonLabel } from "../content/clubs.js";
 import { useAutosave } from "./useAutosave.js";
 import { useNav } from "./nav.js";
 import { usePrefs, useReducedMotion } from "./usePrefs.js";
 import { useDocumentPrefs } from "./useDocumentPrefs.js";
+import { encodeCareerCode } from "./careerCode.js";
 import Shell from "./Shell.jsx";
 import ConfirmSheet from "./ConfirmSheet.jsx";
 import Gallery from "../screens/_gallery/Gallery.jsx";
@@ -20,7 +22,7 @@ import Formation from "../screens/NewCareer/Formation.jsx";
 import Draft from "../screens/Draft/Draft.jsx";
 import SquadTab from "../screens/Squad/SquadTab.jsx";
 import BoardTab from "../screens/Board/BoardTab.jsx";
-import { clubSeasonLabel } from "../content/clubs.js";
+import SeasonTab from "../screens/Season/SeasonTab.jsx";
 import Settings from "../screens/Club/Settings.jsx";
 import About from "../screens/Club/About.jsx";
 import terms from "../content/terms.json";
@@ -56,6 +58,17 @@ export default function V2Root({ dataset, storage: storageProp, prefs: initialPr
   );
 }
 
+// True until the phase first changes after a resume, so the reveal and the
+// vidiprinter a player comes back to are shown instantly rather than replayed.
+function useResumed(phase, initially) {
+  const [resumed, setResumed] = useState(initially);
+  const seen = useRef(phase);
+  useEffect(() => {
+    if (seen.current !== phase) { seen.current = phase; setResumed(false); }
+  }, [phase]);
+  return [resumed, setResumed];
+}
+
 function Game({ dataset, storageProp, initialPrefs }) {
   const [storage] = useState(() => (storageProp !== undefined ? storageProp : getStorage()));
   const [boot] = useState(() => (storage ? readAutosave(storage) : { status: "none" }));
@@ -66,10 +79,13 @@ function Game({ dataset, storageProp, initialPrefs }) {
   const [notice, setNotice] = useState(boot.status === "corrupt" ? "corrupt" : storage ? null : "unavailable");
   const [confirmNew, setConfirmNew] = useState(false);
   const [homeSheet, setHomeSheet] = useState(null);
+  const [feedDoneSeason, setFeedDoneSeason] = useState(null);
+  const [resumed, setResumed] = useResumed(state.phase, boot.status === "ok");
   const next = selectNextAction(state);
   const [nav, navDispatch] = useNav(state.phase, next.tab ?? "season");
   const persistRequested = useRef(false);
   const reducedMotion = useReducedMotion(prefs);
+  const instant = resumed || reducedMotion;
 
   useDocumentPrefs(prefs);
   useAutosave({ state, storage, enabled: true, onWriteError: () => setNotice("unavailable") });
@@ -77,13 +93,21 @@ function Game({ dataset, storageProp, initialPrefs }) {
   const live = useMemo(() => liveAssignments(state.assignments), [state.assignments]);
   const familiarity = useMemo(() => selectFamiliarity(live, state.instructions, state.formationKey), [live, state.instructions, state.formationKey]);
   const profile = useMemo(() => selectProfile(live, state.instructions, familiarity), [live, state.instructions, familiarity]);
+  const identity = identityLabel(profile.synergyLabel, state.instructions);
+  const cohesion = cohesionLabel(familiarity);
+  const clubSeason = useCallback((seasonKey) => clubSeasonLabel(dataset, seasonKey), [dataset]);
+  const clubName = useCallback((name) => name, []);
+  const revealed = state.phase === "reveal" || state.phase === "result";
+  const careerCode = encodeCareerCode({ seed: state.careerSeed, eraMin: state.eraMin, eraMax: state.eraMax, formationKey: state.formationKey });
+  const feedDone = state.phase === "result" && (instant || feedDoneSeason === state.season);
 
   const startNewCareer = useCallback(() => {
     clearAutosave(storage);
     dispatch({ type: "NEW_GAME", seed: newCareerSeed() });
+    setResumed(false);
     navDispatch({ type: "LEAVE_HOME" });
     setConfirmNew(false);
-  }, [storage, navDispatch]);
+  }, [storage, navDispatch, setResumed]);
 
   const onNewCareer = () => {
     if (state.phase === "formation") navDispatch({ type: "LEAVE_HOME" });
@@ -98,23 +122,19 @@ function Game({ dataset, storageProp, initialPrefs }) {
     dispatch({ type: "START_DRAFT" });
   };
 
+  const goTab = (tab) => navDispatch({ type: "TAB", tab });
   const goNext = () => {
     const action = NEXT_ACTIONS[next.key];
-    if (next.tab && next.tab !== nav.tab) navDispatch({ type: "TAB", tab: next.tab });
+    if (next.tab && next.tab !== nav.tab) goTab(next.tab);
     else if (action) dispatch(action);
   };
-
-  const identity = identityLabel(profile.synergyLabel, state.instructions);
-  const cohesion = cohesionLabel(familiarity);
-  const clubSeason = useCallback((seasonKey) => clubSeasonLabel(dataset, seasonKey), [dataset]);
-  const revealed = state.phase === "reveal" || state.phase === "result";
 
   if (nav.home) {
     return (
       <Shell mode="home">
         <Home state={state} next={next} identity={identity} cohesion={cohesion} notice={notice} prefs={prefs} onDismissNote={markSeen}
-          onContinue={() => { navDispatch({ type: "LEAVE_HOME" }); if (next.tab) navDispatch({ type: "TAB", tab: next.tab }); }}
-          onNewCareer={onNewCareer} onClub={() => { navDispatch({ type: "LEAVE_HOME" }); navDispatch({ type: "TAB", tab: "club" }); }}
+          onContinue={() => { navDispatch({ type: "LEAVE_HOME" }); if (next.tab) goTab(next.tab); }}
+          onNewCareer={onNewCareer} onClub={() => { navDispatch({ type: "LEAVE_HOME" }); goTab("club"); }}
           onSettings={() => setHomeSheet("settings")} onAbout={() => setHomeSheet("about")} />
         <ConfirmSheet open={confirmNew} title="Start a new career?" confirmLabel="Start over" onConfirm={startNewCareer} onClose={() => setConfirmNew(false)}>
           <p>Your current career ({t("shell.season", { season: state.season, label: careerSeasonLabel(state.season) })}) will be replaced. Export it from the Club tab first if you want to keep it.</p>
@@ -149,17 +169,22 @@ function Game({ dataset, storageProp, initialPrefs }) {
     );
   }
 
-  const action = NEXT_ACTIONS[next.key];
   const sticky = stickyFor();
   function stickyFor() {
     if (state.phase === "tactics" && (nav.tab === "board" || nav.tab === "season")) {
-      return { label: `Kick off season ${state.season}`, run: () => { dispatch({ type: "SIMULATE" }); navDispatch({ type: "TAB", tab: "season" }); } };
+      return { label: `Kick off season ${state.season}`, run: () => { dispatch({ type: "SIMULATE" }); goTab("season"); } };
     }
-    if (action && next.tab === nav.tab) return { label: next.label, run: () => dispatch(action) };
-    return null;
+    if (nav.tab !== next.tab) return null;
+    if (state.phase === "result") {
+      if (!feedDone) return null;
+      if (next.key === "careerComplete") return { label: next.label, run: () => goTab("club") };
+    }
+    const action = NEXT_ACTIONS[next.key];
+    return action ? { label: next.label, run: () => dispatch(action) } : null;
   }
+
   return (
-    <Shell mode="club" tab={nav.tab} onTab={(tab) => navDispatch({ type: "TAB", tab })}
+    <Shell mode="club" tab={nav.tab} onTab={goTab}
       title={TITLES[nav.tab]} subtitle={t("shell.season", { season: state.season, label: careerSeasonLabel(state.season) })}
       start={<IconButton label="Home" onClick={() => navDispatch({ type: "HOME" })}><HomeIcon /></IconButton>}
       onBack={nav.history.length > 0 ? () => navDispatch({ type: "BACK" }) : undefined}
@@ -167,8 +192,13 @@ function Game({ dataset, storageProp, initialPrefs }) {
       sticky={sticky ? <Button block onClick={sticky.run}>{sticky.label}</Button> : undefined}>
       {nav.tab === "squad" && <SquadTab state={state} dispatch={dispatch} clubSeason={clubSeason} revealed={revealed} prefs={prefs} onDismissNote={markSeen} />}
       {nav.tab === "board" && <BoardTab state={state} dispatch={dispatch} profile={profile} familiarity={familiarity} clubSeason={clubSeason} revealed={revealed} prefs={prefs} onDismissNote={markSeen} />}
-      {nav.tab !== "squad" && nav.tab !== "board" && (
-        <Slip kicker={PRODUCT_NAME} title={TITLES[nav.tab]}>
+      {nav.tab === "season" && (
+        <SeasonTab state={state} dispatch={dispatch} identity={identity} familiarity={familiarity} tacticUntouched={tacticUntouched(state)}
+          instant={instant} feedDone={feedDone} onFeedDone={() => setFeedDoneSeason(state.season)} careerCode={careerCode}
+          clubSeason={clubSeason} clubName={clubName} prefs={prefs} onDismissNote={markSeen} onGoBoard={() => goTab("board")} />
+      )}
+      {nav.tab === "club" && (
+        <Slip kicker={PRODUCT_NAME} title="Club">
           <p>Phase: <span className="mono">{state.phase}</span> · Next: {next.label}</p>
         </Slip>
       )}

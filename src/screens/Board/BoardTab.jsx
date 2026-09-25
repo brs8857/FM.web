@@ -1,17 +1,16 @@
 import { useState } from "react";
 import Chalkboard from "../../pitch/Chalkboard.jsx";
 import Button from "../../ui/Button.jsx";
-import Meter from "../../ui/Meter.jsx";
-import { Term } from "../../ui/Term.jsx";
 import { useAnnounce } from "../../ui/LiveRegion.jsx";
 import CoachNote from "../../app/CoachNote.jsx";
 import PlayerSheet from "../Squad/PlayerSheet.jsx";
+import IdentityLine from "./IdentityLine.jsx";
 import StyleRow from "./StyleRow.jsx";
 import Approach from "./Approach.jsx";
 import InstructionGroups from "./InstructionGroups.jsx";
 import Strengths from "./Strengths.jsx";
 import { STYLE_PRESETS } from "../../engine/instructions.js";
-import { CONCEPT, cohesionLabel, identityLabel } from "../../content/labels.js";
+import { identityLabel } from "../../content/labels.js";
 import { cx } from "../../ui/cx.js";
 import layout from "../TabLayout.module.css";
 import styles from "./Board.module.css";
@@ -46,16 +45,7 @@ export default function BoardTab({ state, dispatch, profile, familiarity, clubSe
       </div>
       <div className={layout.content}>
         <CoachNote id="board" prefs={prefs} onDismiss={onDismissNote} />
-        <section className={styles.identity} aria-label="Identity and cohesion">
-          <div className={styles.identityLine}>
-            <span className={styles.identityChip}>{identity}</span>
-            <Term term="identity" icon label={CONCEPT.style} />
-          </div>
-          <div className={styles.meterRow}>
-            <Meter label={CONCEPT.familiarity} value={familiarity} valueLabel={cohesionLabel(familiarity)} />
-            <Term term="cohesion" icon label={CONCEPT.familiarity} />
-          </div>
-        </section>
+        <IdentityLine identity={identity} familiarity={familiarity} />
         <section className={styles.section} aria-labelledby="board-style">
           <h3 id="board-style" className={styles.subheading}>Style</h3>
           <StyleRow selectedStyle={state.selectedStyle} onSelect={onStyle} />
