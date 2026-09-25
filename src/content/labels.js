@@ -31,6 +31,11 @@ export const DIAL_ENDS = {
   focus: ["Through the middle", "Down the flanks"], counter: ["Reset shape", "Break at pace"], crossing: ["Cut inside", "Cross often"],
   gkDistribution: ["Play out short", "Go long"], press: ["Drop off", "High press"], line: ["Deep block", "High line"], tackling: ["Cautious", "Aggressive"],
 };
+export const DIAL_TERM = {
+  mentality: "mentality", tempo: "tempo", directness: "directness", width: "width", focus: "focus", counter: "counter",
+  crossing: "crossing", gkDistribution: "gk-distribution", press: "press", line: "line", tackling: "tackling",
+};
+export const STYLE_SUB = { balanced: "no identity bonus" };
 export const APPROACH_DIALS = ["mentality", "tempo", "directness"];
 export const IN_POSSESSION_DIALS = ["width", "focus", "counter", "crossing", "gkDistribution"];
 export const OUT_OF_POSSESSION_DIALS = ["press", "line", "tackling"];

@@ -1,0 +1,79 @@
+.boardTools {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+.hint {
+  font-size: var(--text-xs);
+  color: var(--ink-2);
+}
+.identity {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-paper);
+}
+.identityLine {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.identityChip {
+  display: inline-block;
+  padding: var(--space-1) var(--space-4);
+  border: 1px solid var(--ink);
+  border-radius: var(--radius-chip);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-lg);
+  line-height: 1.2;
+}
+.meterRow {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: var(--space-2);
+}
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.subheading {
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+.dials {
+  display: flex;
+  flex-direction: column;
+}
+.switch {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+}
+.switchLabel {
+  font-weight: 600;
+}
+.notes {
+  padding-left: 1.2em;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+}
+.strengthsColumn {
+  min-width: 0;
+}
+@media (min-width: 600px) and (max-width: 1023px) {
+  .strengthsColumn {
+    grid-column: 2;
+  }
+}

@@ -19,6 +19,7 @@ import Era from "../screens/NewCareer/Era.jsx";
 import Formation from "../screens/NewCareer/Formation.jsx";
 import Draft from "../screens/Draft/Draft.jsx";
 import SquadTab from "../screens/Squad/SquadTab.jsx";
+import BoardTab from "../screens/Board/BoardTab.jsx";
 import { clubSeasonLabel } from "../content/clubs.js";
 import Settings from "../screens/Club/Settings.jsx";
 import About from "../screens/Club/About.jsx";
@@ -149,16 +150,24 @@ function Game({ dataset, storageProp, initialPrefs }) {
   }
 
   const action = NEXT_ACTIONS[next.key];
-  const onNextTab = next.tab === nav.tab;
+  const sticky = stickyFor();
+  function stickyFor() {
+    if (state.phase === "tactics" && (nav.tab === "board" || nav.tab === "season")) {
+      return { label: `Kick off season ${state.season}`, run: () => { dispatch({ type: "SIMULATE" }); navDispatch({ type: "TAB", tab: "season" }); } };
+    }
+    if (action && next.tab === nav.tab) return { label: next.label, run: () => dispatch(action) };
+    return null;
+  }
   return (
     <Shell mode="club" tab={nav.tab} onTab={(tab) => navDispatch({ type: "TAB", tab })}
       title={TITLES[nav.tab]} subtitle={t("shell.season", { season: state.season, label: careerSeasonLabel(state.season) })}
       start={<IconButton label="Home" onClick={() => navDispatch({ type: "HOME" })}><HomeIcon /></IconButton>}
       onBack={nav.history.length > 0 ? () => navDispatch({ type: "BACK" }) : undefined}
       next={<NextPill label={next.label} onClick={goNext} />}
-      sticky={action && onNextTab ? <Button block onClick={goNext}>{next.label}</Button> : undefined}>
+      sticky={sticky ? <Button block onClick={sticky.run}>{sticky.label}</Button> : undefined}>
       {nav.tab === "squad" && <SquadTab state={state} dispatch={dispatch} clubSeason={clubSeason} revealed={revealed} prefs={prefs} onDismissNote={markSeen} />}
-      {nav.tab !== "squad" && (
+      {nav.tab === "board" && <BoardTab state={state} dispatch={dispatch} profile={profile} familiarity={familiarity} clubSeason={clubSeason} revealed={revealed} prefs={prefs} onDismissNote={markSeen} />}
+      {nav.tab !== "squad" && nav.tab !== "board" && (
         <Slip kicker={PRODUCT_NAME} title={TITLES[nav.tab]}>
           <p>Phase: <span className="mono">{state.phase}</span> · Next: {next.label}</p>
         </Slip>
