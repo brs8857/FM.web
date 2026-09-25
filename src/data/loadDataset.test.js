@@ -12,6 +12,7 @@ describe("loadDataset", () => {
     expect(first.index).toHaveLength(666);
     expect(first.opponents).toHaveLength(19);
     expect(first.championship).toHaveLength(24);
-    expect(first.squads["1992_11"][0][0]).toBe("Paul Merson");
+    expect(first.squads["1992_arsenal"][0][0]).toBe("Paul Merson");
+    expect(first.squads["1992_11"]).toBeUndefined();
   });
 });

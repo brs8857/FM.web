@@ -3,6 +3,7 @@ import { careerSeasonLabel, CAREER_SEASONS } from "../engine/season.js";
 import { STAT_KEYS } from "../engine/players.js";
 import { STYLE_PRESETS } from "../engine/instructions.js";
 import { REDRAWS } from "./initialState.js";
+import legacyClubIds from "../data/legacyClubIds.json";
 
 export const SAVE_VERSION = 2;
 export const APP_ID = "fm-web";
@@ -17,16 +18,51 @@ const PHASE_LABELS = {
   reveal: "Ratings reveal", result: "Season result", transfer: "Transfer window",
 };
 
+// 1.1.0 keyed club-seasons by Transfermarkt's numeric club ids; v2 uses slugs
+// (plan B10). Season keys, player ids and drafted ids all carry the club id.
+export function rekeySeasonKey(seasonKey) {
+  const [year, clubId] = String(seasonKey).split("_");
+  return `${year}_${legacyClubIds[clubId] ?? clubId}`;
+}
+
+function rekeyPlayer(player) {
+  if (!isObject(player) || typeof player.seasonKey !== "string") return player;
+  const seasonKey = rekeySeasonKey(player.seasonKey);
+  const id = typeof player.id === "string" && player.id.startsWith(`${player.seasonKey}__`) ? seasonKey + player.id.slice(player.seasonKey.length) : player.id;
+  return { ...player, id, seasonKey };
+}
+
+function rekeyId(id) {
+  const sep = typeof id === "string" ? id.indexOf("__") : -1;
+  return sep > 0 ? rekeySeasonKey(id.slice(0, sep)) + id.slice(sep) : id;
+}
+
+export function rekeyState(state) {
+  const entry = (e) => (isObject(e) ? { ...e, player: rekeyPlayer(e.player) } : e);
+  return {
+    ...state,
+    assignments: Array.isArray(state.assignments) ? state.assignments.map(entry) : state.assignments,
+    bench: Array.isArray(state.bench) ? state.bench.map(entry) : state.bench,
+    shortlist: Array.isArray(state.shortlist) ? state.shortlist.map(entry) : state.shortlist,
+    draftedIds: Array.isArray(state.draftedIds) ? state.draftedIds.map(rekeyId) : state.draftedIds,
+    draw: isObject(state.draw) && Array.isArray(state.draw.options)
+      ? { ...state.draw, options: state.draw.options.map((o) => (isObject(o) ? { ...o, clubId: legacyClubIds[o.clubId] ?? o.clubId, players: Array.isArray(o.players) ? o.players.map(rekeyPlayer) : o.players } : o)) }
+      : state.draw,
+  };
+}
+
 // migrations[n] upgrades a version-n save to version n+1.
 const migrations = {
-  // v1 (1.1.0): the wheel and its pool become a one-option draw; the record starts empty.
+  // v1 (1.1.0): the wheel and its pool become a one-option draw; the record
+  // starts empty; club ids become slugs.
   1(save) {
     const { wheel, pool, poolRelaxed, ...rest } = save.state;
     const landed = wheel?.landed;
     const options = landed && Array.isArray(pool) && pool.length > 0
       ? [{ year: String(landed.year), clubId: String(landed.clubId), label: landed.label, players: pool, relaxed: Boolean(poolRelaxed) }]
       : [];
-    return { ...save, saveVersion: 2, state: { ...rest, draw: { spinning: false, options, redrawsLeft: REDRAWS }, seasonHistory: [] } };
+    const state = rekeyState({ ...rest, draw: { spinning: false, options, redrawsLeft: REDRAWS }, seasonHistory: [] });
+    return { ...save, saveVersion: 2, state };
   },
 };
 

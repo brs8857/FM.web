@@ -10,6 +10,7 @@ import { makeMiniDataset } from "../../../tests/fixtures/miniDataset.js";
 import { createReducer } from "../../state/reducer.js";
 import { makeInitialState } from "../../state/initialState.js";
 import { DEFAULT_PREFS } from "../../state/prefs.js";
+import { clubSeasonLabel } from "../../content/clubs.js";
 
 const dataset = makeMiniDataset();
 const reducer = createReducer(dataset);
@@ -20,7 +21,7 @@ function Harness({ initial, instant = true, spy }) {
   return (
     <TermsProvider terms={terms}>
       <LiveRegion>
-        <Draft state={state} dataset={dataset} dispatch={dispatch} instant={instant} prefs={DEFAULT_PREFS} onDismissNote={() => {}} />
+        <Draft state={state} dataset={dataset} dispatch={dispatch} instant={instant} clubSeason={(k) => clubSeasonLabel(dataset, k)} prefs={DEFAULT_PREFS} onDismissNote={() => {}} />
       </LiveRegion>
     </TermsProvider>
   );
@@ -72,7 +73,7 @@ describe("Draft", () => {
     fireEvent.click(screen.getByRole("button", { name: "Pick" }));
     fireEvent.click(screen.getByRole("button", { name: "Draw" }));
     const other = spy.state.draw.options.find((o) => o.year !== spy.state.assignments[0].player.seasonKey.split("_")[0]);
-    fireEvent.click(screen.getByRole("button", { name: new RegExp(other.label) }));
+    fireEvent.click(screen.getByRole("button", { name: new RegExp(clubSeasonLabel(dataset, `${other.year}_${other.clubId}`)) }));
     fireEvent.click(screen.getByRole("dialog").querySelector("li button"));
     expect(screen.getAllByRole("dialog").at(-1).textContent).toMatch(/Era spread grows to \d+ years?: cohesion -\d/);
   });

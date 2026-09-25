@@ -1,105 +1,94 @@
-# FM.WEB
+# Era XI
 
-Football Manager, in your browser. Draft a Premier League dream XI from any
-era between 1992-93 and 2024-25, build a real tactical system (roles,
-duties, free player positioning, team instructions), and play through a
-multi-season career — 2026-27 through 2031-32 — complete with a transfer
-window between seasons and real promotion/relegation with the actual 2026-27
-EFL Championship clubs.
+Draft an XI from 33 years of the English top flight, one club-season at a
+time, with the ratings hidden until kick-off. Then build a tactic on the
+chalkboard and play a six-season career, with a transfer window between
+seasons and real promotion and relegation.
 
-Everything runs entirely client-side. There's no backend, no database, no
-API calls — the full player database (every Premier League club-season from
-1992 to 2024) is baked into the app at build time.
+Everything runs in the browser. There is no backend, no account and no
+tracking: the whole archive (every top-flight club-season from 1992-93 to
+2024-25) ships with the app, and your career saves itself on your device.
 
-## Quickest way to try it — zero setup
+## Playing it
 
-Open `standalone/index.html` directly in a browser (just double-click it).
-It's a single self-contained file with React, the game, and all its styling
-already bundled in — no install, no server, works offline. This is the
-fastest way to just try the game out.
+The live build is at https://brs8857.github.io/FM.web/. It installs as an
+app from the browser (Chrome and Edge offer **Install app** under Settings;
+on iPhone use Share → Add to Home Screen) and works offline once it has
+loaded.
 
-`standalone/index.html` is still the v1.0 build; it will be regenerated
-automatically in v2.0.
+For a single file that runs from disk, `npm run build:standalone` writes
+`dist/standalone/index.html`; double-click it in any modern browser.
 
-## Running the real dev project
+**How a career goes.** Choose an era and a shape. Each pick draws three
+club-seasons from that era; open a cutting to see its team sheet in shirt
+order and pick one player. Two redraws per draft. When the eleven are in,
+set a style and the dials on the Board, kick off, watch the season type in
+on the vidiprinter, read the back page, and open the window. Six seasons
+make a career; the Club tab keeps the record and your career code, which
+anyone can start from to get the same draws.
 
-This is a normal [Vite](https://vitejs.dev) + React project, so if you want
-to actually work on the code:
+## Working on it
+
+A [Vite](https://vitejs.dev) + React project, Node 24.
 
 ```bash
 npm install
-npm run dev
+npm run dev              # http://localhost:5173
+npm run build            # dist/, with the service worker and manifest
+npm run build:standalone # dist/standalone/index.html, one self-contained file
+npm run preview          # serve dist/ locally
 ```
 
-Then open the local URL Vite prints (typically `http://localhost:5173`).
-
-To build a production version:
+Checks, all of which CI runs before a deploy:
 
 ```bash
-npm run build
-npm run preview   # sanity-check the production build locally
+npm run lint             # ESLint, zero warnings allowed
+npm run check:contrast   # every token pair meets WCAG AA in both themes
+npm test                 # Vitest: unit, component, golden-master and axe checks
+npm run check:bundle     # app code ≤ 120 KB gzipped, data chunk separate
+npm run e2e              # Playwright on Pixel 7, iPhone 13 and desktop Chrome
+                         # (first run: npx playwright install chromium webkit)
+npm run sim              # balance report: title and relegation odds by style
 ```
 
-The build output goes to `dist/`.
-
-## Checks
-
-```bash
-npm run lint      # ESLint, zero warnings allowed
-npm test          # Vitest unit, component and golden-master tests
-npm run e2e       # Playwright (first run: npx playwright install chromium webkit)
-npm run sim       # balance report (title / relegation odds by style)
-```
-
-Careers autosave in the browser. Use **Menu → Export save** to back one up or move it to another device.
-
-## Deploying to GitHub Pages
-
-**Automatic (recommended):** this repo already includes a GitHub Actions
-workflow at `.github/workflows/ci.yml`. Once you push it to GitHub:
-
-1. Go to your repo's **Settings → Pages**.
-2. Under **Build and deployment → Source**, choose **GitHub Actions**.
-3. Push to `main` (or run the workflow manually from the **Actions** tab).
-
-The workflow builds the project and publishes `dist/` automatically. Your
-game will be live at `https://<your-username>.github.io/<repo-name>/`.
-
-**Manual alternative:** you can skip the Actions workflow entirely and just
-publish `standalone/index.html` as your site — rename a copy of it to
-`index.html` at your repo root, enable Pages pointing at the root of `main`,
-and you're done with no build step at all.
+Visual snapshots are opt-in: `VISUAL=1 npx playwright test --update-snapshots`
+writes them under `tests/e2e/__snapshots__` on a real browser.
 
 ## Project structure
 
 ```
 src/
-├── data/          # player dataset + Championship pool (JSON, loaded on demand)
-├── engine/        # pure game logic: tactics, familiarity, simulation, league, squad, rng
-├── state/         # reducer, save format, autosave, export/import
-├── components/    # ui/, pitch/, screens/, app/ (error boundary, save menu, loading gate)
-├── App.jsx        # header and screen switching
-└── main.jsx       # entry point
-scripts/           # golden-master capture, balance report, one-off data extraction
-tests/             # fixtures, golden files, unit and Playwright tests
+├── data/        # the archive and promotion pool (JSON, loaded on demand)
+├── engine/      # pure game logic: tactics, cohesion, simulation, league, squad, rng
+├── state/       # reducer, save format and migrations, prefs, export/import
+├── content/     # vocabulary, term sheets, coach's notes, strings, club names
+├── styles/      # design tokens, base styles, bundled fonts
+├── ui/          # the primitive library (buttons, sheets, dials, ticker…)
+├── pitch/       # the chalkboard: markers, bench rail, drag and keyboard models
+├── screens/     # Home, New career, Draft, Squad, Board, Season, Club
+└── app/         # shell, navigation, autosave, share, career codes, first run
+scripts/         # icons, bundle budget, contrast check, club rekey, golden capture, balance sim
+tests/           # fixtures, golden files, unit and Playwright tests
+docs/            # roadmap, specs, plans, data notes
 ```
 
-## Notes on the data
+The dependency rule is `data ← engine ← state ← screens ← app`; the engine
+never imports React and `Math.random` is banned outside cosmetic code, so a
+career replays exactly from its seed.
 
-Player ratings (overall + pace/shooting/passing/dribbling/defending/physical)
-are engineered from each player's real market value (inflation-adjusted by
-comparing it to their own season's league-wide distribution, not a fixed
-multiplier) and age-in-that-season, blended with a position-archetype
-profile. There's no gameplay-ratings dataset for football like this
-publicly, so this formula — documented in comments throughout `App.jsx` — is
-a transparent, tunable stand-in.
+## Saves
 
-Opponent club strength (both the 19 real 2025-26-derived Premier League
-rivals and the 24 real 2026-27 Championship clubs used for promotion) is
-similarly derived from real historical squad data where available, with a
-documented fallback for clubs with no Premier League history in the dataset.
+Careers autosave after every pick and every season. **Club → Saves** (or
+**Saves** on the home screen) exports a `.json` you can import on another
+device. Saves from 1.1.0 load and are migrated on the way in.
 
-## License
+## Data
 
-No license has been set — add one (e.g. MIT) if you plan to share this
-publicly.
+See [docs/data.md](docs/data.md) for what the dataset holds, how the
+ratings were derived and how club identifiers work. Ratings are estimates
+engineered from public market-value and age records, not official numbers.
+
+## Licence
+
+The code is MIT (see `LICENSE`). The dataset is not covered by that licence;
+the fonts are under the SIL Open Font License.

@@ -15,7 +15,7 @@ const TICK_MS = 90;
 // The draw (spec 04 §5.2): Draw runs the ticker past club-season labels and
 // settles on up to three cuttings; Redraw throws them back at the cost of one
 // of two ticks. The ticker is cosmetic; the cuttings come from the reducer.
-export default function Draw({ draw, slotType, eraIndex, instant, selected, onDraw, onLand, onRedraw, onOpen }) {
+export default function Draw({ draw, slotType, eraIndex, instant, selected, labelFor, onDraw, onLand, onRedraw, onOpen }) {
   const [tickerLines, setTickerLines] = useState([]);
   const position = (POSITION_LABEL[slotType] ?? slotType).toLowerCase();
 
@@ -55,7 +55,7 @@ export default function Draw({ draw, slotType, eraIndex, instant, selected, onDr
           <ul className={styles.cuttings}>
             {draw.options.map((o, i) => (
               <li key={`${o.year}_${o.clubId}`}>
-                <Cutting kicker="Club season" title={o.label} selected={selected === i} onOpen={() => onOpen(i)}
+                <Cutting kicker="Club season" title={labelFor(o)} selected={selected === i} onOpen={() => onOpen(i)}
                   subtitle={o.relaxed ? "Showing everyone" : t("draft.eligible", { count: o.players.length, position })}
                   note={o.relaxed ? t("draft.relaxed", { position }) : undefined} />
               </li>

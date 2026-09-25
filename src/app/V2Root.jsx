@@ -11,7 +11,7 @@ import { selectSeasonHistory } from "../state/selectors.js";
 import { APP_VERSION } from "../version.js";
 import { careerSeasonLabel } from "../engine/season.js";
 import { cohesionLabel, identityLabel } from "../content/labels.js";
-import { clubSeasonLabel } from "../content/clubs.js";
+import { clubName as displayClubName, clubSeasonLabel } from "../content/clubs.js";
 import { useAutosave } from "./useAutosave.js";
 import { useNav } from "./nav.js";
 import { usePrefs, useReducedMotion } from "./usePrefs.js";
@@ -102,8 +102,8 @@ function Game({ dataset, storageProp, initialPrefs }) {
   const profile = useMemo(() => selectProfile(live, state.instructions, familiarity), [live, state.instructions, familiarity]);
   const identity = identityLabel(profile.synergyLabel, state.instructions);
   const cohesion = cohesionLabel(familiarity);
-  const clubSeason = useCallback((seasonKey) => clubSeasonLabel(dataset, seasonKey), [dataset]);
-  const clubName = useCallback((name) => name, []);
+  const clubSeason = useCallback((seasonKey) => clubSeasonLabel(dataset, seasonKey, prefs.clubNames), [dataset, prefs.clubNames]);
+  const clubName = useCallback((name) => displayClubName(name, prefs.clubNames), [prefs.clubNames]);
   const revealed = state.phase === "reveal" || state.phase === "result";
   const careerCode = encodeCareerCode({ seed: state.careerSeed, eraMin: state.eraMin, eraMax: state.eraMax, formationKey: state.formationKey });
   const feedDone = state.phase === "result" && (instant || feedDoneSeason === state.season);
@@ -249,7 +249,7 @@ function Game({ dataset, storageProp, initialPrefs }) {
       <Shell mode="draft" title="Draft" subtitle={state.draftDone ? "XI complete" : `Pick ${next.pick} of 11`}
         end={<Button variant="ghost" size="sm" onClick={() => navDispatch({ type: "HOME" })}>Pause</Button>}
         sticky={state.draftDone ? <Button block onClick={() => dispatch({ type: "SKIP_TO_TACTICS" })}>Go to the board</Button> : undefined}>
-        <Draft state={state} dataset={dataset} dispatch={dispatch} instant={reducedMotion} prefs={prefs} onDismissNote={markSeen} />
+        <Draft state={state} dataset={dataset} dispatch={dispatch} instant={reducedMotion} clubSeason={clubSeason} prefs={prefs} onDismissNote={markSeen} />
       </Shell>
     );
   }

@@ -7,7 +7,7 @@ import { createReducer } from "./reducer.js";
 import { makeInitialState, REDRAWS } from "./initialState.js";
 import {
   SAVE_VERSION, SAVE_ERRORS, serializeState, makeSaveEnvelope, toSaveText,
-  validateSave, parseSaveText, hydrateState, describeSave,
+  validateSave, parseSaveText, hydrateState, describeSave, rekeySeasonKey, rekeyState,
 } from "./save.js";
 import { APP_VERSION } from "../version.js";
 
@@ -98,14 +98,41 @@ describe("save format", () => {
     expect(again.ok).toBe(true);
     expect(JSON.stringify(again.save.state)).toBe(JSON.stringify(state));
 
-    // The migrated career carries on: the next season plays from the saved seed and counter.
+    // Club ids were Transfermarkt numbers in 1.1.0 and are slugs now (B10):
+    // every season key, player id and drafted id resolves to a real squad.
     const dataset = { ...JSON.parse(readFileSync("src/data/players.json", "utf8")), championship: JSON.parse(readFileSync("src/data/championship.json", "utf8")) };
+    expect(envelope.state.assignments[0].player.seasonKey).toMatch(/^\d{4}_\d+$/);
+    const players = [...state.assignments, ...state.bench, ...state.shortlist].map((e) => e.player).filter(Boolean);
+    for (const p of players) {
+      expect(p.seasonKey).toMatch(/^\d{4}_[a-z-]+$/);
+      expect(dataset.squads[p.seasonKey], p.seasonKey).toBeDefined();
+      expect(p.id.startsWith(`${p.seasonKey}__`)).toBe(true);
+      expect(dataset.squads[p.seasonKey].some((row) => row[0] === p.name)).toBe(true);
+    }
+    for (const id of state.draftedIds) expect(id).toMatch(/^\d{4}_[a-z-]+__/);
+    expect(state.draftedIds).toContain(state.assignments[0].player.id);
+
+    // The migrated career carries on: the next season plays from the saved seed and counter.
     const reducer = createReducer(dataset);
     let next = reducer(restored, { type: "CONTINUE_SEASON" });
     next = reducer(next, { type: "SIMULATE" });
     expect(next.phase).toBe("reveal");
     expect(next.simulation.matches).toHaveLength(38);
     expect(next.rngCounter).toBe(envelope.state.rngCounter + 1);
+    next = reducer(next, { type: "KICKOFF" });
+    next = reducer(next, { type: "GOTO_TRANSFER" });
+    expect(next.shortlist.every((e) => /^\d{4}_[a-z-]+$/.test(e.player.seasonKey))).toBe(true);
+  });
+
+  it("rekeys a landed v1 wheel and leaves slugs and unknown ids alone", () => {
+    expect(rekeySeasonKey("1997_11")).toBe("1997_arsenal");
+    expect(rekeySeasonKey("1997_arsenal")).toBe("1997_arsenal");
+    expect(rekeySeasonKey("2000_1")).toBe("2000_1");
+    const player = { id: "2003_399__Mark Viduka__88__ST", name: "Mark Viduka", seasonKey: "2003_399" };
+    const state = rekeyState({ assignments: [{ player }], bench: [], shortlist: [], draftedIds: [player.id], draw: { spinning: false, redrawsLeft: 2, options: [{ year: "2003", clubId: "399", label: "Leeds United 2003-04", players: [player], relaxed: false }] } });
+    expect(state.assignments[0].player).toEqual({ id: "2003_leeds-united__Mark Viduka__88__ST", name: "Mark Viduka", seasonKey: "2003_leeds-united" });
+    expect(state.draftedIds).toEqual(["2003_leeds-united__Mark Viduka__88__ST"]);
+    expect(state.draw.options[0]).toMatchObject({ clubId: "leeds-united", players: [{ seasonKey: "2003_leeds-united" }] });
   });
 
   it("turns a v1 wheel that had landed into a one-cutting draw", () => {

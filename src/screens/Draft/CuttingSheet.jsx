@@ -22,10 +22,10 @@ export function playerMeta(player) {
 }
 
 // A cutting's team sheet: the eligible players for the slot being filled.
-export default function CuttingSheet({ option, slotType, onClose, onChoose }) {
+export default function CuttingSheet({ option, title, slotType, onClose, onChoose }) {
   const position = POSITION_LABEL[slotType] ?? slotType;
   return (
-    <Sheet open={Boolean(option)} onClose={onClose} title={option?.label ?? ""}>
+    <Sheet open={Boolean(option)} onClose={onClose} title={title}>
       {option && (
         <>
           <p className={styles.sheetLede}>

@@ -13,7 +13,7 @@ import TeamSheetSlip from "./TeamSheetSlip.jsx";
 import styles from "./Draft.module.css";
 
 // The draft (spec 04 §5.2): a compact chalkboard, the squad strip, the draw.
-export default function Draft({ state, dataset, dispatch, instant, prefs, onDismissNote }) {
+export default function Draft({ state, dataset, dispatch, instant, clubSeason, prefs, onDismissNote }) {
   const announce = useAnnounce();
   const [openIdx, setOpenIdx] = useState(null);
   const [candidate, setCandidate] = useState(null);
@@ -25,6 +25,7 @@ export default function Draft({ state, dataset, dispatch, instant, prefs, onDism
   const slot = idx >= 0 ? state.assignments[idx] : null;
   const { options, spinning } = state.draw;
   const open = openIdx !== null ? options[openIdx] : null;
+  const labelFor = (o) => clubSeason(`${o.year}_${o.clubId}`);
 
   useEffect(() => { setOpenIdx(null); setCandidate(null); }, [options]);
 
@@ -37,9 +38,9 @@ export default function Draft({ state, dataset, dispatch, instant, prefs, onDism
       announce("Nobody left in those squads. Draw again.");
     } else {
       setLastEmpty(false);
-      announce(`${options.length === 1 ? "One cutting" : `${options.length} cuttings`} drawn: ${options.map((o) => o.label).join(", ")}.`);
+      announce(`${options.length === 1 ? "One cutting" : `${options.length} cuttings`} drawn: ${options.map((o) => clubSeason(`${o.year}_${o.clubId}`)).join(", ")}.`);
     }
-  }, [spinning, options, announce]);
+  }, [spinning, options, announce, clubSeason]);
 
   const onLand = useCallback(() => dispatch({ type: "LAND" }), [dispatch]);
   const onRedraw = () => {
@@ -65,11 +66,11 @@ export default function Draft({ state, dataset, dispatch, instant, prefs, onDism
         <CoachNote id="draft" prefs={prefs} onDismiss={onDismissNote} />
         {state.draftDone
           ? <TeamSheetSlip state={state} summary={summary} />
-          : <Draw draw={{ ...state.draw, lastEmpty }} slotType={slot?.type} eraIndex={eraIndex} instant={instant} selected={openIdx}
+          : <Draw draw={{ ...state.draw, lastEmpty }} slotType={slot?.type} eraIndex={eraIndex} instant={instant} selected={openIdx} labelFor={labelFor}
             onDraw={() => dispatch({ type: "DRAW" })} onLand={onLand} onRedraw={onRedraw} onOpen={setOpenIdx} />}
       </div>
-      <CuttingSheet option={open} slotType={slot?.type} onClose={() => setOpenIdx(null)} onChoose={setCandidate} />
-      <ConfirmPick player={candidate} preview={candidate ? previewPick(state, candidate) : null} clubSeason={open?.label ?? ""}
+      <CuttingSheet option={open} title={open ? labelFor(open) : ""} slotType={slot?.type} onClose={() => setOpenIdx(null)} onChoose={setCandidate} />
+      <ConfirmPick player={candidate} preview={candidate ? previewPick(state, candidate) : null} clubSeason={open ? labelFor(open) : ""}
         onClose={() => setCandidate(null)} onPick={pick} />
     </div>
   );
