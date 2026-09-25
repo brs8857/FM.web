@@ -36,6 +36,6 @@ export const STYLE_PRESETS = [
     instructions: { mentality: 16, tempo: 38, directness: 55, width: 34, focus: 50, press: 24, line: 20, tackling: 48, counter: 34, crossing: 28, gkDistribution: 52, offsideTrap: false, marking: "zonal", shape: "structured" } },
   { key: "wingplay", label: "Wing Play", desc: "Old-school touchline-to-touchline football — full-backs and wingers stretch the back four, early delivery into the box, and a physical presence in the mixer to attack the cross.",
     instructions: { mentality: 60, tempo: 60, directness: 48, width: 88, focus: 82, press: 55, line: 54, tackling: 50, counter: 44, crossing: 84, gkDistribution: 50, offsideTrap: false, marking: "zonal", shape: "fluid" } },
-  { key: "balanced", label: "Balanced", desc: "No imposed philosophy — every instruction sits neutral so you can build a bespoke system from first principles rather than inherit someone else's blueprint.",
+  { key: "balanced", label: "Blank slate", desc: "No identity bonus. Every dial sits neutral so you can build your own system from first principles rather than inherit someone else's blueprint.",
     instructions: { ...DEFAULT_INSTRUCTIONS } },
 ];

@@ -11,6 +11,9 @@ import { useNav } from "./nav.js";
 import { useDocumentPrefs } from "./useDocumentPrefs.js";
 import Shell from "./Shell.jsx";
 import Gallery from "../screens/_gallery/Gallery.jsx";
+import terms from "../content/terms.json";
+import { PRODUCT_NAME } from "../content/product.js";
+import { t } from "../content/t.js";
 import { TermsProvider } from "../ui/Term.jsx";
 import LiveRegion from "../ui/LiveRegion.jsx";
 import NextPill from "../ui/NextPill.jsx";
@@ -48,7 +51,7 @@ export default function V2Root({ dataset, storage: storageProp, prefs, gallery =
   if (gallery) return <Gallery />;
 
   const club = nav.mode === "club";
-  const subtitle = club ? `Season ${state.season} · ${careerSeasonLabel(state.season)}` : undefined;
+  const subtitle = club ? t("shell.season", { season: state.season, label: careerSeasonLabel(state.season) }) : PRODUCT_NAME;
   const action = NEXT_ACTIONS[next.key];
   const onNextTab = !next.tab || next.tab === nav.tab;
   const goNext = () => {
@@ -57,14 +60,14 @@ export default function V2Root({ dataset, storage: storageProp, prefs, gallery =
   };
 
   return (
-    <TermsProvider terms={{}}>
+    <TermsProvider terms={terms}>
       <LiveRegion>
         <Shell mode={nav.mode} tab={nav.tab} onTab={(tab) => navDispatch({ type: "TAB", tab })}
           title={club ? TITLES[nav.tab] : TITLES[nav.mode]} subtitle={subtitle}
           onBack={nav.history.length > 0 ? () => navDispatch({ type: "BACK" }) : undefined}
           next={club ? <NextPill label={next.label} onClick={goNext} /> : undefined}
           sticky={action && onNextTab ? <Button block onClick={goNext}>{next.label}</Button> : undefined}>
-          <Slip kicker="Redesign preview" title={club ? TITLES[nav.tab] : next.label}>
+          <Slip kicker={t("shell.preview", { product: PRODUCT_NAME })} title={club ? TITLES[nav.tab] : next.label}>
             <p>{boot.status === "ok" ? `Resumed ${describeSave(boot.save).phaseLabel.toLowerCase()}.` : "No saved career."} The screens for this tab arrive in milestone B.</p>
             <p>Phase: <span className="mono">{state.phase}</span> · Next: {next.label}</p>
           </Slip>

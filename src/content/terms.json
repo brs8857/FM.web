@@ -1,0 +1,102 @@
+{
+  "draw": {
+    "title": "Draw",
+    "body": "Each pick starts with a draw: three club-seasons from your era, shown as [[cutting|cuttings]]. You pick one player from one of them.\n\nYou get two [[redraw|redraws]] per draft."
+  },
+  "cutting": {
+    "title": "Cutting",
+    "body": "One club-season from the archive, with the players it can offer for the slot you are filling, in shirt order. Ratings stay hidden until kick-off, so knowing the squad is the edge."
+  },
+  "redraw": {
+    "title": "Redraw",
+    "body": "Throws all three cuttings back and draws again. Two per draft, and they do not come back."
+  },
+  "era": {
+    "title": "Era",
+    "body": "The seasons your draw comes from. A narrow era means players who might have played together; a wide one means more choice and a bigger [[cohesion]] cost when the decades clash."
+  },
+  "job": {
+    "title": "Job",
+    "body": "What a player is asked to do in his position: a blocker or a passing centre-back, a poacher or a link forward. Each job weights his contribution to attack, defence, build-up, pressing and creativity.\n\nA job comes with a [[brief]]."
+  },
+  "brief": {
+    "title": "Brief",
+    "body": "How far forward a player is asked to play his [[job]].\n\nHold keeps position and covers behind the ball. Link connects both ends without committing to either. Push commits forward for more threat and less cover."
+  },
+  "cohesion": {
+    "title": "Cohesion",
+    "body": "How well the eleven know this system. Coherent set-ups, players in their natural positions and an XI from close seasons raise it; extreme dials, wandering positions and a squad spanning decades lower it.\n\nLow cohesion makes results streaky and gates the bonus an [[identity]] gives."
+  },
+  "identity": {
+    "title": "Identity",
+    "body": "The style the engine recognises in your dials: a gegenpress, possession control, a low-block counter, wing play, direct and vertical, or park the bus. A well-drilled identity earns a bonus in the simulation.\n\nA committed set-up that matches none of them still earns a smaller bonus. Sitting on the fence with every dial near the middle is the one thing that is punished."
+  },
+  "blank-slate": {
+    "title": "Blank slate",
+    "body": "Every dial at neutral and no [[identity]] bonus. A starting point for building your own system, not a system in itself."
+  },
+  "mentality": {
+    "title": "Mentality",
+    "body": "The master dial. Scales risk and reward across every other instruction, from Contain to All-out."
+  },
+  "tempo": {
+    "title": "Tempo",
+    "body": "How quickly the ball moves once you have it. Slow controls the game; fast tries to overwhelm a defence before it can set."
+  },
+  "directness": {
+    "title": "Directness",
+    "body": "Short passing builds through the thirds and keeps the ball; direct passing skips the midfield battle to win territory fast."
+  },
+  "width": {
+    "title": "Width",
+    "body": "How far the team stretches the pitch. Wide play opens space in the middle; narrow play packs the half-spaces for combinations."
+  },
+  "focus": {
+    "title": "Passing focus",
+    "body": "Where the team looks to progress the ball: combinations through the middle, or overloads down the flanks."
+  },
+  "counter": {
+    "title": "Counter-attacking",
+    "body": "How eagerly the team breaks the instant it wins the ball, rather than resetting its shape first. Devastating in transition, costly when it gives the ball away cheaply."
+  },
+  "crossing": {
+    "title": "Crossing",
+    "body": "How often wide players deliver early rather than cut inside. Wasted without real [[width]] and someone to attack the ball."
+  },
+  "gk-distribution": {
+    "title": "Keeper distribution",
+    "body": "Whether the keeper plays out short under pressure or goes long to bypass the press and fight for the second ball."
+  },
+  "press": {
+    "title": "Pressing",
+    "body": "How aggressively the team hunts the ball and how high up the pitch it starts. A high press invites risk in behind, especially with a high [[line|defensive line]]."
+  },
+  "line": {
+    "title": "Defensive line",
+    "body": "Where the back line holds. A high line squeezes the space the [[press]] works in but is exposed to balls in behind; a deep block cedes territory on purpose."
+  },
+  "tackling": {
+    "title": "Tackling",
+    "body": "Aggressive tackling wins more duels and risks fouls, cards and playing a man short."
+  },
+  "marking": {
+    "title": "Marking",
+    "body": "Zonal defends space; man-to-man defends the opponent. Man-to-man is more secure one-on-one and more exploitable when a player is dragged out of position."
+  },
+  "offside-trap": {
+    "title": "Offside trap",
+    "body": "A high-risk, high-reward step-up. A real edge with a fast, disciplined back line playing a high [[line]]; a liability otherwise."
+  },
+  "discipline": {
+    "title": "Discipline",
+    "body": "Rigid keeps players tight to their jobs; loose lets them drift and swap positions more freely."
+  },
+  "strengths": {
+    "title": "Strengths",
+    "body": "Six team qualities the simulation uses: attack, creativity, build-up, press, defence and physical. The tick on each bar is the average of the other nineteen clubs, so you can see where you are ahead."
+  },
+  "career-code": {
+    "title": "Career code",
+    "body": "Every career comes from one seed. Share the code and someone else can start the same draft and see whether they build a better XI."
+  }
+}

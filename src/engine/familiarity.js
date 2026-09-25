@@ -51,9 +51,8 @@ export function computeFamiliarity(assignments, instructions, formationKey) {
 }
 
 export function familiarityLabel(f) {
-  if (f >= 85) return "Masterclass";
-  if (f >= 70) return "Drilled";
-  if (f >= 55) return "Solid";
-  if (f >= 40) return "Shaky";
-  return "Unfamiliar";
+  if (f >= 80) return "Clicking";
+  if (f >= 60) return "Settled";
+  if (f >= 42) return "Rough";
+  return "Strangers";
 }

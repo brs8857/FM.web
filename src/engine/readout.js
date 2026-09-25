@@ -38,7 +38,9 @@ export function tacticalReadout(profile, instructions, familiarity) {
 }
 
 export function mentalityLabel(v) {
-  if (v <= 10) return "Very Defensive"; if (v <= 30) return "Defensive"; if (v <= 45) return "Cautious";
-  if (v <= 58) return "Balanced"; if (v <= 75) return "Positive"; if (v <= 92) return "Attacking";
-  return "Very Attacking";
+  if (v <= 20) return "Contain";
+  if (v <= 42) return "Careful";
+  if (v <= 58) return "Even";
+  if (v <= 80) return "Front-foot";
+  return "All-out";
 }
