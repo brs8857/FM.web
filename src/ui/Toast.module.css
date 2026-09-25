@@ -1,0 +1,33 @@
+.host {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--tab-bar) + var(--space-3) + env(safe-area-inset-bottom));
+  display: flex;
+  justify-content: center;
+  padding: 0 var(--space-4);
+  pointer-events: none;
+  z-index: 40;
+}
+.toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  max-width: 480px;
+  min-height: var(--hit);
+  padding: var(--space-2) var(--space-4);
+  background: var(--action);
+  color: var(--paper);
+  border-radius: var(--radius-paper);
+  font-size: var(--text-sm);
+}
+.message {
+  flex: 1;
+}
+.action {
+  color: var(--signal);
+  font-weight: 600;
+  min-height: 36px;
+  padding: 0 var(--space-2);
+}

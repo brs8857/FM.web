@@ -1,0 +1,23 @@
+.callout {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-2) var(--space-3) var(--space-4);
+  border-left: 3px solid var(--signal);
+  background: var(--paper-2);
+  border-radius: 0 var(--radius-paper) var(--radius-paper) 0;
+}
+.body {
+  flex: 1;
+  min-width: 0;
+}
+.title {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-lg);
+}
+.text {
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+}

@@ -1,0 +1,17 @@
+.row {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  padding: 2px 2px 6px;
+  margin: -2px -2px 0;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+}
+.row::-webkit-scrollbar {
+  display: none;
+}
+.row > * {
+  scroll-snap-align: start;
+  flex: none;
+}

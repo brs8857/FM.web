@@ -1,0 +1,28 @@
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 36px;
+  padding: 0 var(--space-3) 0 var(--space-3);
+  border-radius: var(--radius-chip);
+  background: var(--signal);
+  color: var(--signal-ink);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  white-space: nowrap;
+  max-width: 100%;
+}
+.kicker {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+.label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pill:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}

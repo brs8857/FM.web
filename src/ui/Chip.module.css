@@ -1,0 +1,47 @@
+.chip {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: var(--hit);
+  padding: var(--space-1) var(--space-4);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-chip);
+  background: var(--paper-2);
+  color: var(--ink);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  line-height: 1.2;
+  white-space: nowrap;
+  transition: background 120ms var(--ease), border-color 120ms var(--ease);
+}
+.label {
+  display: block;
+}
+.sub {
+  display: block;
+  font-weight: 400;
+  font-size: var(--text-xs);
+  color: var(--ink-2);
+}
+.selected {
+  background: var(--action);
+  border-color: var(--action);
+  color: var(--paper);
+}
+.selected .sub {
+  color: var(--paper);
+  opacity: 0.8;
+}
+.signal.selected {
+  background: var(--signal);
+  border-color: var(--signal);
+  color: var(--signal-ink);
+}
+.signal.selected .sub {
+  color: var(--signal-ink);
+}
+.chip:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}

@@ -1,0 +1,31 @@
+.stamp {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: center;
+}
+.value {
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.lg .value {
+  font-size: var(--text-2xl);
+}
+.xl .value {
+  font-size: var(--text-3xl);
+}
+.md .value {
+  font-size: var(--text-xl);
+}
+.label {
+  font-size: var(--text-xs);
+  color: var(--ink-2);
+}
+.win .value {
+  color: var(--win);
+}
+.loss .value {
+  color: var(--loss);
+}

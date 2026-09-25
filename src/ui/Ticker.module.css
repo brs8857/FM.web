@@ -1,0 +1,45 @@
+.ticker {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+  text-transform: uppercase;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-paper);
+  padding: var(--space-3) var(--space-4);
+  overflow-x: auto;
+  white-space: pre;
+}
+.lines {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.line {
+  display: block;
+}
+.win {
+  color: var(--win);
+}
+.draw {
+  color: var(--draw);
+}
+.loss {
+  color: var(--loss);
+}
+.signal {
+  color: var(--signal);
+}
+.muted {
+  color: var(--ink-2);
+}
+.cursor {
+  display: inline-block;
+  color: var(--signal);
+  animation: blink 1s steps(2, end) infinite;
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}

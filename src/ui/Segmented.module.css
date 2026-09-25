@@ -1,0 +1,37 @@
+.group {
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  width: 100%;
+  border: 1px solid var(--ink);
+  border-radius: var(--radius-paper);
+  overflow: hidden;
+  background: var(--paper);
+}
+.segment {
+  min-height: var(--hit);
+  padding: 0 var(--space-3);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  color: var(--ink);
+  border-right: 1px solid var(--ink);
+  white-space: nowrap;
+}
+.segment:last-child {
+  border-right: 0;
+}
+.selected {
+  background: var(--action);
+  color: var(--paper);
+}
+.sm .segment {
+  min-height: 36px;
+  font-size: var(--text-xs);
+}
+.segment:focus-visible {
+  outline-offset: -3px;
+}
+.segment:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
