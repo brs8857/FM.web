@@ -62,12 +62,16 @@ describe("axe: every screen", () => {
     await check("home, resume card");
   });
 
-  it("era and shape", async () => {
+  it("era, shape and colours", async () => {
     mount(null);
     fireEvent.click(screen.getByRole("button", { name: "New career" }));
     await check("era");
     fireEvent.click(screen.getByRole("button", { name: "Choose a shape" }));
     await check("shape");
+    fireEvent.click(screen.getByRole("button", { name: "Choose your colours" }));
+    await check("colours");
+    fireEvent.click(screen.getByRole("radio", { name: "Aston Villa" }));
+    await check("colours, club chosen");
   });
 
   it("draft: cuttings, team sheet and confirm", async () => {
