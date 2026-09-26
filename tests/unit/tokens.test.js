@@ -52,17 +52,18 @@ describe("design tokens", () => {
 describe("bundled fonts", () => {
   const files = [...base.matchAll(/url\("\.\/fonts\/([^"]+)"\)/g)].map((m) => m[1]);
 
-  it("declares the six faces from the spec", () => {
+  it("declares the eight faces: serif headlines, sans text, condensed chalk labels, typewriter results", () => {
     expect(files).toEqual([
       "barlow-latin-400-normal.woff2", "barlow-latin-600-normal.woff2",
       "barlow-condensed-latin-600-normal.woff2", "barlow-condensed-latin-800-normal.woff2",
-      "ibm-plex-mono-latin-400-normal.woff2", "ibm-plex-mono-latin-600-normal.woff2",
+      "newsreader-latin-600-normal.woff2", "newsreader-latin-800-normal.woff2",
+      "courier-prime-latin-400-normal.woff2", "courier-prime-latin-700-normal.woff2",
     ]);
   });
 
   it("ships each face and its licence beside the stylesheet, so the standalone build inlines them", () => {
     for (const f of files) expect(existsSync(`src/styles/fonts/${f}`), f).toBe(true);
-    for (const l of ["LICENSE-Barlow.txt", "LICENSE-BarlowCondensed.txt", "LICENSE-IBMPlexMono.txt"]) {
+    for (const l of ["LICENSE-Barlow.txt", "LICENSE-BarlowCondensed.txt", "LICENSE-Newsreader.txt", "LICENSE-CourierPrime.txt"]) {
       expect(readFileSync(`src/styles/fonts/${l}`, "utf8")).toContain("SIL OPEN FONT LICENSE Version 1.1");
     }
   });

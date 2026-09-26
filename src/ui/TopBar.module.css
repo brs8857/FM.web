@@ -24,7 +24,7 @@
   padding: 0 var(--space-2);
 }
 .title {
-  font-family: var(--font-display);
+  font-family: var(--font-headline);
   font-weight: 800;
   font-size: var(--text-xl);
   line-height: 1;

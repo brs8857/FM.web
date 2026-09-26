@@ -64,7 +64,7 @@ export default function BackPage({ state, careerCode, clubName, opponents }) {
   return (
     <article className={styles.stack} aria-labelledby="backpage-headline">
       <div className={styles.backPage}>
-        <p className={styles.kicker}>Season {s.season} · {careerSeasonLabel(s.season)}{finalSeason ? " · The last season" : ""}</p>
+        <p className="strap">Season {s.season} · {careerSeasonLabel(s.season)}{finalSeason ? " · The last season" : ""}</p>
         <h2 id="backpage-headline" className={styles.headline}>{tier.name}</h2>
         <p className={styles.standfirst}>{tier.sub}</p>
         <p className={styles.mono}>{t("season.record", s)} · {s.pts} pts · Finished {ordinal(s.position)}</p>

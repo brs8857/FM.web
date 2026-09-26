@@ -4,7 +4,7 @@ import styles from "./Cutting.module.css";
 export default function Cutting({ kicker, title, subtitle, note, onOpen, selected = false, children, className }) {
   const body = (
     <>
-      {kicker && <span className={styles.kicker}>{kicker}</span>}
+      {kicker && <span className="strap">{kicker}</span>}
       <span className={styles.title}>{title}</span>
       {subtitle && <span className={styles.subtitle}>{subtitle}</span>}
       {note && <span className={styles.note}>{note}</span>}

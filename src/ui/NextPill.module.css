@@ -13,10 +13,7 @@
   max-width: 100%;
 }
 .kicker {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  text-transform: uppercase;
-  opacity: 0.8;
+  font-weight: 400;
 }
 .label {
   overflow: hidden;

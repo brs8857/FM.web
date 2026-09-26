@@ -9,7 +9,7 @@
   justify-content: center;
 }
 .kicker {
-  font-family: var(--font-display);
+  font-family: var(--font-headline);
   font-weight: 800;
   font-size: var(--text-xl);
   text-align: center;

@@ -8,7 +8,7 @@ export default function Slip({ kicker, title, children, as: Tag = "section", ani
     <Tag className={cx(styles.slip, animate && "slip", className)} aria-labelledby={title ? id : undefined}>
       {(kicker || title) && (
         <header className={styles.header}>
-          {kicker && <span className={styles.kicker}>{kicker}</span>}
+          {kicker && <span className="strap">{kicker}</span>}
           {title && <h2 id={id} className={styles.title}>{title}</h2>}
         </header>
       )}

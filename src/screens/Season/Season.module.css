@@ -98,12 +98,6 @@
   padding-bottom: var(--space-4);
   border-bottom: 3px double var(--ink);
 }
-.kicker {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  text-transform: uppercase;
-  color: var(--ink-2);
-}
 .headline {
   font-size: var(--text-3xl);
   line-height: 0.95;
@@ -140,14 +134,10 @@
   margin-top: var(--space-2);
 }
 .signed {
-  font-family: var(--font-mono);
-  text-transform: uppercase;
   color: var(--win);
   font-weight: 600;
 }
 .unaffordable {
-  font-family: var(--font-mono);
-  text-transform: uppercase;
   color: var(--ink-2);
   font-weight: 600;
 }

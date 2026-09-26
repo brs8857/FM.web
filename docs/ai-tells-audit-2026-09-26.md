@@ -297,3 +297,48 @@ subject rather than a stock set:
 - The toast action is paper-on-action with an underline; selected text
   uses `--signal-ink`. Manifest, `theme-color` metas and the share slip's
   fallbacks follow the new values.
+
+### 2.5 Typography (V2, part of V3)
+
+Found:
+- Barlow Condensed 800 set every headline, title, score and number: the
+  heavy condensed grotesque of the sports-app template (Oswald, Bebas
+  Neue and Barlow Condensed are the usual three). IBM Plex Mono set the
+  vidiprinter and every number line: the default "techy" mono. Barlow
+  itself (text) is not a stock pick and reads well small.
+- The same mono, 13 px, uppercase kicker (`SEASON 1 · 2026-27`, `WEEK 1 ·
+  HOME`, `CLUB SEASON`, `NEXT`, `SIGNED`, `OUT OF REACH`) was pasted into
+  six CSS modules, although spec 04 §3.3 says uppercase only for the
+  vidiprinter and slot codes.
+
+Changed (commit below), each face chosen for a job in the subject:
+- **Headlines: Newsreader** (Production Type, OFL; 600 and 800). A serif
+  drawn for news reading on screen, and the voice of a broadsheet's sport
+  pages rather than a sports app: "Safe" on the back page, "Era XI" as a
+  nameplate, the top-bar titles, cuttings, scores, stamps and section
+  heads. New `--font-headline` token.
+- **Vidiprinter and figures: Courier Prime** (Quote-Unquote Apps, OFL;
+  400 and 700). The teleprinters that printed the classified results
+  were typewriters on a wire; a Courier says that, a coder's mono says
+  "developer tool".
+- **Kept Barlow** for text and controls and **Barlow Condensed** for the
+  chalk labels on the board, chips and the XI mark: a narrow face is the
+  right tool for surnames under a marker, and demoted from headline duty
+  it stops reading as a template. `src/pitch/**` is untouched; the board
+  only follows the tokens.
+- One global `.strap` (sentence case, bold, secondary ink, how a paper sets
+  the line over a headline) replaces the five pasted mono kickers; `Signed`
+  and `Out of reach` lose their caps. Uppercase remains for the
+  vidiprinter, the results lines, slot codes and the career code.
+- Cutting titles drop from 24 px condensed to 18 px serif so every
+  club-season in the archive fits one line on a 390 px phone (the longest,
+  "Wolverhampton Wanderers 2010-11", broke at the hyphen at 20 px).
+  Measured with a scripted draft on the iPhone 13 profile (390×664): the
+  lowest cutting edge over 11 picks is 621 px, 14 px higher than the 635
+  px the same draft reached before this commit; Pixel 7 (412×839), 688 px.
+- Files: `newsreader-latin-{600,800}-normal.woff2`,
+  `courier-prime-latin-{400,700}-normal.woff2` with their OFL texts, from
+  `@fontsource/*` 5.3.0; the IBM Plex Mono files and licence are gone.
+  `tokens.test.js` pins the eight faces; `npm run build:standalone` still
+  inlines all eight. The share slip draws with the same faces. About names
+  them.

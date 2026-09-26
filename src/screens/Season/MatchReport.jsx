@@ -47,7 +47,7 @@ export default function MatchReport({ match, clubName, after, compact = false, l
   const { played } = match;
   return (
     <article className={cx(styles.report, compact && styles.compact)} aria-labelledby={id}>
-      {!compact && <p className={styles.kicker}>Week {match.week} · {match.home ? "Home" : "Away"}</p>}
+      {!compact && <p className="strap">Week {match.week} · {match.home ? "Home" : "Away"}</p>}
       <Heading id={id} className={cx(styles.score, styles[RESULT_TONE[match.outcome]])}>
         {home.name} {home.score}–{away.score} {away.name}
       </Heading>

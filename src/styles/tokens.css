@@ -18,9 +18,10 @@
   --loss: #A83C33;
   --action: #265A32;
 
+  --font-headline: "Newsreader", Georgia, "Times New Roman", serif;
   --font-body: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-display: "Barlow Condensed", "Barlow", system-ui, -apple-system, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-mono: "Courier Prime", "Courier New", ui-monospace, monospace;
 
   --text-xs: 0.8125rem;
   --text-sm: 0.875rem;

@@ -23,7 +23,7 @@ function wrap(ctx, text, maxWidth) {
 export function renderSlip(ctx, slip) {
   const paper = cssVar("--paper", "#F4F4F0"), ink = cssVar("--ink", "#1A1B18"), ink2 = cssVar("--ink-2", "#4D5047");
   const rule = cssVar("--rule", "#CDCFC5"), signal = cssVar("--signal", "#67A03E");
-  const display = '"Barlow Condensed", "Barlow", sans-serif', body = '"Barlow", sans-serif', mono = '"IBM Plex Mono", monospace';
+  const display = '"Newsreader", Georgia, serif', body = '"Barlow", sans-serif', mono = '"Courier Prime", "Courier New", monospace';
   const margin = 80, width = SHARE_WIDTH - margin * 2;
   ctx.fillStyle = paper;
   ctx.fillRect(0, 0, SHARE_WIDTH, SHARE_HEIGHT);
@@ -32,7 +32,7 @@ export function renderSlip(ctx, slip) {
 
   let y = margin + 40;
   ctx.fillStyle = ink2;
-  ctx.font = `600 30px ${mono}`;
+  ctx.font = `700 30px ${mono}`;
   ctx.fillText(`${PRODUCT_NAME.toUpperCase()} · ${slip.kicker.toUpperCase()}`, margin, y);
   y += 30;
   ctx.fillStyle = rule;
@@ -50,7 +50,7 @@ export function renderSlip(ctx, slip) {
 
   y += 40;
   ctx.fillStyle = ink;
-  ctx.font = `600 44px ${mono}`;
+  ctx.font = `700 44px ${mono}`;
   ctx.fillText(slip.record, margin, y);
   if (slip.topScorer) {
     y += 50;
@@ -64,7 +64,7 @@ export function renderSlip(ctx, slip) {
 
   y += 60;
   ctx.fillStyle = ink;
-  ctx.font = `600 34px ${mono}`;
+  ctx.font = `700 34px ${mono}`;
   const column = Math.ceil(slip.eleven.length / 2);
   slip.eleven.forEach((name, i) => {
     const x = margin + (i < column ? 0 : width / 2);
@@ -89,7 +89,7 @@ function toBlob(canvas) {
 }
 
 export async function shareSlip(slip, { nav = navigator, doc = document, createCanvas = () => doc.createElement("canvas") } = {}) {
-  if (doc.fonts?.load) await Promise.allSettled([doc.fonts.load('800 150px "Barlow Condensed"'), doc.fonts.load('600 34px "IBM Plex Mono"'), doc.fonts.load('400 42px "Barlow"')]);
+  if (doc.fonts?.load) await Promise.allSettled([doc.fonts.load('800 150px "Newsreader"'), doc.fonts.load('700 34px "Courier Prime"'), doc.fonts.load('400 42px "Barlow"')]);
   const canvas = createCanvas();
   canvas.width = SHARE_WIDTH;
   canvas.height = SHARE_HEIGHT;
