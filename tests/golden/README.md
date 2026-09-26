@@ -4,7 +4,8 @@ Recorded by `scripts/capture-golden.mjs` from the v1 engine (`6495fb8`).
 They prove the refactor doesn't change the game.
 
 - `xis.json` — 20 seeded XIs (inputs). Never changes.
-- `profiles.json` — familiarity, team profile and readout for every XI × 7 styles. **Never changes in Phase 1.**
+- `profiles.json` — familiarity, team profile and readout for every XI × 7 styles. Unchanged through Phase 1;
+  re-recorded in C5 (see below).
 - `seasons.json`, `league.json` — seeded season simulations and promotion/relegation.
   Re-recorded only by Task 10 (explicit rng + Fisher–Yates) and Task 22 (bug #1),
   each in a commit containing just the regenerated files and the responsible change.
@@ -15,6 +16,12 @@ They prove the refactor doesn't change the game.
   Re-recorded 2026-09-25 (plan C1) when the league became real: every rival
   fixture is simulated, so the rivals' points, the table order and every row's
   record and weekly points changed; the user's fixture list is unchanged.
-  Plan §3 allows one more re-record, in C5, once the balance is tuned.
+  Re-recorded 2026-09-26 (plan C5) by `npm run golden:engine`, which now derives
+  every file but `xis.json` from the current engine: the balance tuning moved
+  `compress`, `executionMultiplier`, the dial trade-offs, the identity bonuses
+  and five presets, so every profile changed (familiarity by a point for the
+  retuned presets) and the season inputs were re-derived from the same 20 XIs
+  and seeds. `profiles.json` changes with the tuning; `seasons.json` and
+  `league.json` in the commit after it, with the balance table.
 
 Compare through `JSON.parse(JSON.stringify(value))` — `toEqual` distinguishes `-0` from `0`.
