@@ -59,7 +59,7 @@ export default function MatchDay({ state, identity, familiarity, profile, clubNa
       )}
       <div className={styles.matchdayGrid}>
         {last && (
-          <Slip key={last.week} title="Last match">
+          <Slip key={last.week} title="Last match" animate>
             <MatchReport match={last} clubName={clubName} after={afterLine(last.week, you)} />
           </Slip>
         )}

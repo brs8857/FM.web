@@ -83,7 +83,7 @@ export default function Vidiprinter({ log, from = 1, season, instant, clubName, 
       <Ticker lines={lines.length ? lines : [{ id: 0, text: `SEASON ${season} · ${careerSeasonLabel(season).toUpperCase()} · WEEK ${from}`, tone: "muted" }]}
         label="Vidiprinter" announce={false} cursor={!done} />
       {atHalf && row && (
-        <Slip kicker="Half-season" title={`${ordinal(row.position)} at the turn`}>
+        <Slip kicker="Half-season" title={`${ordinal(row.position)} at the turn`} animate>
           <p className={styles.mono}>{t("season.record", row)} · {positionText(week, row)}</p>
           <p className={styles.lede}>Halfway. Look over the board, or carry on.</p>
           <Button onClick={continueHalf}>Continue</Button>

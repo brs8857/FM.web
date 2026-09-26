@@ -1,11 +1,10 @@
 import IconButton from "./IconButton.jsx";
 import { CloseIcon } from "./icons.jsx";
-import { cx } from "./cx.js";
 import styles from "./Callout.module.css";
 
 export default function Callout({ title, onDismiss, children }) {
   return (
-    <aside role="note" aria-label={title} className={cx(styles.callout, "slip")}>
+    <aside role="note" aria-label={title} className={styles.callout}>
       <div className={styles.body}>
         <strong className={styles.title}>{title}</strong>
         <p className={styles.text}>{children}</p>

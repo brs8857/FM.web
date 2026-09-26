@@ -46,7 +46,7 @@ import NextPill from "../ui/NextPill.jsx";
 import Button from "../ui/Button.jsx";
 import IconButton from "../ui/IconButton.jsx";
 import Sheet from "../ui/Sheet.jsx";
-import { HomeIcon } from "../ui/icons.jsx";
+import { MarkIcon } from "../ui/icons.jsx";
 import styles from "./App.module.css";
 
 const TITLES = { squad: "Squad", board: "Board", season: "Season", club: "Club" };
@@ -286,7 +286,7 @@ function Game({ dataset, storageProp, initialPrefs }) {
   return (
     <Shell mode="club" tab={nav.tab} onTab={goTab}
       title={TITLES[nav.tab]} subtitle={t("shell.season", { season: state.season, label: careerSeasonLabel(state.season) })}
-      start={<IconButton label="Home" onClick={() => navDispatch({ type: "HOME" })}><HomeIcon /></IconButton>}
+      start={<IconButton label="Home" onClick={() => navDispatch({ type: "HOME" })}><MarkIcon /></IconButton>}
       onBack={nav.history.length > 0 ? () => navDispatch({ type: "BACK" }) : undefined}
       next={<NextPill label={next.label} onClick={goNext} />}
       sticky={sticky ? (

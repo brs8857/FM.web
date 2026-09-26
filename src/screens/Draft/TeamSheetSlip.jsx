@@ -7,7 +7,7 @@ import styles from "./Draft.module.css";
 
 export default function TeamSheetSlip({ state, summary }) {
   return (
-    <Slip kicker="Team sheet" title={`Your XI · ${FORMATIONS[state.formationKey].label}`}>
+    <Slip kicker="Team sheet" title={`Your XI · ${FORMATIONS[state.formationKey].label}`} animate>
       <ul className={styles.rows}>
         {state.assignments.map((a) => <TeamSheetRow key={a.slotId} code={a.slotId} name={a.player.name} meta={playerMeta(a.player)} />)}
       </ul>

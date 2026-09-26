@@ -2,7 +2,7 @@ import { useId } from "react";
 import { cx } from "./cx.js";
 import styles from "./Slip.module.css";
 
-export default function Slip({ kicker, title, children, as: Tag = "section", animate = true, className }) {
+export default function Slip({ kicker, title, children, as: Tag = "section", animate = false, className }) {
   const id = useId();
   return (
     <Tag className={cx(styles.slip, animate && "slip", className)} aria-labelledby={title ? id : undefined}>

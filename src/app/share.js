@@ -8,12 +8,12 @@ function cssVar(name, fallback) {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
 }
 
-function wrap(ctx, text, maxWidth) {
-  const words = text.split(" ");
+function wrap(ctx, text, maxWidth, separator = " ") {
+  const words = text.split(separator);
   const lines = [];
   let line = "";
   for (const word of words) {
-    const candidate = line ? `${line} ${word}` : word;
+    const candidate = line ? `${line}${separator}${word}` : word;
     if (ctx.measureText(candidate).width > maxWidth && line) { lines.push(line); line = word; } else line = candidate;
   }
   if (line) lines.push(line);
@@ -22,36 +22,42 @@ function wrap(ctx, text, maxWidth) {
 
 export function renderSlip(ctx, slip) {
   const paper = cssVar("--paper", "#F4F4F0"), ink = cssVar("--ink", "#1A1B18"), ink2 = cssVar("--ink-2", "#4D5047");
-  const rule = cssVar("--rule", "#CDCFC5"), signal = cssVar("--signal", "#67A03E");
+  const rule = cssVar("--rule", "#CDCFC5");
   const display = '"Newsreader", Georgia, serif', body = '"Barlow", sans-serif', mono = '"Courier Prime", "Courier New", monospace';
   const margin = 80, width = SHARE_WIDTH - margin * 2;
   ctx.fillStyle = paper;
   ctx.fillRect(0, 0, SHARE_WIDTH, SHARE_HEIGHT);
-  ctx.fillStyle = signal;
-  ctx.fillRect(0, 0, SHARE_WIDTH, 18);
 
-  let y = margin + 40;
+  let y = margin + 50;
+  ctx.fillStyle = ink;
+  ctx.font = `800 64px ${display}`;
+  ctx.fillText(PRODUCT_NAME, margin, y);
   ctx.fillStyle = ink2;
-  ctx.font = `700 30px ${mono}`;
-  ctx.fillText(`${PRODUCT_NAME.toUpperCase()} · ${slip.kicker.toUpperCase()}`, margin, y);
-  y += 30;
-  ctx.fillStyle = rule;
-  ctx.fillRect(margin, y, width, 3);
+  ctx.font = `600 30px ${body}`;
+  ctx.textAlign = "right";
+  ctx.fillText(slip.kicker, SHARE_WIDTH - margin, y);
+  ctx.textAlign = "left";
+  y += 28;
+  ctx.fillStyle = ink;
+  ctx.fillRect(margin, y, width, 4);
+  ctx.fillRect(margin, y + 10, width, 2);
 
   y += 150;
   ctx.fillStyle = ink;
   ctx.font = `800 150px ${display}`;
   for (const line of wrap(ctx, slip.headline, width)) { ctx.fillText(line, margin, y); y += 140; }
 
-  y += 10;
+  y -= 40;
   ctx.font = `400 42px ${body}`;
   ctx.fillStyle = ink2;
   for (const line of wrap(ctx, slip.standfirst, width)) { ctx.fillText(line, margin, y); y += 54; }
 
   y += 40;
   ctx.fillStyle = ink;
-  ctx.font = `700 44px ${mono}`;
-  ctx.fillText(slip.record, margin, y);
+  ctx.font = `700 40px ${mono}`;
+  const record = wrap(ctx, slip.record, width, " · ");
+  record.forEach((line, i) => ctx.fillText(line, margin, y + i * 48));
+  y += (record.length - 1) * 48;
   if (slip.topScorer) {
     y += 50;
     ctx.fillStyle = ink2;

@@ -382,3 +382,40 @@ Logged, not changed:
 - `src/pitch/**` (the bench label and the "empty" slot label now render in
   Courier Prime through the mono token) is left to the orchestrator's
   chalkboard work.
+
+### 2.7 Icons, motion and imagery (V4, V5)
+
+Found:
+- **Motion on everything**: every `Slip` (the Home resume card, the
+  career-complete record), every coach's note and every opened fold faded
+  and slid in 8 px, whether or not anything had arrived. The one easing,
+  `cubic-bezier(0.2, 0, 0, 1)`, is Material 3's stock curve.
+- **Icons**: a generic 2 px line set in the Feather/Lucide manner. Most
+  are the controls every app has (back, close, chevron, plus, minus,
+  copy) and the share glyph is the iOS one on purpose (it opens the system
+  share sheet). The Home control was a stock house, where spec 04 §4.1 has
+  "the top-bar mark" take you home. No emoji or sparkles anywhere; the ✓
+  redraw ticks and the vidiprinter's block cursor are in-voice.
+- **The share slip** opened with an 18 px band of signal colour and set its
+  strap in uppercase mono, and its record line ran off the right edge of
+  the 1080 px image ("· 43 pts · 14" and no more) whenever the record was
+  long. The app icon still used the old slate and chalk.
+
+Changed (commit below):
+- Slips are still unless they arrive: a new match report, the half-season
+  stop and the finished team sheet slide in; sheets and toasts keep it;
+  notes, folds and resting slips no longer move. Two curves replace the
+  Material one: `--ease` (a slip of paper lands fast and settles) and
+  `--ease-stamp` (a stamp accelerates into the page), used by the reveal.
+- The Home button is the XI mark with its chalk underline (`MarkIcon`),
+  still labelled "Home".
+- The share slip is set like the back page: "Era XI" as a nameplate with
+  the season as its strap, a double rule, the headline, and the record
+  wrapped at its " · " breaks so it always fits. The signal band is gone.
+- `scripts/make-icons.mjs` uses the new slate and chalk; `npm run icons`
+  regenerated `public/icon.svg` and the four PNGs.
+
+Logged, not changed:
+- The XI mark's strokes have round caps (the rasteriser draws capsules),
+  which reads friendlier than chalk or print; squaring them means
+  rewriting the rasteriser's distance function.

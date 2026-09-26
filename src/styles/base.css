@@ -198,7 +198,7 @@ code {
   animation: type calc(var(--motion-type) * var(--type-blocks, 20)) steps(var(--type-blocks, 20), end) both;
 }
 .stamp {
-  animation: stamp calc(var(--motion-stamp) + var(--motion-stamp-hold)) var(--ease) both;
+  animation: stamp calc(var(--motion-stamp) + var(--motion-stamp-hold)) var(--ease-stamp) both;
 }
 
 @media (prefers-reduced-motion: reduce) {

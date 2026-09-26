@@ -1,6 +1,5 @@
 import { useId, useState } from "react";
 import { ChevronIcon } from "./icons.jsx";
-import { cx } from "./cx.js";
 import styles from "./Disclosure.module.css";
 
 export default function Disclosure({ title, summary, defaultOpen = false, open: controlled, onToggle, children }) {
@@ -22,7 +21,7 @@ export default function Disclosure({ title, summary, defaultOpen = false, open: 
           <ChevronIcon open={open} />
         </button>
       </h3>
-      <div id={id} hidden={!open} className={cx(styles.panel, open && "slip")}>{children}</div>
+      <div id={id} hidden={!open} className={styles.panel}>{children}</div>
     </section>
   );
 }

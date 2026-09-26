@@ -21,8 +21,8 @@ export function PlusIcon() {
 export function ArrowIcon() {
   return <svg {...base}><path d="M4 10h12M11 5l5 5-5 5" /></svg>;
 }
-export function HomeIcon() {
-  return <svg {...base}><path d="M3 9.5 10 4l7 5.5V16a1 1 0 0 1-1 1h-4v-5H8v5H4a1 1 0 0 1-1-1z" /></svg>;
+export function MarkIcon() {
+  return <svg {...base}><path d="M4 3.5l7 9M11 3.5l-7 9M15.5 3.5v9" /><path d="M3.5 16.5h13" strokeWidth="1.5" /></svg>;
 }
 export function ShareIcon() {
   return <svg {...base}><path d="M10 3v9M6.5 6.5 10 3l3.5 3.5M4 11v5a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-5" /></svg>;

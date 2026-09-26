@@ -4,8 +4,8 @@
 import { writeFileSync, mkdirSync } from "node:fs";
 import { deflateSync } from "node:zlib";
 
-const SLATE = [0x1e, 0x3d, 0x2f];
-const CHALK = [0xf7, 0xf3, 0xea];
+const SLATE = [0x1d, 0x3a, 0x2c];
+const CHALK = [0xf3, 0xf2, 0xea];
 const OUT = "public/icons";
 
 // The mark on a 0–1 square: segments as [x1, y1, x2, y2, halfWidth].
@@ -95,7 +95,7 @@ export function encodePng(size, pixels) {
 export function svgMark() {
   const segments = mark(0.06);
   const lines = segments.map(([x1, y1, x2, y2, w]) => `<line x1="${x1 * 100}" y1="${y1 * 100}" x2="${x2 * 100}" y2="${y2 * 100}" stroke-width="${w * 200}"/>`).join("");
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="#1E3D2F"/><g stroke="#F7F3EA" stroke-linecap="round">${lines}</g></svg>\n`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="#1D3A2C"/><g stroke="#F3F2EA" stroke-linecap="round">${lines}</g></svg>\n`;
 }
 
 const ICONS = [
