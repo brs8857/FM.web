@@ -26,12 +26,13 @@ export function resultLine(match, clubName) {
 }
 
 // The running position: your points so far against each rival's points
-// after the same week.
+// after the same week. Only points are kept week by week, so a tie goes your
+// way until the final week, where the table's goal-difference order stands.
 export function runningPosition(simulation, week) {
   const played = simulation.matches.slice(0, week);
   const pts = played.reduce((sum, m) => sum + (m.outcome === "W" ? 3 : m.outcome === "D" ? 1 : 0), 0);
   const rivals = simulation.table.filter((r) => !r.isUser).map((r) => (week > 0 ? r.weekly[week - 1] : 0));
-  const position = 1 + rivals.filter((p) => p > pts).length;
+  const position = week >= simulation.matches.length ? simulation.position : 1 + rivals.filter((p) => p > pts).length;
   const w = played.filter((m) => m.outcome === "W").length, d = played.filter((m) => m.outcome === "D").length, l = played.length - w - d;
   return { pts, position, w, d, l };
 }

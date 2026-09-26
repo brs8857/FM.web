@@ -25,6 +25,7 @@ jobs:
       - run: npm run lint
       - run: npm run check:contrast
       - run: npm test
+      - run: npm run sim -- 1000 --assert
       - run: npm run build
       - run: npm run check:bundle
       - run: npm run build:standalone

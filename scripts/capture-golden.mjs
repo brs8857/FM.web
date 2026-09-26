@@ -1,6 +1,6 @@
 // Records engine outputs as golden-master files.
 //   node scripts/capture-golden.mjs            -> all four files from the v1 source (6495fb8)
-// Task 10 adds an --engine mode that re-records seasons/league from src/engine.
+//   node scripts/capture-golden.mjs --engine   -> profiles/seasons/league from src/engine (plan C5)
 import { execSync } from "node:child_process";
 import { mkdirSync, writeFileSync, readFileSync } from "node:fs";
 import { join } from "node:path";
@@ -98,23 +98,31 @@ function writeGolden(outDir, files) {
   }
 }
 
+// Records profiles, seasons and league from src/engine: the same 20 XIs and
+// seed-to-XI mapping as the v1 capture, run through today's engine.
 async function recordFromEngine(outDir) {
+  const { STYLE_PRESETS } = await import("../src/engine/instructions.js");
+  const { computeFamiliarity } = await import("../src/engine/familiarity.js");
+  const { computeTeamProfile } = await import("../src/engine/tactics.js");
+  const { tacticalReadout } = await import("../src/engine/readout.js");
   const { simulateSeason } = await import("../src/engine/season.js");
   const { applyPromotionRelegation } = await import("../src/engine/league.js");
   const { createRng } = await import("../src/engine/rng.js");
+  const E = { STYLE_PRESETS, computeFamiliarity, computeTeamProfile, tacticalReadout };
   const players = JSON.parse(readFileSync("src/data/players.json", "utf8"));
   const championship = JSON.parse(readFileSync("src/data/championship.json", "utf8"));
-  const inputs = JSON.parse(readFileSync("tests/golden/seasons.json", "utf8"));
-  const seasons = inputs.map(({ seed, xiIndex, style, familiarity, profile }) => ({
-    seed, xiIndex, style, familiarity, profile,
-    result: simulateSeason(profile, familiarity, players.opponents, createRng(seed)),
+  const xis = JSON.parse(readFileSync("tests/golden/xis.json", "utf8"));
+  const profiles = captureProfiles(E, xis);
+  const seasons = seasonInputs(E, xis).map((input) => ({
+    ...input,
+    result: simulateSeason(input.profile, input.familiarity, players.opponents, createRng(input.seed)),
   }));
   const league = seasons.map((s) => ({
     seed: 1000 + s.seed,
     table: s.result.table,
     result: applyPromotionRelegation(players.opponents, s.result.table, championship, createRng(1000 + s.seed)),
   }));
-  writeGolden(outDir, { "seasons.json": seasons, "league.json": league });
+  writeGolden(outDir, { "profiles.json": profiles, "seasons.json": seasons, "league.json": league });
 }
 
 async function main() {

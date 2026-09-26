@@ -26,6 +26,14 @@ describe("tooling", () => {
     expect(BUDGET_KB).toBe(120);
   });
 
+  it("holds the balance report to the plan's C5 thresholds", async () => {
+    const { THRESHOLDS, violations } = await import("../../scripts/sim.mjs");
+    expect(THRESHOLDS).toEqual({ title: [12, 45], bottomThree: [3, 12] });
+    const row = (strategy, titlePct, bottom3Pct) => ({ formation: "4-3-3", strategy, style: "counter", avgPts: 60, titlePct, bottom3Pct });
+    expect(violations([row("best", 12, 0), row("best", 45, 0), row("random", 0, 3), row("random", 60, 12)])).toEqual([]);
+    expect(violations([row("best", 45.3, 0), row("best", 11.8, 0), row("random", 0, 2.8), row("random", 0, 12.3)])).toHaveLength(4);
+  });
+
   it("normalises line endings to LF", () => {
     expect(readFileSync(".gitattributes", "utf8")).toMatch(/^\* text=auto eol=lf$/m);
   });
