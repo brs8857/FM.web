@@ -224,7 +224,7 @@ function Game({ dataset, storageProp, initialPrefs }) {
     }
     else if (nav.mode === "draft") { if (state.draftDone) dispatch({ type: "SKIP_TO_TACTICS" }); }
     else if (sticky) sticky.run();
-    else goNext();
+    else if (feed == null) goNext();
   };
   const draw = () => {
     if (nav.mode === "draft" && !state.draftDone && !state.draw.spinning && state.draw.options.length === 0) dispatch({ type: "DRAW" });
@@ -288,7 +288,7 @@ function Game({ dataset, storageProp, initialPrefs }) {
       title={TITLES[nav.tab]} subtitle={t("shell.season", { season: state.season, label: careerSeasonLabel(state.season) })}
       start={<IconButton label="Home" onClick={() => navDispatch({ type: "HOME" })}><MarkIcon /></IconButton>}
       onBack={nav.history.length > 0 ? () => navDispatch({ type: "BACK" }) : undefined}
-      next={<NextPill label={next.label} onClick={goNext} />}
+      next={feed == null ? <NextPill label={next.label} onClick={goNext} /> : undefined}
       sticky={sticky ? (
         <div className={styles.stickyRow}>
           <Button block onClick={sticky.run}>{sticky.label}</Button>
@@ -299,7 +299,7 @@ function Game({ dataset, storageProp, initialPrefs }) {
       {nav.tab === "board" && <BoardTab state={state} dispatch={dispatch} profile={profile} suspended={suspended} familiarity={familiarity} clubSeason={clubSeason} revealed={revealed} prefs={prefs} onDismissNote={markSeen} />}
       {nav.tab === "season" && (
         <SeasonTab state={state} dispatch={dispatch} identity={identity} familiarity={familiarity} profile={profile} tacticUntouched={tacticUntouched(state)}
-          instant={instant} feed={feed} onFeedDone={onFeedDone} careerCode={careerCode}
+          instant={reducedMotion} revealInstant={instant} feed={feed} onFeedDone={onFeedDone} careerCode={careerCode}
           clubSeason={clubSeason} clubName={clubName} prefs={prefs} onDismissNote={markSeen} onGoBoard={() => goTab("board")} onGoTab={goTab} />
       )}
       {nav.tab === "club" && (
