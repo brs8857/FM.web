@@ -4,7 +4,7 @@ import { ROLES, defaultRoleFor, defaultDutyFor } from "../engine/roles.js";
 import { STYLE_PRESETS } from "../engine/instructions.js";
 import { createSquadLookup, buildPool } from "../engine/players.js";
 import { computeTeamProfile } from "../engine/tactics.js";
-import { computeFamiliarity, nextMemory, EMPTY_MEMORY } from "../engine/familiarity.js";
+import { computeFamiliarity, nextMemory } from "../engine/familiarity.js";
 import { identityKey } from "../engine/tactics.js";
 import { simulateSeason } from "../engine/season.js";
 import { applyPromotionRelegation } from "../engine/league.js";
@@ -21,8 +21,8 @@ const idleDraw = (draw) => ({ ...draw, spinning: false, options: [] });
 function affordableSigning(state, index) {
   const entry = state.shortlist[index];
   if (!entry || entry.signed) return null;
-  const cost = entry.cost ?? 0;
-  const transferBudget = state.transferBudget ?? { points: cost, spent: 0 };
+  const { cost } = entry;
+  const { transferBudget } = state;
   if (cost > budgetLeft(transferBudget)) return null;
   const draftedIds = new Set(state.draftedIds); draftedIds.add(entry.player.id);
   return {
@@ -219,7 +219,7 @@ export function createReducer(dataset) {
           ...a,
           roleObj: ROLES[a.type].find((r) => r.key === a.role),
         })).map((a) => ({ ...a, role: a.roleObj }));
-        const memory = state.cohesionMemory ?? EMPTY_MEMORY;
+        const memory = state.cohesionMemory;
         const familiarity = computeFamiliarity(assignmentsWithRole, state.instructions, state.formationKey, memory);
         const profile = computeTeamProfile(assignmentsWithRole, state.instructions, familiarity);
         const simulation = simulateSeason(profile, familiarity, state.opponents, rng);

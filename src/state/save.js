@@ -1,12 +1,14 @@
 import { FORMATIONS } from "../engine/formations.js";
 import { careerSeasonLabel, CAREER_SEASONS } from "../engine/season.js";
 import { STAT_KEYS } from "../engine/players.js";
+import { EMPTY_MEMORY } from "../engine/familiarity.js";
+import { wageCost, windowBudget } from "../engine/squad.js";
 import { STYLE_PRESETS } from "../engine/instructions.js";
 import { REDRAWS } from "./initialState.js";
 import legacyClubIds from "../data/legacyClubIds.json";
 import { PRODUCT_NAME } from "../content/product.js";
 
-export const SAVE_VERSION = 2;
+export const SAVE_VERSION = 3;
 export const APP_ID = "fm-web"; // the envelope id from 1.1.0, kept so old saves load
 export const SAVE_ERRORS = {
   notFmWeb: `This isn't an ${PRODUCT_NAME} save.`,
@@ -65,7 +67,42 @@ const migrations = {
     const state = rekeyState({ ...rest, draw: { spinning: false, options, redrawsLeft: REDRAWS }, seasonHistory: [] });
     return { ...save, saveVersion: 2, state };
   },
+  // v2 (2.0.0): nobody aged, no system was remembered, the window was free.
+  // Ages stand as recorded and start moving next summer; the memory is the
+  // run of seasons in the latest named identity (an unnamed one left no
+  // record of which it was, so it starts afresh); an open window gets what
+  // its finish earns, less the cost of anyone already signed.
+  2(save) {
+    const s = save.state;
+    const aged = (e) => (isObject(e) && isObject(e.player) ? { ...e, player: { ...e.player, age: typeof e.player.age === "number" ? e.player.age : null } } : e);
+    const shortlist = Array.isArray(s.shortlist) ? s.shortlist.map((e) => (isObject(e) && isObject(e.player) ? { ...aged(e), cost: wageCost(e.player) } : e)) : s.shortlist;
+    let transferBudget = null;
+    if (s.phase === "transfer" && Array.isArray(shortlist)) {
+      const points = windowBudget(s.simulation?.position ?? 20);
+      const signed = shortlist.filter((e) => e?.signed).reduce((sum, e) => sum + e.cost, 0);
+      transferBudget = { points, spent: Math.min(points, signed) };
+    }
+    const state = {
+      ...s,
+      assignments: Array.isArray(s.assignments) ? s.assignments.map(aged) : s.assignments,
+      bench: Array.isArray(s.bench) ? s.bench.map(aged) : s.bench,
+      shortlist,
+      transferBudget,
+      cohesionMemory: rememberedSystem(s),
+    };
+    return { ...save, saveVersion: 3, state };
+  },
 };
+
+export function rememberedSystem(state) {
+  const played = Array.isArray(state.seasonHistory) ? state.seasonHistory.map((h) => h?.identity ?? null) : [];
+  if ((state.phase === "reveal" || state.phase === "result") && isObject(state.simulation)) played.push(state.simulation.profile?.synergyLabel ?? null);
+  const last = played.at(-1);
+  if (!last) return { ...EMPTY_MEMORY };
+  let seasons = 0;
+  while (seasons < played.length && played[played.length - 1 - seasons] === last) seasons++;
+  return { formationKey: state.formationKey, styleKey: last, seasons };
+}
 
 export function serializeState(state) {
   return { ...state, draftedIds: [...state.draftedIds] };
@@ -153,6 +190,11 @@ function isSeasonSummary(s) {
     && typeof s.tier === "string" && (s.identity === null || typeof s.identity === "string") && isUint32(s.seed);
 }
 
+function isMemory(m) {
+  return isObject(m) && (m.formationKey === null || typeof m.formationKey === "string")
+    && (m.styleKey === null || typeof m.styleKey === "string") && Number.isInteger(m.seasons) && m.seasons >= 0;
+}
+
 function isValidState(s) {
   if (!isObject(s)) return false;
   if (!Object.hasOwn(PHASE_LABELS, s.phase)) return false;
@@ -170,8 +212,9 @@ function isValidState(s) {
   if (!Array.isArray(s.draftedIdentities)) return false;
   if (!isDraw(s.draw)) return false;
   if (!Array.isArray(s.seasonHistory) || !s.seasonHistory.every(isSeasonSummary)) return false;
-  if (!Array.isArray(s.shortlist) || !s.shortlist.every((e) => isObject(e) && isPlayer(e.player) && (e.cost === undefined || Number.isInteger(e.cost)))) return false;
-  if (s.transferBudget !== undefined && s.transferBudget !== null && !(isObject(s.transferBudget) && Number.isInteger(s.transferBudget.points) && Number.isInteger(s.transferBudget.spent))) return false;
+  if (!Array.isArray(s.shortlist) || !s.shortlist.every((e) => isObject(e) && isPlayer(e.player) && Number.isInteger(e.cost))) return false;
+  if (s.transferBudget !== null && !(isObject(s.transferBudget) && Number.isInteger(s.transferBudget.points) && Number.isInteger(s.transferBudget.spent))) return false;
+  if (!isMemory(s.cohesionMemory)) return false;
   if (!isObject(s.instructions)) return false;
   if (!isUint32(s.careerSeed) || !Number.isInteger(s.rngCounter) || s.rngCounter < 0) return false;
   if (!Number.isInteger(s.season) || s.season < 1 || s.season > CAREER_SEASONS) return false;

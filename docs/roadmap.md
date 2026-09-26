@@ -1,6 +1,6 @@
 # FM.WEB Roadmap
 
-_Created 2026-09-11. Updated 2026-09-25 (redesign and commercial release series). Living document: update it when a phase starts, ships, or changes scope._
+_Created 2026-09-11. Updated 2026-09-26 (career depth, part 1 built). Living document: update it when a phase starts, ships, or changes scope._
 
 **A phase isn't finished until it's shipped and tested** (see [Definition of done](#definition-of-done)).
 Each phase gets its own design cycle before any code is written:
@@ -11,8 +11,8 @@ Each phase gets its own design cycle before any code is written:
 |---|---|---|---|
 | 1A | Foundation | v1.1 | Shipped 2026-09-13 |
 | 1B | ~~Reach & Polish~~ → **Redesign** ("Back page and chalkboard") | v2.0 | Built 2026-09-25 (milestones A and B; tagged v2.0.0); device checklist and owner sign-off outstanding |
-| 1C | Career depth, part 1 (moved forward from Phase 2) | v2.5 | Specced in 06 §1; next |
-| 1D | App Store release (free + one-time unlock) | v3.0 | Specced in 05; waiting on 1C |
+| 1C | Career depth, part 1 (moved forward from Phase 2) | v2.5 | Built 2026-09-26 (milestone C; tagged v2.5.0); owner review of the balance table outstanding |
+| 1D | App Store release (free + one-time unlock) | v3.0 | Specced in 05; next |
 | 2 | Deeper Career + Sharper Draft & Tactics (remainder) | v4.0 | Waiting on 1D |
 | 3 | Match-Day Experience | v5.0 | Waiting on Phase 2 |
 
@@ -122,6 +122,13 @@ transfer window and a balance threshold in CI ([spec 06 §1](superpowers/specs/2
 The App Store release then wraps the web app with Capacitor, sells a single non-consumable
 unlock, and keeps the web build as the free tier ([spec 05](superpowers/specs/2026-09-25-05-commercial-readiness.md)).
 Tasks are milestones C–E of the plan. The items marked _(moved to 1C)_ below are no longer Phase 2 work.
+
+_1C built 2026-09-26 (v2.5.0):_ every fixture played, ageing and retirement at 36, cohesion
+memory, an eight-candidate window costed in wage points, the balance thresholds asserted in CI
+(`npm run sim -- 1000 --assert`; the table is in the C5 commit messages), save format v3 and a
+ten-season soak test. The thresholds hold with little room: a random 4-2-3-1 plays about five
+points a season better than a random 4-3-3 in every style, which uses most of the relegation
+window, so any engine change is likely to need a re-tune.
 
 ---
 
