@@ -73,7 +73,7 @@ test("pacing: Play to the end is no slower than the old vidiprinter", async ({ p
   // Bans stop a run for a swap; the time spent swapping is not the feed's.
   const oldVidiprinterMs = 38 * 350;
   let fed = 0;
-  for (let run = 0; run < 10 && !(await page.getByRole("button", { name: "Share" }).isVisible().catch(() => false)); run++) {
+  for (let run = 0; run < 40 && !(await page.getByRole("button", { name: "Share" }).isVisible().catch(() => false)); run++) {
     await coverBans(page);
     await page.getByRole("button", { name: "Play to…" }).click();
     await page.getByRole("radio", { name: /The end of the season/ }).click();

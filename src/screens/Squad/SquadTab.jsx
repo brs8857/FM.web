@@ -2,15 +2,16 @@ import { useState } from "react";
 import Chalkboard from "../../pitch/Chalkboard.jsx";
 import TeamSheetRow from "../../ui/TeamSheetRow.jsx";
 import CoachNote from "../../app/CoachNote.jsx";
-import PlayerSheet from "./PlayerSheet.jsx";
+import PlayerSheet, { BAN_MARK } from "./PlayerSheet.jsx";
 import { POSITION_LABEL, roleLabel, briefLabel } from "../../content/labels.js";
 import { playerMeta } from "../Draft/CuttingSheet.jsx";
+import { isBanned } from "../../state/selectors.js";
 import layout from "../TabLayout.module.css";
 
 // A banned starter's mark outranks an off-position one: it blocks Play.
 function markFor(a, suspended) {
   if (!a.player) return undefined;
-  if (suspended?.has(a.player.id)) return { label: "ban", title: "Suspended for the next match" };
+  if (suspended?.has(a.player.id)) return BAN_MARK;
   return a.player.slot !== a.type ? { label: "off", title: `Not a ${POSITION_LABEL[a.type].toLowerCase()}` } : undefined;
 }
 
@@ -42,6 +43,7 @@ export default function SquadTab({ state, dispatch, clubSeason, revealed, suspen
             <ul className={layout.rows}>
               {state.bench.map((b, i) => b.player && (
                 <TeamSheetRow key={i} code={b.player.slot} name={b.player.name} meta={playerMeta(b.player)}
+                  mark={isBanned(state, b.player) ? BAN_MARK : undefined}
                   selected={target?.kind === "bench" && target.id === i} onClick={() => open("bench", i)} />
               ))}
             </ul>
