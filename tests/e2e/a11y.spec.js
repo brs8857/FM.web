@@ -29,11 +29,11 @@ test("every screen passes axe and never scrolls sideways", async ({ page }) => {
   await snap(page, "colours");
   await page.getByRole("button", { name: "Start the draft" }).click();
   await page.getByRole("button", { name: "Draw", exact: true }).click();
-  await expect(page.getByRole("button", { name: /Club season/ }).first()).toBeVisible({ timeout: 10_000 });
+  await expect(page.getByRole("list", { name: "Cuttings" }).getByRole("button").first()).toBeVisible({ timeout: 10_000 });
   await expectAxeClean(page, "draft");
   await expectNoHorizontalScroll(page);
   await snap(page, "draft");
-  await page.getByRole("button", { name: /Club season/ }).first().click();
+  await page.getByRole("list", { name: "Cuttings" }).getByRole("button").first().click();
   await expectAxeClean(page, "cutting sheet");
   await page.getByRole("button", { name: "Close" }).click();
   await draftFullXI(page);
@@ -101,7 +101,7 @@ test("the dark theme and 200% zoom keep every control reachable", async ({ page 
   await expectNoHorizontalScroll(page);
   await page.getByRole("button", { name: "Start the draft" }).click();
   await page.getByRole("button", { name: "Draw", exact: true }).click();
-  await expect(page.getByRole("button", { name: /Club season/ }).first()).toBeVisible({ timeout: 10_000 });
+  await expect(page.getByRole("list", { name: "Cuttings" }).getByRole("button").first()).toBeVisible({ timeout: 10_000 });
   await expectNoHorizontalScroll(page);
 });
 

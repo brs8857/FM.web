@@ -31,7 +31,7 @@ test("an exported save imports into a fresh browser from Home", async ({ page, b
   await openHome(fresh, page.url().replace(/\?.*$/, ""));
   await fresh.getByRole("button", { name: "Saves" }).click();
   await fresh.getByTestId("import-save-input").setInputFiles(savePath);
-  await expect(fresh.getByRole("tab", { name: "Season", selected: true })).toBeVisible();
+  await expect(fresh.getByRole("tab", { name: "Board", selected: true })).toBeVisible();
   await expect(fresh.getByRole("button", { name: "Kick off season 1" }).first()).toBeVisible();
   await freshContext.close();
 });

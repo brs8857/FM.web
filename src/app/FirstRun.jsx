@@ -12,7 +12,7 @@ export const FIRST_RUN_NOTE = "first-run";
 const SLIPS = [
   {
     key: "cutting", text: "Every pick is a draw of three club-seasons from the archive. You take one player from one of them.",
-    visual: <Cutting kicker="Club season" title="Leeds United 2000-01" subtitle="2 centre-backs" />,
+    visual: <Cutting title="Leeds United 2000-01" subtitle="2 centre-backs" />,
   },
   {
     key: "marker", text: "Ratings stay hidden until kick-off. Your board is chalk on slate: drag anyone anywhere.",

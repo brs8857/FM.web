@@ -28,7 +28,7 @@ export async function draftFullXI(page, { onPick } = {}) {
   for (let pick = 0; pick < 11; pick++) {
     const draw = page.getByRole("button", { name: "Draw", exact: true });
     await draw.click();
-    const cuttings = page.getByRole("button", { name: /Club season/ });
+    const cuttings = page.getByRole("list", { name: "Cuttings" }).getByRole("button");
     await expect(cuttings.first()).toBeVisible({ timeout: 10_000 });
     if (onPick) await onPick(page, pick);
     await cuttings.first().click();
@@ -64,7 +64,7 @@ export async function coverBans(page) {
     await page.getByRole("tab", { name: "Squad" }).click();
     await page.getByRole("button", { name: /Suspended for the next match/ }).first().click();
     await page.getByRole("button", { name: "Swap with…" }).click();
-    await page.getByRole("region", { name: "Swap with" }).getByRole("button").last().click();
+    await page.getByRole("region", { name: "Swap with" }).getByRole("listitem").last().getByRole("button").click();
     await page.getByRole("tab", { name: "Season" }).click();
   }
 }

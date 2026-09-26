@@ -14,6 +14,6 @@ test("an offline reload still drafts", async ({ page, context, browserName }) =>
   await expect(page.getByRole("heading", { level: 1, name: "Era XI" })).toBeVisible();
   await startNewCareer(page);
   await page.getByRole("button", { name: "Draw", exact: true }).click();
-  await expect(page.getByRole("button", { name: /Club season/ }).first()).toBeVisible({ timeout: 10_000 });
+  await expect(page.getByRole("list", { name: "Cuttings" }).getByRole("button").first()).toBeVisible({ timeout: 10_000 });
   await context.setOffline(false);
 });

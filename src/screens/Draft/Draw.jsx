@@ -52,10 +52,10 @@ export default function Draw({ draw, slotType, eraIndex, instant, selected, labe
 
       {!draw.spinning && landed && (
         <>
-          <ul className={styles.cuttings}>
+          <ul className={styles.cuttings} aria-label="Cuttings">
             {draw.options.map((o, i) => (
               <li key={`${o.year}_${o.clubId}`}>
-                <Cutting kicker="Club season" title={labelFor(o)} selected={selected === i} onOpen={() => onOpen(i)}
+                <Cutting title={labelFor(o)} selected={selected === i} onOpen={() => onOpen(i)}
                   subtitle={o.relaxed ? "Showing everyone" : t("draft.eligible", { count: o.players.length, position })}
                   note={o.relaxed ? t("draft.relaxed", { position }) : undefined} />
               </li>
