@@ -51,13 +51,13 @@ export default class ErrorBoundary extends Component {
     return (
       <div role="alert" className={styles.screen}>
         <div className={styles.panel}>
-          <h1 className={styles.title}>Something went wrong</h1>
+          <h1 className={styles.title}>Match abandoned</h1>
           <p className={styles.text}>{String(error.message || error)}</p>
           <p className={`${styles.meta} mono`}>Version {APP_VERSION} · Career seed {careerSeed}</p>
           <div className={styles.actions}>
             <Button onClick={reload}>Reload</Button>
             {rawSave !== null && <Button variant="secondary" onClick={() => exportFn(rawSave, `${EXPORT_PREFIX}-save.json`)}>Export save</Button>}
-            <Button variant="secondary" onClick={startNewGame}>Start new game</Button>
+            <Button variant="secondary" onClick={startNewGame}>Start a new career</Button>
           </div>
         </div>
       </div>

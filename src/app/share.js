@@ -98,7 +98,7 @@ export async function shareSlip(slip, { nav = navigator, doc = document, createC
   renderSlip(ctx, slip);
   const blob = await toBlob(canvas);
   const file = new File([blob], `${slip.fileName}.png`, { type: "image/png" });
-  const text = `${slip.headline} — ${slip.record}. Career code ${slip.code} ${SHARE_TAG}`;
+  const text = `${slip.headline}: ${slip.record}. Career code ${slip.code} ${SHARE_TAG}`;
   if (nav.canShare?.({ files: [file] })) {
     try {
       await nav.share({ files: [file], text, title: PRODUCT_NAME });

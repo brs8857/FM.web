@@ -21,15 +21,15 @@ export default function DatasetGate({ load, children }) {
   if (result.status === "error") {
     return (
       <div className={styles.screen} role="alert">
-        <p className={styles.text}>Couldn't load player data. Check your connection.</p>
-        <Button onClick={() => setAttempt((a) => a + 1)}>Retry</Button>
+        <p className={styles.text}>The archive didn't load. Check your connection.</p>
+        <Button onClick={() => setAttempt((a) => a + 1)}>Try again</Button>
       </div>
     );
   }
 
   return (
     <div className={styles.screen}>
-      <p role="status" className={styles.text}>Loading player data…</p>
+      <p role="status" className={styles.text}>Opening the archive…</p>
     </div>
   );
 }

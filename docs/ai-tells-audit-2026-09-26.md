@@ -146,3 +146,111 @@ Logged, not changed:
 - `seasonKey` is parsed to a year in three places (`engine/identity.js`,
   `engine/familiarity.js` with a defensive `"2010_0"` default, and
   `state/selectors.js`). Unifying touches the engine.
+
+### 2.3 Copy (W1–W6)
+
+The voice to hit is spec 04's: a back page and a chalkboard, British
+English, sentence case, short, no exclamation marks. Most of the screen
+copy already had it ("Comfortable and safe, and forgotten by August",
+"hung up the boots", "Hidden through the draft and the board. This is
+what you built."). The tells were concentrated in a few places.
+
+Found and changed:
+- **Job descriptions** (`engine/roles.js`, shown on every player sheet):
+  33 pundit blurbs built on em dashes, name-drops and hype ("the
+  Pirlo/Busquets archetype", "a Guardiola-era staple", "the engine room
+  enforcer", "a relentless every-blade-of-grass outlet", "No weaknesses in
+  his game"). Rewritten as one plain line each, in the voice of a
+  programme's player notes ("Heads it, blocks it, clears it. No interest
+  in playing out from the back.", "Chalk on his boots: pace in behind and
+  crosses from the byline."). The three brief descriptions likewise.
+  Copy only; the weights beside them are untouched.
+- **Style preset descriptions** (`engine/instructions.js`): seven long
+  blurbs ("Klopp-school counter-pressing…") that no screen shows. Removed.
+- **Software voice in the coach's notes and term sheets**: "what the
+  engine sees in your dials", "runs a batch", "the style the engine
+  recognises", "a bonus in the simulation", plus "devastating" and
+  "high-risk, high-reward". Rewritten to talk about the side, not the sim.
+- **A headline contradicted by its standfirst**: 8th place is headlined
+  "Just outside Europe" but the standfirst said "Just enough for a
+  European place". Now "Eighth: one place short of Europe, and a summer to
+  wonder where the points went." "Relegated" now admits the XI stays up
+  ("Bottom three. Any other club would be going down; this XI gets
+  another go."); two standfirsts lost their press-release tone.
+- **Design-doc language on screen**: the half-season slip said "A stopping
+  point." (the spec's term); now "Halfway. Look over the board, or carry
+  on." Pre-season said "at kick-off" twice in two sentences; merged.
+- **Generic app copy**: the crash screen was "Something went wrong" /
+  "Start new game"; now "Match abandoned" / "Start a new career" (the
+  game says career everywhere else). The loading screen said "Loading
+  player data…" / "Couldn't load player data" / "Retry"; now "Opening the
+  archive…" / "The archive didn't load" / "Try again".
+- **A dead end**: About told players to "see the project's data notes",
+  which they can't open. It now says what the ratings are made from.
+- **Registry names**: the archive stores "Arsenal FC", "AFC Bournemouth",
+  "Sunderland AFC" and "Wimbledon FC (- 2004)", and the game printed them
+  as-is, including in the colour picker. `clubName()` now prints them as
+  a back page would ("Arsenal 2003-04", "Wimbledon"); saves and keys keep
+  the stored names. The draw's ticker printed the index's stored labels,
+  so it also ignored the edited-names setting; it now uses the same label
+  as the cuttings.
+- **Punctuation**: scores used a spaced em dash ("Your XI 0 — 2 AFC
+  Bournemouth"); now an en dash, as printed results are ("Your XI 0–2
+  Bournemouth"). Goal difference printed a hyphen for minus; it now uses
+  the true minus the rest of the game uses. The share caption's em dash
+  became a colon.
+- **Store copy**: `package.json`'s description (em dash, three-part list)
+  and `index.html`'s meta description shortened; README says saves happen
+  after every match, and "engineered from" became "worked out from".
+- **Settings**: "every layout is tested at 200%" was a QA claim, not a
+  setting; cut. See 2.3.1 for the Haptics toggle.
+
+#### 2.3.1 Product (P1–P3)
+- **Haptics toggle** (P1): stored a preference nothing reads; the web app
+  has no haptics and the native build doesn't exist yet. Removed from
+  Settings; the `haptics` key stays in `prefs.js`, so it can come back
+  with the Capacitor build without a migration.
+- `tierLabel()` passed through the engine's Tailwind colour names
+  (`amber`, `emerald`, `sky`, `violet`, `slate`, `rose`), which nothing has
+  drawn since Tailwind was removed in 2.0.0. Dropped from the content
+  layer.
+
+Logged for the owner, not changed:
+- **The Board readout** (`engine/readout.js`) is the most AI-sounding
+  copy left: "genuine bonus", "devastating when the trigger is right",
+  "a genuine edge", "properly gung-ho", "can genuinely overwhelm",
+  "a solid platform to build from", an em dash in 14 of its 18 notes. Its
+  strings are pinned by `tests/golden/profiles.json`, so changing them
+  means re-recording that file (spec 04 §9 allows it, in its own commit).
+  A replacement set, ready to paste:
+  - `${label}, ${strength}. Drilled well, it's worth extra on match day.` with strength "drilled" / "taking shape" / "not drilled in yet"
+  - "No plan: every dial is close to neutral, and a side with no plan gets picked apart. Commit to something, even something odd."
+  - "A high press with a high line. It wins the ball up the pitch, and leaves space in behind when it doesn't."
+  - "A mid-to-low block that gives up ground on purpose: hard to play through, but you'll be without the ball for long spells."
+  - "The offside trap with a high line behind it. It catches forwards until one step is mistimed."
+  - "The offside trap is on, but the line is too deep to catch anyone."
+  - "All-out, with little left at the back: expect end-to-end games, not clean sheets."
+  - "Set up to contain. You'll grind out results, and struggle against a side that sits in."
+  - "Built to counter: let them have it, then break quickly. You won't control many games."
+  - "Early crosses from wide and deep. Worth it with a big man and runners arriving late."
+  - "Told to cross, but set up narrow: nobody is out wide to cross from."
+  - "Quick, short passing. Hard work, and too quick for a settled defence when it comes off."
+  - "Direct passing skips the midfield and gains ground fast, at the cost of the ball."
+  - "Real width stretches their back four and can leave gaps in your own middle."
+  - "Narrow and compact: good for combinations inside, but the channels go unused."
+  - "They don't know this system yet. Expect streaky results while it beds in."
+  - "Drilled. They could play this in their sleep, week in, week out."
+  - "Nothing extreme and nothing out of place. Unspectacular, but sound."
+- **One club under two names** (a data bug found on the way): the
+  archive calls five clubs "Burnley FC", "Southampton FC", "Watford FC",
+  "Portsmouth FC" and "Middlesbrough FC", while the promotion pool
+  (`src/data/championship.json`) calls them "Burnley", "Southampton", and
+  so on. Promotion excludes clubs by exact name, so "Burnley" can be
+  promoted into a league that still has "Burnley FC" in it. Now that both
+  print as "Burnley", that would show. Fixing it touches the data and the
+  golden league file.
+- The engine's own tier `sub` strings (em dashes, "a genuinely solid
+  campaign") are never displayed (the back page reads `TIER_STANDFIRST`)
+  but are pinned by `engine/season.test.js` and the golden seasons.
+- `Saves.jsx` names its handler `handleFile`; left alone because the brief
+  keeps the import flow off limits except for copy.

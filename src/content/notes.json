@@ -1,7 +1,7 @@
 {
   "home": {
     "title": "Coach's note",
-    "body": "One career at a time. It saves itself after every pick and every season, so put it down whenever you like."
+    "body": "One career at a time. It saves itself after every pick and every match, so put it down whenever you like."
   },
   "draft": {
     "title": "Coach's note",
@@ -13,15 +13,15 @@
   },
   "board": {
     "title": "Coach's note",
-    "body": "The identity line shows what the engine sees in your dials. Pick a style to set every dial at once, then tune the three that matter most."
+    "body": "The identity line says what kind of side your dials make. Pick a style to set every dial at once, then adjust the three under Approach."
   },
   "season": {
     "title": "Coach's note",
-    "body": "One match at a time. The board is read before every fixture; Play to… runs a batch on the vidiprinter. Scorers are credited from the score, to whoever your jobs and briefs put in front of goal."
+    "body": "One match at a time, and the board is read afresh before each. Play to… runs several off on the vidiprinter. Goals go to whoever your jobs and briefs put in front of goal."
   },
   "window": {
     "title": "Coach's note",
-    "body": "Eight candidates, each from a real club-season and each costing wage points from a budget your last finish earned. Replace highlights the slots they can fill on the board."
+    "body": "Eight players, each from a real club-season, each with a price in wage points. Your finish last season set the budget. Replace shows on the board where he can play."
   },
   "club": {
     "title": "Coach's note",

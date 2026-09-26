@@ -85,7 +85,7 @@ export default function Vidiprinter({ log, from = 1, season, instant, clubName, 
       {atHalf && row && (
         <Slip kicker="Half-season" title={`${ordinal(row.position)} at the turn`}>
           <p className={styles.mono}>{t("season.record", row)} · {positionText(week, row)}</p>
-          <p className={styles.lede}>A stopping point. The second half plays when you are ready.</p>
+          <p className={styles.lede}>Halfway. Look over the board, or carry on.</p>
           <Button onClick={continueHalf}>Continue</Button>
         </Slip>
       )}

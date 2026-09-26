@@ -12,6 +12,10 @@ export function signed(n) {
   return n < 0 ? `−${-n}` : "±0";
 }
 
+export function goalDifference(n) {
+  return n === 0 ? "0" : signed(n);
+}
+
 export function playerMeta(player) {
   return [player.age ?? "—", player.nat, player.side ? `${SIDE_LABEL[player.side]} side` : null].filter(Boolean).join(" · ");
 }

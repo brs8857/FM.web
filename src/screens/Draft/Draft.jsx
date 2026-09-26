@@ -26,7 +26,8 @@ export default function Draft({ state, dataset, dispatch, instant, clubSeason, p
   const [lastEmpty, setLastEmpty] = useState(false);
   const wasSpinning = useRef(false);
   const summary = useMemo(() => selectDraftSummary(state), [state]);
-  const eraIndex = useMemo(() => selectEraIndex(dataset.index, state.eraMin, state.eraMax), [dataset.index, state.eraMin, state.eraMax]);
+  const eraIndex = useMemo(() => selectEraIndex(dataset.index, state.eraMin, state.eraMax).map((e) => ({ ...e, label: clubSeason(`${e.y}_${e.c}`) })),
+    [dataset.index, state.eraMin, state.eraMax, clubSeason]);
   const idx = nextEmptySlotIndex(state.assignments);
   const slot = idx >= 0 ? state.assignments[idx] : null;
   const { options, spinning } = state.draw;

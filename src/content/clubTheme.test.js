@@ -28,7 +28,7 @@ describe("club colours", () => {
   });
 
   it("names a club in either mode and knows nothing about unknown keys", () => {
-    expect(clubDisplayName("arsenal")).toBe("Arsenal FC");
+    expect(clubDisplayName("arsenal")).toBe("Arsenal");
     expect(clubDisplayName("arsenal", "edited")).toBe("Islington Reds");
     expect(clubDisplayName("nope")).toBeNull();
     expect(clubTheme("nope")).toBeNull();

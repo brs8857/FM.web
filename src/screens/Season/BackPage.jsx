@@ -11,7 +11,7 @@ import { t } from "../../content/t.js";
 import { useMediaQuery } from "../../app/useMediaQuery.js";
 import { RAIL_QUERY } from "../../app/Shell.jsx";
 import { shareSlip } from "../../app/share.js";
-import { ordinal } from "../../content/format.js";
+import { goalDifference, ordinal } from "../../content/format.js";
 import MatchList from "./MatchList.jsx";
 import { selectTopScorers } from "../../state/selectors.js";
 import styles from "./Season.module.css";
@@ -68,7 +68,7 @@ export default function BackPage({ state, careerCode, clubName, opponents }) {
         <h2 id="backpage-headline" className={styles.headline}>{tier.name}</h2>
         <p className={styles.standfirst}>{tier.sub}</p>
         <p className={styles.mono}>{t("season.record", s)} · {s.pts} pts · Finished {ordinal(s.position)}</p>
-        <p className={styles.mono}>Scored {s.gf} · Conceded {s.ga} · {gd >= 0 ? "+" : ""}{gd}</p>
+        <p className={styles.mono}>Scored {s.gf} · Conceded {s.ga} · {goalDifference(gd)}</p>
         {topScorer && <p className={styles.topScorer}>{topScorer}</p>}
         <Button variant="secondary" onClick={share}><ShareIcon /> Share</Button>
       </div>

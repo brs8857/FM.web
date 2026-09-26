@@ -49,7 +49,7 @@ export default function MatchReport({ match, clubName, after, compact = false, l
     <article className={cx(styles.report, compact && styles.compact)} aria-labelledby={id}>
       {!compact && <p className={styles.kicker}>Week {match.week} · {match.home ? "Home" : "Away"}</p>}
       <Heading id={id} className={cx(styles.score, styles[RESULT_TONE[match.outcome]])}>
-        {home.name} {home.score} — {away.score} {away.name}
+        {home.name} {home.score}–{away.score} {away.name}
       </Heading>
       <div className={styles.columns}>
         <Scorers side={home.name} goals={home.goals} name={home.name} us={home.us} />

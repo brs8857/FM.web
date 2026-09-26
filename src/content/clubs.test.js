@@ -10,7 +10,10 @@ const championship = JSON.parse(readFileSync("src/data/championship.json", "utf8
 
 describe("club names", () => {
   it("shows real names by default and edited names on request, falling back when none exists", () => {
-    expect(clubName("Arsenal FC")).toBe("Arsenal FC");
+    expect(clubName("Arsenal FC")).toBe("Arsenal");
+    expect(clubName("AFC Bournemouth")).toBe("Bournemouth");
+    expect(clubName("Sunderland AFC")).toBe("Sunderland");
+    expect(clubName("Wimbledon FC (- 2004)")).toBe("Wimbledon");
     expect(clubName("Arsenal FC", "edited")).toBe("Islington Reds");
     expect(clubName("Rival 3", "edited")).toBe("Rival 3");
     expect(clubSeasonLabel(players, "2000_leeds-united")).toBe("Leeds United 2000-01");

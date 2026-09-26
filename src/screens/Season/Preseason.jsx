@@ -14,8 +14,7 @@ export default function Preseason({ state, identity, familiarity, tacticUntouche
     <div className={styles.stack}>
       <div>
         <h2 className={styles.heading}>Season {state.season} · {careerSeasonLabel(state.season)}</h2>
-        <p className={styles.lede}>Thirty-eight matches, home and away against nineteen rivals. The ratings are revealed at kick-off.</p>
-        <p className={styles.lede}>The fixture list is drawn at kick-off.</p>
+        <p className={styles.lede}>Thirty-eight matches, home and away against nineteen rivals. The fixture list is drawn and the ratings revealed at kick-off.</p>
       </div>
       {retired.length > 0 && (
         <Callout title="Retired">
@@ -25,7 +24,7 @@ export default function Preseason({ state, identity, familiarity, tacticUntouche
       )}
       {tacticUntouched && (
         <Callout title="Nothing on the board yet">
-          Every dial sits at neutral, which the engine reads as no plan at all. Set a style before you kick off.{" "}
+          Every dial is at neutral, which is no plan at all, and it costs you. Pick a style before you kick off.{" "}
           <Button variant="ghost" size="sm" onClick={onGoBoard}>Go to the board</Button>
         </Callout>
       )}

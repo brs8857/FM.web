@@ -1,5 +1,4 @@
 import Segmented from "../../ui/Segmented.jsx";
-import Toggle from "../../ui/Toggle.jsx";
 import Button from "../../ui/Button.jsx";
 import Disclosure from "../../ui/Disclosure.jsx";
 import ClubPicker from "../NewCareer/ClubPicker.jsx";
@@ -38,13 +37,12 @@ export default function Settings({ prefs, setPrefs }) {
         <Segmented label="Motion" options={MOTION} value={prefs.reduceMotion} onChange={(reduceMotion) => setPrefs({ reduceMotion })} />
         <p className={styles.hint}>Reduce makes the draw, the reveal and the vidiprinter instant.</p>
       </div>
-      <Toggle label="Haptics" sub="On the phone app only" checked={prefs.haptics} onChange={(haptics) => setPrefs({ haptics })} />
       <div className={styles.setting}>
         <span className={styles.settingLabel}>Club names</span>
         <Segmented label="Club names" options={CLUB_NAMES} value={prefs.clubNames} onChange={(clubNames) => setPrefs({ clubNames })} />
         <p className={styles.hint}>Edited names describe each club without using its name.</p>
       </div>
-      <p className={styles.hint}>Text size follows your system or browser setting; every layout is tested at 200%.</p>
+      <p className={styles.hint}>Text size follows your phone or browser setting.</p>
     </div>
   );
 }

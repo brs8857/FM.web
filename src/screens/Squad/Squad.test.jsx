@@ -61,7 +61,7 @@ describe("SquadTab", () => {
     expect(dialog.querySelectorAll('[role="meter"]')).toHaveLength(6);
     expect(screen.getByRole("meter", { name: "Pace" }).getAttribute("aria-valuetext")).toMatch(/, \d of 5$/);
     expect(dialog.textContent).not.toMatch(/Overall/);
-    expect(dialog.textContent).toMatch(/(Alpha FC|Beta United|Gamma Town|Delta City) 20\d\d-\d\d/);
+    expect(dialog.textContent).toMatch(/(Alpha|Beta United|Gamma Town|Delta City) 20\d\d-\d\d/);
     fireEvent.click(screen.getByRole("radio", { name: "Target man" }));
     expect(spy.state.assignments[stIdx].role).toBe("TM");
     fireEvent.click(screen.getByRole("radio", { name: "Push" }));

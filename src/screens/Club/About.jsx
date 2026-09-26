@@ -10,7 +10,7 @@ export default function About() {
       <h3 className={styles.subheading}>Privacy</h3>
       <p>Your career is stored on this device only. Nothing is sent anywhere, and there are no accounts, adverts or analytics.</p>
       <h3 className={styles.subheading}>Data</h3>
-      <p>Player ratings are derived from public market-value and age records for every top-flight club-season from 1992-93 to 2024-25. They are estimates, not official ratings; see the project's data notes for the derivation.</p>
+      <p>Player ratings are worked out from public records of what each player was worth, and how old he was, in every top-flight club-season from 1992-93 to 2024-25. They are estimates, not anyone's official numbers.</p>
       <h3 className={styles.subheading}>Licences</h3>
       <p>The code is released under the MIT licence; the dataset is not covered by it. Type is set in Barlow, Barlow Condensed and IBM Plex Mono, all under the SIL Open Font License.</p>
     </div>

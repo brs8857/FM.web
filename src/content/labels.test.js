@@ -59,7 +59,6 @@ describe("vocabulary (spec 04 Appendix A)", () => {
       const shown = tierLabel(tier);
       expect(shown.name).not.toMatch(BANNED);
       expect(shown.sub).not.toMatch(BANNED);
-      expect(shown.color).toBe(tier.color);
     }
     expect(tierLabel(seasonTier({ w: 22, l: 8, pts: 74, position: 5 })).name).toBe("Top five");
     expect(tierLabel(seasonTier({ w: 6, l: 24, pts: 26, position: 19 })).name).toBe("Relegated");

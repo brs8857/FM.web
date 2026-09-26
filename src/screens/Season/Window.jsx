@@ -56,7 +56,7 @@ export default function Window({ state, dispatch, clubSeason, clubName, prefs, o
         <Chalkboard assignments={state.assignments} bench={state.bench} mode="view" compact highlightSlots={highlight} onSelect={onSelect} onOpenSheet={onSelect} dispatch={dispatch} />
         {candidate && (
           <div className={styles.replaceBar} role="status">
-            <span>Tap a highlighted marker for {candidate.player.name} to replace.</span>
+            <span>Tap the player {candidate.player.name} replaces; the places he can fill are highlighted.</span>
             <Button size="sm" variant="ghost" onClick={() => setReplacing(null)}>Cancel</Button>
           </div>
         )}

@@ -81,8 +81,8 @@ describe("Colours", () => {
     fireEvent.click(screen.getByRole("radio", { name: "Aston Villa" }));
     expect(onPick).toHaveBeenCalledWith("aston-villa");
     fireEvent.keyDown(group, { key: "ArrowRight" });
-    expect(names[0]).toBe("AFC Bournemouth");
-    expect(onPick).toHaveBeenLastCalledWith("bournemouth");
+    expect(names[0]).toBe("Arsenal");
+    expect(onPick).toHaveBeenLastCalledWith("arsenal");
     fireEvent.keyDown(group, { key: "End" });
     expect(onPick).toHaveBeenLastCalledWith("wrexham");
   });

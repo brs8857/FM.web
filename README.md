@@ -80,7 +80,7 @@ career replays exactly from its seed.
 
 ## Saves
 
-Careers autosave after every pick and every season. **Club → Saves** (or
+Careers autosave after every pick and every match. **Club → Saves** (or
 **Saves** on the home screen) exports a `.json` you can import on another
 device. Saves from 1.1.0 load and are migrated on the way in.
 
@@ -88,7 +88,7 @@ device. Saves from 1.1.0 load and are migrated on the way in.
 
 See [docs/data.md](docs/data.md) for what the dataset holds, how the
 ratings were derived and how club identifiers work. Ratings are estimates
-engineered from public market-value and age records, not official numbers.
+worked out from public market-value and age records, not official numbers.
 
 ## Licence
 

@@ -12,14 +12,14 @@ import FixtureCard from "./FixtureCard.jsx";
 import MatchReport from "./MatchReport.jsx";
 import MatchList from "./MatchList.jsx";
 import { resultLine } from "./Vidiprinter.jsx";
-import { ordinal } from "../../content/format.js";
+import { goalDifference, ordinal } from "../../content/format.js";
 import styles from "./Season.module.css";
 
 const COLUMNS = [
   { key: "position", label: "#", mono: true },
   { key: "name", label: "Club" },
   { key: "played", label: "P", align: "right", mono: true, render: (r) => r.w + r.d + r.l },
-  { key: "gd", label: "GD", align: "right", mono: true, render: (r) => (r.gd > 0 ? `+${r.gd}` : r.gd) },
+  { key: "gd", label: "GD", align: "right", mono: true, render: (r) => goalDifference(r.gd) },
   { key: "pts", label: "Pts", align: "right", mono: true },
 ];
 

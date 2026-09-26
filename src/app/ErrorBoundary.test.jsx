@@ -19,7 +19,7 @@ describe("ErrorBoundary", () => {
     const exportFn = vi.fn(() => Promise.resolve("downloaded"));
     render(<ErrorBoundary storage={storage} reload={vi.fn()} exportFn={exportFn}><Boom /></ErrorBoundary>);
 
-    expect(screen.getByRole("heading", { name: "Something went wrong" })).toBeTruthy();
+    expect(screen.getByRole("heading", { name: "Match abandoned" })).toBeTruthy();
     expect(screen.getByText(/boom/)).toBeTruthy();
     expect(screen.getByText(new RegExp(`Version ${APP_VERSION}`))).toBeTruthy();
     expect(screen.getByText(new RegExp(`Career seed ${JSON.parse(text).state.careerSeed}`))).toBeTruthy();
@@ -28,12 +28,12 @@ describe("ErrorBoundary", () => {
     expect(exportFn).toHaveBeenCalledWith(text, "era-xi-save.json");
   });
 
-  it("Start new game keeps the save aside and reloads", () => {
+  it("Start a new career keeps the save aside and reloads", () => {
     const text = makeSaveText();
     const storage = fakeStorage({ [SAVE_KEY]: text });
     const reload = vi.fn();
     render(<ErrorBoundary storage={storage} reload={reload}><Boom /></ErrorBoundary>);
-    fireEvent.click(screen.getByRole("button", { name: "Start new game" }));
+    fireEvent.click(screen.getByRole("button", { name: "Start a new career" }));
     expect(storage.data.get(CORRUPT_KEY)).toBe(text);
     expect(storage.data.has(SAVE_KEY)).toBe(false);
     expect(reload).toHaveBeenCalledOnce();

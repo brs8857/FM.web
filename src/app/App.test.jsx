@@ -98,7 +98,7 @@ describe("App", () => {
     expect(screen.getByText("3 of 3 · Colours")).toBeTruthy();
     expect(screen.getByRole("radio", { name: /^Pitch/, checked: true })).toBeTruthy();
     expect(document.getElementById(CLUB_THEME_ID)).toBeNull();
-    fireEvent.click(screen.getByRole("radio", { name: "Arsenal FC" }));
+    fireEvent.click(screen.getByRole("radio", { name: "Arsenal" }));
     expect(JSON.parse(storage.data.get(PREFS_KEY)).club).toBe("arsenal");
     expect(document.getElementById(CLUB_THEME_ID).textContent).toContain("--paper:");
     fireEvent.click(screen.getByRole("button", { name: "Back" }));

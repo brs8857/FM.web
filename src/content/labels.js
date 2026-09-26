@@ -57,17 +57,17 @@ export const TIER_LABEL = {
 export const TIER_STANDFIRST = {
   "THE PERFECT SEASON": "38 wins from 38. No side in the top flight's history has managed it.",
   "Invincibles": "Champions and unbeaten from August to May.",
-  "Centurions": "Past 100 points: a record-breaking total that dwarfs most title-winning seasons.",
+  "Centurions": "Champions with a hundred points or more. Most title winners never get near it.",
   "Champions": "Champions of England. The trophy, the open-top bus, the lot.",
   "Champions League": "A top-five finish and the biggest nights in Europe to plan for.",
-  "Europa League": "European football secured: a solid campaign in the top half.",
-  "Conference League": "Just enough for a European place, from a season that beat its numbers.",
+  "Europa League": "Europe next season, from a good year in the top half.",
+  "Conference League": "Eighth: one place short of Europe, and a summer to wonder where the points went.",
   "Mid-Table Mediocrity": "Comfortable and safe, and forgotten by August.",
-  "Relegation Battle": "A relegation fight that went the wrong way. Back to the drawing board.",
+  "Relegation Battle": "Bottom three. Any other club would be going down; this XI gets another go.",
 };
 
 export function tierLabel(tier) {
-  return { name: TIER_LABEL[tier.name] ?? tier.name, sub: TIER_STANDFIRST[tier.name] ?? tier.sub, color: tier.color };
+  return { name: TIER_LABEL[tier.name] ?? tier.name, sub: TIER_STANDFIRST[tier.name] ?? tier.sub };
 }
 
 export function roleLabel(type, key) {

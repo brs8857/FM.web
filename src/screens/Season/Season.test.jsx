@@ -160,7 +160,7 @@ describe("SeasonTab", () => {
     const report = screen.getByRole("article", { name: /Your XI/ });
     expect(within(report).getByText(`Week 11 · ${last.home ? "Home" : "Away"}`)).toBeTruthy();
     const heading = within(report).getByRole("heading");
-    expect(heading.textContent).toBe(last.home ? `Your XI ${last.gf} — ${last.ga} ${last.opponent}` : `${last.opponent} ${last.ga} — ${last.gf} Your XI`);
+    expect(heading.textContent).toBe(last.home ? `Your XI ${last.gf}–${last.ga} ${last.opponent}` : `${last.opponent} ${last.ga}–${last.gf} Your XI`);
     for (const g of last.goals.filter((goal) => goal.us)) expect(within(report).getAllByText(g.name).length).toBeGreaterThan(0);
     expect(within(report).getByText(/^After week 11 · \d+(st|nd|rd|th) · \d+ pts?$/)).toBeTruthy();
     expect(screen.getByText(/^Week 12 of 38 · \d+(st|nd|rd|th) · \d+ pts?$/)).toBeTruthy();
@@ -314,7 +314,7 @@ describe("SeasonTab", () => {
     const board = screen.getByRole("group", { name: "Chalkboard" });
     const highlighted = [...board.querySelectorAll('[class*="highlighted"]')];
     expect(highlighted.length).toBeGreaterThan(0);
-    expect(screen.getByText(/Tap a highlighted marker/)).toBeTruthy();
+    expect(screen.getByText(/Tap the player .+ replaces/)).toBeTruthy();
     const before = spy.state.assignments.map((a) => a.player.id);
     fireEvent.pointerDown(highlighted[0], { button: 0, clientX: 1, clientY: 1 });
     fireEvent.pointerUp(highlighted[0], { clientX: 1, clientY: 1 });

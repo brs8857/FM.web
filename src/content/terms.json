@@ -25,15 +25,15 @@
   },
   "cohesion": {
     "title": "Cohesion",
-    "body": "How well the eleven know this system. Coherent set-ups, players in their natural positions and an XI from close seasons raise it; extreme dials, wandering positions and a squad spanning decades lower it.\n\nIt also remembers: every season kept in the same shape and identity adds a little (up to +8), and changing either costs −4 for the season of the change. Within a season it [[settling|settles]] too.\n\nLow cohesion makes results streaky and gates the bonus an [[identity]] gives."
+    "body": "How well the eleven know this system. Players in their natural positions, a sensible set-up and an XI from nearby seasons raise it. Extreme dials, players dragged out of position and a squad spanning decades lower it.\n\nIt also remembers: each season kept in the same shape and identity adds a little (up to +8), and changing either costs −4 for the season of the change. Within a season it [[settling|settles]] too.\n\nLow cohesion makes results streaky and holds back the bonus an [[identity]] earns."
   },
   "identity": {
     "title": "Identity",
-    "body": "The style the engine recognises in your dials: a gegenpress, possession control, a low-block counter, wing play, direct and vertical, or park the bus. A well-drilled identity earns a bonus in the simulation.\n\nA committed set-up that matches none of them still earns a smaller bonus. Sitting on the fence with every dial near the middle is the one thing that is punished."
+    "body": "The kind of side your dials make: a gegenpress, possession control, a low block that counters, wing play, direct and vertical, or parking the bus. Drilled well, a recognised identity is worth extra on match day.\n\nA committed set-up that matches none of them earns a smaller bonus. Every dial near the middle is no plan at all, and the only choice that costs you."
   },
   "mentality": {
     "title": "Mentality",
-    "body": "The master dial. Scales risk and reward across every other instruction, from Contain to All-out."
+    "body": "How much the side commits forward, from Contain to All-out. It moves weight between attack and defence rather than adding to either."
   },
   "tempo": {
     "title": "Tempo",
@@ -53,7 +53,7 @@
   },
   "counter": {
     "title": "Counter-attacking",
-    "body": "How eagerly the team breaks the instant it wins the ball, rather than resetting its shape first. Devastating in transition, costly when it gives the ball away cheaply."
+    "body": "How quickly the side breaks when it wins the ball, rather than resetting its shape first. Dangerous on the break; exposed when the break fails."
   },
   "crossing": {
     "title": "Crossing",
@@ -81,7 +81,7 @@
   },
   "offside-trap": {
     "title": "Offside trap",
-    "body": "A high-risk, high-reward step-up. A real edge with a fast, disciplined back line playing a high [[line]]; a liability otherwise."
+    "body": "The back line steps up together to catch forwards offside. It works with a quick, disciplined back four holding a high [[line]]; otherwise it gets played through."
   },
   "discipline": {
     "title": "Discipline",
@@ -89,7 +89,7 @@
   },
   "strengths": {
     "title": "Strengths",
-    "body": "Six team qualities the simulation uses: attack, creativity, build-up, press, defence and physical. The tick on each bar is the average of the other nineteen clubs, so you can see where you are ahead."
+    "body": "Six team qualities the matches are played on: attack, creativity, build-up, press, defence and physical. The tick on each bar is the average of the other nineteen clubs, so you can see where you are ahead."
   },
   "career-code": {
     "title": "Career code",
