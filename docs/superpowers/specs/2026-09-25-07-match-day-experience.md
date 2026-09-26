@@ -7,7 +7,7 @@
 | **Series** | 7 of the redesign series (01–06 plus the plan) |
 | **Baseline** | v2.0.0 (`468dbdf`), with milestone C (career depth, part 1) in progress concurrently |
 | **Inputs** | [01](2026-09-25-01-design-research.md) design tests D/L/S/O; [02](2026-09-25-02-gap-analysis.md) G5, G6, G15; [04](2026-09-25-04-ui-redesign.md) §5.5, §5.6, §5.7, §9, §10; [06](2026-09-25-06-commercial-viability-extras.md) §1; [roadmap Phase 3](../../roadmap.md#phase-3-match-day-experience-v50) |
-| **Plan** | Proposed as **milestone F** in [2026-09-25-redesign-and-app-store.md](../plans/2026-09-25-redesign-and-app-store.md) (appended, pending approval; the approved milestones A–E are untouched) |
+| **Plan** | **Milestone F** in [2026-09-25-redesign-and-app-store.md](../plans/2026-09-25-redesign-and-app-store.md), approved 2026-09-26 with the §14 defaults |
 
 This spec details the first slice of what the roadmap calls Phase 3
 ("Match-Day Experience"), which until now said only "waiting on Phase 2".

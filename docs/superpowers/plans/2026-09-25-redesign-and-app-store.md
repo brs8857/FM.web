@@ -234,14 +234,15 @@ axe check, visual snapshot at 375/1280 in both themes.
 
 ---
 
-## Milestone F — Match day, part 1 (proposed 2026-09-25, **pending owner approval**)
+## Milestone F — Match day, part 1 (approved 2026-09-26)
 
-> **Status: proposed, not approved.** Appended after the plan's sign-off;
-> nothing in milestones A–E or the §2 decision table changes. Spec:
-> [07 Match-day experience](../specs/2026-09-25-07-match-day-experience.md).
-> Decisions M1–M14 are in that spec's §14; the defaults below assume them.
-> No task here starts until the owner has reviewed 07 and confirmed the
-> release slot (M10: after C, before E, as web release v2.7).
+> **Owner sign-off (2026-09-26):** F goes next, ahead of D. Decisions
+> M1–M14 in [07 Match-day experience](../specs/2026-09-25-07-match-day-experience.md)
+> §14 are approved as defaulted, including M3 (cards and bans, F5) and
+> the release slot M10 (web v2.7, after C, before E). M14 (no formation
+> change mid-season) stands for this milestone; a mid-season formation
+> switch is a candidate follow-up, not part of F. Nothing in milestones
+> A–E or the §2 decision table changes.
 
 **Goal:** replace the one-batch season with a fixture-by-fixture loop
 (set the team up, play one match, read a report with scorers, repeat) and
