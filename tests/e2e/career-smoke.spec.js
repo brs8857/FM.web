@@ -70,22 +70,31 @@ test("pacing: Play to the end is no slower than the old vidiprinter", async ({ p
   await expect(page.getByRole("heading", { name: "Last match" })).toBeVisible();
   expect(Date.now() - single, "one Play step").toBeLessThan(1000);
 
-  // Bans stop a run for a swap; the time spent swapping is not the feed's.
+  // The feed is timed in the page, from the vidiprinter appearing to it
+  // leaving, so neither the swaps bans force nor this test's own lookups are
+  // charged to it; the 2.5 budget was the feed alone, 38 lines at 350 ms.
   const oldVidiprinterMs = 38 * 350;
-  let fed = 0;
+  await page.evaluate(() => {
+    window.feedMs = 0;
+    let since = null;
+    new MutationObserver(() => {
+      const on = Boolean(document.querySelector('[role="log"][aria-label="Vidiprinter"]'));
+      if (on && since == null) since = performance.now();
+      if (!on && since != null) { window.feedMs += performance.now() - since; since = null; }
+    }).observe(document.body, { childList: true, subtree: true });
+  });
   for (let run = 0; run < 40 && !(await page.getByRole("button", { name: "Share" }).isVisible().catch(() => false)); run++) {
     await coverBans(page);
     await page.getByRole("button", { name: "Play to…" }).click();
     await page.getByRole("radio", { name: /The end of the season/ }).click();
-    const start = Date.now();
     await page.getByRole("button", { name: "Play", exact: true }).click();
     const done = page.getByRole("button", { name: /^(Share|Play week \d+: .+|Replace .+ \(suspended\))$/ }).first();
     const half = page.getByRole("button", { name: "Continue" });
-    await expect(done.or(half)).toBeVisible({ timeout: 20_000 });
+    await done.or(half).first().waitFor({ timeout: 20_000 });
     if (await half.isVisible().catch(() => false)) await half.click();
-    await expect(done).toBeVisible({ timeout: 20_000 });
-    fed += Date.now() - start;
+    await done.waitFor({ timeout: 20_000 });
   }
+  const fed = await page.evaluate(() => window.feedMs);
   expect(fed, "Play to the end, watched").toBeLessThanOrEqual(oldVidiprinterMs + 2000);
 });
 
