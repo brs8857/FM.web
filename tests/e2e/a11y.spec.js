@@ -28,15 +28,17 @@ test("every screen passes axe and never scrolls sideways", async ({ page }) => {
   await expectAxeClean(page, "colours, club chosen");
   await snap(page, "colours");
   await page.getByRole("button", { name: "Start the draft" }).click();
-  await page.getByRole("button", { name: "Draw", exact: true }).click();
-  await expect(page.getByRole("list", { name: "Cuttings" }).getByRole("button").first()).toBeVisible({ timeout: 10_000 });
-  await expectAxeClean(page, "draft");
-  await expectNoHorizontalScroll(page);
-  await snap(page, "draft");
-  await page.getByRole("list", { name: "Cuttings" }).getByRole("button").first().click();
-  await expectAxeClean(page, "cutting sheet");
-  await page.getByRole("button", { name: "Close" }).click();
-  await draftFullXI(page);
+  await draftFullXI(page, {
+    onPick: async (_page, pick) => {
+      if (pick > 0) return;
+      await expectAxeClean(page, "draft");
+      await expectNoHorizontalScroll(page);
+      await snap(page, "draft");
+      await page.getByRole("list", { name: "Cuttings" }).getByRole("button").first().click();
+      await expectAxeClean(page, "cutting sheet");
+      await page.getByRole("button", { name: "Close" }).click();
+    },
+  });
 
   for (const tab of ["Squad", "Board", "Season", "Club"]) {
     await page.getByRole("tab", { name: tab }).click();
@@ -105,4 +107,3 @@ test("the dark theme and 200% zoom keep every control reachable", async ({ page 
   await expectNoHorizontalScroll(page);
 });
 
-test.skip(!visual, "visual snapshots at 375 and 1280 in both themes (VISUAL=1)");

@@ -419,3 +419,26 @@ Logged, not changed:
 - The XI mark's strokes have round caps (the rasteriser draws capsules),
   which reads friendlier than chalk or print; squaring them means
   rewriting the rasteriser's distance function.
+
+### 2.8 Found during verification
+
+- **The browser accessibility suite never ran.** `tests/e2e/a11y.spec.js`
+  ended with a top-level `test.skip(!visual, …)`, meant for the opt-in
+  visual snapshots; at file level it skips every test in the file, so
+  "axe on every screen, in every project" (spec 04 §8.11), the
+  reduced-motion check and the dark-theme 200% zoom check had not run in
+  CI. Removed (the snapshot helper already does nothing without
+  `VISUAL=1`). Running them surfaced three things, all fixed:
+  - the first test's draft step was stale (it closed a cutting and then
+    waited for a Draw button that only appears on an empty desk); it now
+    does its draft checks inside `draftFullXI`'s first pick;
+  - the colour picker overflowed sideways at 200% zoom (grid columns with
+    a 160 px floor); columns now floor at `min(100%, 10rem)` and long club
+    names can wrap;
+  - a selected chip's subtitle was paper at 80% opacity on the action
+    fill: 4.27:1 in dark, under AA. The opacity is gone.
+  All six pass on the two Chromium projects; WebKit (iPhone 13), which
+  CI also runs, could not be run here.
+- A contrast sweep with axe in Chromium over nine screens, light and
+  dark, in the default theme and five club themes (Liverpool, Everton,
+  Wolves, Watford, Norwich) found no failures.

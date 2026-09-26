@@ -31,7 +31,6 @@
 }
 .selected .sub {
   color: var(--paper);
-  opacity: 0.8;
 }
 .signal.selected {
   background: var(--signal);
