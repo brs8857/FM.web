@@ -4,6 +4,45 @@ Baseline: `main` @ `50433e1`. Line numbers refer to `src/App.jsx` unless stated.
 Follows on from [code-review-2026-09-11.md](code-review-2026-09-11.md); known issues from that
 review are not re-reported except where checking them turned up something new.
 
+> ## Status update — 2026-09-26 (against `main` @ `8b3fc57`, v1.1.0)
+>
+> This review describes v1.0 (`50433e1`); line numbers and the architecture in §1–2 refer to
+> that baseline and are kept as a historical record. Phase 1A has since shipped as **v1.1.0**
+> (38 commits). Status of the findings, checked against current `main`:
+>
+> **Fixed in v1.1.0**
+>
+> | Finding | Commit(s) |
+> |---|---|
+> | B5 — touch drop fires twice | `fd03f91` (pointer events only, `handled` ref guard) |
+> | Known #4 — same real player twice | `5204535`, `5da982d` (exclusion by name + nationality + birth year) |
+> | Known #3 — relaxed draft pool not shown | `209ff4c` |
+> | Known #1 — re-promoted the same summer (narrow case only) | `c0981d3` |
+> | Known #6, #7 — season-specific text, touch drop | `1a4dc41`, `fd03f91` |
+> | §2g — inline `<style>` block | moved to `src/index.css` (`266ec1e`) |
+> | §4 item 4 — impure reducer / biased shuffles | seeded RNG, Fisher–Yates, career seed (`b4d600c`, `1e22018`) |
+> | §4 item 7 — file split | done as the fuller `data/`, `engine/`, `state/`, `components/` layout |
+> | §4 item 10 — no CI gate | `ci.yml` `deploy` now `needs: check` (`deploy.yml` removed) |
+>
+> **Still open** (re-checked directly on `main`, not assumed)
+>
+> - **B1 — ties go against the user.** `src/engine/season.js:73` is still
+>   `table.sort((a, b) => b.pts - a.pts)` with the user row pushed last and no GD/GF/name tiebreak.
+> - **B2 — Burnley naming.** `players.json` has `"Burnley FC"`, `championship.json` has
+>   `"Burnley"`; matching is still by exact name string.
+> - **B3 — relegated clubs never return.** `applyPromotionRelegation` (`src/engine/league.js:26`)
+>   now also excludes this summer's relegated names, which fixes the same-summer bounce-back,
+>   but relegated clubs are still never added to the promotion pool. This is broader than known
+>   #1: once Arsenal or Man City go down they cannot come back up. (The "known #1 … confirmed
+>   and quantified (B3)" line in §3 reads as if B3 were covered by that fix; it was not.)
+> - **B6 — no positional cost.** `SWAP_PLAYERS` (`src/state/reducer.js:119`) resets role/duty
+>   for the new slot but does not check the incoming player's position.
+> - B4 (near-deterministic relegation), B7, B8, B9, B10 and the rival-points model were not
+>   re-checked.
+>
+> B1–B3 and B6 look like good, cheap 1B candidates. Thanks to @brs8857 for the review that
+> prompted this update.
+
 Each finding is tagged **Verified (sim)** — reproduced by running the engine's functions
 headlessly against the real dataset; **Verified (reading)** — confirmed from the code alone;
 or **Speculation**.
