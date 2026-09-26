@@ -2,7 +2,9 @@ import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "r
 import { createReducer } from "../state/reducer.js";
 import { makeInitialState } from "../state/initialState.js";
 import { newCareerSeed } from "../state/rngState.js";
-import { selectNextAction, liveAssignments, selectFamiliarity, selectProfile, tacticUntouched, selectSuspended } from "../state/selectors.js";
+import { selectNextAction, liveAssignments, tacticUntouched, selectSuspended } from "../state/selectors.js";
+import { computeFamiliarity } from "../engine/familiarity.js";
+import { computeTeamProfile } from "../engine/tactics.js";
 import { getStorage, readAutosave, clearAutosave, requestPersistentStorage, writeAutosave } from "../state/storage.js";
 import { readPrefs } from "../state/prefs.js";
 import { hydrateState, makeSaveEnvelope, toSaveText, describeSave } from "../state/save.js";
@@ -114,9 +116,9 @@ function Game({ dataset, storageProp, initialPrefs }) {
   useAutosave({ state, storage, enabled: true, onWriteError: () => setNotice("unavailable") });
 
   const live = useMemo(() => liveAssignments(state.assignments), [state.assignments]);
-  const familiarity = useMemo(() => selectFamiliarity(live, state.instructions, state.formationKey, state.cohesionMemory), [live, state.instructions, state.formationKey, state.cohesionMemory]);
-  const profile = useMemo(() => selectProfile(live, state.instructions, familiarity), [live, state.instructions, familiarity]);
-  const identity = identityLabel(profile.synergyLabel, state.instructions);
+  const familiarity = useMemo(() => computeFamiliarity(live, state.instructions, state.formationKey, state.cohesionMemory), [live, state.instructions, state.formationKey, state.cohesionMemory]);
+  const profile = useMemo(() => computeTeamProfile(live, state.instructions, familiarity), [live, state.instructions, familiarity]);
+  const identity = identityLabel(state.instructions);
   const cohesion = cohesionLabel(familiarity);
   const clubSeason = useCallback((seasonKey) => clubSeasonLabel(dataset, seasonKey, prefs.clubNames), [dataset, prefs.clubNames]);
   const suspended = useMemo(() => new Set(selectSuspended(state).map((s) => s.id)), [state]);

@@ -2,7 +2,7 @@ import Meter from "../../ui/Meter.jsx";
 import { Term } from "../../ui/Term.jsx";
 import { CONCEPT, cohesionLabel } from "../../content/labels.js";
 import { t } from "../../content/t.js";
-import { signed } from "../Season/MatchReport.jsx";
+import { signed } from "../../content/format.js";
 import styles from "./Board.module.css";
 
 export function settleNote(settle) {

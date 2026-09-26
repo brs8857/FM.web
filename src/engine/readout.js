@@ -1,3 +1,5 @@
+import { dialExtremity, NEUTRAL_EXTREMITY } from "./tactics.js";
+
 export function tacticalReadout(profile, instructions, familiarity) {
   const notes = [];
   const { mentality: men, press: pr, line: ln, tempo: tem, directness: dir, width: wid, counter: ctr, crossing: crs, offsideTrap: trap } = instructions;
@@ -6,9 +8,7 @@ export function tacticalReadout(profile, instructions, familiarity) {
     const strength = familiarity >= 70 ? "firing on all cylinders" : familiarity >= 45 ? "starting to take shape" : "recognisable but not yet drilled in";
     notes.push(`Identity detected: ${profile.synergyLabel} — ${strength}. This specific combination carries a genuine bonus in the simulation when it's well-drilled.`);
   } else {
-    const dials = [men, tem, dir, wid, pr, ln, instructions.tackling];
-    const extremity = dials.reduce((sum, v) => sum + Math.abs(v - 50), 0) / dials.length / 50;
-    if (extremity < 0.16) notes.push("No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one.");
+    if (dialExtremity(instructions) < NEUTRAL_EXTREMITY) notes.push("No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one.");
   }
 
   if (pr >= 68 && ln >= 65) notes.push("An aggressive front-foot press with a high defensive line — devastating when the trigger is right, but there's real space in behind if the front line doesn't win the ball back quickly.");

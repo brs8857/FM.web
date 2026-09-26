@@ -75,7 +75,7 @@ describe("Draft", () => {
     const other = spy.state.draw.options.find((o) => o.year !== spy.state.assignments[0].player.seasonKey.split("_")[0]);
     fireEvent.click(screen.getByRole("button", { name: new RegExp(clubSeasonLabel(dataset, `${other.year}_${other.clubId}`)) }));
     fireEvent.click(screen.getByRole("dialog").querySelector("li button"));
-    expect(screen.getAllByRole("dialog").at(-1).textContent).toMatch(/Era spread grows to \d+ years?: cohesion -\d/);
+    expect(screen.getAllByRole("dialog").at(-1).textContent).toMatch(/Era spread grows to \d+ years?: cohesion −\d/);
   });
 
   it("marks off-position rows when a cutting is relaxed and never sorts by rating", () => {

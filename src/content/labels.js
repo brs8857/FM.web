@@ -4,7 +4,7 @@
 import { ROLES, DUTY_INFO } from "../engine/roles.js";
 import { familiarityLabel } from "../engine/familiarity.js";
 import { mentalityLabel } from "../engine/readout.js";
-import { dialExtremity, NEUTRAL_EXTREMITY } from "../engine/tactics.js";
+import { identityKey } from "../engine/tactics.js";
 
 export const POSITION_LABEL = {
   GK: "Goalkeeper", CB: "Centre-back", FB: "Full-back", DM: "Defensive midfielder",
@@ -81,9 +81,10 @@ export function briefLabel(duty) {
 export const cohesionLabel = familiarityLabel;
 export { mentalityLabel };
 
-// The identity line: the engine's detected identity, or why there isn't one
-// (the same neutrality test identitySynergy applies).
-export function identityLabel(synergyLabel, instructions) {
-  if (synergyLabel) return synergyLabel;
-  return dialExtremity(instructions) < NEUTRAL_EXTREMITY ? IDENTITY_LABEL.none : IDENTITY_LABEL.bespoke;
+export function identityName(key) {
+  return IDENTITY_LABEL[key] ?? key;
+}
+
+export function identityLabel(instructions) {
+  return identityName(identityKey(instructions));
 }

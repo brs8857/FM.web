@@ -12,7 +12,7 @@ import StatPip from "./StatPip.jsx";
 import { ROLES, DUTY_INFO } from "../../engine/roles.js";
 import { STAT_KEYS, STAT_LABELS } from "../../engine/players.js";
 import { POSITION_LABEL, BRIEF_LABEL, CONCEPT, roleLabel, briefLabel } from "../../content/labels.js";
-import { playerMeta } from "../Draft/CuttingSheet.jsx";
+import { playerMeta } from "../../content/format.js";
 import { isBanned } from "../../state/selectors.js";
 import styles from "./PlayerSheet.module.css";
 

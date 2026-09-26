@@ -1,29 +1,19 @@
 import { useId } from "react";
 import { Term } from "../../ui/Term.jsx";
 import { cx } from "../../ui/cx.js";
-import { CONCEPT, IDENTITY_LABEL, cohesionLabel, mentalityLabel } from "../../content/labels.js";
+import { CONCEPT, cohesionLabel, identityName, mentalityLabel } from "../../content/labels.js";
+import { RESULT_TONE, signed } from "../../content/format.js";
 import { USER_TEAM_NAME } from "../../engine/season.js";
 import { t } from "../../content/t.js";
 import styles from "./MatchReport.module.css";
-
-const TONE = { W: "win", D: "draw", L: "loss" };
 
 export function minuteLabel(minute) {
   return minute > 90 ? `90+${minute - 90}'` : `${minute}'`;
 }
 
-export function signed(n) {
-  if (n > 0) return `+${n}`;
-  return n < 0 ? `−${-n}` : "±0";
-}
-
 export function cardsLine(cards) {
   const list = (kind) => cards.filter((c) => c.kind === kind).map((c) => `${c.name} ${minuteLabel(c.minute)}`).join(", ") || "—";
   return `Booked: ${list("yellow")}. Sent off: ${list("red")}.`;
-}
-
-export function identityName(key) {
-  return IDENTITY_LABEL[key] ?? key;
 }
 
 // The opponent's scorers are not named (spec 07 M4): their minutes are read
@@ -58,7 +48,7 @@ export default function MatchReport({ match, clubName, after, compact = false, l
   return (
     <article className={cx(styles.report, compact && styles.compact)} aria-labelledby={id}>
       {!compact && <p className={styles.kicker}>Week {match.week} · {match.home ? "Home" : "Away"}</p>}
-      <Heading id={id} className={cx(styles.score, styles[TONE[match.outcome]])}>
+      <Heading id={id} className={cx(styles.score, styles[RESULT_TONE[match.outcome]])}>
         {home.name} {home.score} — {away.score} {away.name}
       </Heading>
       <div className={styles.columns}>

@@ -11,7 +11,8 @@ import { t } from "../../content/t.js";
 import FixtureCard from "./FixtureCard.jsx";
 import MatchReport from "./MatchReport.jsx";
 import MatchList from "./MatchList.jsx";
-import { ordinal, resultLine } from "./Vidiprinter.jsx";
+import { resultLine } from "./Vidiprinter.jsx";
+import { ordinal } from "../../content/format.js";
 import styles from "./Season.module.css";
 
 const COLUMNS = [

@@ -2,6 +2,7 @@ import Sheet from "../../ui/Sheet.jsx";
 import TeamSheetRow from "../../ui/TeamSheetRow.jsx";
 import { POSITION_LABEL } from "../../content/labels.js";
 import { t } from "../../content/t.js";
+import { playerMeta } from "../../content/format.js";
 import styles from "./Draft.module.css";
 
 // Shirt order: by position code, then age. Never by rating (spec 04 §5.2).
@@ -13,12 +14,6 @@ export function shirtOrder(players) {
     if (pa !== pb) return pa - pb;
     return (a.age ?? 99) - (b.age ?? 99) || a.name.localeCompare(b.name);
   });
-}
-
-export const SIDE_LABEL = { L: "Left", R: "Right" };
-
-export function playerMeta(player) {
-  return [player.age ?? "—", player.nat, player.side ? `${SIDE_LABEL[player.side]} side` : null].filter(Boolean).join(" · ");
 }
 
 export default function CuttingSheet({ option, title, slotType, onClose, onChoose }) {

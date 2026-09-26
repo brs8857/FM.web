@@ -3,7 +3,7 @@ import Button from "../../ui/Button.jsx";
 import Stamp from "../../ui/Stamp.jsx";
 import TeamSheetRow from "../../ui/TeamSheetRow.jsx";
 import { careerSeasonLabel } from "../../engine/season.js";
-import { playerMeta } from "../Draft/CuttingSheet.jsx";
+import { playerMeta } from "../../content/format.js";
 import styles from "./Season.module.css";
 
 export const REVEAL_MS = 240;

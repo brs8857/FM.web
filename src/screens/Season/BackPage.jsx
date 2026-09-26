@@ -11,7 +11,7 @@ import { t } from "../../content/t.js";
 import { useMediaQuery } from "../../app/useMediaQuery.js";
 import { RAIL_QUERY } from "../../app/Shell.jsx";
 import { shareSlip } from "../../app/share.js";
-import { ordinal } from "./Vidiprinter.jsx";
+import { ordinal } from "../../content/format.js";
 import MatchList from "./MatchList.jsx";
 import { selectTopScorers } from "../../state/selectors.js";
 import styles from "./Season.module.css";

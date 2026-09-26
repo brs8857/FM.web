@@ -2,7 +2,7 @@ import Slip from "../../ui/Slip.jsx";
 import TeamSheetRow from "../../ui/TeamSheetRow.jsx";
 import SquadStrip from "./SquadStrip.jsx";
 import { FORMATIONS } from "../../engine/formations.js";
-import { playerMeta } from "./CuttingSheet.jsx";
+import { playerMeta } from "../../content/format.js";
 import styles from "./Draft.module.css";
 
 export default function TeamSheetSlip({ state, summary }) {

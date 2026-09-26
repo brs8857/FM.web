@@ -4,7 +4,7 @@ import Strengths from "../Board/Strengths.jsx";
 import IdentityLine from "../Board/IdentityLine.jsx";
 import { rivalStrength } from "../../engine/match.js";
 import { t } from "../../content/t.js";
-import { ordinal } from "./Vidiprinter.jsx";
+import { ordinal } from "../../content/format.js";
 import styles from "./Season.module.css";
 
 export function standing(fixture) {

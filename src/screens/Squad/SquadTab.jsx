@@ -4,7 +4,7 @@ import TeamSheetRow from "../../ui/TeamSheetRow.jsx";
 import CoachNote from "../../app/CoachNote.jsx";
 import PlayerSheet, { BAN_MARK } from "./PlayerSheet.jsx";
 import { POSITION_LABEL, roleLabel, briefLabel } from "../../content/labels.js";
-import { playerMeta } from "../Draft/CuttingSheet.jsx";
+import { playerMeta } from "../../content/format.js";
 import { isBanned } from "../../state/selectors.js";
 import layout from "../TabLayout.module.css";
 

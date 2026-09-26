@@ -6,11 +6,9 @@ import { careerSeasonLabel, USER_TEAM_NAME } from "../../engine/season.js";
 import { tierLabel, IDENTITY_LABEL } from "../../content/labels.js";
 import { t } from "../../content/t.js";
 import { selectTopScorers } from "../../state/selectors.js";
-import { ordinal } from "../Season/Vidiprinter.jsx";
+import { ordinal, RESULT_TONE } from "../../content/format.js";
 import MatchList from "../Season/MatchList.jsx";
 import styles from "./Club.module.css";
-
-const TONE = { W: "win", D: "draw", L: "loss" };
 
 // The biggest winning margin in the career, the more goals breaking a tie,
 // then the earlier match.
@@ -49,7 +47,7 @@ function FormStrip({ matches }) {
   return (
     <p className={styles.form}>
       <span className="visually-hidden">{t("season.form", { w: count("W"), d: count("D"), l: count("L"), last })}</span>
-      <span aria-hidden="true">{matches.map((m) => <span key={m.week} className={styles[TONE[m.outcome]]}>{m.outcome}</span>)}</span>
+      <span aria-hidden="true">{matches.map((m) => <span key={m.week} className={styles[RESULT_TONE[m.outcome]]}>{m.outcome}</span>)}</span>
     </p>
   );
 }

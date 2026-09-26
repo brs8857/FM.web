@@ -10,7 +10,9 @@ import terms from "../../content/terms.json";
 import { makeMiniDataset } from "../../../tests/fixtures/miniDataset.js";
 import { makeSeason3TacticsState } from "../../../tests/fixtures/saves.js";
 import { createReducer } from "../../state/reducer.js";
-import { liveAssignments, selectFamiliarity, selectProfile } from "../../state/selectors.js";
+import { liveAssignments } from "../../state/selectors.js";
+import { computeFamiliarity } from "../../engine/familiarity.js";
+import { computeTeamProfile } from "../../engine/tactics.js";
 import { DEFAULT_INSTRUCTIONS } from "../../engine/instructions.js";
 import { clubSeasonLabel } from "../../content/clubs.js";
 import { DEFAULT_PREFS } from "../../state/prefs.js";
@@ -21,8 +23,8 @@ const reducer = createReducer(dataset);
 function Harness({ initial, spy = {} }) {
   const [state, dispatch] = useReducer(reducer, initial);
   const live = useMemo(() => liveAssignments(state.assignments), [state.assignments]);
-  const familiarity = selectFamiliarity(live, state.instructions, state.formationKey);
-  const profile = selectProfile(live, state.instructions, familiarity);
+  const familiarity = computeFamiliarity(live, state.instructions, state.formationKey);
+  const profile = computeTeamProfile(live, state.instructions, familiarity);
   spy.state = state;
   return (
     <TermsProvider terms={terms}>

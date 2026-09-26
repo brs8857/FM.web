@@ -66,9 +66,9 @@ describe("vocabulary (spec 04 Appendix A)", () => {
   });
 
   it("names the identity line", () => {
-    expect(identityLabel("Gegenpress", DEFAULT_INSTRUCTIONS)).toBe("Gegenpress");
-    expect(identityLabel(null, DEFAULT_INSTRUCTIONS)).toBe("No clear plan");
-    expect(identityLabel(null, { ...DEFAULT_INSTRUCTIONS, tempo: 90, press: 10, width: 95 })).toBe("Bespoke");
+    expect(identityLabel(STYLE_PRESETS.find((p) => p.key === "gegenpress").instructions)).toBe("Gegenpress");
+    expect(identityLabel(DEFAULT_INSTRUCTIONS)).toBe("No clear plan");
+    expect(identityLabel({ ...DEFAULT_INSTRUCTIONS, tempo: 90, press: 10, width: 95 })).toBe("Bespoke");
   });
 
   it("labels every position, strength and dial", () => {

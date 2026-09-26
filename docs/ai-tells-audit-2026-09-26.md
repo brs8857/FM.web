@@ -97,3 +97,52 @@ layout there), `src/screens/Draft/Draw.jsx`, `Draft.jsx` and
 done after the merge. Engine constants exported only for their own file
 (`HOME_ADVANTAGE`, `STOPPAGE_CHANCE`, …) stay exported: they are the
 tunables `sim.mjs` users look for.
+
+### 2.2 Code conventions (C4–C7)
+
+Found:
+- **The Strengths blend (C6)** named in the brief was already fixed at
+  `4d4a4d9`: `Board/Strengths.jsx` imports `rivalStrength` from
+  `engine/match.js`, and no other copy of 0.82/0.18 exists.
+- **A second copy of the neutrality test (C6, C7).** `engine/readout.js`
+  recomputed `dialExtremity` inline and compared it with a bare `0.16`,
+  the value `tactics.js` names `NEUTRAL_EXTREMITY`. `content/labels.js`
+  had a third route to the same answer (`identityLabel(synergyLabel,
+  instructions)`), and `MatchReport.jsx` a fourth (`identityName`).
+- **Two `signed()` functions that disagree (C5).** `MatchReport.jsx` wrote
+  a true minus (−3, ±0); `ConfirmPick.jsx` wrote a hyphen (-3), so the
+  confirm sheet said "cohesion -2" while the strip said "cohesion −2".
+- **Formatters living in screens (C5).** `ordinal` was defined in
+  `Season/Vidiprinter.jsx` and imported by five other screens;
+  `playerMeta` lived in `Draft/CuttingSheet.jsx` and was imported by the
+  Squad and Season screens; the W/D/L tone map was pasted into three
+  files; `Vidiprinter.jsx` re-exported the engine's `HALF_SEASON`.
+  `ConfirmPick.jsx` rebuilt `SIDE_LABEL` inline.
+- **Pass-through wrappers (C6).** `selectFamiliarity` and `selectProfile`
+  in `state/selectors.js` only renamed `computeFamiliarity` and
+  `computeTeamProfile`.
+- **CSS drift (C5).** The mono uppercase `.kicker` is pasted into six
+  modules, `.subheading` into five, `.rows` into four, `.hint` twice at
+  two sizes. Left for the typography and UI-pattern passes, which restyle
+  them.
+
+Changed (commit below):
+- New `src/content/format.js` holds `ordinal`, `signed` (true minus),
+  `playerMeta`, `SIDE_LABEL` and `RESULT_TONE`; eleven screens import
+  from it instead of from each other.
+- `readout.js` calls `dialExtremity(instructions) < NEUTRAL_EXTREMITY`
+  (same dials, same order, so the golden readouts are unchanged);
+  `identityLabel(instructions)` is now `identityName(identityKey(...))`,
+  and `identityName` lives in `labels.js`.
+- `selectFamiliarity`/`selectProfile` removed; `App.jsx` calls the engine.
+
+Logged, not changed:
+- `ClubTab` rebuilds `clubName` from `prefs` while every other tab gets it
+  from `App`; harmless, and changing it means reworking the Club tests.
+- The record stores `profile.synergyLabel`, which is null for both "no
+  plan" and a bespoke system, and `Record.jsx` shows every null as
+  "Bespoke". Telling them apart needs the identity key in
+  `seasonHistory`, a save-format change.
+- `seasonKey` is parsed to a year in three places (`engine/identity.js`,
+  `engine/familiarity.js` with a defensive `"2010_0"` default, and
+  `state/selectors.js`). Unifying touches the engine.

@@ -1,7 +1,7 @@
 import { ROLES } from "../engine/roles.js";
 import { DEFAULT_INSTRUCTIONS } from "../engine/instructions.js";
 import { computeFamiliarity, eraSpread, eraSpreadPenalty, memoryBonus, settling, EMPTY_MEMORY, SIDE_MISMATCH_PENALTY } from "../engine/familiarity.js";
-import { computeTeamProfile, identityKey } from "../engine/tactics.js";
+import { identityKey } from "../engine/tactics.js";
 import { CAREER_SEASONS, SEASON_WEEKS, buildUserFixtureList, leagueTable } from "../engine/season.js";
 import { nextEmptySlotIndex } from "../engine/squad.js";
 import { t } from "../content/t.js";
@@ -62,17 +62,9 @@ export function liveAssignments(assignments) {
   }));
 }
 
-export function selectFamiliarity(live, instructions, formationKey, memory = null) {
-  return computeFamiliarity(live, instructions, formationKey, memory);
-}
-
 export function selectMemory(state) {
   const memory = state.cohesionMemory ?? EMPTY_MEMORY;
   return { seasons: memory.seasons, bonus: memoryBonus(memory, state.formationKey, identityKey(state.instructions)) };
-}
-
-export function selectProfile(live, instructions, familiarity) {
-  return computeTeamProfile(live, instructions, familiarity);
 }
 
 export function isBanned(state, player) {

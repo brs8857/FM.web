@@ -4,17 +4,11 @@ import Slip from "../../ui/Slip.jsx";
 import Ticker from "../../ui/Ticker.jsx";
 import { useAnnounce } from "../../ui/LiveRegion.jsx";
 import { t } from "../../content/t.js";
+import { ordinal, RESULT_TONE } from "../../content/format.js";
 import { careerSeasonLabel, HALF_SEASON } from "../../engine/season.js";
 import styles from "./Season.module.css";
 
 export const TICK_MS = 350;
-export { HALF_SEASON };
-const TONE = { W: "win", D: "draw", L: "loss" };
-
-export function ordinal(n) {
-  const s = ["th", "st", "nd", "rd"], v = n % 100;
-  return `${n}${s[(v - 20) % 10] || s[v] || s[0]}`;
-}
 
 function pad(text, width) {
   return text.length >= width ? text.slice(0, width) : text + " ".repeat(width - text.length);
@@ -22,7 +16,7 @@ function pad(text, width) {
 
 export function resultLine(match, clubName) {
   const venue = match.home ? "(H)" : "(A)";
-  return { id: match.week, tone: TONE[match.outcome], text: `WK ${String(match.week).padStart(2)}  ${pad(`${clubName(match.opponent).toUpperCase()} ${venue}`, 26)} ${match.gf}-${match.ga}  ${match.outcome}` };
+  return { id: match.week, tone: RESULT_TONE[match.outcome], text: `WK ${String(match.week).padStart(2)}  ${pad(`${clubName(match.opponent).toUpperCase()} ${venue}`, 26)} ${match.gf}-${match.ga}  ${match.outcome}` };
 }
 
 export function positionText(week, row) {

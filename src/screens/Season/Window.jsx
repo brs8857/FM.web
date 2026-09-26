@@ -10,7 +10,7 @@ import { POSITION_LABEL } from "../../content/labels.js";
 import { t } from "../../content/t.js";
 import { careerSeasonLabel } from "../../engine/season.js";
 import { budgetLeft } from "../../engine/squad.js";
-import { playerMeta } from "../Draft/CuttingSheet.jsx";
+import { playerMeta } from "../../content/format.js";
 import layout from "../TabLayout.module.css";
 import styles from "./Season.module.css";
 

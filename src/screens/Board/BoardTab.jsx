@@ -30,7 +30,7 @@ export default function BoardTab({ state, dispatch, profile, familiarity, clubSe
     dispatch({ type: "SET_STYLE", key });
     announce(`${preset.label} set. ${keys.length === 0 ? "Nothing changed." : `${keys.length} dials moved.`}`);
   };
-  const identity = identityLabel(profile.synergyLabel, state.instructions);
+  const identity = identityLabel(state.instructions);
 
   return (
     <div className={cx(layout.tab, layout.wide)}>
