@@ -14,7 +14,7 @@ import { careerSeasonLabel } from "../engine/season.js";
 import { cohesionLabel, identityLabel } from "../content/labels.js";
 import { clubName as displayClubName, clubSeasonLabel } from "../content/clubs.js";
 import { useAutosave } from "./useAutosave.js";
-import { useNav } from "./nav.js";
+import { useNav, STEPS } from "./nav.js";
 import { usePrefs, useReducedMotion } from "./usePrefs.js";
 import { useDocumentPrefs } from "./useDocumentPrefs.js";
 import { encodeCareerCode } from "./careerCode.js";
@@ -26,6 +26,7 @@ import Gallery from "../screens/_gallery/Gallery.jsx";
 import Home from "../screens/Home/Home.jsx";
 import Era from "../screens/NewCareer/Era.jsx";
 import Formation from "../screens/NewCareer/Formation.jsx";
+import Colours from "../screens/NewCareer/Colours.jsx";
 import Draft from "../screens/Draft/Draft.jsx";
 import SquadTab from "../screens/Squad/SquadTab.jsx";
 import BoardTab from "../screens/Board/BoardTab.jsx";
@@ -45,6 +46,12 @@ import Sheet from "../ui/Sheet.jsx";
 import { HomeIcon } from "../ui/icons.jsx";
 
 const TITLES = { squad: "Squad", board: "Board", season: "Season", club: "Club" };
+
+const SETUP_STEPS = {
+  era: { subtitle: "1 of 3 · Era", next: "Choose a shape" },
+  formation: { subtitle: "2 of 3 · Shape", next: "Choose your colours" },
+  club: { subtitle: "3 of 3 · Colours", next: "Start the draft" },
+};
 
 // Next actions that are a single reducer action.
 const NEXT_ACTIONS = {
@@ -197,7 +204,10 @@ function Game({ dataset, storageProp, initialPrefs }) {
   }
 
   const primary = () => {
-    if (nav.mode === "setup") { if (nav.step === "era") navDispatch({ type: "STEP", step: "formation" }); else startDraft(); }
+    if (nav.mode === "setup") {
+      const after = STEPS[STEPS.indexOf(nav.step) + 1];
+      if (after) navDispatch({ type: "STEP", step: after }); else startDraft();
+    }
     else if (nav.mode === "draft") { if (state.draftDone) dispatch({ type: "SKIP_TO_TACTICS" }); }
     else if (sticky) sticky.run();
     else goNext();
@@ -238,15 +248,13 @@ function Game({ dataset, storageProp, initialPrefs }) {
   }
 
   if (nav.mode === "setup") {
-    const era = nav.step === "era";
+    const step = SETUP_STEPS[nav.step];
     return (
-      <Shell mode="setup" title="New career" subtitle={era ? "1 of 2 · Era" : "2 of 2 · Shape"} onBack={() => navDispatch({ type: "BACK" })}
-        sticky={era
-          ? <Button block onClick={() => navDispatch({ type: "STEP", step: "formation" })}>Choose a shape</Button>
-          : <Button block onClick={startDraft}>Start the draft</Button>}>
-        {era
-          ? <Era eraMin={state.eraMin} eraMax={state.eraMax} index={dataset.index} onSetEra={(min, max) => dispatch({ type: "SET_ERA", min, max })} />
-          : <Formation formationKey={state.formationKey} onPick={(key) => dispatch({ type: "SET_FORMATION", key })} />}
+      <Shell mode="setup" title="New career" subtitle={step.subtitle} onBack={() => navDispatch({ type: "BACK" })}
+        sticky={<Button block onClick={primary}>{step.next}</Button>}>
+        {nav.step === "era" && <Era eraMin={state.eraMin} eraMax={state.eraMax} index={dataset.index} onSetEra={(min, max) => dispatch({ type: "SET_ERA", min, max })} />}
+        {nav.step === "formation" && <Formation formationKey={state.formationKey} onPick={(key) => dispatch({ type: "SET_FORMATION", key })} />}
+        {nav.step === "club" && <Colours club={prefs.club} mode={prefs.clubNames} onPick={(club) => setPrefs({ club })} />}
       </Shell>
     );
   }

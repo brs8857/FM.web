@@ -22,6 +22,11 @@ test("every screen passes axe and never scrolls sideways", async ({ page }) => {
   await page.getByRole("button", { name: "Choose a shape" }).click();
   await expectAxeClean(page, "shape");
   await snap(page, "shape");
+  await page.getByRole("button", { name: "Choose your colours" }).click();
+  await expectAxeClean(page, "colours");
+  await page.getByRole("radio", { name: "Aston Villa" }).click();
+  await expectAxeClean(page, "colours, club chosen");
+  await snap(page, "colours");
   await page.getByRole("button", { name: "Start the draft" }).click();
   await page.getByRole("button", { name: "Draw", exact: true }).click();
   await expect(page.getByRole("button", { name: /Club season/ }).first()).toBeVisible({ timeout: 10_000 });
@@ -76,6 +81,8 @@ test("the dark theme and 200% zoom keep every control reachable", async ({ page 
   await page.getByRole("button", { name: "New career" }).click();
   await expectNoHorizontalScroll(page);
   await page.getByRole("button", { name: "Choose a shape" }).click();
+  await expectNoHorizontalScroll(page);
+  await page.getByRole("button", { name: "Choose your colours" }).click();
   await expectNoHorizontalScroll(page);
   await page.getByRole("button", { name: "Start the draft" }).click();
   await page.getByRole("button", { name: "Draw", exact: true }).click();

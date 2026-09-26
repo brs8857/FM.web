@@ -17,6 +17,7 @@ export async function openHome(page, path = "./") {
 export async function startNewCareer(page) {
   await page.getByRole("button", { name: "New career" }).click();
   await page.getByRole("button", { name: "Choose a shape" }).click();
+  await page.getByRole("button", { name: "Choose your colours" }).click();
   await page.getByRole("button", { name: "Start the draft" }).click();
   await expect(page.getByRole("heading", { level: 1, name: "Draft" })).toBeVisible();
 }

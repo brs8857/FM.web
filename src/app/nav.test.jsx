@@ -36,6 +36,10 @@ describe("nav", () => {
     expect(nav).toMatchObject({ mode: "setup", home: false, step: "era" });
     nav = navReducer(nav, { type: "STEP", step: "formation" });
     expect(navReducer(nav, { type: "STEP", step: "nope" })).toBe(nav);
+    nav = navReducer(nav, { type: "STEP", step: "club" });
+    expect(nav.step).toBe("club");
+    nav = navReducer(nav, { type: "BACK" });
+    expect(nav.step).toBe("formation");
     nav = navReducer(nav, { type: "BACK" });
     expect(nav.step).toBe("era");
     nav = navReducer(nav, { type: "BACK" });

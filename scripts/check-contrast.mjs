@@ -2,6 +2,9 @@
 // Usage: npm run check:contrast   (exit 1 on any failure)
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import { luminance, contrast } from "../src/styles/contrast.js";
+
+export { luminance, contrast };
 
 // [foreground, background, minimum ratio]. 4.5 for text, 3 for large text and
 // UI component boundaries, 6 where the spec promises more (--ink-2 on paper).
@@ -36,20 +39,6 @@ export function parseThemes(css) {
     );
   }
   return themes;
-}
-
-export function luminance(hex) {
-  const channel = (c) => {
-    const v = c / 255;
-    return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
-  };
-  const n = parseInt(hex.slice(1), 16);
-  return 0.2126 * channel(n >> 16) + 0.7152 * channel((n >> 8) & 255) + 0.0722 * channel(n & 255);
-}
-
-export function contrast(a, b) {
-  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
-  return (hi + 0.05) / (lo + 0.05);
 }
 
 export function checkContrast(css) {

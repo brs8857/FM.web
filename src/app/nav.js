@@ -13,7 +13,7 @@ export const TABS = [
 ];
 
 export const TAB_KEYS = TABS.map((t) => t.key);
-export const STEPS = ["era", "formation"];
+export const STEPS = ["era", "formation", "club"];
 
 export function modeFor(phase) {
   if (phase === "formation") return "setup";

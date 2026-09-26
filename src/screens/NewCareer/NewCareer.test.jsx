@@ -2,7 +2,10 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import Era from "./Era.jsx";
 import Formation from "./Formation.jsx";
+import Colours from "./Colours.jsx";
+import ClubPicker from "./ClubPicker.jsx";
 import RangeSlider from "./RangeSlider.jsx";
+import { CLUBS } from "../../content/clubTheme.js";
 import { makeMiniDataset } from "../../../tests/fixtures/miniDataset.js";
 
 describe("RangeSlider", () => {
@@ -58,5 +61,42 @@ describe("Formation", () => {
     expect(onPick).toHaveBeenCalledWith("3-5-2");
     fireEvent.keyDown(group, { key: "ArrowRight" });
     expect(onPick).toHaveBeenLastCalledWith("4-2-3-1");
+  });
+});
+
+describe("Colours", () => {
+  it("is a radiogroup of the pitch theme and every club, sorted by name, with arrow-key movement", () => {
+    const onPick = vi.fn();
+    render(<Colours club={null} mode="real" onPick={onPick} />);
+    expect(screen.getByRole("heading", { name: "Choose your colours" })).toBeTruthy();
+    const group = screen.getByRole("radiogroup", { name: "Colours" });
+    const radios = screen.getAllByRole("radio");
+    expect(radios).toHaveLength(CLUBS.length + 1);
+    expect(radios[0].getAttribute("aria-checked")).toBe("true");
+    expect(radios[0].textContent).toContain("Pitch");
+    expect(radios[0].tabIndex).toBe(0);
+    expect(radios[1].tabIndex).toBe(-1);
+    const names = radios.slice(1).map((r) => r.textContent);
+    expect(names).toEqual([...names].sort((a, b) => a.localeCompare(b)));
+    fireEvent.click(screen.getByRole("radio", { name: "Aston Villa" }));
+    expect(onPick).toHaveBeenCalledWith("aston-villa");
+    fireEvent.keyDown(group, { key: "ArrowRight" });
+    expect(names[0]).toBe("AFC Bournemouth");
+    expect(onPick).toHaveBeenLastCalledWith("bournemouth");
+    fireEvent.keyDown(group, { key: "End" });
+    expect(onPick).toHaveBeenLastCalledWith("wrexham");
+  });
+
+  it("selects the stored club, moves back to the pitch theme, and shows edited names on request", () => {
+    const onChange = vi.fn();
+    render(<ClubPicker value="arsenal" mode="edited" onChange={onChange} />);
+    const chosen = screen.getByRole("radio", { checked: true });
+    expect(chosen.textContent).toBe("Islington Reds");
+    expect(chosen.tabIndex).toBe(0);
+    expect(chosen.querySelector("[aria-hidden]").style.getPropertyValue("--swatch-a")).toBe("#EF0107");
+    fireEvent.click(screen.getByRole("radio", { name: /Pitch/ }));
+    expect(onChange).toHaveBeenCalledWith(null);
+    fireEvent.keyDown(screen.getByRole("radiogroup"), { key: "Home" });
+    expect(onChange).toHaveBeenLastCalledWith(null);
   });
 });

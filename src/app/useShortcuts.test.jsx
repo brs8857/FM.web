@@ -36,6 +36,8 @@ describe("shortcuts", () => {
     fireEvent.click(screen.getByRole("button", { name: "New career" }));
     fireEvent.keyDown(window, { key: "k" });
     fireEvent.keyDown(window, { key: "k" });
+    expect(screen.getByText("3 of 3 · Colours")).toBeTruthy();
+    fireEvent.keyDown(window, { key: "k" });
     expect(screen.getByRole("heading", { level: 1, name: "Draft" })).toBeTruthy();
     fireEvent.keyDown(window, { key: "d", ctrlKey: true });
     expect(screen.getByRole("button", { name: "Draw" })).toBeTruthy();

@@ -63,6 +63,16 @@ which describe a club by place and colours without using its name or
 badge. Whether the real names ship in the App Store build is the rights
 review in spec 03 §5, which the owner completes before milestone E.
 
+## Club colours
+
+`src/content/clubColours.json` gives every club in the dataset, the
+opposition and the promotion pool a primary and secondary hex colour, keyed
+by slug, from its well-known kit and badge identity. The **Colours**
+setting (and the third New career step) picks a favourite club and
+`content/clubTheme.js` derives the whole token set from those two colours
+(see the comment there). Like the names, the colours describe real clubs;
+the rights review in spec 03 §5 should cover them too.
+
 ## What the game never does with the data
 
 Ratings are never shown as numbers before kick-off: stats appear as five
