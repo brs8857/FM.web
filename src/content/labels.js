@@ -67,7 +67,7 @@ export const TIER_STANDFIRST = {
 };
 
 export function tierLabel(tier) {
-  return { name: TIER_LABEL[tier.name] ?? tier.name, sub: TIER_STANDFIRST[tier.name] ?? tier.sub };
+  return { name: TIER_LABEL[tier.name] ?? tier.name, sub: TIER_STANDFIRST[tier.name] };
 }
 
 export function roleLabel(type, key) {

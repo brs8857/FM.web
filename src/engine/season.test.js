@@ -48,23 +48,10 @@ describe("season tiers", () => {
   });
 
   // The golden season recordings never reach these two outcomes (no 38-win or
-  // unbeaten-champion season among the 20 seeds), so their text is frozen here
-  // instead.
-  it("keeps the full tier object for the two outcomes the recordings never reach", () => {
-    expect(seasonTier({ w: 38, l: 0, pts: 114, position: 1 })).toEqual({
-      name: "THE PERFECT SEASON",
-      sub: "38 wins from 38 — a perfect season no top-flight side has ever managed.",
-      color: "amber",
-    });
-    expect(seasonTier({ w: 30, l: 0, pts: 98, position: 1 })).toEqual({
-      name: "Invincibles",
-      sub: "Champions and unbeaten from August to May — a status only one top-flight side has ever achieved.",
-      color: "amber",
-    });
-  });
-
-  it("describes a perfect season without contradicting itself", () => {
-    expect(seasonTier({ w: 38, l: 0, pts: 114, position: 1 }).sub).toBe("38 wins from 38 — a perfect season no top-flight side has ever managed.");
+  // unbeaten-champion season among the 20 seeds), so their keys are frozen here.
+  it("files the two outcomes the recordings never reach under their keys", () => {
+    expect(seasonTier({ w: 38, l: 0, pts: 114, position: 1 })).toEqual({ name: "THE PERFECT SEASON" });
+    expect(seasonTier({ w: 30, l: 0, pts: 98, position: 1 })).toEqual({ name: "Invincibles" });
   });
 
   it("labels career seasons from 2026-27", () => {

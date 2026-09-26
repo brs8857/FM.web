@@ -31,4 +31,11 @@ They prove the refactor doesn't change the game.
   and table changed, and `league.json` with the tables. `profiles.json` did not
   change.
 
+Re-recorded 2026-09-26 (AI-tells audit follow-up): the Board readout was
+  rewritten in the game's own voice and `seasonTier` now returns only the
+  key a verdict is filed under (its unused `sub` copy and Tailwind `color`
+  names are gone; `content/labels.js` has the display copy). Only
+  `profiles.json` readout strings and the `tier` objects in `seasons.json`
+  changed; every number and `league.json` are identical.
+
 Compare through `JSON.parse(JSON.stringify(value))` — `toEqual` distinguishes `-0` from `0`.

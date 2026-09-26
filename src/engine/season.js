@@ -122,16 +122,18 @@ export function simulateSeason(profile, familiarity, oppList, rng) {
   return playSeason(() => ({ profile, familiarity }), oppList, order, seasonSeed);
 }
 
+// The key a season's verdict is filed under. Saves keep it, and
+// content/labels.js turns it into the headline and standfirst.
 export function seasonTier({ w, l, pts, position }) {
-  if (w === 38) return { name: "THE PERFECT SEASON", sub: "38 wins from 38 — a perfect season no top-flight side has ever managed.", color: "amber" };
-  if (l === 0 && position === 1) return { name: "Invincibles", sub: "Champions and unbeaten from August to May — a status only one top-flight side has ever achieved.", color: "amber" };
-  if (pts >= 100) return { name: "Centurions", sub: "Past the 100-point mark — a ruthless, record-breaking points total that dwarfs most title-winning campaigns.", color: "amber" };
-  if (position === 1) return { name: "Champions", sub: "Crowned champions of England — the trophy, the open-top bus, the lot.", color: "emerald" };
-  if (position <= 5) return { name: "Champions League", sub: "A top-five finish and Champions League football to plan for next season.", color: "sky" };
-  if (position <= 7) return { name: "Europa League", sub: "European qualification secured — a genuinely solid campaign in the top half.", color: "violet" };
-  if (position === 8) return { name: "Conference League", sub: "Just enough for European football — a season that overachieved its underlying numbers.", color: "violet" };
-  if (position <= 17) return { name: "Mid-Table Mediocrity", sub: "Comfortable and safe, but nothing to shout about — a season that will be forgotten by August.", color: "slate" };
-  return { name: "Relegation Battle", sub: "A relegation dogfight that went the wrong way — back to the drawing board.", color: "rose" };
+  if (w === 38) return { name: "THE PERFECT SEASON" };
+  if (l === 0 && position === 1) return { name: "Invincibles" };
+  if (pts >= 100) return { name: "Centurions" };
+  if (position === 1) return { name: "Champions" };
+  if (position <= 5) return { name: "Champions League" };
+  if (position <= 7) return { name: "Europa League" };
+  if (position === 8) return { name: "Conference League" };
+  if (position <= 17) return { name: "Mid-Table Mediocrity" };
+  return { name: "Relegation Battle" };
 }
 
 export const CAREER_SEASONS = 6;
