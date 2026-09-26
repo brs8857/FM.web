@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.8.0 — 2026-09-26
+
+The bench is drafted, bans follow the league's rules, and Play to… covers them.
+
+### Added
+- **The bench draft.** After the eleventh pick the draft goes on for ten bench picks. Each draw is three club-seasons from your era, and anyone in the squad can be taken, whatever his position. The bench has its own two redraws, and **Fill the bench for me** finishes it in one step (the best player on offer each time, and a keeper if you have none). Bench players count toward neither cohesion nor the era spread until they start.
+- **Cover bans from the bench**, a switch in Play to… and on by default: before each match the best free fit comes in for a suspended starter, and the starter goes back once the ban is served, unless you have moved either of them. The feed and the report say who came in for whom. Playing one match at a time, the Squad tab's sticky bar offers **Bring in Keown for Adams** in one tap, and a banned starter's swap list leads with that player.
+- The player sheet shows the season's yellows and any ban still to serve.
+- `npm run sim -- --bans` prints bans a season at three Tackling settings; `--assert` checks 4–7 at the default.
+
+### Changed
+- **Bans follow the English top flight's thresholds.** Yellows are a season total: the fifth by week 19 bans for a match, the tenth by week 32 for two, the fifteenth for three. A straight red bans for three matches, a second yellow for one. Half of all reds are second yellows. Bans a season at the default Tackling fall from 9.6 to about 5; the reds' rate and the scores are unchanged.
+- A bench holds ten, in the window as in the draft; a full bench still loses its weakest player to make room.
+- The Squad tab groups the bench by line, and the bench rail wraps onto a second row on a phone instead of scrolling players out of sight.
+- The save format is version 5. Saves from 2.7.0 and earlier migrate; a bench of six stays six, with room for four more from the window.
+
 ## 2.7.0 — 2026-09-26
 
 Match day, part 1: the season is played one fixture at a time.

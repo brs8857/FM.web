@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | Draft for owner sign-off. Defaults are in §8; nothing is built yet |
+| **Status** | Approved 2026-09-26 with the §8 defaults ("go ahead with milestone g"); built as milestone G, v2.8.0. Where the build differs from this text, §11 says how |
 | **Date** | 2026-09-26 |
 | **Series** | 8 of the redesign series (01–07 plus the plan) |
 | **Baseline** | v2.7.0 plus the audit fixes (`3c1bbc5`) |
@@ -295,3 +295,27 @@ Play to… stops at a ban as it does today.
 5. With auto-cover off, the game behaves as v2.7 does at a ban.
 6. v4 saves in every phase load, migrate and play on.
 7. Unit, e2e, axe, contrast, bundle and balance gates all pass.
+
+---
+
+## 11. As built (v2.8.0)
+
+- **No new draft fields.** `draftStage` is the selector `selectDraftStage`:
+  "xi" while a slot is empty, "bench" once the XI is full and `draftDone`
+  is still false, "done" after. The eleventh pick resets
+  `draw.redrawsLeft` to two for the bench instead of a separate
+  `benchDraw`. A 2.7.0 save needs nothing for either: its `draftDone` is
+  already true.
+- **Save v5** adds only `autoCover` and `covers`. Logs keep 2.7.0's
+  name-only bans as they are (the validator and the report read both
+  shapes) rather than rewriting them.
+- **No fit of the same kind.** Auto-cover never puts an outfielder in goal
+  or a keeper outfield; when nobody of the right kind is free, Play to…
+  stops at the ban exactly as it does with auto-cover off.
+- **The feed** gives a cover its own line under that week's result rather
+  than lengthening the result line, so the 38 lines keep their columns.
+- **A cover is restored right after** the match that ends the ban, so the
+  board already shows the starter back before the next fixture.
+- Measured with `npm run sim -- 1000 --bans`: 5.25 bans a season at the
+  default Tackling (p90 8, worst 12), 2.9 at 20 and 8.4 at 80.
+

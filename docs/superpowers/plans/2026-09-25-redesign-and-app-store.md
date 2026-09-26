@@ -29,7 +29,7 @@
 | C. Career depth, part 1 | **v2.5** (web) | real league, ageing, cohesion memory, window constraint, balance thresholds | B (UI has the record book and strengths bars ready) |
 | D. Native shell | **v3.0 beta** (TestFlight) | platform adapter, Capacitor project, native storage, IAP + free-tier gate, privacy manifest, policy | B (native-feel), C (career worth buying) |
 | E. App Store release | **v3.0** | listing, age rating, rights sign-off, submission; then iCloud sync, dailies (Android: out of scope, see owner sign-off above) | D |
-| G. Bench draft and league bans | **v2.8** (web) | ten-pick bench draft from any position, Premier League ban thresholds, auto-cover in Play to… | F; spec [08](../specs/2026-09-26-08-bench-draft-and-bans.md) awaiting sign-off |
+| G. Bench draft and league bans | **v2.8** (web) | ten-pick bench draft from any position, top-flight ban thresholds, auto-cover in Play to… | F; spec [08](../specs/2026-09-26-08-bench-draft-and-bans.md), built as v2.8.0 |
 
 The roadmap's Phase 2 remainder (own-club relegation, matchups,
 difficulty, open-ended careers) and Phase 3 (match day) follow as v4.0
@@ -304,7 +304,7 @@ after C1's re-record. `profiles.json` still never changes here.
 | The settling numbers make change never worth it (or always) | The `sim.mjs` assertion bounds it; tune the table in 07 §4.3, not the synergy |
 | Save size with the match log | Lean entries, `order` not fixtures, rivals derived; ~55 KB for six seasons against the 512 KB guard |
 
-## Milestone G — Bench draft and league bans (spec 08, awaiting sign-off)
+## Milestone G — Bench draft and league bans (approved and built 2026-09-26, v2.8.0)
 
 **Goal:** the draft goes on for ten bench picks from random club-seasons,
 any position; bans follow the Premier League's thresholds; Play to… can

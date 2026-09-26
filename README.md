@@ -24,10 +24,12 @@ does not run the game.
 
 **How a career goes.** Choose an era and a shape. Each pick draws three
 club-seasons from that era; open a cutting to see its team sheet in shirt
-order and pick one player. Two redraws per draft. When the eleven are in,
-set a style and the dials on the Board and kick off. The season is played a
-match at a time, a report after each (or run on the vidiprinter with Play
-to…); then read the back page and open the window. Six seasons
+order and pick one player. Two redraws for the eleven; then ten more picks
+for the bench, from anyone in the squad (or fill it in one step), with two
+redraws of their own. Set a style and the dials on the Board and kick off.
+The season is played a match at a time, a report after each (or run on the
+vidiprinter with Play to…, which can cover a ban from the bench on its
+own); then read the back page and open the window. Six seasons
 make a career; the Club tab keeps the record and your career code, which
 anyone can start from to get the same draws.
 
