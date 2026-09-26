@@ -108,7 +108,35 @@ describe("Draft", () => {
     vi.useRealTimers();
   });
 
-  it("ends on the team-sheet slip once the XI is complete", () => {
+  it("goes on to ten bench picks from whole squads after the eleventh, and can fill the rest", () => {
+    let s = draftState(7);
+    for (let pick = 0; pick < 11; pick++) {
+      s = reducer(reducer(s, { type: "DRAW" }), { type: "LAND" });
+      s = reducer(s, { type: "PICK_PLAYER", player: s.draw.options[0].players[0] });
+    }
+    const spy = {};
+    render(<Harness initial={s} spy={spy} />);
+    expect(screen.getByText("Drawing for bench pick 1 of 10")).toBeTruthy();
+    expect(screen.getAllByText(/Bench 0 of 10/).length).toBeGreaterThan(0);
+    fireEvent.click(screen.getByRole("button", { name: "Draw" }));
+    expect(screen.getByText("Cuttings for bench pick 1 of 10")).toBeTruthy();
+    const cuttings = within(screen.getByRole("list", { name: "Cuttings" })).getAllByRole("button");
+    fireEvent.click(cuttings[0]);
+    const sheet = screen.getByRole("dialog");
+    expect(within(sheet).getByText(/Anyone in this squad can join your bench/)).toBeTruthy();
+    expect(within(sheet).queryByText("off")).toBeNull();
+    fireEvent.click(within(sheet).getAllByRole("button").find((b) => b.closest("li")));
+    expect(screen.getByText(/For the bench\. Nobody on the bench counts toward/)).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Pick" }));
+    expect(spy.state.bench).toHaveLength(1);
+    expect(screen.getByText("Drawing for bench pick 2 of 10")).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Fill the bench for me" }));
+    expect(spy.state.bench).toHaveLength(10);
+    expect(spy.state.draftDone).toBe(true);
+    expect(screen.getByRole("heading", { name: "Bench" })).toBeTruthy();
+  });
+
+  it("ends on the team-sheet slip once the XI and the bench are complete", () => {
     let s = draftState(7);
     while (!s.draftDone) {
       s = reducer(reducer(s, { type: "DRAW" }), { type: "LAND" });

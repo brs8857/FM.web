@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "r
 import { createReducer } from "../state/reducer.js";
 import { makeInitialState } from "../state/initialState.js";
 import { newCareerSeed } from "../state/rngState.js";
-import { selectNextAction, liveAssignments, tacticUntouched, selectSuspended } from "../state/selectors.js";
+import { selectNextAction, liveAssignments, tacticUntouched, selectSuspended, selectCover } from "../state/selectors.js";
 import { computeFamiliarity } from "../engine/familiarity.js";
 import { computeTeamProfile } from "../engine/tactics.js";
 import { getStorage, readAutosave, clearAutosave, requestPersistentStorage, writeAutosave } from "../state/storage.js";
@@ -13,6 +13,7 @@ import { summarizeSeason } from "../state/reducer.js";
 import { selectSeasonHistory } from "../state/selectors.js";
 import { APP_VERSION } from "../version.js";
 import { careerSeasonLabel } from "../engine/season.js";
+import { BENCH_SIZE } from "../engine/squad.js";
 import { cohesionLabel, identityLabel } from "../content/labels.js";
 import { clubName as displayClubName, clubSeasonLabel } from "../content/clubs.js";
 import { useAutosave } from "./useAutosave.js";
@@ -207,6 +208,11 @@ function Game({ dataset, storageProp, initialPrefs }) {
     if (state.phase === "tactics" && (nav.tab === "board" || nav.tab === "season")) {
       return { label: `Kick off season ${state.season}`, run: () => { dispatch({ type: "START_SEASON" }); goTab("season"); } };
     }
+    if (next.key === "replaceSuspended" && nav.tab === "squad") {
+      const cover = selectCover(state, next.slotId);
+      const name = state.assignments.find((a) => a.slotId === next.slotId)?.player?.name;
+      if (cover) return { label: t("season.cover", { cover: cover.player.name, name }), run: () => dispatch({ type: "COVER_BAN", slotId: next.slotId }) };
+    }
     if (next.key === "replaceSuspended" && nav.tab !== "squad" && nav.tab !== "club") return { label: next.label, run: () => goTab("squad") };
     if (next.key === "playMatch" && nav.tab !== "club") {
       return { label: next.label, run: () => { dispatch(NEXT_ACTIONS.playMatch); goTab("season"); }, playTo: true };
@@ -275,7 +281,7 @@ function Game({ dataset, storageProp, initialPrefs }) {
 
   if (nav.mode === "draft") {
     return (
-      <Shell mode="draft" title="Draft" subtitle={state.draftDone ? "XI complete" : `Pick ${next.pick} of 11`}
+      <Shell mode="draft" title="Draft" subtitle={state.draftDone ? "Squad complete" : next.key === "draftBench" ? `Bench pick ${next.pick} of ${BENCH_SIZE}` : `Pick ${next.pick} of 11`}
         end={<Button variant="ghost" size="sm" onClick={() => navDispatch({ type: "HOME" })}>Pause</Button>}
         sticky={state.draftDone ? <Button block onClick={() => dispatch({ type: "SKIP_TO_TACTICS" })}>Go to the board</Button> : undefined}>
         <Draft state={state} dataset={dataset} dispatch={dispatch} instant={reducedMotion} clubSeason={clubSeason} prefs={prefs} onDismissNote={markSeen} />
@@ -308,7 +314,8 @@ function Game({ dataset, storageProp, initialPrefs }) {
           onExport={exportCareer} onImportFile={onImportFile} onStartFromCode={onStartFromCode} onNewCareer={onNewCareer} />
       )}
       {state.phase === "matchday" && state.campaign && (
-        <PlayToSheet open={playTo} onClose={() => setPlayTo(false)} week={state.campaign.week} onPlay={runPlayTo} />
+        <PlayToSheet open={playTo} onClose={() => setPlayTo(false)} week={state.campaign.week} onPlay={runPlayTo}
+          autoCover={state.autoCover} onAutoCover={(on) => dispatch({ type: "SET_AUTO_COVER", on })} />
       )}
       <ConfirmSheet open={confirmNew} title="Start a new career?" confirmLabel="Start over" onConfirm={() => startNewCareer()} onClose={() => setConfirmNew(false)}>
         <p>Your current career ({t("shell.season", { season: state.season, label: careerSeasonLabel(state.season) })}) will be replaced. Export it first if you want to keep it.</p>

@@ -16,19 +16,20 @@ export function shirtOrder(players) {
   });
 }
 
-export default function CuttingSheet({ option, title, slotType, onClose, onChoose }) {
-  const position = POSITION_LABEL[slotType] ?? slotType;
+export default function CuttingSheet({ option, title, slotType, bench = false, onClose, onChoose }) {
+  const position = POSITION_LABEL[slotType] ?? slotType ?? "";
   return (
     <Sheet open={Boolean(option)} onClose={onClose} title={title}>
       {option && (
         <>
           <p className={styles.sheetLede}>
-            {option.relaxed ? t("draft.relaxed", { position: position.toLowerCase() }) : `${t("draft.eligible", { count: option.players.length, position: position.toLowerCase() })} for this slot, in shirt order.`}
+            {bench ? "Anyone in this squad can join your bench. In shirt order."
+              : option.relaxed ? t("draft.relaxed", { position: position.toLowerCase() }) : `${t("draft.eligible", { count: option.players.length, position: position.toLowerCase() })} for this slot, in shirt order.`}
           </p>
           <ul className={styles.rows}>
             {shirtOrder(option.players).map((p) => (
               <TeamSheetRow key={p.id} code={p.slot} name={p.name} meta={playerMeta(p)} onClick={() => onChoose(p)}
-                mark={p.slot !== slotType ? { label: "off", title: `Not a ${position.toLowerCase()}` } : undefined} />
+                mark={!bench && p.slot !== slotType ? { label: "off", title: `Not a ${position.toLowerCase()}` } : undefined} />
             ))}
           </ul>
         </>

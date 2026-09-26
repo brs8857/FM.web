@@ -5,7 +5,7 @@ import CoachNote from "../../app/CoachNote.jsx";
 import PlayerSheet, { BAN_MARK } from "./PlayerSheet.jsx";
 import { POSITION_LABEL, roleLabel, briefLabel } from "../../content/labels.js";
 import { playerMeta } from "../../content/format.js";
-import { isBanned } from "../../state/selectors.js";
+import { isBanned, benchLine, BENCH_LINES } from "../../state/selectors.js";
 import layout from "../TabLayout.module.css";
 
 // A banned starter's mark outranks an off-position one: it blocks Play.
@@ -13,6 +13,13 @@ function markFor(a, suspended) {
   if (!a.player) return undefined;
   if (suspended?.has(a.player.id)) return BAN_MARK;
   return a.player.slot !== a.type ? { label: "off", title: `Not a ${POSITION_LABEL[a.type].toLowerCase()}` } : undefined;
+}
+
+// The bench by line (keeper, defence, midfield, attack), each row keeping its
+// place in state.bench for the sheet and swaps.
+function benchByLine(bench) {
+  return bench.map((b, i) => ({ b, i })).filter(({ b }) => b.player)
+    .sort((x, y) => BENCH_LINES.indexOf(benchLine(x.b.player)) - BENCH_LINES.indexOf(benchLine(y.b.player)) || x.i - y.i);
 }
 
 export default function SquadTab({ state, dispatch, clubSeason, revealed, suspended, prefs, onDismissNote }) {
@@ -40,7 +47,7 @@ export default function SquadTab({ state, dispatch, clubSeason, revealed, suspen
           <section>
             <h3 className={layout.subheading}>Bench</h3>
             <ul className={layout.rows}>
-              {state.bench.map((b, i) => b.player && (
+              {benchByLine(state.bench).map(({ b, i }) => (
                 <TeamSheetRow key={i} code={b.player.slot} name={b.player.name} meta={playerMeta(b.player)}
                   mark={isBanned(state, b.player) ? BAN_MARK : undefined}
                   selected={target?.kind === "bench" && target.id === i} onClick={() => open("bench", i)} />

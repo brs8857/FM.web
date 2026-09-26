@@ -22,9 +22,31 @@ export async function startNewCareer(page) {
   await expect(page.getByRole("heading", { level: 1, name: "Draft" })).toBeVisible();
 }
 
+async function pickFromDraw(page, row = 0) {
+  const draw = page.getByRole("button", { name: "Draw", exact: true });
+  await draw.click();
+  const cuttings = page.getByRole("list", { name: "Cuttings" }).getByRole("button");
+  await expect(cuttings.first()).toBeVisible({ timeout: 10_000 });
+  await cuttings.first().click();
+  const rows = page.getByRole("dialog").locator("li button");
+  await rows.nth(Math.min(row, (await rows.count()) - 1)).click();
+  await page.getByRole("button", { name: "Pick", exact: true }).click();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+}
+
+// Drafts ten for the bench through the real flow, taking a different row of
+// the first cutting each time (the first row, in shirt order, is a keeper).
+export async function draftBench(page) {
+  for (let pick = 0; pick < 10; pick++) {
+    await expect(page.getByText(`Drawing for bench pick ${pick + 1} of 10`)).toBeVisible();
+    await pickFromDraw(page, pick * 2);
+  }
+}
+
 // Drafts eleven through the real flow: Draw, open the first cutting, pick
-// the first row, confirm. `onPick` runs with the cuttings on the desk.
-export async function draftFullXI(page, { onPick } = {}) {
+// the first row, confirm. `onPick` runs with the cuttings on the desk. The
+// bench is filled in one step unless `bench` is "draft".
+export async function draftFullXI(page, { onPick, bench = "fill" } = {}) {
   for (let pick = 0; pick < 11; pick++) {
     const draw = page.getByRole("button", { name: "Draw", exact: true });
     await draw.click();
@@ -37,6 +59,8 @@ export async function draftFullXI(page, { onPick } = {}) {
     await page.getByRole("button", { name: "Pick", exact: true }).click();
     await expect(page.getByRole("dialog")).toHaveCount(0);
   }
+  if (bench === "draft") await draftBench(page);
+  else await page.getByRole("button", { name: "Fill the bench for me" }).click();
   await page.getByRole("button", { name: "Go to the board" }).click();
   await expect(page.getByRole("tab", { name: "Season" })).toBeVisible();
 }
@@ -55,13 +79,20 @@ export async function playTo(page, option = "The end of the season") {
   if (await skip.isVisible().catch(() => false)) await skip.click();
 }
 
-// Answers "Replace X (suspended)": swaps each banned starter with the last
-// player on his sheet who isn't banned too, then returns to the Season tab.
+// Answers "Replace X (suspended)" with the one-tap cover on the Squad tab;
+// where there is none, swaps the banned starter with the last player on his
+// sheet who isn't banned too. Then returns to the Season tab.
 export async function coverBans(page) {
   for (let i = 0; i < 6; i++) {
     const replace = page.getByRole("button", { name: /^Replace .+ \(suspended\)$/ }).first();
     if (!(await replace.isVisible().catch(() => false))) break;
     await page.getByRole("tab", { name: "Squad" }).click();
+    const bringIn = page.getByRole("button", { name: /^Bring in .+ for .+/ }).first();
+    if (await bringIn.isVisible().catch(() => false)) {
+      await bringIn.click();
+      await page.getByRole("tab", { name: "Season" }).click();
+      continue;
+    }
     await page.getByRole("button", { name: /Suspended for the next match/ }).first().click();
     await page.getByRole("button", { name: "Swap with…" }).click();
     await page.getByRole("region", { name: "Swap with" }).getByRole("listitem")

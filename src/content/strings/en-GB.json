@@ -8,6 +8,9 @@
   "draft.redraws": "{count, plural, =0 {No redraws left} one {# redraw left} other {# redraws left}}",
   "draft.eraCost": "Era spread grows to {years, plural, one {# year} other {# years}}: cohesion {delta}",
   "draft.eraSpread": "Era spread {years, plural, one {# year} other {# years}} (cohesion −{cost})",
+  "draft.benchPick": "Bench pick {pick} of {size}",
+  "draft.benchSoFar": "Bench {count} of {size}",
+  "draft.squadSize": "{count, plural, =0 {Nobody left} one {# player} other {# players}}",
   "years": "{count, plural, one {# year} other {# years}}",
   "season.record": "Won {w}, drawn {d}, lost {l}",
   "season.position": "Week {week} · {position} · {pts, plural, one {# pt} other {# pts}}",
@@ -33,7 +36,11 @@
   "season.fresh": "First match in this system: cohesion {modifier}",
   "season.topScorer": "Top scorer: {name}, {count, plural, one {# goal} other {# goals}}",
   "season.suspended": "Replace {name} (suspended)",
-  "season.misses": "{name} misses the next match",
+  "season.misses": "{name} misses the next {matches, plural, one {match} other {# matches}}",
+  "season.covered": "{in} in for {out} (suspended)",
+  "season.cover": "Bring in {cover} for {name}",
+  "squad.yellows": "{count, plural, one {# yellow} other {# yellows}} this season",
+  "squad.banned": "Suspended: {count, plural, one {# more match} other {# more matches}}",
   "season.noLog": "No match log for this season.",
   "season.form": "Won {w}, drawn {d}, lost {l}; last five: {last}"
 }

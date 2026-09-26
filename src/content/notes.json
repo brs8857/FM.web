@@ -7,6 +7,10 @@
     "title": "Coach's note",
     "body": "Ratings are hidden until kick-off. The cuttings are club-seasons: the question is which of these squads had the player you need."
   },
+  "bench": {
+    "title": "Coach's note",
+    "body": "Anyone from these squads can sit on your bench. A keeper and one for each line will cover you when bans come."
+  },
   "squad": {
     "title": "Coach's note",
     "body": "Tap a row to see a player's sheet and swap him with someone else. Drag bench markers onto the board to bring them in."

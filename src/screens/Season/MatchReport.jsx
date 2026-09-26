@@ -12,9 +12,15 @@ export function minuteLabel(minute) {
 }
 
 export function cardsLine(cards) {
-  const list = (kind) => cards.filter((c) => c.kind === kind).map((c) => `${c.name} ${minuteLabel(c.minute)}`).join(", ");
-  const booked = list("yellow"), sentOff = list("red");
+  const named = (c) => `${c.name} ${minuteLabel(c.minute)}${c.kind === "second-yellow" ? " (second yellow)" : ""}`;
+  const list = (kinds) => cards.filter((c) => kinds.includes(c.kind)).map(named).join(", ");
+  const booked = list(["yellow"]), sentOff = list(["red", "second-yellow"]);
   return [booked && `Booked: ${booked}.`, sentOff && `Sent off: ${sentOff}.`].filter(Boolean).join(" ") || null;
+}
+
+// A 2.7.0 log names a ban; later logs carry its length too.
+export function banLine(ban) {
+  return typeof ban === "string" ? t("season.misses", { name: ban, matches: 1 }) : t("season.misses", { name: ban.name, matches: ban.matches });
 }
 
 // The opponent's scorers are not named (spec 07 M4): their minutes are read
@@ -63,7 +69,8 @@ export default function MatchReport({ match, clubName, after, compact = false, l
         </dl>
       )}
       {match.cards && cardsLine(match.cards) && <p className={styles.cards}>{cardsLine(match.cards)}</p>}
-      {match.bans?.map((name) => <p key={name} className={styles.ban}>{t("season.misses", { name })}</p>)}
+      {match.covered?.map((c) => <p key={c.out} className={styles.ban}>{t("season.covered", c)}</p>)}
+      {match.bans?.map((ban) => <p key={typeof ban === "string" ? ban : ban.name} className={styles.ban}>{banLine(ban)}</p>)}
       {after && <p className={styles.table}>{after}</p>}
     </article>
   );

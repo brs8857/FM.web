@@ -19,6 +19,12 @@ export function resultLine(match, clubName) {
   return { id: match.week, tone: RESULT_TONE[match.outcome], text: `WK ${String(match.week).padStart(2)}  ${pad(`${clubName(match.opponent).toUpperCase()} ${venue}`, 26)} ${match.gf}-${match.ga}  ${match.outcome}` };
 }
 
+// A starter covered for a ban gets a line of his own under that week's result.
+export function feedLines(match, clubName) {
+  const covers = (match.covered ?? []).map((c, i) => ({ id: `${match.week}-cover-${i}`, tone: "muted", text: `       ${t("season.covered", c).toUpperCase()}` }));
+  return [resultLine(match, clubName), ...covers];
+}
+
 export function positionText(week, row) {
   return t("season.position", { week, position: ordinal(row.position), pts: row.pts });
 }
@@ -50,10 +56,10 @@ export default function Vidiprinter({ log, from = 1, season, instant, clubName, 
 
   const row = week > 0 ? standingAt(week) : null;
   const barText = row ? positionText(week, row) : t("season.kickoff", { season });
-  const lines = matches.slice(0, shown).map((m) => resultLine(m, clubName));
+  const lines = matches.slice(0, shown).flatMap((m) => feedLines(m, clubName));
 
   const speak = (why) => {
-    const latest = lines[lines.length - 1];
+    const latest = shown > 0 ? resultLine(matches[shown - 1], clubName) : null;
     announce(`${why}. ${latest ? `${latest.text}. ` : ""}${barText}.`);
   };
   const pause = () => { setPaused(true); speak("Paused"); };

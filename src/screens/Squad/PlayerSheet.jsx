@@ -13,10 +13,19 @@ import { ROLES, DUTY_INFO } from "../../engine/roles.js";
 import { STAT_KEYS, STAT_LABELS } from "../../engine/players.js";
 import { POSITION_LABEL, BRIEF_LABEL, CONCEPT, roleLabel, briefLabel } from "../../content/labels.js";
 import { playerMeta } from "../../content/format.js";
-import { isBanned } from "../../state/selectors.js";
+import { isBanned, selectCover } from "../../state/selectors.js";
+import { t } from "../../content/t.js";
 import styles from "./PlayerSheet.module.css";
 
 export const BAN_MARK = { label: "ban", title: "Suspended for the next match" };
+const FIT_MARK = { label: "fit", title: "Best fit to cover the ban" };
+
+// The season's yellows and any ban left to serve, for the sheet.
+export function disciplineLines(state, player) {
+  const d = state.discipline?.[player.id];
+  if (!d) return [];
+  return [d.yellows > 0 && t("squad.yellows", { count: d.yellows }), d.banned > 0 && t("squad.banned", { count: d.banned })].filter(Boolean);
+}
 
 export function entryFor(state, target) {
   if (!target) return null;
@@ -35,10 +44,13 @@ export default function PlayerSheet({ target, state, dispatch, clubSeason, revea
   const role = isSlot ? ROLES[entry.type].find((r) => r.key === entry.role) ?? ROLES[entry.type][0] : null;
   const position = isSlot ? POSITION_LABEL[entry.type] : `Bench · ${POSITION_LABEL[player.slot] ?? player.slot}`;
   const offPosition = isSlot && player.slot !== entry.type;
+  // A banned starter's sheet leads with the cover Play to… would choose.
+  const cover = isSlot && isBanned(state, player) ? selectCover(state, target.id) : null;
   const others = [
     ...state.assignments.filter((a) => a.player && !(isSlot && a.slotId === target.id)).map((a) => ({ kind: "slot", id: a.slotId, code: a.type, player: a.player })),
     ...state.bench.map((b, i) => ({ kind: "bench", id: i, player: b.player })).filter((b) => b.player && !(!isSlot && b.id === target.id)).map((b) => ({ ...b, code: b.player.slot })),
-  ];
+  ].sort((a, b) => Number(cover?.index === b.id && b.kind === "bench") - Number(cover?.index === a.id && a.kind === "bench"));
+  const discipline = disciplineLines(state, player);
   const swap = (to) => {
     dispatch({ type: "SWAP_PLAYERS", fromKind: target.kind, fromId: target.id, toKind: to.kind, toId: to.id });
     announce(`${player.name} and ${to.player.name} swapped.`);
@@ -51,6 +63,7 @@ export default function PlayerSheet({ target, state, dispatch, clubSeason, revea
       <p className={styles.identity}>
         {position}{offPosition && ` (a ${POSITION_LABEL[player.slot]?.toLowerCase() ?? player.slot} by trade)`} · {playerMeta(player)} · {clubSeason(player.seasonKey)}
       </p>
+      {discipline.length > 0 && <p className={styles.desc}>{discipline.join(" · ")}</p>}
       {revealed && <div className={styles.overall}><Stamp value={player.ov} label="Overall" /></div>}
       <div className={styles.stats}>
         {STAT_KEYS.map((k) => <StatPip key={k} label={STAT_LABELS[k]} value={player.stats[k]} />)}
@@ -61,7 +74,7 @@ export default function PlayerSheet({ target, state, dispatch, clubSeason, revea
           <h3 className={styles.subheading}>Swap with…</h3>
           <ul className={styles.rows}>
             {others.map((o) => <TeamSheetRow key={`${o.kind}-${o.id}`} code={o.code} name={o.player.name} meta={playerMeta(o.player)}
-              mark={isBanned(state, o.player) ? BAN_MARK : undefined} onClick={() => swap(o)} />)}
+              mark={isBanned(state, o.player) ? BAN_MARK : cover && o.kind === "bench" && o.id === cover.index ? FIT_MARK : undefined} onClick={() => swap(o)} />)}
           </ul>
           <Button variant="ghost" onClick={() => setSwapping(false)}>Cancel</Button>
         </section>

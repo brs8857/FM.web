@@ -3,7 +3,7 @@ import { render, screen, fireEvent, act, within } from "@testing-library/react";
 import { useReducer, useState } from "react";
 import SeasonTab from "./SeasonTab.jsx";
 import { resultLine, positionText, TICK_MS } from "./Vidiprinter.jsx";
-import { minuteLabel } from "./MatchReport.jsx";
+import MatchReport, { minuteLabel, cardsLine } from "./MatchReport.jsx";
 import { ordinal, signed } from "../../content/format.js";
 import { HALF_SEASON } from "../../engine/season.js";
 import { settleNote } from "../Board/IdentityLine.jsx";
@@ -270,6 +270,27 @@ describe("SeasonTab", () => {
     fireEvent.click(within(dialog).getByRole("button", { name: "Play" }));
     expect(onPlay).toHaveBeenCalledWith("defeat");
     expect(onClose).toHaveBeenCalled();
+  });
+
+  it("Play to… carries the auto-cover switch", () => {
+    const onAutoCover = vi.fn();
+    render(<TermsProvider terms={terms}><PlayToSheet open week={3} onPlay={() => {}} onClose={() => {}} autoCover onAutoCover={onAutoCover} /></TermsProvider>);
+    const toggle = screen.getByRole("switch", { name: /Cover bans from the bench/ });
+    expect(toggle.getAttribute("aria-checked")).toBe("true");
+    fireEvent.click(toggle);
+    expect(onAutoCover).toHaveBeenCalledWith(false);
+  });
+
+  it("reports a second yellow, how long each ban runs, and who covered", () => {
+    const match = { week: 4, opponent: "Rival", home: true, gf: 1, ga: 0, outcome: "W", goals: [{ minute: 10, us: true, slotId: "ST", name: "Shearer" }],
+      cards: [{ minute: 30, slotId: "CB1", name: "Adams", kind: "red" }, { minute: 80, slotId: "CM1", name: "Keane", kind: "second-yellow" }, { minute: 60, slotId: "FB1", name: "Dixon", kind: "yellow" }],
+      bans: [{ name: "Adams", matches: 3 }, { name: "Keane", matches: 1 }, "Vieira"], covered: [{ in: "Keown", out: "Bould" }] };
+    expect(cardsLine(match.cards)).toBe("Booked: Dixon 60'. Sent off: Adams 30', Keane 80' (second yellow).");
+    render(<MatchReport match={match} clubName={(n) => n} />);
+    expect(screen.getByText("Adams misses the next 3 matches")).toBeTruthy();
+    expect(screen.getByText("Keane misses the next match")).toBeTruthy();
+    expect(screen.getByText("Vieira misses the next match")).toBeTruthy();
+    expect(screen.getByText("Keown in for Bould (suspended)")).toBeTruthy();
   });
 
   it("puts the season's top scorer under the record and a report behind every match", () => {

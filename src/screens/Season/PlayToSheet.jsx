@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Button from "../../ui/Button.jsx";
 import ChipRow from "../../ui/ChipRow.jsx";
+import Toggle from "../../ui/Toggle.jsx";
 import Sheet from "../../ui/Sheet.jsx";
 import { HALF_SEASON, SEASON_WEEKS } from "../../engine/season.js";
 import { t } from "../../content/t.js";
@@ -16,7 +17,8 @@ export function playToOptions(week) {
   return options;
 }
 
-export default function PlayToSheet({ open, onClose, week, onPlay }) {
+// `autoCover` and `onAutoCover` drive the career setting of spec 08 §6.1.
+export default function PlayToSheet({ open, onClose, week, onPlay, autoCover = true, onAutoCover }) {
   const [until, setUntil] = useState("next");
   const options = playToOptions(week);
   const choice = options.some((o) => o.key === until) ? until : "next";
@@ -26,6 +28,7 @@ export default function PlayToSheet({ open, onClose, week, onPlay }) {
       footer={<Button block onClick={play}>Play</Button>}>
       <p className={styles.lede}>The board plays as it stands now for every match in the run.</p>
       <ChipRow label="Play to" options={options} value={choice} onChange={setUntil} />
+      {onAutoCover && <Toggle label="Cover bans from the bench" sub="The best fit comes in; the starter goes back after the ban" checked={autoCover} onChange={onAutoCover} />}
     </Sheet>
   );
 }

@@ -1,7 +1,7 @@
 {
   "draw": {
     "title": "Draw",
-    "body": "Each pick starts with a draw: three club-seasons from your era, shown as [[cutting|cuttings]]. You pick one player from one of them.\n\nYou get two [[redraw|redraws]] per draft."
+    "body": "Each pick starts with a draw: three club-seasons from your era, shown as [[cutting|cuttings]]. You pick one player from one of them.\n\nYou get two [[redraw|redraws]] for the XI, and two more for the bench."
   },
   "cutting": {
     "title": "Cutting",
@@ -9,7 +9,7 @@
   },
   "redraw": {
     "title": "Redraw",
-    "body": "Throws all three cuttings back and draws again. Two per draft, and they do not come back."
+    "body": "Throws all three cuttings back and draws again. Two for the XI and two for the bench, and they do not come back."
   },
   "era": {
     "title": "Era",

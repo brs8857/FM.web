@@ -98,6 +98,28 @@ test("pacing: Play to the end is no slower than the old vidiprinter", async ({ p
   expect(fed, "Play to the end, watched").toBeLessThanOrEqual(oldVidiprinterMs + 2000);
 });
 
+// Spec 08 §10: eleven and ten drafted by hand, then a whole season on
+// Play to… with auto-cover on, which never stops for a ban.
+test("drafts ten for the bench and plays a season through on auto-cover", async ({ page }) => {
+  await openHome(page);
+  await startNewCareer(page);
+  await draftFullXI(page, { bench: "draft" });
+  await page.getByRole("tab", { name: "Squad" }).click();
+  await expect(page.getByRole("group", { name: "Bench" }).getByRole("button")).toHaveCount(10);
+  await expectNoHorizontalScroll(page);
+  await setStyle(page, "Gegenpress");
+  await page.getByRole("button", { name: "Kick off season 1" }).last().click();
+  await page.getByRole("button", { name: "Start season 1" }).last().click({ timeout: 15_000 });
+  await page.getByRole("button", { name: "Play to…" }).click();
+  await expect(page.getByRole("switch", { name: /Cover bans from the bench/ })).toHaveAttribute("aria-checked", "true");
+  await page.getByRole("radio", { name: /The end of the season/ }).click();
+  await page.getByRole("button", { name: "Play", exact: true }).click();
+  const skip = page.getByRole("button", { name: "Skip to end" });
+  if (await skip.isVisible().catch(() => false)) await skip.click();
+  await expect(page.getByRole("button", { name: "Share" })).toBeVisible({ timeout: 20_000 });
+  await expect(page.getByRole("button", { name: /\(suspended\)$/ })).toHaveCount(0);
+});
+
 test("the draft is playable with the keyboard alone", async ({ page, isMobile }) => {
   test.skip(isMobile, "keyboard flow runs on the desktop project");
   await openHome(page);

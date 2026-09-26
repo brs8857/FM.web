@@ -6,7 +6,7 @@ import { t } from "../../content/t.js";
 import { playerMeta, signed, SIDE_LABEL } from "../../content/format.js";
 import styles from "./Draft.module.css";
 
-export default function ConfirmPick({ player, preview, clubSeason, onClose, onPick }) {
+export default function ConfirmPick({ player, preview, bench = false, clubSeason, onClose, onPick }) {
   const position = preview ? (POSITION_LABEL[preview.type] ?? preview.type).toLowerCase() : "";
   const effects = [];
   if (preview) {
@@ -22,10 +22,16 @@ export default function ConfirmPick({ player, preview, clubSeason, onClose, onPi
       {player && (
         <>
           <p className={styles.identity}>{POSITION_LABEL[player.slot] ?? player.slot} · {playerMeta(player)} · {clubSeason}</p>
-          <p className={styles.sheetLede}>For the {position} slot. Effect on <Term term="cohesion">cohesion</Term>:</p>
-          <ul className={styles.effects}>
-            {effects.map((e) => <li key={e.text} className={e.tone === "cost" ? styles.cost : undefined}>{e.text}</li>)}
-          </ul>
+          {bench
+            ? <p className={styles.sheetLede}>For the bench. Nobody on the bench counts toward <Term term="cohesion">cohesion</Term> or the era spread until he starts.</p>
+            : (
+              <>
+                <p className={styles.sheetLede}>For the {position} slot. Effect on <Term term="cohesion">cohesion</Term>:</p>
+                <ul className={styles.effects}>
+                  {effects.map((e) => <li key={e.text} className={e.tone === "cost" ? styles.cost : undefined}>{e.text}</li>)}
+                </ul>
+              </>
+            )}
         </>
       )}
     </Sheet>
