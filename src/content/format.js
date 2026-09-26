@@ -17,5 +17,5 @@ export function goalDifference(n) {
 }
 
 export function playerMeta(player) {
-  return [player.age ?? "—", player.nat, player.side ? `${SIDE_LABEL[player.side]} side` : null].filter(Boolean).join(" · ");
+  return [player.age, player.nat, player.side ? `${SIDE_LABEL[player.side]} side` : null].filter(Boolean).join(" · ");
 }

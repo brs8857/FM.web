@@ -12,16 +12,15 @@ export function minuteLabel(minute) {
 }
 
 export function cardsLine(cards) {
-  const list = (kind) => cards.filter((c) => c.kind === kind).map((c) => `${c.name} ${minuteLabel(c.minute)}`).join(", ") || "—";
-  return `Booked: ${list("yellow")}. Sent off: ${list("red")}.`;
+  const list = (kind) => cards.filter((c) => c.kind === kind).map((c) => `${c.name} ${minuteLabel(c.minute)}`).join(", ");
+  const booked = list("yellow"), sentOff = list("red");
+  return [booked && `Booked: ${booked}.`, sentOff && `Sent off: ${sentOff}.`].filter(Boolean).join(" ") || null;
 }
 
 // The opponent's scorers are not named (spec 07 M4): their minutes are read
 // out with the club's name, which is not printed.
 function Scorers({ side, goals, name, us }) {
-  if (goals.length === 0) {
-    return <p className={styles.none}><span className="visually-hidden">{side}: no goals</span><span aria-hidden="true">—</span></p>;
-  }
+  if (goals.length === 0) return <div><p className="visually-hidden">{side}: no goals</p></div>;
   return (
     <div>
       <p className="visually-hidden">{side} goals</p>
@@ -63,7 +62,7 @@ export default function MatchReport({ match, clubName, after, compact = false, l
           {played.changed && <div className={styles.changed}><dt className="visually-hidden">System</dt><dd>Changed this week</dd></div>}
         </dl>
       )}
-      {match.cards && <p className={styles.cards}>{cardsLine(match.cards)}</p>}
+      {match.cards && cardsLine(match.cards) && <p className={styles.cards}>{cardsLine(match.cards)}</p>}
       {match.bans?.map((name) => <p key={name} className={styles.ban}>{t("season.misses", { name })}</p>)}
       {after && <p className={styles.table}>{after}</p>}
     </article>

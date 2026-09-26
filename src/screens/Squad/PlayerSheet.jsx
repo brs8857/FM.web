@@ -37,7 +37,7 @@ export default function PlayerSheet({ target, state, dispatch, clubSeason, revea
   const offPosition = isSlot && player.slot !== entry.type;
   const others = [
     ...state.assignments.filter((a) => a.player && !(isSlot && a.slotId === target.id)).map((a) => ({ kind: "slot", id: a.slotId, code: a.type, player: a.player })),
-    ...state.bench.map((b, i) => ({ kind: "bench", id: i, code: b.player?.slot ?? "—", player: b.player })).filter((b) => b.player && !(!isSlot && b.id === target.id)),
+    ...state.bench.map((b, i) => ({ kind: "bench", id: i, player: b.player })).filter((b) => b.player && !(!isSlot && b.id === target.id)).map((b) => ({ ...b, code: b.player.slot })),
   ];
   const swap = (to) => {
     dispatch({ type: "SWAP_PLAYERS", fromKind: target.kind, fromId: target.id, toKind: to.kind, toId: to.id });

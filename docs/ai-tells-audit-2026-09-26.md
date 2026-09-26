@@ -448,9 +448,10 @@ Logged, not changed:
 Not changed, because each touches the golden files, the save format, the
 engine's data or a decision that is yours:
 
-1. **The Board readout** (`engine/readout.js`): the last block of
-   generated-sounding copy in the game. A replacement set is in 2.3; it
-   needs `tests/golden/profiles.json` re-recorded in its own commit.
+1. ~~**The Board readout** (`engine/readout.js`): the last block of
+   generated-sounding copy in the game.~~ Done in the follow-up: the 2.3
+   set plus the three notes it didn't cover, with `profiles.json`
+   re-recorded (readout strings only).
 2. **One club, two names**: "Burnley FC" / "Burnley" and four more pairs
    between `players.json` and `championship.json` (2.3). Promotion can
    put both into one league.
@@ -458,8 +459,9 @@ engine's data or a decision that is yours:
    "Bespoke"; telling "no plan" apart needs the identity key in
    `seasonHistory` (save format).
 4. **Small buttons** at 36 px against spec 04's 44 pt (2.6).
-5. **The engine's tier `color` names** (`amber`, `emerald`, …) are
-   Tailwind leftovers in golden-pinned output; harmless, unused.
+5. ~~**The engine's tier `color` names** (`amber`, `emerald`, …).~~ Done in
+   the follow-up: `seasonTier` returns only the key, and its unused `sub`
+   copy went with the colours; `seasons.json` re-recorded (tier objects only).
 6. **Haptics**: the preference is kept for the Capacitor build; put the
    toggle back when something reads it.
 7. **The "Pitch" swatch** in the colour picker draws with the live
@@ -484,3 +486,19 @@ engine's data or a decision that is yours:
   642 of 664 px on the iPhone 13 profile and 708 of 839 on Pixel 7 across
   random careers; 621 of 664 on the fixed test draft (635 before the type
   change).
+
+## 5. Follow-up (orchestrator, after merging)
+
+Found reviewing the after-screenshots, and fixed:
+- **Template placeholders in the match report**: "Sent off: —." when nobody
+  was, and a lone "—" under a side that didn't score. Empty categories are
+  now left out, and a match without cards has no cards line.
+- `playerMeta` printed "—" for an unknown age; it now leaves the age out.
+- An unreachable "—" fallback in the Swap-with list (the rows it covered
+  are filtered out first) is gone.
+- The phone axe test raced a short Play to… run (a ban can end it a match
+  in); it now pauses the feed before scanning it, and covers any ban first.
+
+Still for the owner: items 2 (one club, two names), 3 (Record identity),
+4 (small buttons), 6 (haptics), 7 (Pitch swatch) and 8 (WebKit) above.
+None of them is generated-sounding copy or a stock visual pattern.

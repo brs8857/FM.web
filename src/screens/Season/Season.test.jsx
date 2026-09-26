@@ -189,7 +189,8 @@ describe("SeasonTab", () => {
     const state = { ...base, bench: makeSeason3State(0).bench, campaign: { ...base.campaign, log: [...base.campaign.log.slice(0, 2), last] }, discipline: { [starter.id]: { yellows: 0, banned: 1 } } };
     render(<Harness initial={state} spy={spy} />);
     const report = screen.getByRole("article", { name: /Your XI/ });
-    expect(within(report).getByText(`Booked: —. Sent off: ${starter.name} 44'.`)).toBeTruthy();
+    expect(within(report).getByText(`Sent off: ${starter.name} 44'.`)).toBeTruthy();
+    expect(within(report).queryByText(/Booked/)).toBeNull();
     expect(within(report).getByText(`${starter.name} misses the next match`)).toBeTruthy();
     const note = screen.getByRole("note", { name: "Suspended" });
     expect(note.textContent).toContain(`${starter.name} is banned for this match.`);

@@ -57,9 +57,6 @@
 .scorer {
   overflow-wrap: anywhere;
 }
-.none {
-  color: var(--ink-2);
-}
 .played {
   display: flex;
   flex-wrap: wrap;

@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { openHome, startNewCareer, draftFullXI, setStyle, finishSeason, expectAxeClean, expectNoHorizontalScroll } from "./helpers.js";
+import { openHome, startNewCareer, draftFullXI, setStyle, coverBans, finishSeason, expectAxeClean, expectNoHorizontalScroll } from "./helpers.js";
 
 // axe on every screen, in every project (spec 04 §8.11), plus the width and
 // reduced-motion checks. Visual snapshots are opt-in with VISUAL=1 because
@@ -58,10 +58,13 @@ test("every screen passes axe and never scrolls sideways", async ({ page }) => {
   await page.getByRole("list", { name: "Results" }).getByRole("button").first().click();
   await expectAxeClean(page, "match day, report row open");
   await expectNoHorizontalScroll(page);
+  await coverBans(page);
   await page.getByRole("button", { name: "Play to…" }).click();
   await expectAxeClean(page, "play to sheet");
   await page.getByRole("radio", { name: /The end of the season/ }).click();
   await page.getByRole("button", { name: "Play", exact: true }).click();
+  // Held so the scan sees the feed: a ban can end a run a match in.
+  await page.getByRole("button", { name: "Pause" }).click();
   await expectAxeClean(page, "vidiprinter");
   await page.getByRole("button", { name: "Skip to end" }).click();
   await finishSeason(page);
