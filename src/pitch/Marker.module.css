@@ -50,7 +50,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  text-shadow: 0 0 2px var(--slate);
+  text-shadow: 0 0 2px var(--slate), 0 0 3px var(--slate), 0 0 4px var(--slate), 0 0 5px var(--slate);
 }
 .empty .name {
   opacity: 0.7;
