@@ -1,5 +1,23 @@
 # Changelog
 
+## 2.7.0 — 2026-09-26
+
+Match day, part 1: the season is played one fixture at a time.
+
+### Added
+- **Match day.** After the reveal the Season tab shows where you stand in the live table, the last match's report, and the next fixture: the opponent's standing, your strengths against theirs, and what your cohesion is for this match. **Play week 12: Arsenal (A)** sits in the sticky bar on the Season, Board and Squad tabs (K on a keyboard), and the board, dials, jobs and XI are read afresh before every fixture.
+- **Match reports.** Every match has a report: the score, who scored and when (stoppage time as 90+2'), the identity, cohesion and mentality you played it with, and where it left you in the table. Scorers are credited from the score, weighted by each starter's attacking job, brief and position, so the season's top scorer is a consequence of the board.
+- **Play to…** the half, the next defeat or the end of the season: the run is played with the board as it stands and typed in on the vidiprinter, with the half-season stop when it crosses week 19. Watched, a whole season takes as long as the old vidiprinter; Skip or reduced motion makes it instant.
+- **Settling.** A system just changed (or a season's first match) costs 3 cohesion, then 2, then 1, and nothing from the fourth match in a row in it. Changing style, lean or shape every week is no longer free; keeping one system is worth what it always was.
+- **Cards and bans.** Bookings come with the tackling dial (Aggressive gets about 40% more than the midpoint); a red card or a fifth yellow bans the player for the next match. A banned starter must be swapped out from the Squad tab before you can play ("Replace Adams (suspended)"); with nobody free on the bench the side plays a man short. Bans clear between seasons.
+- **The record remembers every match.** Each season in Club › Record opens to its form, its top scorers and all 38 reports; the career adds its top scorer and biggest win. The back page and the share slip name the season's top scorer.
+- `npm run sim -- --assert` also checks that changing the system every week, or leaning deeper against the strongest sides, never out-points keeping one system.
+
+### Changed
+- The save format is version 4. Saves from 2.5.0, 2.0.0 and 1.1.0 migrate. **A save paused at the ratings reveal restarts that season from kick-off**: its results had been drawn at once and never seen, and are now drawn fixture by fixture, so they will differ. A save on a back page keeps its results (without scorers), and seasons already in the record show "No match log".
+- Every fixture, its events and every rival round now draw from the season's own seed, so nothing done between matches changes a result. The balance table is unchanged beyond sampling noise.
+- On phones the sticky action bar no longer sits under the tab bar.
+
 ## 2.5.0 — 2026-09-26
 
 Career depth, part 1: a career now changes from season to season, and the

@@ -113,6 +113,6 @@
   },
   "settling": {
     "title": "Settling",
-    "body": "Cohesion for the next match from the matches already played this season in the same system: the shape, the seven identity dials and the discipline. The first match of a season, or the first after a change, costs −3; the next two −2 and −1; from the seventh match in a row it pays +3.\n\nSwapping players and moving the other dials do not count as a change."
+    "body": "Cohesion for the next match from the matches already played this season in the same system: the shape, the seven identity dials and the discipline. The first match of a season, or the first after a change, costs −3; the next two −2 and −1; from the fourth match in a row it costs nothing.\n\nSwapping players and moving the other dials do not count as a change."
   }
 }

@@ -10,7 +10,8 @@ export function settleNote(settle) {
   const modifier = signed(settle.modifier);
   if (settle.changed) return t("season.changed", { modifier });
   if (settle.matches === 0) return t("season.fresh", { modifier });
-  return t("season.settled", { count: settle.matches, modifier });
+  if (settle.modifier < 0) return t("season.bedding", { count: settle.matches, modifier });
+  return t("season.settled", { count: settle.matches, bonus: settle.modifier > 0 ? ` (${modifier})` : "" });
 }
 
 // The identity chip and cohesion meter: the first thing on the Board, and

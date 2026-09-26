@@ -22,8 +22,9 @@ For a single file that runs from disk, `npm run build:standalone` writes
 **How a career goes.** Choose an era and a shape. Each pick draws three
 club-seasons from that era; open a cutting to see its team sheet in shirt
 order and pick one player. Two redraws per draft. When the eleven are in,
-set a style and the dials on the Board, kick off, watch the season type in
-on the vidiprinter, read the back page, and open the window. Six seasons
+set a style and the dials on the Board and kick off. The season is played a
+match at a time, a report after each (or run on the vidiprinter with Play
+to…); then read the back page and open the window. Six seasons
 make a career; the Club tab keeps the record and your career code, which
 anyone can start from to get the same draws.
 

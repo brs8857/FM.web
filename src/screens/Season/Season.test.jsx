@@ -4,6 +4,7 @@ import { useReducer, useState } from "react";
 import SeasonTab from "./SeasonTab.jsx";
 import { resultLine, ordinal, positionText, HALF_SEASON, TICK_MS } from "./Vidiprinter.jsx";
 import { minuteLabel, signed } from "./MatchReport.jsx";
+import { settleNote } from "../Board/IdentityLine.jsx";
 import PlayToSheet, { playToOptions } from "./PlayToSheet.jsx";
 import { eligibleSlots } from "./Window.jsx";
 import { slipFor } from "./BackPage.jsx";
@@ -58,6 +59,14 @@ describe("Season helpers", () => {
     expect(resultLine({ week: 3, opponent: "Rival 2", home: true, gf: 2, ga: 1, outcome: "W" }, clubName)).toMatchObject({ id: 3, tone: "win" });
     expect(resultLine({ week: 12, opponent: "Rival 2", home: false, gf: 0, ga: 0, outcome: "D" }, clubName).text).toBe("WK 12  RIVAL 2 (A)                0-0  D");
     expect([1, 2, 3, 4, 11, 12, 13, 21, 22].map(ordinal)).toEqual(["1st", "2nd", "3rd", "4th", "11th", "12th", "13th", "21st", "22nd"]);
+  });
+
+  it("says in words what settling does to the next match", () => {
+    expect(settleNote({ matches: 0, modifier: -3, changed: true })).toBe("Just changed: cohesion −3 this match");
+    expect(settleNote({ matches: 0, modifier: -3, changed: false })).toBe("First match in this system: cohesion −3");
+    expect(settleNote({ matches: 2, modifier: -1, changed: false })).toBe("Bedding in: 2 matches in this system, cohesion −1");
+    expect(settleNote({ matches: 9, modifier: 0, changed: false })).toBe("Settled in: 9 matches in this system");
+    expect(settleNote({ matches: 9, modifier: 3, changed: false })).toBe("Settled in: 9 matches in this system (+3)");
   });
 
   it("prints minutes, stoppage time and signed modifiers the report's way", () => {

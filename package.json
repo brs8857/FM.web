@@ -1,7 +1,7 @@
 {
   "name": "fm-web",
   "private": true,
-  "version": "2.5.0",
+  "version": "2.7.0",
   "type": "module",
   "description": "Era XI — draft an XI from 33 years of the English top flight, one club-season at a time, build a tactic on the chalkboard, and play a six-season career with promotion and relegation.",
   "scripts": {

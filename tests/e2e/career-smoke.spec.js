@@ -31,8 +31,8 @@ test("draft, set a style, play season 1, pass the window into season 2", async (
   await expect(page.getByRole("button", { name: "Kick off season 2" }).first()).toBeVisible();
 
   // Season two by hand: three single matches, a style change before the third.
-  await page.getByRole("button", { name: "Kick off season 2" }).first().click();
-  await page.getByRole("button", { name: "Start season 2" }).click({ timeout: 15_000 });
+  await page.getByRole("button", { name: "Kick off season 2" }).last().click();
+  await page.getByRole("button", { name: "Start season 2" }).last().click({ timeout: 15_000 });
   await expectAxeClean(page, "match day");
   for (const week of [1, 2]) {
     await coverBans(page);
@@ -42,7 +42,7 @@ test("draft, set a style, play season 1, pass the window into season 2", async (
   await coverBans(page);
   await setStyle(page, "Park The Bus");
   await expect(page.getByText(/^Just changed: cohesion −\d this match/).first()).toBeVisible();
-  await page.getByRole("button", { name: /^Play week 3: / }).first().click();
+  await page.getByRole("button", { name: /^Play week 3: / }).last().click();
   await expect(page.getByRole("tab", { name: "Season", selected: true })).toBeVisible();
   await expect(page.getByText("Changed this week")).toBeVisible();
   await expectAxeClean(page, "match day with a report");
@@ -63,8 +63,8 @@ test("pacing: Play to the end is no slower than the old vidiprinter", async ({ p
   await startNewCareer(page);
   await draftFullXI(page);
   await setStyle(page, "Gegenpress");
-  await page.getByRole("button", { name: "Kick off season 1" }).first().click();
-  await page.getByRole("button", { name: "Start season 1" }).click({ timeout: 15_000 });
+  await page.getByRole("button", { name: "Kick off season 1" }).last().click();
+  await page.getByRole("button", { name: "Start season 1" }).last().click({ timeout: 15_000 });
   const single = Date.now();
   await page.getByRole("button", { name: /^Play week 1: / }).first().click();
   await expect(page.getByRole("heading", { name: "Last match" })).toBeVisible();

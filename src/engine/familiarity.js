@@ -9,8 +9,11 @@ export const MEMORY_CAP = 8;
 export const MEMORY_CHANGE_PENALTY = 4;
 // Cohesion by matches already played this season in the same system: index
 // 0 is a system just changed (or the season's first match), the last entry
-// holds from there on.
-export const SETTLING = [-3, -2, -1, 0, 0, 0, 3];
+// holds from there on. Spec 07 proposed +3 from the seventh match; measured
+// by `npm run sim`, that lifted a side that never changes its system by 3
+// points and 6 title points a season over the balance C5 tuned, so settling
+// is a cost of change only: keeping a system is worth what it was before.
+export const SETTLING = [-3, -2, -1, 0];
 export const EMPTY_MEMORY = { formationKey: null, styleKey: null, seasons: 0, signature: null, matches: 0 };
 
 // Cohesion memory: the system (shape and identity) the club played its

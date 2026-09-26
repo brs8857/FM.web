@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| **Status** | Draft for owner review, 2026-09-25 |
+| **Status** | Approved 2026-09-26 with the §14 defaults; built as milestone F, v2.7.0. Settling tuned to −3/−2/−1/0 (no +3 bonus) under the `sim.mjs` check, see the 2.7.0 changelog |
 | **Date** | 2026-09-25 |
 | **Series** | 7 of the redesign series (01–06 plus the plan) |
 | **Baseline** | v2.0.0 (`468dbdf`), with milestone C (career depth, part 1) in progress concurrently |

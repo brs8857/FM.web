@@ -1,7 +1,9 @@
 // @vitest-environment node
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
-import { playCareer, playWholeSeason } from "../fixtures/playCareer.js";
+import { playCareer, playWholeSeason, playMatches } from "../fixtures/playCareer.js";
+import { createRng } from "../../src/engine/rng.js";
+import { STYLE_PRESETS } from "../../src/engine/instructions.js";
 import { createReducer } from "../../src/state/reducer.js";
 import { makeInitialState } from "../../src/state/initialState.js";
 import { makeSaveEnvelope, toSaveText, parseSaveText, hydrateState, serializeState } from "../../src/state/save.js";
@@ -69,7 +71,52 @@ function playWindow(state, label) {
   return s;
 }
 
-function soak(seed) {
+const DIALS = ["mentality", "tempo", "directness", "width", "press", "line", "tackling", "focus", "counter", "crossing", "gkDistribution"];
+
+// Plan F6: a season played match by match by a restless manager. Before
+// every fixture a style, a dial or the XI may change at random; bans are
+// covered from the bench; a save is taken and reloaded mid-season. Every
+// match must leave a consistent log, and no career draw is taken.
+function tinkerSeason(state, label, rng) {
+  const counter = state.rngCounter + 1;
+  state = reducer(reducer(state, { type: "START_SEASON" }), { type: "KICKOFF" });
+  const saveWeek = 1 + rng.int(38);
+  const tally = { changes: 0, swaps: 0 };
+  while (state.phase === "matchday") {
+    const roll = rng.next();
+    if (roll < 0.2) { state = reducer(state, { type: "SET_STYLE", key: STYLE_PRESETS[rng.int(STYLE_PRESETS.length)].key }); tally.changes++; }
+    else if (roll < 0.4) { state = reducer(state, { type: "SET_INSTRUCTION", key: DIALS[rng.int(DIALS.length)], value: rng.int(101) }); tally.changes++; }
+    if (rng.next() < 0.2) {
+      const bench = state.bench.map((b, i) => (b.player ? i : -1)).filter((i) => i >= 0);
+      if (bench.length) {
+        state = reducer(state, { type: "SWAP_PLAYERS", fromKind: "bench", fromId: bench[rng.int(bench.length)], toKind: "slot", toId: state.assignments[rng.int(11)].slotId });
+        tally.swaps++;
+      }
+    }
+    state = playMatches(reducer, state, 1);
+    const entry = state.campaign.log.at(-1);
+    const wlabel = `${label} week ${entry.week}`;
+    expect(entry.goals, wlabel).toHaveLength(entry.gf + entry.ga);
+    expect(entry.goals.filter((g) => g.us), wlabel).toHaveLength(entry.gf);
+    expect(entry.played.cohesion >= 12 && entry.played.cohesion <= 96, wlabel).toBe(true);
+    expect(state.rngCounter, wlabel).toBe(counter);
+    checkSquad(state, wlabel);
+    for (const d of Object.values(state.discipline)) expect(d.yellows < 5 && d.banned <= 1, wlabel).toBe(true);
+    if (entry.week === saveWeek && state.phase === "matchday" && state.season <= CAREER_SEASONS) {
+      const parsed = parseSaveText(toSaveText(makeSaveEnvelope(state, { gameVersion: "2.7.0" })));
+      expect(parsed.ok, wlabel).toBe(true);
+      const restored = hydrateState(parsed.save.state);
+      expect(JSON.stringify(serializeState(restored)), wlabel).toBe(JSON.stringify(serializeState(state)));
+      state = restored;
+    }
+  }
+  expect(state.campaign.log.map((m) => m.week), label).toEqual(Array.from({ length: 38 }, (_, i) => i + 1));
+  expect(tally.changes + tally.swaps, label).toBeGreaterThan(5);
+  return state;
+}
+
+function soak(seed, { tinker = false } = {}) {
+  const rng = createRng(seed);
   let state = playCareer({ reducer, initialState: makeInitialState(dataset, seed), seasons: 1 });
   const log = { retired: [], positions: [state.simulation.position], meanOv: [] };
   checkSeason(state, `seed ${seed} season 1`);
@@ -92,8 +139,9 @@ function soak(seed) {
     checkSquad(state, label);
 
     const memory = state.cohesionMemory;
-    state = playWholeSeason(reducer, state);
-    expect(state.cohesionMemory, label).toEqual({ ...memory, seasons: memory.seasons + 1 });
+    state = tinker ? tinkerSeason(state, label, rng) : playWholeSeason(reducer, state);
+    if (!tinker) expect(state.cohesionMemory, label).toEqual({ ...memory, seasons: memory.seasons + 1 });
+    else expect(state.cohesionMemory, label).toMatchObject({ formationKey: state.formationKey, signature: null, matches: 0 });
     checkSeason(state, label);
     log.positions.push(state.simulation.position);
     const xi = state.assignments.map((a) => a.player).filter(Boolean);
@@ -105,7 +153,7 @@ function soak(seed) {
       expect(JSON.stringify(serializeState(hydrateState(parsed.save.state))), label).toBe(JSON.stringify(serializeState(state)));
     }
   }
-  expect(state.cohesionMemory, `seed ${seed}`).toMatchObject({ styleKey: "Gegenpress", seasons: SEASONS });
+  if (!tinker) expect(state.cohesionMemory, `seed ${seed}`).toMatchObject({ styleKey: "Gegenpress", seasons: SEASONS });
   return log;
 }
 
@@ -115,5 +163,10 @@ describe("ten-season soak", () => {
     expect(log.positions).toHaveLength(SEASONS);
     expect(log.retired.length, "someone retires in ten years").toBeGreaterThan(0);
     for (const ov of log.meanOv) expect(ov > 55 && ov < 95, `mean XI rating ${ov}`).toBe(true);
+  });
+
+  it.each([11, 4242])("seed %i plays ten seasons match by match with random changes and swaps every week", (seed) => {
+    const log = soak(seed, { tinker: true });
+    expect(log.positions).toHaveLength(SEASONS);
   });
 });

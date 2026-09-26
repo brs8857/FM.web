@@ -14,7 +14,7 @@ Each phase gets its own design cycle before any code is written:
 | 1C | Career depth, part 1 (moved forward from Phase 2) | v2.5 | Built 2026-09-26 (milestone C; tagged v2.5.0); owner review of the balance table outstanding |
 | 1D | App Store release (free + one-time unlock) | v3.0 | Specced in 05; next |
 | 2 | Deeper Career + Sharper Draft & Tactics (remainder) | v4.0 | Waiting on 1D |
-| 3 | Match-Day Experience | v5.0 | Waiting on Phase 2 |
+| 3 | Match-Day Experience | v5.0 | First slice shipped in v2.7 (milestone F, spec 07; tagged v2.7.0): the season match by match, reports with scorers, cards and bans. Live view, in-match changes and injuries remain |
 
 The starting point is v1.0 (commit `6495fb8`), which is live at https://brs8857.github.io/FM.web/.
 The problems it starts from are listed in [code-review-2026-09-11.md](code-review-2026-09-11.md).
@@ -168,6 +168,11 @@ without errors, and old saves load or are cleanly rejected with a clear message.
 - **Live match view**: a 2D pitch and/or commentary feed with speed controls and highlights.
 - **In-match management**: tactical changes, substitutions, shouts.
 - **Consequences**: injuries, suspensions, fitness, and player match ratings that feed back into the career.
+
+_First slice (v2.7, spec 07):_ the season is played fixture by fixture from a
+seeded campaign, each match narrated with scorers and minutes and kept in the
+record, with suspensions as the first consequence. The live view, in-match
+management, injuries, fitness and ratings are still to come.
 
 **Exit criteria:** match results stay statistically in line with Phase 2's
 simulation, a full season is playable at "watch key moments" speed, and it performs well on mid-range phones.

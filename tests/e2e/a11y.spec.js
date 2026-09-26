@@ -45,9 +45,9 @@ test("every screen passes axe and never scrolls sideways", async ({ page }) => {
     await snap(page, tab.toLowerCase());
   }
   await setStyle(page);
-  await page.getByRole("button", { name: "Kick off season 1" }).first().click();
+  await page.getByRole("button", { name: "Kick off season 1" }).last().click();
   await expectAxeClean(page, "reveal");
-  await page.getByRole("button", { name: "Start season 1" }).click({ timeout: 15_000 });
+  await page.getByRole("button", { name: "Start season 1" }).last().click({ timeout: 15_000 });
   await expectAxeClean(page, "match day");
   await expectNoHorizontalScroll(page);
   await snap(page, "match-day");
@@ -77,9 +77,9 @@ test("reduced motion shows the reveal and the season instantly", async ({ page }
   await startNewCareer(page);
   await draftFullXI(page);
   await setStyle(page);
-  await page.getByRole("button", { name: "Kick off season 1" }).first().click();
+  await page.getByRole("button", { name: "Kick off season 1" }).last().click();
   await expect(page.getByText("Squad average")).toBeVisible({ timeout: 2000 });
-  await page.getByRole("button", { name: "Start season 1" }).click();
+  await page.getByRole("button", { name: "Start season 1" }).last().click();
   await page.getByRole("button", { name: "Play to…" }).click();
   await page.getByRole("radio", { name: /The end of the season/ }).click();
   await page.getByRole("button", { name: "Play", exact: true }).click();

@@ -74,7 +74,7 @@ describe("settling", () => {
     }
     expect(modifiers).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8].map((n) => SETTLING[Math.min(n, SETTLING.length - 1)]));
     expect(SETTLING[0]).toBeLessThan(0);
-    expect(SETTLING.at(-1)).toBeGreaterThan(0);
+    expect(SETTLING.at(-1)).toBeGreaterThanOrEqual(0);
     expect(memory.matches).toBe(9);
     expect(settling(memory, "4-3-3", { ...gegen, mentality: 20 })).toMatchObject({ matches: 0, modifier: SETTLING[0], changed: true });
   });

@@ -34,6 +34,13 @@ describe("tooling", () => {
     expect(violations([row("best", 45.3, 0), row("best", 11.8, 0), row("random", 0, 2.8), row("random", 0, 12.3)])).toHaveLength(4);
   });
 
+  it("fails the settling check when changing the system every week out-points keeping it", async () => {
+    const { settlingViolations } = await import("../../scripts/sim.mjs");
+    const row = (play, avgPts) => ({ formation: "4-3-3", draft: "best", play, avgPts, titlePct: 0, bottom3Pct: 0 });
+    expect(settlingViolations([row("batch", 70), row("keep", 70), row("weekly", 70), row("lean", 69.9)])).toEqual([]);
+    expect(settlingViolations([row("batch", 70), row("keep", 70), row("weekly", 70.1), row("lean", 71)])).toHaveLength(2);
+  });
+
   it("normalises line endings to LF", () => {
     expect(readFileSync(".gitattributes", "utf8")).toMatch(/^\* text=auto eol=lf$/m);
   });

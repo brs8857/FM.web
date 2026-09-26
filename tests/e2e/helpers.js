@@ -80,11 +80,12 @@ export async function finishSeason(page) {
   await expect(page.getByRole("button", { name: "Share" })).toBeVisible({ timeout: 20_000 });
 }
 
-// Kick off, start the season after the reveal, fast-forward to the half and
+// Kick off from the sticky bar (the Next pill only changes tab), start the
+// season after the reveal, fast-forward to the half and
 // then the end, and open the window from the back page.
 export async function playSeasonToWindow(page, season = 1) {
-  await page.getByRole("button", { name: `Kick off season ${season}` }).first().click();
-  await page.getByRole("button", { name: `Start season ${season}` }).click({ timeout: 15_000 });
+  await page.getByRole("button", { name: `Kick off season ${season}` }).last().click();
+  await page.getByRole("button", { name: `Start season ${season}` }).last().click({ timeout: 15_000 });
   await expect(page.getByRole("button", { name: /^Play week 1: / }).first()).toBeVisible();
   await playTo(page, "The half");
   await expect(page.getByRole("button", { name: /^(Play week \d+|Replace .+ \(suspended\))/ }).first()).toBeVisible({ timeout: 20_000 });
