@@ -15,7 +15,6 @@ import styles from "./Draft.module.css";
 
 const TWO_COLUMNS = "(min-width: 600px)";
 
-// The draft (spec 04 §5.2): a compact chalkboard, the squad strip, the draw.
 // On a phone the strip follows the draw, so the board and all three cuttings
 // fit one screen at every pick (spec 04 §12).
 export default function Draft({ state, dataset, dispatch, instant, clubSeason, prefs, onDismissNote }) {

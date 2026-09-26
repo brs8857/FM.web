@@ -28,8 +28,6 @@ const SLIPS = [
   },
 ];
 
-// First run (spec 04 §5.8): three slips, one sentence each, then straight
-// into New career. No tutorial.
 export default function FirstRun({ onDone }) {
   const [step, setStep] = useState(0);
   const last = step === SLIPS.length - 1;

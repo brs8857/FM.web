@@ -12,9 +12,7 @@ import styles from "./Draft.module.css";
 export const SPIN_MS = 1100;
 const TICK_MS = 90;
 
-// The draw (spec 04 §5.2): Draw runs the ticker past club-season labels and
-// settles on up to three cuttings; Redraw throws them back at the cost of one
-// of two ticks. The ticker is cosmetic; the cuttings come from the reducer.
+// The ticker is cosmetic; the cuttings come from the reducer.
 export default function Draw({ draw, slotType, eraIndex, instant, selected, labelFor, onDraw, onLand, onRedraw, onOpen }) {
   const [tickerLines, setTickerLines] = useState([]);
   const position = (POSITION_LABEL[slotType] ?? slotType).toLowerCase();

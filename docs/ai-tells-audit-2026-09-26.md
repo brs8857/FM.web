@@ -92,9 +92,9 @@ Changed (commit below):
 - Gave the axe suite a 30 s timeout.
 
 Left alone: `src/pitch/**` (the orchestrator is changing the chalkboard
-layout there), `src/screens/Draft/Draw.jsx`, `Draft.jsx` and
-`src/app/FirstRun.jsx` (changed on `claude/zen-feynman-hler0e`), to be
-done after the merge. Engine constants exported only for their own file
+layout there). `src/screens/Draft/Draw.jsx`, `Draft.jsx` and
+`src/app/FirstRun.jsx`, changed on `claude/zen-feynman-hler0e`, were done
+after merging it. Engine constants exported only for their own file
 (`HOME_ADVANTAGE`, `STOPPAGE_CHANCE`, …) stay exported: they are the
 tunables `sim.mjs` users look for.
 
