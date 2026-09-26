@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { describe, it, expect } from "vitest";
-import { roundRobinSchedule, buildUserFixtureList, seasonTier, careerSeasonLabel, CAREER_SEASONS, simulateSeason, simulateLeague } from "./season.js";
+import { roundRobinSchedule, buildUserFixtureList, seasonTier, careerSeasonLabel, CAREER_SEASONS, simulateSeason, playSeason, leagueTable, simulateFixture, fixtureRng, eventRng, roundRng } from "./season.js";
 import { simulateRivalMatch, rivalStrength, rivalNoise } from "./match.js";
 import { applyPromotionRelegation } from "./league.js";
 import { createRng } from "./rng.js";
@@ -119,7 +119,7 @@ describe("simulateSeason with an rng", () => {
   });
 
   it("plays every club's 38 fixtures so the table adds up", () => {
-    const { table, matches } = simulateLeague(profile, 65, opponents, createRng(3));
+    const { table, matches } = simulateSeason(profile, 65, opponents, createRng(3));
     expect(table).toHaveLength(20);
     expect(table.map((r) => r.position)).toEqual(table.map((_, i) => i + 1));
     for (const row of table) {
@@ -145,8 +145,60 @@ describe("simulateSeason with an rng", () => {
   it("keeps the user's fixture list as buildUserFixtureList makes it", () => {
     const rng = createRng(21);
     const order = createRng(21).shuffle(opponents).map((o) => o.name);
-    const { matches } = simulateLeague(profile, 65, opponents, rng);
+    const { matches } = simulateSeason(profile, 65, opponents, rng);
     expect(matches.map(({ week, opponent, home }) => ({ week, name: opponent, home }))).toEqual(buildUserFixtureList(order));
+  });
+
+  it("is playSeason with the order and season seed drawn from the rng", () => {
+    const rng = createRng(33);
+    const order = rng.shuffle(opponents).map((o) => o.name);
+    const seed = rng.int(2 ** 32);
+    const played = playSeason(() => ({ profile, familiarity: 65 }), opponents, order, seed);
+    expect(played).toEqual(simulateSeason(profile, 65, opponents, createRng(33)));
+  });
+});
+
+describe("per-fixture seeding", () => {
+  const opponents = Array.from({ length: 19 }, (_, i) => ({ name: `Rival ${i + 1}`, ov: 70 + i, histMean: 72, weight: 1, vol: 8 }));
+  const profile = { attack: 80, defense: 78, defSolidity: 76, buildup: 70, press: 70, creativity: 72, physical: 75 };
+  const order = opponents.map((o) => o.name);
+  const nameToOpp = Object.fromEntries(opponents.map((o) => [o.name, o]));
+
+  it("gives fixtures, events and rival rounds their own streams", () => {
+    const first = (rng) => rng.next();
+    expect(new Set([first(fixtureRng(7, 1)), first(eventRng(7, 1)), first(roundRng(7, 1)), first(fixtureRng(7, 2)), first(fixtureRng(8, 1))]).size).toBe(5);
+    expect(first(fixtureRng(7, 1))).toBe(first(fixtureRng(7, 1)));
+  });
+
+  it("plays a fixture from the seed and its week alone", () => {
+    const fixture = buildUserFixtureList(order)[11];
+    const a = simulateFixture(profile, 65, nameToOpp[fixture.name], fixture, 99);
+    expect(a).toEqual(simulateFixture(profile, 65, nameToOpp[fixture.name], fixture, 99));
+    expect(a).toMatchObject({ week: 12, opponent: fixture.name, home: fixture.home });
+    expect(a.outcome).toBe(a.gf > a.ga ? "W" : a.gf === a.ga ? "D" : "L");
+  });
+
+  it("changes only the week whose board changed, and never the rivals", () => {
+    const steady = playSeason(() => ({ profile, familiarity: 65 }), opponents, order, 4242);
+    const tinkered = playSeason((f) => (f.week === 10 ? { profile: { ...profile, attack: 99 }, familiarity: 90 } : { profile, familiarity: 65 }), opponents, order, 4242);
+    steady.matches.forEach((m, i) => { if (m.week !== 10) expect(tinkered.matches[i], `week ${m.week}`).toEqual(m); });
+    const rivals = (season) => season.table.filter((r) => !r.isUser).map(({ name, pts, gf, ga }) => ({ name, pts, gf, ga })).sort((a, b) => a.name.localeCompare(b.name));
+    const week10 = steady.matches[9], opp = week10.opponent;
+    const other = (season) => rivals(season).filter((r) => r.name !== opp);
+    expect(other(tinkered)).toEqual(other(steady));
+  });
+
+  it("builds the table week by week with the same rival results the full season has", () => {
+    const season = playSeason(() => ({ profile, familiarity: 65 }), opponents, order, 77);
+    for (const week of [0, 1, 19, 38]) {
+      const table = leagueTable(opponents, order, season.matches.slice(0, week), 77);
+      expect(table).toHaveLength(20);
+      for (const row of table) {
+        expect(row.weekly, `${row.name} at ${week}`).toEqual(season.table.find((r) => r.name === row.name).weekly.slice(0, week));
+        expect(row.w + row.d + row.l).toBe(week);
+      }
+    }
+    expect(leagueTable(opponents, order, season.matches, 77)).toEqual(season.table);
   });
 });
 

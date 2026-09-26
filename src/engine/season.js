@@ -1,4 +1,5 @@
 import { seasonLabel } from "./util.js";
+import { createRng, deriveSeed } from "./rng.js";
 import { simulateMatch, simulateRivalMatch } from "./match.js";
 
 export const USER_TEAM = "__USER__";
@@ -48,28 +49,37 @@ function byStanding(a, b) {
   return b.pts - a.pts || (b.gf - b.ga) - (a.gf - a.ga) || b.gf - a.gf;
 }
 
-// Every one of the 380 fixtures is played: the user's through simulateMatch
-// as before, rival against rival through its mirror. Each table row carries
-// the club's real record and its points after every week.
-export function simulateLeague(profile, familiarity, oppList, rng) {
-  const shuffled = rng.shuffle(oppList);
-  const teams = [USER_TEAM, ...shuffled.map((o) => o.name)];
+// Every random number in a season derives from its seed and the week, so
+// fixture k's result depends only on the seed and the board before it, never
+// on how many draws earlier fixtures took. Events and rival rounds each have
+// their own stream, so narrating a match never changes a score.
+export function fixtureRng(seasonSeed, week) { return createRng(deriveSeed(seasonSeed, week)); }
+export function eventRng(seasonSeed, week) { return createRng(deriveSeed(seasonSeed, 1000 + week)); }
+export function roundRng(seasonSeed, week) { return createRng(deriveSeed(seasonSeed, 2000 + week)); }
+
+export function simulateFixture(profile, familiarity, opp, fixture, seasonSeed) {
+  const res = simulateMatch(profile, opp, fixture.home, familiarity, fixtureRng(seasonSeed, fixture.week));
+  const outcome = res.gf > res.ga ? "W" : res.gf === res.ga ? "D" : "L";
+  return { week: fixture.week, opponent: fixture.name, home: fixture.home, gf: res.gf, ga: res.ga, outcome };
+}
+
+// The table after the user's `matches` so far. Every rival round up to the
+// same week is played from the season seed, rival against rival through
+// simulateRivalMatch, whatever the user's results were. Each row carries its
+// record and its points after every week played.
+export function leagueTable(oppList, order, matches, seasonSeed) {
+  const teams = [USER_TEAM, ...order];
   const nameToOpp = Object.fromEntries(oppList.map((o) => [o.name, o]));
   const rows = Object.fromEntries(teams.map((name) => [name, {
     name: name === USER_TEAM ? USER_TEAM_NAME : name, pts: 0, isUser: name === USER_TEAM, w: 0, d: 0, l: 0, gf: 0, ga: 0, weekly: [],
   }]));
-
-  const matches = [];
-  roundRobinSchedule(teams).forEach((round, i) => {
+  roundRobinSchedule(teams).slice(0, matches.length).forEach((round, i) => {
+    const rng = roundRng(seasonSeed, i + 1);
     for (const [home, away] of round) {
       let hg, ag;
       if (home === USER_TEAM || away === USER_TEAM) {
-        const isHome = home === USER_TEAM;
-        const opponent = isHome ? away : home;
-        const res = simulateMatch(profile, nameToOpp[opponent], isHome, familiarity, rng);
-        const outcome = res.gf > res.ga ? "W" : res.gf === res.ga ? "D" : "L";
-        matches.push({ week: i + 1, opponent, home: isHome, gf: res.gf, ga: res.ga, outcome });
-        [hg, ag] = isHome ? [res.gf, res.ga] : [res.ga, res.gf];
+        const m = matches[i];
+        [hg, ag] = m.home ? [m.gf, m.ga] : [m.ga, m.gf];
       } else {
         ({ hg, ag } = simulateRivalMatch(nameToOpp[home], nameToOpp[away], rng));
       }
@@ -78,17 +88,39 @@ export function simulateLeague(profile, familiarity, oppList, rng) {
     }
     for (const row of Object.values(rows)) row.weekly.push(row.pts);
   });
-
   const table = Object.values(rows).sort(byStanding);
   table.forEach((row, i) => { row.position = i + 1; });
-  return { matches, table };
+  return table;
 }
 
-export function simulateSeason(profile, familiarity, oppList, rng) {
-  const { matches, table } = simulateLeague(profile, familiarity, oppList, rng);
+// A finished season from the user's 38 results: the league around them and
+// the verdict. The batch and the match-by-match reducer both end here.
+export function seasonResult(oppList, order, matches, seasonSeed) {
+  const table = leagueTable(oppList, order, matches, seasonSeed);
   const { w, d, l, gf, ga, pts, position } = table.find((row) => row.isUser);
   const tier = seasonTier({ w, l, pts, position });
   return { matches, w, d, l, gf, ga, pts, tier, position, table };
+}
+
+// Plays the 38 fixtures in order. `lineupFor(fixture)` gives the profile and
+// cohesion each is played with, so a season whose board changes week to week
+// plays the same here as through the reducer.
+export function playSeason(lineupFor, oppList, order, seasonSeed) {
+  const nameToOpp = Object.fromEntries(oppList.map((o) => [o.name, o]));
+  const matches = buildUserFixtureList(order).map((fixture) => {
+    const { profile, familiarity } = lineupFor(fixture);
+    return simulateFixture(profile, familiarity, nameToOpp[fixture.name], fixture, seasonSeed);
+  });
+  return seasonResult(oppList, order, matches, seasonSeed);
+}
+
+// The batch season, kept for sim.mjs and the golden test: draws the order and
+// the season seed from the caller's rng as START_SEASON does, then plays every
+// fixture with the same board.
+export function simulateSeason(profile, familiarity, oppList, rng) {
+  const order = rng.shuffle(oppList).map((o) => o.name);
+  const seasonSeed = rng.int(2 ** 32);
+  return playSeason(() => ({ profile, familiarity }), oppList, order, seasonSeed);
 }
 
 export function seasonTier({ w, l, pts, position }) {

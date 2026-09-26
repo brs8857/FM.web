@@ -23,5 +23,12 @@ They prove the refactor doesn't change the game.
   retuned presets) and the season inputs were re-derived from the same 20 XIs
   and seeds. `profiles.json` changes with the tuning; `seasons.json` and
   `league.json` in the commit after it, with the balance table.
+  Re-recorded 2026-09-26 (plan F1) when the season became playable one fixture
+  at a time: `simulateSeason` still draws the fixture order from its rng, then a
+  season seed, and every fixture, event and rival round derives its own stream
+  from that seed and its week (`fixtureRng`, `eventRng`, `roundRng`). Same XIs,
+  profiles, fixture lists and `simulateMatch`; different draws, so every result
+  and table changed, and `league.json` with the tables. `profiles.json` did not
+  change.
 
 Compare through `JSON.parse(JSON.stringify(value))` — `toEqual` distinguishes `-0` from `0`.
