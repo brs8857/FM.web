@@ -442,3 +442,45 @@ Logged, not changed:
 - A contrast sweep with axe in Chromium over nine screens, light and
   dark, in the default theme and five club themes (Liverpool, Everton,
   Wolves, Watford, Norwich) found no failures.
+
+## 3. For the owner
+
+Not changed, because each touches the golden files, the save format, the
+engine's data or a decision that is yours:
+
+1. **The Board readout** (`engine/readout.js`): the last block of
+   generated-sounding copy in the game. A replacement set is in 2.3; it
+   needs `tests/golden/profiles.json` re-recorded in its own commit.
+2. **One club, two names**: "Burnley FC" / "Burnley" and four more pairs
+   between `players.json` and `championship.json` (2.3). Promotion can
+   put both into one league.
+3. **Record identity**: seasons with no named identity all show as
+   "Bespoke"; telling "no plan" apart needs the identity key in
+   `seasonHistory` (save format).
+4. **Small buttons** at 36 px against spec 04's 44 pt (2.6).
+5. **The engine's tier `color` names** (`amber`, `emerald`, …) are
+   Tailwind leftovers in golden-pinned output; harmless, unused.
+6. **Haptics**: the preference is kept for the Capacitor build; put the
+   toggle back when something reads it.
+7. **The "Pitch" swatch** in the colour picker draws with the live
+   tokens, so under a club theme it shows the club's colours rather than
+   the default theme's.
+8. **WebKit**: the re-enabled axe suite passes on both Chromium projects;
+   CI's iPhone 13 WebKit run is the first time it will run there.
+
+## 4. Verification (final tree)
+
+- `npm run lint`: clean. `npm test`: 75 files, 731 tests pass.
+- `npm run check:contrast`: 28 pairs pass. `clubTheme.test.js`: every
+  club passes every pair in both modes, same token names.
+- `npm run check:bundle`: 115.8 KB gzipped app code (budget 120; 117.3
+  at the start).
+- `npm run sim -- 1000 --assert`: thresholds met; the engine's numbers
+  were not touched.
+- `npm run build` and `npm run build:standalone` (all eight faces inlined).
+- Playwright on the two Chromium projects: 15 passed, 3 skipped by
+  design (desktop-only flows on the phone project).
+- Phone fold (spec 04 §12), scripted over full drafts: lowest cutting edge
+  642 of 664 px on the iPhone 13 profile and 708 of 839 on Pixel 7 across
+  random careers; 621 of 664 on the fixed test draft (635 before the type
+  change).
