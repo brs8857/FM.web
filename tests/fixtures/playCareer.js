@@ -1,33 +1,86 @@
-// Drives the reducer through a whole career the way a player would.
-export function playCareer({ reducer, initialState, seasons = 6, check = () => {} }) {
+import { selectBlockingBan } from "../../src/state/selectors.js";
+
+// Answers "Replace X (suspended)" with the suggested cover, as Play to…
+// does on its own with auto-cover on; where nobody of his kind is free, swaps
+// in any free bench player instead.
+export function coverBans(state, dispatch) {
+  for (let ban = selectBlockingBan(state); ban; ban = selectBlockingBan(state = dispatch.last())) {
+    if (dispatch({ type: "COVER_BAN", slotId: ban.slotId }) !== state) continue;
+    const pick = state.bench.findIndex((b) => b.player && !(state.discipline[b.player.id]?.banned > 0));
+    dispatch({ type: "SWAP_PLAYERS", fromKind: "bench", fromId: pick, toKind: "slot", toId: ban.slotId });
+  }
+}
+
+// Kick off, start the season after the reveal, then fast-forward to the half
+// and on to the end, covering bans whenever a run stops for one.
+export function playSeason(dispatch) {
+  dispatch({ type: "START_SEASON" });
+  dispatch({ type: "KICKOFF" });
+  dispatch({ type: "PLAY_TO", until: "half" });
+  for (let guard = 0; dispatch.last().phase === "matchday" && guard < 40; guard++) {
+    coverBans(dispatch.last(), dispatch);
+    dispatch({ type: "PLAY_TO", until: "end" });
+  }
+}
+
+// Wraps a reducer as a dispatch that remembers the latest state.
+export function driver(reducer, initialState, check = () => {}) {
   let state = initialState;
-  let step = 0;
   const dispatch = (action) => {
     const previous = state;
     state = reducer(state, action);
-    step++;
     check(state, action, previous);
+    return state;
   };
+  dispatch.last = () => state;
+  return dispatch;
+}
+
+// Plays `count` matches one at a time from match day (all that remain by
+// default), covering bans as they come.
+export function playMatches(reducer, state, count = Infinity) {
+  const dispatch = driver(reducer, state);
+  for (let i = 0; i < count && dispatch.last().phase === "matchday"; i++) {
+    coverBans(dispatch.last(), dispatch);
+    dispatch({ type: "PLAY_MATCH" });
+  }
+  return dispatch.last();
+}
+
+// Kick-off to the final whistle from pre-season.
+export function playWholeSeason(reducer, state) {
+  const dispatch = driver(reducer, state);
+  playSeason(dispatch);
+  return dispatch.last();
+}
+
+// Drives the reducer through a whole career the way a player would: draw
+// three cuttings, pick from the first, and spend one redraw on the fourth pick.
+export function playCareer({ reducer, initialState, seasons = 6, check = () => {} }) {
+  const dispatch = driver(reducer, initialState, check);
+  const state = () => dispatch.last();
 
   dispatch({ type: "SET_ERA", min: 2000, max: 2011 });
   dispatch({ type: "START_DRAFT" });
-  while (!state.draftDone) {
-    dispatch({ type: "SPIN" });
+  let pick = 0;
+  while (!state().draftDone) {
+    dispatch({ type: "DRAW" });
     dispatch({ type: "LAND" });
-    if (state.pool.length === 0) throw new Error(`Empty draft pool after ${step} actions`);
-    dispatch({ type: "PICK_PLAYER", player: state.pool[0] });
+    if (state().draw.options.length === 0) throw new Error(`Empty draw at pick ${pick}`);
+    if (pick === 3) dispatch({ type: "REDRAW" });
+    dispatch({ type: "PICK_PLAYER", player: state().draw.options[0].players[0] });
+    pick++;
   }
   dispatch({ type: "SKIP_TO_TACTICS" });
   dispatch({ type: "SET_STYLE", key: "gegenpress" });
 
   for (let season = 1; season <= seasons; season++) {
-    dispatch({ type: "SIMULATE" });
-    dispatch({ type: "KICKOFF" });
+    playSeason(dispatch);
     if (season === seasons) break;
     dispatch({ type: "GOTO_TRANSFER" });
     dispatch({ type: "SIGN_SHORTLIST_TO_BENCH", index: 0 });
     dispatch({ type: "SIGN_SHORTLIST_TO_XI", index: 1, slotId: "ST" });
     dispatch({ type: "CONTINUE_SEASON" });
   }
-  return state;
+  return state();
 }

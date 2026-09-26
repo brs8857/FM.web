@@ -3,7 +3,7 @@ import reactHooks from "eslint-plugin-react-hooks";
 import globals from "globals";
 
 export default [
-  { ignores: ["dist/**", "standalone/**", "coverage/**", "playwright-report/**", "test-results/**", "tests/golden/**", "src/data/*.json"] },
+  { ignores: ["dist/**", "coverage/**", "playwright-report/**", "test-results/**", "tests/golden/**", "src/data/*.json"] },
   {
     files: ["**/*.{js,jsx,mjs}"],
     languageOptions: {

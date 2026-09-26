@@ -1,0 +1,13 @@
+.colours {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: var(--measure);
+  margin: 0 auto;
+}
+.heading {
+  font-size: var(--text-2xl);
+}
+.lede {
+  color: var(--ink-2);
+}

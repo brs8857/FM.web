@@ -1,0 +1,77 @@
+import { useId } from "react";
+import { Term } from "../../ui/Term.jsx";
+import { cx } from "../../ui/cx.js";
+import { CONCEPT, cohesionLabel, identityName, mentalityLabel } from "../../content/labels.js";
+import { RESULT_TONE, signed } from "../../content/format.js";
+import { USER_TEAM_NAME } from "../../engine/season.js";
+import { t } from "../../content/t.js";
+import styles from "./MatchReport.module.css";
+
+export function minuteLabel(minute) {
+  return minute > 90 ? `90+${minute - 90}'` : `${minute}'`;
+}
+
+export function cardsLine(cards) {
+  const named = (c) => `${c.name} ${minuteLabel(c.minute)}${c.kind === "second-yellow" ? " (second yellow)" : ""}`;
+  const list = (kinds) => cards.filter((c) => kinds.includes(c.kind)).map(named).join(", ");
+  const booked = list(["yellow"]), sentOff = list(["red", "second-yellow"]);
+  return [booked && `Booked: ${booked}.`, sentOff && `Sent off: ${sentOff}.`].filter(Boolean).join(" ") || null;
+}
+
+// A 2.7.0 log names a ban; later logs carry its length too.
+export function banLine(ban) {
+  return typeof ban === "string" ? t("season.misses", { name: ban, matches: 1 }) : t("season.misses", { name: ban.name, matches: ban.matches });
+}
+
+// The opponent's scorers are not named (spec 07 M4): their minutes are read
+// out with the club's name, which is not printed.
+function Scorers({ side, goals, name, us }) {
+  if (goals.length === 0) return <div><p className="visually-hidden">{side}: no goals</p></div>;
+  return (
+    <div>
+      <p className="visually-hidden">{side} goals</p>
+      <dl className={styles.scorers}>
+        {goals.map((g) => (
+          <div key={g.minute} className={styles.goal}>
+            <dt className={styles.minute}>{minuteLabel(g.minute)}</dt>
+            <dd className={us ? styles.scorer : "visually-hidden"}>{us ? g.name : name}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  );
+}
+
+export default function MatchReport({ match, clubName, after, compact = false, level = 3 }) {
+  const id = useId();
+  const Heading = `h${level}`;
+  const opponent = clubName(match.opponent);
+  const ours = { name: USER_TEAM_NAME, score: match.gf, goals: match.goals.filter((g) => g.us), us: true };
+  const theirs = { name: opponent, score: match.ga, goals: match.goals.filter((g) => !g.us), us: false };
+  const [home, away] = match.home ? [ours, theirs] : [theirs, ours];
+  const { played } = match;
+  return (
+    <article className={cx(styles.report, compact && styles.compact)} aria-labelledby={id}>
+      {!compact && <p className="strap">Week {match.week} · {match.home ? "Home" : "Away"}</p>}
+      <Heading id={id} className={cx(styles.score, styles[RESULT_TONE[match.outcome]])}>
+        {home.name} {home.score}–{away.score} {away.name}
+      </Heading>
+      <div className={styles.columns}>
+        <Scorers side={home.name} goals={home.goals} name={home.name} us={home.us} />
+        <Scorers side={away.name} goals={away.goals} name={away.name} us={away.us} />
+      </div>
+      {played && (
+        <dl className={styles.played}>
+          <div><dt><Term term="identity">{CONCEPT.style}</Term></dt><dd className={styles.chip}>{identityName(played.identity)}</dd></div>
+          <div><dt><Term term="cohesion">{CONCEPT.familiarity}</Term></dt><dd>{cohesionLabel(played.cohesion)} · {signed(played.settle)}</dd></div>
+          <div><dt><Term term="mentality">Mentality</Term></dt><dd>{mentalityLabel(played.mentality)}</dd></div>
+          {played.changed && <div className={styles.changed}><dt className="visually-hidden">System</dt><dd>Changed this week</dd></div>}
+        </dl>
+      )}
+      {match.cards && cardsLine(match.cards) && <p className={styles.cards}>{cardsLine(match.cards)}</p>}
+      {match.covered?.map((c) => <p key={c.out} className={styles.ban}>{t("season.covered", c)}</p>)}
+      {match.bans?.map((ban) => <p key={typeof ban === "string" ? ban : ban.name} className={styles.ban}>{banLine(ban)}</p>)}
+      {after && <p className={styles.table}>{after}</p>}
+    </article>
+  );
+}

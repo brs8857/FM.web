@@ -1,0 +1,62 @@
+.slider {
+  padding: var(--space-6) var(--space-3) var(--space-2);
+}
+.track {
+  position: relative;
+  height: 6px;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  touch-action: none;
+}
+.fill {
+  position: absolute;
+  top: -1px;
+  height: 6px;
+  background: var(--ink);
+  border-radius: 3px;
+}
+.handle {
+  position: absolute;
+  top: 50%;
+  width: var(--hit);
+  height: var(--hit);
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  touch-action: none;
+  border-radius: 50%;
+}
+.handle::before {
+  content: "";
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--ink);
+  border: 3px solid var(--paper);
+  box-shadow: 0 0 0 1px var(--ink);
+}
+.dragging {
+  cursor: grabbing;
+}
+.dragging::before {
+  background: var(--signal);
+}
+.value {
+  position: absolute;
+  bottom: 100%;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  white-space: nowrap;
+  color: var(--ink-2);
+}
+.ends {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--ink-2);
+}

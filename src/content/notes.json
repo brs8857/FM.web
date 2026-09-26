@@ -1,0 +1,34 @@
+{
+  "home": {
+    "title": "Coach's note",
+    "body": "One career at a time. It saves itself after every pick and every match, so put it down whenever you like."
+  },
+  "draft": {
+    "title": "Coach's note",
+    "body": "Ratings are hidden until kick-off. The cuttings are club-seasons: the question is which of these squads had the player you need."
+  },
+  "bench": {
+    "title": "Coach's note",
+    "body": "Anyone from these squads can sit on your bench. A keeper and one for each line will cover you when bans come."
+  },
+  "squad": {
+    "title": "Coach's note",
+    "body": "Tap a row to see a player's sheet and swap him with someone else. Drag bench markers onto the board to bring them in."
+  },
+  "board": {
+    "title": "Coach's note",
+    "body": "The identity line says what kind of side your dials make. Pick a style to set every dial at once, then adjust the three under Approach."
+  },
+  "season": {
+    "title": "Coach's note",
+    "body": "One match at a time, and the board is read afresh before each. Play to… runs several off on the vidiprinter. Goals go to whoever your jobs and briefs put in front of goal."
+  },
+  "window": {
+    "title": "Coach's note",
+    "body": "Eight players, each from a real club-season, each with a price in wage points. Your finish last season set the budget. Replace shows on the board where he can play."
+  },
+  "club": {
+    "title": "Coach's note",
+    "body": "The record keeps every season. Your career code lets anyone start the same draft."
+  }
+}

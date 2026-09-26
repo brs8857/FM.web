@@ -4,6 +4,7 @@ dist
 *.local
 .vscode
 .superpowers/
+.claude/
 coverage
 playwright-report
 test-results

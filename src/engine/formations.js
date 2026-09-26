@@ -94,8 +94,6 @@ export const FORMATIONS = {
   ]},
 };
 
-export const SLOT_TYPE_LABEL = { GK: "Goalkeeper", CB: "Centre-Back", FB: "Full-Back / Wing-Back", DM: "Defensive Mid", CM: "Central Mid", AM: "Attacking Mid", WIDE: "Winger", ST: "Striker" };
-
 export function makeInitialAssignments(formationKey) {
   return FORMATIONS[formationKey].slots.map((s) => ({
     slotId: s.id, type: s.type, side: s.side || null, player: null,

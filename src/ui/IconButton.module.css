@@ -1,0 +1,28 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: var(--hit);
+  height: var(--hit);
+  border-radius: var(--radius-paper);
+  color: var(--ink);
+  position: relative;
+}
+/* Small variant keeps a 44 pt hit area through a transparent halo. */
+.sm {
+  width: 28px;
+  height: 28px;
+}
+.sm::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+}
+.outlined {
+  border: 1px solid var(--ink);
+}
+.button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}

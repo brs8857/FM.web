@@ -1,0 +1,110 @@
+{
+  "draw": {
+    "title": "Draw",
+    "body": "Each pick starts with a draw: three club-seasons from your era, shown as [[cutting|cuttings]]. You pick one player from one of them.\n\nYou get two [[redraw|redraws]] for the XI, and two more for the bench."
+  },
+  "cutting": {
+    "title": "Cutting",
+    "body": "One club-season from the archive, with the players it can offer for the slot you are filling, in shirt order. Ratings stay hidden until kick-off, so knowing the squad is the edge."
+  },
+  "redraw": {
+    "title": "Redraw",
+    "body": "Throws all three cuttings back and draws again. Two for the XI and two for the bench, and they do not come back."
+  },
+  "era": {
+    "title": "Era",
+    "body": "The seasons your draw comes from. A narrow era means players who might have played together; a wide one means more choice and a bigger [[cohesion]] cost when the decades clash."
+  },
+  "job": {
+    "title": "Job",
+    "body": "What a player is asked to do in his position: a blocker or a passing centre-back, a poacher or a link forward. Each job weights his contribution to attack, defence, build-up, pressing and creativity.\n\nA job comes with a [[brief]]."
+  },
+  "brief": {
+    "title": "Brief",
+    "body": "How far forward a player is asked to play his [[job]].\n\nHold keeps position and covers behind the ball. Link connects both ends without committing to either. Push commits forward for more threat and less cover."
+  },
+  "cohesion": {
+    "title": "Cohesion",
+    "body": "How well the eleven know this system. Players in their natural positions, a sensible set-up and an XI from nearby seasons raise it. Extreme dials, players dragged out of position and a squad spanning decades lower it.\n\nIt also remembers: each season kept in the same shape and identity adds a little (up to +8), and changing either costs −4 for the season of the change. Within a season it [[settling|settles]] too.\n\nLow cohesion makes results streaky and holds back the bonus an [[identity]] earns."
+  },
+  "identity": {
+    "title": "Identity",
+    "body": "The kind of side your dials make: a gegenpress, possession control, a low block that counters, wing play, direct and vertical, or parking the bus. Drilled well, a recognised identity is worth extra on match day.\n\nA committed set-up that matches none of them earns a smaller bonus. Every dial near the middle is no plan at all, and the only choice that costs you."
+  },
+  "mentality": {
+    "title": "Mentality",
+    "body": "How much the side commits forward, from Contain to All-out. It moves weight between attack and defence rather than adding to either."
+  },
+  "tempo": {
+    "title": "Tempo",
+    "body": "How quickly the ball moves once you have it. Slow controls the game; fast tries to overwhelm a defence before it can set."
+  },
+  "directness": {
+    "title": "Directness",
+    "body": "Short passing builds through the thirds and keeps the ball; direct passing skips the midfield battle to win territory fast."
+  },
+  "width": {
+    "title": "Width",
+    "body": "How far the team stretches the pitch. Wide play opens space in the middle; narrow play packs the half-spaces for combinations."
+  },
+  "focus": {
+    "title": "Passing focus",
+    "body": "Where the team looks to progress the ball: combinations through the middle, or overloads down the flanks."
+  },
+  "counter": {
+    "title": "Counter-attacking",
+    "body": "How quickly the side breaks when it wins the ball, rather than resetting its shape first. Dangerous on the break; exposed when the break fails."
+  },
+  "crossing": {
+    "title": "Crossing",
+    "body": "How often wide players deliver early rather than cut inside. Wasted without real [[width]] and someone to attack the ball."
+  },
+  "gk-distribution": {
+    "title": "Keeper distribution",
+    "body": "Whether the keeper plays out short under pressure or goes long to bypass the press and fight for the second ball."
+  },
+  "press": {
+    "title": "Pressing",
+    "body": "How aggressively the team hunts the ball and how high up the pitch it starts. A high press invites risk in behind, especially with a high [[line|defensive line]]."
+  },
+  "line": {
+    "title": "Defensive line",
+    "body": "Where the back line holds. A high line squeezes the space the [[press]] works in but is exposed to balls in behind; a deep block cedes territory on purpose."
+  },
+  "tackling": {
+    "title": "Tackling",
+    "body": "Aggressive tackling wins more duels and risks fouls, cards and playing a man short."
+  },
+  "marking": {
+    "title": "Marking",
+    "body": "Zonal defends space; man-to-man defends the opponent. Man-to-man is more secure one-on-one and more exploitable when a player is dragged out of position."
+  },
+  "offside-trap": {
+    "title": "Offside trap",
+    "body": "The back line steps up together to catch forwards offside. It works with a quick, disciplined back four holding a high [[line]]; otherwise it gets played through."
+  },
+  "discipline": {
+    "title": "Discipline",
+    "body": "Rigid keeps players tight to their jobs; loose lets them drift and swap positions more freely."
+  },
+  "strengths": {
+    "title": "Strengths",
+    "body": "Six team qualities the matches are played on: attack, creativity, build-up, press, defence and physical. The tick on each bar is the average of the other nineteen clubs, so you can see where you are ahead."
+  },
+  "career-code": {
+    "title": "Career code",
+    "body": "Every career comes from one seed. Share the code and someone else can start the same draft and see whether they build a better XI."
+  },
+  "attacking-freedom": {
+    "title": "Attacking freedom",
+    "body": "How far a player may drift from his zone to combine and join attacks. More freedom adds threat and costs defensive shape."
+  },
+  "defensive-discipline": {
+    "title": "Defensive discipline",
+    "body": "How rigorously a player tracks his runner and holds his line instead of being drawn out of position. Stricter is safer and less creative."
+  },
+  "settling": {
+    "title": "Settling",
+    "body": "Cohesion for the next match from the matches already played this season in the same system: the shape, the seven identity dials and the discipline. The first match of a season, or the first after a change, costs −3; the next two −2 and −1; from the fourth match in a row it costs nothing.\n\nSwapping players and moving the other dials do not count as a change."
+  }
+}

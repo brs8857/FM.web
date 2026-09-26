@@ -1,0 +1,143 @@
+.club {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: var(--measure);
+  margin: 0 auto;
+}
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.settings {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.setting {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.settingLabel {
+  font-weight: 600;
+}
+.hint {
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+}
+.about {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.subheading {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  margin-top: var(--space-2);
+}
+.code {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+.codeText {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  word-break: break-all;
+}
+.input {
+  min-height: var(--hit);
+  padding: 0 var(--space-3);
+  border: 1px solid var(--ink);
+  border-radius: var(--radius-paper);
+  background: var(--paper);
+  font-family: var(--font-mono);
+  font-size: var(--text-md);
+  text-transform: uppercase;
+  width: 100%;
+  min-width: 0;
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.error {
+  font-size: var(--text-sm);
+  color: var(--loss);
+}
+.summary {
+  display: flex;
+  flex-direction: column;
+  border-top: 2px solid var(--ink);
+}
+.stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--rule);
+}
+.statLabel {
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+  flex-shrink: 0;
+}
+.statValue {
+  font-family: var(--font-headline);
+  font-weight: 600;
+  font-size: var(--text-md);
+  text-align: right;
+}
+.empty {
+  color: var(--ink-2);
+}
+.hiddenInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+}
+.statSmall {
+  font-size: var(--text-sm);
+  line-height: 1.3;
+}
+.seasonButton {
+  font: inherit;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  min-height: var(--hit);
+  padding: 0;
+}
+.mono {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+.form {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  overflow-wrap: anywhere;
+}
+.win {
+  color: var(--win);
+}
+.draw {
+  color: var(--draw);
+}
+.loss {
+  color: var(--loss);
+}
+.scorers {
+  padding-left: 1.4em;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}

@@ -9,7 +9,7 @@ const coarse = (matches) => ({ matchMedia: () => ({ matches }) });
 
 describe("export and import", () => {
   it("names the file after the season", () => {
-    expect(saveFileName(makeSeason3TacticsState())).toBe("fmweb-season3-2028-29.json");
+    expect(saveFileName(makeSeason3TacticsState())).toBe("era-xi-season3-2028-29.json");
   });
 
   it("uses the share sheet on touch devices that can share files", async () => {

@@ -1,6 +1,6 @@
 import { vi } from "vitest";
 import { makeMiniDataset } from "./miniDataset.js";
-import { playCareer } from "./playCareer.js";
+import { playCareer, playMatches } from "./playCareer.js";
 import { createReducer } from "../../src/state/reducer.js";
 import { makeInitialState } from "../../src/state/initialState.js";
 import { makeSaveEnvelope, toSaveText } from "../../src/state/save.js";
@@ -11,6 +11,25 @@ export function makeSeason3TacticsState(seed = 4242) {
   let state = playCareer({ reducer, initialState: makeInitialState(dataset, seed), seasons: 2 });
   state = reducer(state, { type: "GOTO_TRANSFER" });
   return reducer(state, { type: "CONTINUE_SEASON" });
+}
+
+// Season 3 after kick-off: at the reveal, on match day `played` fixtures in,
+// and on the back page.
+export function makeSeason3State(played = null, seed = 4242) {
+  const reducer = createReducer(makeMiniDataset());
+  const reveal = reducer(makeSeason3TacticsState(seed), { type: "START_SEASON" });
+  if (played === null) return reveal;
+  return playMatches(reducer, reducer(reveal, { type: "KICKOFF" }), played);
+}
+
+// The same, with nobody on the bench, so a ban never stops play (the side
+// goes a man short instead): runs of matches go where they are told.
+export function makeSeason3OpenState(played, seed = 4242) {
+  return { ...makeSeason3State(played, seed), bench: [], discipline: {} };
+}
+
+export function makeSeason3ResultState(seed = 4242) {
+  return makeSeason3State(38, seed);
 }
 
 export function makeSaveText(state = makeSeason3TacticsState()) {

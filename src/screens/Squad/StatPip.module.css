@@ -1,0 +1,30 @@
+.pip {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr auto;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+}
+.label {
+  font-weight: 600;
+}
+.dots {
+  display: inline-flex;
+  gap: 4px;
+}
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink);
+  background: transparent;
+}
+.filled {
+  background: var(--ink);
+}
+.word {
+  font-size: var(--text-xs);
+  color: var(--ink-2);
+  min-width: 3.5rem;
+  text-align: right;
+}

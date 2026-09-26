@@ -1,0 +1,23 @@
+.rail {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-top: 1px dashed var(--chalk);
+  color: var(--chalk);
+}
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  opacity: 0.7;
+  flex: none;
+}
+/* Ten fit on one row on a wide board; on a phone they wrap to a second row
+   rather than scroll out of sight. */
+.markers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  min-width: 0;
+}

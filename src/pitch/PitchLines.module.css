@@ -1,0 +1,27 @@
+.lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: var(--chalk);
+  stroke-opacity: 0.55;
+  stroke-width: 1.5px;
+  vector-effect: non-scaling-stroke;
+  pointer-events: none;
+}
+.lines rect,
+.lines line,
+.lines ellipse,
+.lines circle {
+  vector-effect: non-scaling-stroke;
+}
+.spot {
+  fill: var(--chalk);
+  fill-opacity: 0.55;
+  stroke: none;
+}
+.goal {
+  stroke-width: 4px;
+  stroke-opacity: 0.8;
+}
