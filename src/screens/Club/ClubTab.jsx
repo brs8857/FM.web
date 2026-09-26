@@ -8,24 +8,26 @@ import Saves from "./Saves.jsx";
 import Settings from "./Settings.jsx";
 import About from "./About.jsx";
 import { careerSeasonLabel, CAREER_SEASONS } from "../../engine/season.js";
+import { clubName as displayClubName } from "../../content/clubs.js";
 import styles from "./Club.module.css";
 
 // The Club tab (spec 04 §5.7): the record, the career code, saves,
 // settings, about. A complete career shows the record as a slip.
 export default function ClubTab({ history, careerComplete, careerCode, prefs, setPrefs, onDismissNote, canExport, storageAvailable, onExport, onImportFile, onStartFromCode, onNewCareer }) {
+  const clubName = (name) => displayClubName(name, prefs.clubNames);
   return (
     <div className={styles.club}>
       <CoachNote id="club" prefs={prefs} onDismiss={onDismissNote} />
       {careerComplete ? (
         <Slip kicker="Career complete" title={`${careerSeasonLabel(1)} to ${careerSeasonLabel(CAREER_SEASONS)}`}>
           <p className={styles.hint}>Six seasons with this XI. The record stands; the next one starts from a blank sheet.</p>
-          <Record history={history} />
+          <Record history={history} clubName={clubName} complete />
           <div className={styles.row}><Button onClick={onNewCareer}>Start a new career</Button></div>
         </Slip>
       ) : (
         <section className={styles.section}>
           <h2 className={styles.subheading}>The record</h2>
-          <Record history={history} />
+          <Record history={history} clubName={clubName} />
         </section>
       )}
       <section className={styles.section}>

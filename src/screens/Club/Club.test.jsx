@@ -1,7 +1,12 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
+import { render, screen, fireEvent, cleanup, within } from "@testing-library/react";
 import ClubTab from "./ClubTab.jsx";
-import { recordSummary } from "./Record.jsx";
+import { recordSummary, biggestWin } from "./Record.jsx";
+import { makeMiniDataset } from "../../../tests/fixtures/miniDataset.js";
+import { playCareer } from "../../../tests/fixtures/playCareer.js";
+import { createReducer, summarizeSeason } from "../../state/reducer.js";
+import { makeInitialState } from "../../state/initialState.js";
+import { selectSeasonHistory, selectTopScorers } from "../../state/selectors.js";
 import { TermsProvider } from "../../ui/Term.jsx";
 import terms from "../../content/terms.json";
 import { encodeCareerCode } from "../../app/careerCode.js";
@@ -37,6 +42,64 @@ describe("Record", () => {
     expect(s.titles).toBe(1);
     expect(s.unbeaten).toBe(1);
     expect(s.points).toBe(242);
+  });
+});
+
+// Six seasons played through the reducer; the first as a save from before
+// the match log would have recorded it.
+function sixSeasons() {
+  const dataset = makeMiniDataset();
+  const state = playCareer({ reducer: createReducer(dataset), initialState: makeInitialState(dataset, 4242) });
+  const played = selectSeasonHistory(state, summarizeSeason);
+  return played.map((s, i) => (i === 0 ? { ...s, matches: [], topScorer: null } : s));
+}
+
+describe("the record's season sheets", () => {
+  const six = sixSeasons();
+
+  it("totals the career's top scorer and its biggest win across the logged seasons", () => {
+    expect(six).toHaveLength(6);
+    const summary = recordSummary(six);
+    const [top] = selectTopScorers(six.flatMap((s) => s.matches), 1);
+    expect(summary.topScorer).toEqual(top);
+    const wins = six.flatMap((s) => s.matches).filter((m) => m.outcome === "W");
+    expect(summary.biggestWin.margin).toBe(Math.max(...wins.map((m) => m.gf - m.ga)));
+    expect(biggestWin([{ season: 1, matches: [] }])).toBeNull();
+  });
+
+  it("opens a season with its form, top scorers and match reports, and says so when a season has no log", () => {
+    render(
+      <TermsProvider terms={terms}>
+        <ClubTab history={six} careerComplete careerCode={code} prefs={DEFAULT_PREFS} setPrefs={() => {}} onDismissNote={() => {}} canExport storageAvailable
+          onExport={() => {}} onImportFile={() => {}} onStartFromCode={() => {}} onNewCareer={() => {}} />
+      </TermsProvider>,
+    );
+    const summary = recordSummary(six);
+    expect(screen.getByText(`${summary.topScorer.name} · ${summary.topScorer.goals}`)).toBeTruthy();
+    expect(screen.getByText("Biggest win")).toBeTruthy();
+    const perSeason = screen.getByRole("list", { name: "Top scorer each season" });
+    expect(within(perSeason).getAllByRole("listitem")).toHaveLength(6);
+    expect(within(perSeason).getAllByRole("listitem")[0].textContent).toBe("2026-27 · no match log");
+
+    fireEvent.click(screen.getByRole("button", { name: "2026-27" }));
+    let dialog = screen.getByRole("dialog");
+    expect(within(dialog).getByText("No match log for this season.")).toBeTruthy();
+    expect(within(dialog).queryByRole("list", { name: "Results" })).toBeNull();
+    fireEvent.click(within(dialog).getByRole("button", { name: "Close" }));
+
+    const third = six[2];
+    fireEvent.click(screen.getByRole("button", { name: "2028-29" }));
+    dialog = screen.getByRole("dialog");
+    expect(within(dialog).getByText("Season 3 · 2028-29")).toBeTruthy();
+    const count = (o) => third.matches.filter((m) => m.outcome === o).length;
+    const last = third.matches.slice(-5).map((m) => m.outcome).join(" ");
+    expect(within(dialog).getByText(`Won ${count("W")}, drawn ${count("D")}, lost ${count("L")}; last five: ${last}`)).toBeTruthy();
+    const scorers = selectTopScorers(third.matches, 3);
+    for (const s of scorers) expect(within(dialog).getByText(`${s.name} · ${s.goals}`)).toBeTruthy();
+    const rows = within(within(dialog).getByRole("list", { name: "Results" })).getAllByRole("button");
+    expect(rows).toHaveLength(38);
+    fireEvent.click(rows[4]);
+    expect(within(dialog).getByRole("article")).toBeTruthy();
   });
 });
 

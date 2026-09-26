@@ -98,3 +98,46 @@
   opacity: 0;
   overflow: hidden;
 }
+.statSmall {
+  font-size: var(--text-md);
+  line-height: 1.2;
+}
+.seasonButton {
+  font: inherit;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  min-height: var(--hit);
+  padding: 0;
+}
+.kicker {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.mono {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+.form {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  overflow-wrap: anywhere;
+}
+.win {
+  color: var(--win);
+}
+.draw {
+  color: var(--draw);
+}
+.loss {
+  color: var(--loss);
+}
+.scorers {
+  padding-left: 1.4em;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}

@@ -147,5 +147,8 @@ describe("axe: every screen", () => {
     fireEvent.click(screen.getByRole("button", { name: "Club" }));
     for (const name of ["Saves", "Settings", "About"]) fireEvent.click(screen.getByRole("button", { name }));
     await check("club");
+    fireEvent.click(screen.getByRole("button", { name: "2028-29" }));
+    fireEvent.click(within(screen.getByRole("list", { name: "Results" })).getAllByRole("button")[0]);
+    await check("record, season sheet with a report open");
   });
 });
