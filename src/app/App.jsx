@@ -112,7 +112,7 @@ function Game({ dataset, storageProp, initialPrefs }) {
   useAutosave({ state, storage, enabled: true, onWriteError: () => setNotice("unavailable") });
 
   const live = useMemo(() => liveAssignments(state.assignments), [state.assignments]);
-  const familiarity = useMemo(() => selectFamiliarity(live, state.instructions, state.formationKey), [live, state.instructions, state.formationKey]);
+  const familiarity = useMemo(() => selectFamiliarity(live, state.instructions, state.formationKey, state.cohesionMemory), [live, state.instructions, state.formationKey, state.cohesionMemory]);
   const profile = useMemo(() => selectProfile(live, state.instructions, familiarity), [live, state.instructions, familiarity]);
   const identity = identityLabel(profile.synergyLabel, state.instructions);
   const cohesion = cohesionLabel(familiarity);

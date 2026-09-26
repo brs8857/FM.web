@@ -16,6 +16,7 @@ import { tacticUntouched } from "../../state/selectors.js";
 import { clubSeasonLabel } from "../../content/clubs.js";
 import { DEFAULT_PREFS } from "../../state/prefs.js";
 import { DEFAULT_INSTRUCTIONS } from "../../engine/instructions.js";
+import { tierLabel } from "../../content/labels.js";
 import * as share from "../../app/share.js";
 
 const dataset = makeMiniDataset();
@@ -80,11 +81,23 @@ describe("SeasonTab", () => {
     expect(spy.onGoBoard).toHaveBeenCalledOnce();
   });
 
-  it("marks the promoted clubs in pre-season", () => {
+  it("names who retired over the summer and any empty place in the XI", () => {
+    const base = makeSeason3TacticsState();
+    const retired = { ...base, lastTransition: { ...base.lastTransition, retired: ["Alpha FC GK0 2000", "Beta United ST19 2001"] } };
+    render(<Harness initial={retired} />);
+    expect(screen.getByRole("note", { name: "Retired" }).textContent).toBe("RetiredAlpha FC GK0 2000, Beta United ST19 2001 have hung up the boots.");
+    const hole = { ...retired, assignments: base.assignments.map((a, i) => (i === 0 ? { ...a, player: null, role: null, duty: null } : a)) };
+    render(<Harness initial={hole} />);
+    expect(screen.getAllByRole("note", { name: "Retired" })[1].textContent).toMatch(/One place in the XI is empty: fill it from the Squad tab before kick-off\.$/);
+  });
+
+  it("marks the promoted clubs in pre-season and says what the seasons in this system are worth", () => {
     const state = makeSeason3TacticsState();
     render(<Harness initial={state} />);
     expect(screen.queryByRole("note", { name: "Nothing on the board yet" })).toBeNull();
     expect(screen.getAllByText("promoted")).toHaveLength(state.lastTransition.promoted.length);
+    expect(state.cohesionMemory.seasons).toBe(2);
+    expect(screen.getByText("2 seasons in this system already: cohesion +4.")).toBeTruthy();
   });
 
   it("stamps the ratings in one at a time, then the average and Start season", () => {
@@ -126,7 +139,7 @@ describe("SeasonTab", () => {
     ticks(2, TICK_MS + 1);
     expect(log.querySelectorAll("li")).toHaveLength(HALF_SEASON + 2);
     fireEvent.click(screen.getByRole("button", { name: "Skip to end" }));
-    expect(screen.getByRole("heading", { level: 2, name: state.simulation.tier.name === "Champions" ? "Champions" : /./ })).toBeTruthy();
+    expect(screen.getByRole("heading", { level: 2, name: tierLabel(state.simulation.tier).name })).toBeTruthy();
     expect(screen.getByRole("button", { name: "Share" })).toBeTruthy();
     expect(screen.getByRole("button", { name: /Final table/ }).getAttribute("aria-expanded")).toBe("false");
     fireEvent.click(screen.getByRole("button", { name: /Final table/ }));
@@ -147,14 +160,18 @@ describe("SeasonTab", () => {
 
   it("runs the window: sign to bench, replace through the highlighted board, and league changes", () => {
     const spy = {};
-    const state = reducer(resultState(), { type: "GOTO_TRANSFER" });
+    const opened = reducer(resultState(), { type: "GOTO_TRANSFER" });
+    const state = { ...opened, transferBudget: { points: 9, spent: 0 } };
     render(<Harness initial={state} spy={spy} />);
     expect(screen.getByRole("note", { name: "League changes" }).textContent).toMatch(/went down; .* came up\./);
+    expect(screen.getByText("9 wage points of 9 left.")).toBeTruthy();
     const candidates = screen.getAllByRole("button", { name: "Sign to bench" });
-    expect(candidates).toHaveLength(5);
+    expect(candidates).toHaveLength(8);
     fireEvent.click(candidates[0]);
     expect(spy.state.shortlist[0].signed).toBe(true);
+    expect(spy.state.transferBudget.spent).toBe(state.shortlist[0].cost);
     expect(screen.getByText("Signed")).toBeTruthy();
+    expect(screen.getByText(`${9 - state.shortlist[0].cost} wage points of 9 left.`)).toBeTruthy();
     fireEvent.click(screen.getAllByRole("button", { name: "Replace…" })[0]);
     const board = screen.getByRole("group", { name: "Chalkboard" });
     const highlighted = [...board.querySelectorAll('[class*="highlighted"]')];
@@ -170,5 +187,14 @@ describe("SeasonTab", () => {
     fireEvent.pointerDown(other, { button: 0, clientX: 1, clientY: 1 });
     fireEvent.pointerUp(other, { clientX: 1, clientY: 1 });
     expect(screen.getByRole("dialog")).toBeTruthy();
+  });
+
+  it("puts candidates the budget cannot cover out of reach", () => {
+    const opened = reducer(resultState(), { type: "GOTO_TRANSFER" });
+    const state = { ...opened, transferBudget: { points: 1, spent: 0 } };
+    render(<Harness initial={state} />);
+    const cheap = state.shortlist.filter((e) => e.cost <= 1).length;
+    expect(screen.queryAllByRole("button", { name: "Sign to bench" })).toHaveLength(cheap);
+    expect(screen.getAllByText("Out of reach")).toHaveLength(8 - cheap);
   });
 });

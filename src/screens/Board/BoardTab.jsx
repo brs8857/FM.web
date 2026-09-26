@@ -11,6 +11,7 @@ import InstructionGroups from "./InstructionGroups.jsx";
 import Strengths from "./Strengths.jsx";
 import { STYLE_PRESETS } from "../../engine/instructions.js";
 import { identityLabel } from "../../content/labels.js";
+import { selectMemory } from "../../state/selectors.js";
 import { cx } from "../../ui/cx.js";
 import layout from "../TabLayout.module.css";
 import styles from "./Board.module.css";
@@ -45,7 +46,7 @@ export default function BoardTab({ state, dispatch, profile, familiarity, clubSe
       </div>
       <div className={layout.content}>
         <CoachNote id="board" prefs={prefs} onDismiss={onDismissNote} />
-        <IdentityLine identity={identity} familiarity={familiarity} />
+        <IdentityLine identity={identity} familiarity={familiarity} memory={selectMemory(state)} />
         <section className={styles.section} aria-labelledby="board-style">
           <h2 id="board-style" className={styles.subheading}>Style</h2>
           <StyleRow selectedStyle={state.selectedStyle} onSelect={onStyle} />

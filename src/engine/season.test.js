@@ -1,6 +1,7 @@
 // @vitest-environment node
 import { describe, it, expect } from "vitest";
-import { roundRobinSchedule, buildUserFixtureList, seasonTier, careerSeasonLabel, CAREER_SEASONS, simulateSeason } from "./season.js";
+import { roundRobinSchedule, buildUserFixtureList, seasonTier, careerSeasonLabel, CAREER_SEASONS, simulateSeason, simulateLeague } from "./season.js";
+import { simulateRivalMatch, rivalStrength, rivalNoise } from "./match.js";
 import { applyPromotionRelegation } from "./league.js";
 import { createRng } from "./rng.js";
 
@@ -48,22 +49,22 @@ describe("season tiers", () => {
 
   // The golden season recordings never reach these two outcomes (no 38-win or
   // unbeaten-champion season among the 20 seeds), so their text is frozen here
-  // instead. Strings copied from v1 (6495fb8:src/App.jsx:754-755).
+  // instead.
   it("keeps the full tier object for the two outcomes the recordings never reach", () => {
     expect(seasonTier({ w: 38, l: 0, pts: 114, position: 1 })).toEqual({
       name: "THE PERFECT SEASON",
-      sub: "38 wins from 38 — a perfect season no Premier League side has ever managed.",
+      sub: "38 wins from 38 — a perfect season no top-flight side has ever managed.",
       color: "amber",
     });
     expect(seasonTier({ w: 30, l: 0, pts: 98, position: 1 })).toEqual({
       name: "Invincibles",
-      sub: "Champions and unbeaten from August to May — a status only one Premier League side has ever achieved.",
+      sub: "Champions and unbeaten from August to May — a status only one top-flight side has ever achieved.",
       color: "amber",
     });
   });
 
   it("describes a perfect season without contradicting itself", () => {
-    expect(seasonTier({ w: 38, l: 0, pts: 114, position: 1 }).sub).toBe("38 wins from 38 — a perfect season no Premier League side has ever managed.");
+    expect(seasonTier({ w: 38, l: 0, pts: 114, position: 1 }).sub).toBe("38 wins from 38 — a perfect season no top-flight side has ever managed.");
   });
 
   it("labels career seasons from 2026-27", () => {
@@ -115,5 +116,62 @@ describe("simulateSeason with an rng", () => {
     const c = simulateSeason(profile, 65, opponents, createRng(10));
     expect(b).toEqual(a);
     expect(c.matches.map((m) => `${m.gf}-${m.ga}`)).not.toEqual(a.matches.map((m) => `${m.gf}-${m.ga}`));
+  });
+
+  it("plays every club's 38 fixtures so the table adds up", () => {
+    const { table, matches } = simulateLeague(profile, 65, opponents, createRng(3));
+    expect(table).toHaveLength(20);
+    expect(table.map((r) => r.position)).toEqual(table.map((_, i) => i + 1));
+    for (const row of table) {
+      expect(row.w + row.d + row.l, row.name).toBe(38);
+      expect(row.pts, row.name).toBe(row.w * 3 + row.d);
+      expect(row.weekly, row.name).toHaveLength(38);
+      expect(row.weekly.at(-1), row.name).toBe(row.pts);
+      expect(row.weekly.every((p, i) => i === 0 || p >= row.weekly[i - 1]), row.name).toBe(true);
+    }
+    const sum = (key) => table.reduce((s, r) => s + r[key], 0);
+    expect(sum("w")).toBe(sum("l"));
+    expect(sum("gf")).toBe(sum("ga"));
+    expect(sum("pts")).toBe(sum("w") * 3 + sum("d"));
+    for (let i = 1; i < table.length; i++) {
+      const a = table[i - 1], b = table[i];
+      expect(a.pts > b.pts || (a.pts === b.pts && a.gf - a.ga >= b.gf - b.ga)).toBe(true);
+    }
+    const user = table.find((r) => r.isUser);
+    expect(user.name).toBe("Your XI");
+    expect([user.w, user.d, user.l]).toEqual(["W", "D", "L"].map((o) => matches.filter((m) => m.outcome === o).length));
+  });
+
+  it("keeps the user's fixture list as buildUserFixtureList makes it", () => {
+    const rng = createRng(21);
+    const order = createRng(21).shuffle(opponents).map((o) => o.name);
+    const { matches } = simulateLeague(profile, 65, opponents, rng);
+    expect(matches.map(({ week, opponent, home }) => ({ week, name: opponent, home }))).toEqual(buildUserFixtureList(order));
+  });
+});
+
+describe("rival against rival", () => {
+  const strong = { name: "Strong", ov: 86, histMean: 84, vol: 8 };
+  const weak = { name: "Weak", ov: 66, histMean: 70, vol: 8 };
+
+  it("is symmetric: swapping the sides swaps the expected goals", () => {
+    let strongHome = 0, weakHome = 0, strongAway = 0, weakAway = 0;
+    const rng = createRng(5);
+    for (let i = 0; i < 4000; i++) {
+      const a = simulateRivalMatch(strong, weak, rng);
+      strongHome += a.hg; weakAway += a.ag;
+      const b = simulateRivalMatch(weak, strong, rng);
+      weakHome += b.hg; strongAway += b.ag;
+    }
+    expect(strongHome / 4000).toBeGreaterThan(strongAway / 4000);
+    expect(strongAway / 4000).toBeGreaterThan(weakHome / 4000);
+    expect(weakHome / 4000).toBeGreaterThan(weakAway / 4000);
+    expect(Math.abs(strongHome - strongAway) / 4000).toBeLessThan(0.5);
+  });
+
+  it("rates a rival's strength the way the user's matches do", () => {
+    expect(rivalStrength(strong)).toBeCloseTo(86 * 0.82 + 84 * 0.18);
+    expect(rivalNoise({ vol: 5 })).toBeCloseTo(0.575);
+    expect(rivalNoise({ vol: 15 })).toBeCloseTo(0.825);
   });
 });

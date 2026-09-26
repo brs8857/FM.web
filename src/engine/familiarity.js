@@ -1,8 +1,27 @@
 import { clamp } from "./util.js";
 import { FORMATIONS } from "./formations.js";
+import { identityKey } from "./tactics.js";
 
 /* ------------------------------ Familiarity ------------------------------- */
 export const SIDE_MISMATCH_PENALTY = 2;
+export const MEMORY_PER_SEASON = 2;
+export const MEMORY_CAP = 8;
+export const MEMORY_CHANGE_PENALTY = 4;
+export const EMPTY_MEMORY = { formationKey: null, styleKey: null, seasons: 0 };
+
+// Cohesion memory: the system (shape and identity) the club played its
+// last seasons in. Staying in it earns a little each season; changing it
+// costs, once, on the change.
+export function memoryBonus(memory, formationKey, styleKey) {
+  if (!memory || memory.seasons === 0) return 0;
+  if (memory.formationKey === formationKey && memory.styleKey === styleKey) return Math.min(MEMORY_CAP, MEMORY_PER_SEASON * memory.seasons);
+  return -MEMORY_CHANGE_PENALTY;
+}
+
+export function nextMemory(memory, formationKey, styleKey) {
+  const same = memory && memory.formationKey === formationKey && memory.styleKey === styleKey;
+  return { formationKey, styleKey, seasons: same ? memory.seasons + 1 : 1 };
+}
 
 export function eraSpreadPenalty(spread) {
   return clamp(spread / 4.5, 0, 16);
@@ -13,10 +32,10 @@ export function eraSpread(players) {
   return years.length > 1 ? Math.max(...years) - Math.min(...years) : 0;
 }
 
-export function computeFamiliarity(assignments, instructions, formationKey) {
+export function computeFamiliarity(assignments, instructions, formationKey, memory = null) {
   const list = assignments.filter((a) => a && a.player);
   if (list.length < 11) return 50;
-  let fam = 70;
+  let fam = 70 + memoryBonus(memory, formationKey, identityKey(instructions));
 
   list.forEach((a) => {
     const slotDef = FORMATIONS[formationKey].slots.find((s) => s.id === a.slotId);

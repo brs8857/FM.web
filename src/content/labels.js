@@ -4,6 +4,7 @@
 import { ROLES, DUTY_INFO } from "../engine/roles.js";
 import { familiarityLabel } from "../engine/familiarity.js";
 import { mentalityLabel } from "../engine/readout.js";
+import { dialExtremity, NEUTRAL_EXTREMITY } from "../engine/tactics.js";
 
 export const POSITION_LABEL = {
   GK: "Goalkeeper", CB: "Centre-back", FB: "Full-back", DM: "Defensive midfielder",
@@ -40,9 +41,8 @@ export const APPROACH_DIALS = ["mentality", "tempo", "directness"];
 export const IN_POSSESSION_DIALS = ["width", "focus", "counter", "crossing", "gkDistribution"];
 export const OUT_OF_POSSESSION_DIALS = ["press", "line", "tackling"];
 
-// seasonTier's names are keys here: the engine copy is locked by the golden
-// season files until C1, so the back page reads its headline and standfirst
-// from this map instead.
+// seasonTier's names are keys here: the engine keeps its own headline and
+// standfirst for the record, and the back page reads its words from this map.
 export const TIER_LABEL = {
   "THE PERFECT SEASON": "Perfect season",
   "Invincibles": "Invincibles",
@@ -85,7 +85,5 @@ export { mentalityLabel };
 // (the same neutrality test identitySynergy applies).
 export function identityLabel(synergyLabel, instructions) {
   if (synergyLabel) return synergyLabel;
-  const dials = ["mentality", "tempo", "directness", "width", "press", "line", "tackling"].map((k) => instructions[k]);
-  const extremity = dials.reduce((sum, v) => sum + Math.abs(v - 50), 0) / dials.length / 50;
-  return extremity < 0.16 ? IDENTITY_LABEL.none : IDENTITY_LABEL.bespoke;
+  return dialExtremity(instructions) < NEUTRAL_EXTREMITY ? IDENTITY_LABEL.none : IDENTITY_LABEL.bespoke;
 }

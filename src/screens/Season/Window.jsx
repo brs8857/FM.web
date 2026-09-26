@@ -9,6 +9,7 @@ import PlayerSheet from "../Squad/PlayerSheet.jsx";
 import { POSITION_LABEL } from "../../content/labels.js";
 import { t } from "../../content/t.js";
 import { careerSeasonLabel } from "../../engine/season.js";
+import { budgetLeft } from "../../engine/squad.js";
 import { playerMeta } from "../Draft/CuttingSheet.jsx";
 import layout from "../TabLayout.module.css";
 import styles from "./Season.module.css";
@@ -18,8 +19,9 @@ export function eligibleSlots(assignments, player) {
   return (matching.length > 0 ? matching : assignments).map((a) => a.slotId);
 }
 
-// The transfer window (spec 04 §5.5): five candidates as cuttings; Replace
-// highlights the eligible slots on the pinned chalkboard.
+// The transfer window (spec 04 §5.5, plan C4): eight candidates as cuttings,
+// each costing wage points from a budget set by last season's finish;
+// Replace highlights the eligible slots on the pinned chalkboard.
 export default function Window({ state, dispatch, clubSeason, clubName, prefs, onDismissNote }) {
   const announce = useAnnounce();
   const [target, setTarget] = useState(null);
@@ -27,6 +29,9 @@ export default function Window({ state, dispatch, clubSeason, clubName, prefs, o
   const candidate = replacing !== null ? state.shortlist[replacing] : null;
   const highlight = candidate ? eligibleSlots(state.assignments, candidate.player) : [];
   const changes = state.lastTransition;
+  const budget = state.transferBudget ?? { points: 0, spent: 0 };
+  const left = budgetLeft(budget);
+  const affordable = (entry) => (entry.cost ?? 0) <= left;
 
   const onSelect = (kind, id) => {
     if (candidate && kind === "slot" && highlight.includes(id)) {
@@ -62,7 +67,8 @@ export default function Window({ state, dispatch, clubSeason, clubName, prefs, o
       <div className={layout.content}>
         <div>
           <h2 className={styles.heading}>The window · before {careerSeasonLabel(state.season + 1)}</h2>
-          <p className={styles.lede}>Five players have become available. Sign them to the bench, or straight into the XI in someone's place.</p>
+          <p className={styles.lede}>Eight players have become available. Sign them to the bench, or straight into the XI in someone's place, for as long as the wage points last.</p>
+          <p className={styles.budget} role="status">{t("window.budget", { left, total: budget.points })}</p>
         </div>
         <CoachNote id="window" prefs={prefs} onDismiss={onDismissNote} />
         {changes && changes.relegated.length > 0 && (
@@ -74,15 +80,17 @@ export default function Window({ state, dispatch, clubSeason, clubName, prefs, o
           {state.shortlist.map((entry, i) => (
             <li key={entry.player.id}>
               <Cutting kicker={clubSeason(entry.player.seasonKey)} title={entry.player.name} selected={replacing === i}
-                subtitle={`${POSITION_LABEL[entry.player.slot] ?? entry.player.slot} · ${playerMeta(entry.player)}`}>
+                subtitle={`${POSITION_LABEL[entry.player.slot] ?? entry.player.slot} · ${playerMeta(entry.player)} · ${t("window.cost", { count: entry.cost ?? 0 })}`}>
                 <div className={styles.candidateActions}>
                   {entry.signed ? (
                     <span className={styles.signed}>Signed</span>
-                  ) : (
+                  ) : affordable(entry) ? (
                     <>
                       <Button size="sm" variant="secondary" onClick={() => signBench(i)}>Sign to bench</Button>
                       <Button size="sm" onClick={() => startReplace(i)} aria-pressed={replacing === i}>Replace…</Button>
                     </>
+                  ) : (
+                    <span className={styles.unaffordable}>Out of reach</span>
                   )}
                 </div>
               </Cutting>

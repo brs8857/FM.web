@@ -4,16 +4,16 @@
   "style": "gegenpress",
   "familiarity": 56,
   "profile": {
-   "attack": 99,
-   "defense": 73.3707069767677,
-   "defSolidity": 76.10157088978096,
-   "buildup": 78.64654074573474,
-   "press": 86.00524007421153,
-   "creativity": 84.76349120113382,
+   "attack": 90.80851769217333,
+   "defense": 67.82062722651537,
+   "defSolidity": 67.41475553747347,
+   "buildup": 71.26884165221335,
+   "press": 76.23000747062463,
+   "creativity": 76.11833257301775,
    "physical": 82.12,
    "avgOv": 83.18181818181819,
    "synergyLabel": "Gegenpress",
-   "executionMult": 0.9023376623376623
+   "executionMult": 0.8076883116883117
   },
   "readout": [
    "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -26,16 +26,16 @@
   "style": "possession",
   "familiarity": 61,
   "profile": {
-   "attack": 87.26980083559195,
-   "defense": 77.69463471280706,
-   "defSolidity": 79.95621745791063,
-   "buildup": 52.78351668859367,
-   "press": 73.42605009276441,
-   "creativity": 90.12646684524589,
+   "attack": 82.85735168870781,
+   "defense": 73.02512745097403,
+   "defSolidity": 76.34108681622324,
+   "buildup": 47.84320437186575,
+   "press": 65.82627903525048,
+   "creativity": 82.26295504068331,
    "physical": 78.04,
    "avgOv": 83.18181818181819,
    "synergyLabel": "Possession Control",
-   "executionMult": 0.9270129870129871
+   "executionMult": 0.8310649350649351
   },
   "readout": [
    "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
@@ -46,16 +46,16 @@
   "style": "counter",
   "familiarity": 61,
   "profile": {
-   "attack": 90.33688864820299,
-   "defense": 86.6403100374824,
-   "defSolidity": 95.24093052810288,
-   "buildup": 62.00630541282324,
-   "press": 66.73301632653065,
-   "creativity": 76.51265383289629,
+   "attack": 81.14796851019608,
+   "defense": 75.85837200356714,
+   "defSolidity": 80.17067561107075,
+   "buildup": 56.299783788093094,
+   "press": 59.825990204081656,
+   "creativity": 71.62891682530717,
    "physical": 79.6,
    "avgOv": 83.18181818181819,
    "synergyLabel": "Low Block Counter",
-   "executionMult": 0.9270129870129871
+   "executionMult": 0.8310649350649351
   },
   "readout": [
    "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -68,16 +68,16 @@
   "style": "direct",
   "familiarity": 61,
   "profile": {
-   "attack": 99,
-   "defense": 75.84060873878109,
-   "defSolidity": 77.23112821930056,
-   "buildup": 55.064363547076525,
-   "press": 75.5025591836735,
-   "creativity": 82.3852270059124,
+   "attack": 88.453877661372,
+   "defense": 69.73880805500528,
+   "defSolidity": 70.56987299007021,
+   "buildup": 49.99845153658224,
+   "press": 67.68786448979594,
+   "creativity": 74.38052432504496,
    "physical": 80.44,
    "avgOv": 83.18181818181819,
    "synergyLabel": "Direct & Vertical",
-   "executionMult": 0.9270129870129871
+   "executionMult": 0.8310649350649351
   },
   "readout": [
    "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -89,16 +89,16 @@
   "style": "parkbus",
   "familiarity": 60,
   "profile": {
-   "attack": 71.39401469580451,
-   "defense": 89.17582319157323,
-   "defSolidity": 98.03801655376658,
-   "buildup": 64.1669254617191,
-   "press": 64.05411873840448,
-   "creativity": 73.04995433137823,
+   "attack": 73.37340482199491,
+   "defense": 81.02340461273768,
+   "defSolidity": 89.24139018272324,
+   "buildup": 58.207697452812965,
+   "press": 57.40692512059371,
+   "creativity": 68.66614923684061,
    "physical": 78.76,
    "avgOv": 83.18181818181819,
    "synergyLabel": "Park The Bus",
-   "executionMult": 0.922077922077922
+   "executionMult": 0.8263896103896103
   },
   "readout": [
    "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -110,16 +110,16 @@
   "style": "wingplay",
   "familiarity": 62,
   "profile": {
-   "attack": 99,
-   "defense": 77.92186181845649,
-   "defSolidity": 75.12601766261234,
-   "buildup": 77.94485600644275,
-   "press": 74.79548794063082,
-   "creativity": 95.92616125510952,
+   "attack": 91.61237275944173,
+   "defense": 67.98727739809533,
+   "defSolidity": 66.31579687861482,
+   "buildup": 70.74611415523508,
+   "press": 67.07412541743972,
+   "creativity": 83.8198498698208,
    "physical": 79,
    "avgOv": 83.18181818181819,
    "synergyLabel": "Wing Play",
-   "executionMult": 0.931948051948052
+   "executionMult": 0.8357402597402597
   },
   "readout": [
    "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -132,16 +132,16 @@
   "style": "balanced",
   "familiarity": 64,
   "profile": {
-   "attack": 85.53284657598584,
-   "defense": 81.57257577001509,
-   "defSolidity": 80.15984849728783,
-   "buildup": 75.43532358235824,
-   "press": 73.93945454545457,
-   "creativity": 79.65462308241598,
+   "attack": 82.53386968012597,
+   "defense": 74.66755428059736,
+   "defSolidity": 76.78028155332463,
+   "buildup": 68.50884248424843,
+   "press": 66.34567272727276,
+   "creativity": 74.83611308240054,
    "physical": 79,
    "avgOv": 83.18181818181819,
    "synergyLabel": null,
-   "executionMult": 0.9418181818181819
+   "executionMult": 0.8450909090909091
   },
   "readout": [
    "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
@@ -152,16 +152,16 @@
   "style": "gegenpress",
   "familiarity": 52,
   "profile": {
-   "attack": 96.79149720864652,
-   "defense": 72.72965670726242,
-   "defSolidity": 74.49235260044796,
-   "buildup": 70.49716885672328,
-   "press": 78.48980729746447,
-   "creativity": 75.12988913243233,
+   "attack": 83.09109159039315,
+   "defense": 67.79348801998015,
+   "defSolidity": 66.69004134290668,
+   "buildup": 63.02007066485656,
+   "press": 69.56886725211298,
+   "creativity": 65.84066929784551,
    "physical": 77.30181818181819,
    "avgOv": 80.63636363636364,
    "synergyLabel": "Gegenpress",
-   "executionMult": 0.8825974025974026
+   "executionMult": 0.7889870129870129
   },
   "readout": [
    "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -174,16 +174,16 @@
   "style": "possession",
   "familiarity": 57,
   "profile": {
-   "attack": 80.12487740646046,
-   "defense": 77.03118678535886,
-   "defSolidity": 78.90580776927521,
-   "buildup": 47.807231491780755,
-   "press": 66.87752092352095,
-   "creativity": 79.8886025442546,
+   "attack": 75.2315122355561,
+   "defense": 72.7734291257447,
+   "defSolidity": 75.49260050148828,
+   "buildup": 42.806154369794875,
+   "press": 59.881515728715755,
+   "creativity": 71.35604772463155,
    "physical": 73.2218181818182,
    "avgOv": 80.63636363636364,
    "synergyLabel": "Possession Control",
-   "executionMult": 0.9072727272727272
+   "executionMult": 0.8123636363636364
   },
   "readout": [
    "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
@@ -192,18 +192,18 @@
  {
   "xiIndex": 1,
   "style": "counter",
-  "familiarity": 56,
+  "familiarity": 57,
   "profile": {
-   "attack": 82.33510189168132,
-   "defense": 85.31973791259672,
-   "defSolidity": 90.8841534970123,
-   "buildup": 55.144288835229396,
-   "press": 59.9988660482375,
-   "creativity": 66.73604571579091,
+   "attack": 73.92674751941755,
+   "defense": 75.60935275556537,
+   "defSolidity": 78.16378507879769,
+   "buildup": 49.645733379695876,
+   "press": 54.016250274170304,
+   "creativity": 61.441548017056164,
    "physical": 74.78181818181818,
    "avgOv": 80.63636363636364,
    "synergyLabel": "Low Block Counter",
-   "executionMult": 0.9023376623376623
+   "executionMult": 0.8123636363636364
   },
   "readout": [
    "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -216,16 +216,16 @@
   "style": "direct",
   "familiarity": 57,
   "profile": {
-   "attack": 95.41452450015234,
-   "defense": 75.2166413308134,
-   "defSolidity": 76.57755042172249,
-   "buildup": 49.22564531526837,
-   "press": 68.90981183261185,
-   "creativity": 72.70232873242439,
+   "attack": 80.80011566541994,
+   "defense": 69.81523673707545,
+   "defSolidity": 70.62760037343908,
+   "buildup": 44.07618903178739,
+   "press": 61.7012102741703,
+   "creativity": 64.00030403609391,
    "physical": 75.62181818181818,
    "avgOv": 80.63636363636364,
    "synergyLabel": "Direct & Vertical",
-   "executionMult": 0.9072727272727272
+   "executionMult": 0.8123636363636364
   },
   "readout": [
    "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -237,16 +237,16 @@
   "style": "parkbus",
   "familiarity": 56,
   "profile": {
-   "attack": 65.173567025808,
-   "defense": 88.25233531519413,
-   "defSolidity": 94.23784180870064,
-   "buildup": 57.63772240033026,
-   "press": 57.72497513914659,
-   "creativity": 63.97055821028005,
+   "attack": 66.08969966265914,
+   "defense": 80.50245314676246,
+   "defSolidity": 86.34473193464126,
+   "buildup": 51.591900280963436,
+   "press": 51.67000077509794,
+   "creativity": 58.78699372160871,
    "physical": 73.94181818181819,
    "avgOv": 80.63636363636364,
    "synergyLabel": "Park The Bus",
-   "executionMult": 0.9023376623376623
+   "executionMult": 0.8076883116883117
   },
   "readout": [
    "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -256,18 +256,18 @@
  {
   "xiIndex": 1,
   "style": "wingplay",
-  "familiarity": 57,
+  "familiarity": 58,
   "profile": {
-   "attack": 99,
-   "defense": 76.84973223990433,
-   "defSolidity": 74.12791405808615,
-   "buildup": 69.6706934558719,
-   "press": 67.8301572871573,
-   "creativity": 83.93344857438312,
+   "attack": 83.81188409026585,
+   "defense": 68.47157084407048,
+   "defSolidity": 66.83749292199256,
+   "buildup": 62.741521137930334,
+   "press": 61.08403743558031,
+   "creativity": 72.31058454227372,
    "physical": 74.18181818181819,
    "avgOv": 80.63636363636364,
    "synergyLabel": "Wing Play",
-   "executionMult": 0.9072727272727272
+   "executionMult": 0.817038961038961
   },
   "readout": [
    "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -280,16 +280,16 @@
   "style": "balanced",
   "familiarity": 60,
   "profile": {
-   "attack": 78.4269706077923,
-   "defense": 80.87002691013882,
-   "defSolidity": 79.48691002702193,
-   "buildup": 67.80970168445415,
-   "press": 67.32339723768298,
-   "creativity": 69.930355110863,
+   "attack": 75.17766873782637,
+   "defense": 74.58724992038908,
+   "defSolidity": 76.65322394636311,
+   "buildup": 60.77277376880544,
+   "press": 60.336935394763984,
+   "creativity": 64.3261363533769,
    "physical": 74.18181818181819,
    "avgOv": 80.63636363636364,
    "synergyLabel": null,
-   "executionMult": 0.922077922077922
+   "executionMult": 0.8263896103896103
   },
   "readout": [
    "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
@@ -298,18 +298,18 @@
  {
   "xiIndex": 2,
   "style": "gegenpress",
-  "familiarity": 52,
+  "familiarity": 53,
   "profile": {
-   "attack": 93.84075165137294,
-   "defense": 68.27849966167263,
-   "defSolidity": 70.47495453658111,
-   "buildup": 72.08377488372597,
-   "press": 78.09053704390848,
-   "creativity": 79.84405927347404,
+   "attack": 78.50585199754096,
+   "defense": 61.110324915447855,
+   "defSolidity": 60.74635825122885,
+   "buildup": 64.82024206436523,
+   "press": 69.76317143681716,
+   "creativity": 70.4699694339302,
    "physical": 74.30181818181819,
    "avgOv": 75,
    "synergyLabel": "Gegenpress",
-   "executionMult": 0.8825974025974026
+   "executionMult": 0.7936623376623376
   },
   "readout": [
    "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -322,16 +322,16 @@
   "style": "possession",
   "familiarity": 57,
   "profile": {
-   "attack": 77.04406835723009,
-   "defense": 72.45558597304421,
-   "defSolidity": 74.40508042479843,
-   "buildup": 48.757957492380804,
-   "press": 66.46708802308804,
-   "creativity": 84.66916413659789,
+   "attack": 69.93438165565422,
+   "defense": 65.56152640583424,
+   "defSolidity": 68.36724061421675,
+   "buildup": 43.65742566652454,
+   "press": 59.51401789321791,
+   "creativity": 75.63651850511046,
    "physical": 70.2218181818182,
    "avgOv": 75,
    "synergyLabel": "Possession Control",
-   "executionMult": 0.9072727272727272
+   "executionMult": 0.8123636363636364
   },
   "readout": [
    "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
@@ -342,16 +342,16 @@
   "style": "counter",
   "familiarity": 57,
   "profile": {
-   "attack": 79.82142209458587,
-   "defense": 81.21076779122603,
-   "defSolidity": 87.00723243769067,
-   "buildup": 56.73909793642522,
-   "press": 59.91657893217895,
-   "creativity": 71.90361939414895,
+   "attack": 68.63589017924185,
+   "defense": 68.38400737909883,
+   "defSolidity": 70.93843970233117,
+   "buildup": 50.80366524648254,
+   "press": 53.64875243867246,
+   "creativity": 65.7417346938173,
    "physical": 71.78181818181818,
    "avgOv": 75,
    "synergyLabel": "Low Block Counter",
-   "executionMult": 0.9072727272727272
+   "executionMult": 0.8123636363636364
   },
   "readout": [
    "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -364,16 +364,16 @@
   "style": "direct",
   "familiarity": 57,
   "profile": {
-   "attack": 92.39498402390286,
-   "defense": 70.64104051849876,
-   "defSolidity": 72.00194960940784,
-   "buildup": 50.377228921629005,
-   "press": 68.49937893217894,
-   "creativity": 77.5671346126164,
+   "attack": 75.52698603602597,
+   "defense": 62.55190340893378,
+   "defSolidity": 63.364267045297424,
+   "buildup": 45.10730637712193,
+   "press": 61.33371243867246,
+   "creativity": 68.35620637531193,
    "physical": 72.62181818181818,
    "avgOv": 75,
    "synergyLabel": "Direct & Vertical",
-   "executionMult": 0.9072727272727272
+   "executionMult": 0.8123636363636364
   },
   "readout": [
    "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -385,16 +385,16 @@
   "style": "parkbus",
   "familiarity": 57,
   "profile": {
-   "attack": 62.37152010883933,
-   "defense": 84.15940415486241,
-   "defSolidity": 92.21396981142807,
-   "buildup": 59.2322630612535,
-   "press": 57.63025165945167,
-   "creativity": 69.0773371839495,
+   "attack": 61.24962945751727,
+   "defense": 73.77097936720997,
+   "defSolidity": 81.41622381165442,
+   "buildup": 53.03602231616847,
+   "press": 51.60159607503609,
+   "creativity": 63.38657820216341,
    "physical": 70.94181818181819,
    "avgOv": 75,
    "synergyLabel": "Park The Bus",
-   "executionMult": 0.9072727272727272
+   "executionMult": 0.8123636363636364
   },
   "readout": [
    "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -406,16 +406,16 @@
   "style": "wingplay",
   "familiarity": 58,
   "profile": {
-   "attack": 97.55931424857013,
-   "defense": 72.6672629755783,
-   "defSolidity": 69.93063959895491,
-   "buildup": 71.59069880497823,
-   "press": 67.78645062873636,
-   "creativity": 89.55690366087045,
+   "attack": 78.54149548544517,
+   "defense": 61.0955304915508,
+   "defSolidity": 59.461452569472875,
+   "buildup": 64.12178307543836,
+   "press": 60.71442457225316,
+   "creativity": 76.79555002685194,
    "physical": 71.18181818181819,
    "avgOv": 75,
    "synergyLabel": "Wing Play",
-   "executionMult": 0.9122077922077922
+   "executionMult": 0.817038961038961
   },
   "readout": [
    "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -428,16 +428,16 @@
   "style": "balanced",
   "familiarity": 61,
   "profile": {
-   "attack": 75.73675602563387,
-   "defense": 76.62769658058308,
-   "defSolidity": 75.23717710006359,
-   "buildup": 69.67236865115082,
-   "press": 67.26435662749951,
-   "creativity": 75.24128601029372,
+   "attack": 70.1987693865525,
+   "defense": 67.59946915150817,
+   "defSolidity": 69.67713148917052,
+   "buildup": 62.46111256268483,
+   "press": 60.302335518449816,
+   "creativity": 69.11576358224413,
    "physical": 71.18181818181819,
    "avgOv": 75,
    "synergyLabel": null,
-   "executionMult": 0.9270129870129871
+   "executionMult": 0.8310649350649351
   },
   "readout": [
    "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
@@ -448,16 +448,16 @@
   "style": "gegenpress",
   "familiarity": 53,
   "profile": {
-   "attack": 93.42310690840354,
-   "defense": 68.68386227465123,
-   "defSolidity": 70.82191794256727,
-   "buildup": 70.63602050115388,
-   "press": 76.04350006184292,
-   "creativity": 75.67381577438405,
+   "attack": 76.98751360222843,
+   "defense": 61.390188475691254,
+   "defSolidity": 60.916281660989135,
+   "buildup": 63.16518122426859,
+   "press": 67.36580726448156,
+   "creativity": 66.34156186021767,
    "physical": 73.12,
    "avgOv": 73.72727272727273,
    "synergyLabel": "Gegenpress",
-   "executionMult": 0.8875324675324675
+   "executionMult": 0.7936623376623376
   },
   "readout": [
    "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -470,16 +470,16 @@
   "style": "possession",
   "familiarity": 58,
   "profile": {
-   "attack": 76.49086936557302,
-   "defense": 72.87394187108873,
-   "defSolidity": 74.9147290271953,
-   "buildup": 47.91429786419243,
-   "press": 64.07318573490004,
-   "creativity": 80.70896474174758,
+   "attack": 68.9198726455296,
+   "defense": 66.12794667124201,
+   "defSolidity": 69.0746341106099,
+   "buildup": 42.91549412346346,
+   "press": 57.38855724592869,
+   "creativity": 72.11227798180772,
    "physical": 69.04,
    "avgOv": 73.72727272727273,
    "synergyLabel": "Possession Control",
-   "executionMult": 0.9122077922077922
+   "executionMult": 0.817038961038961
   },
   "readout": [
    "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
@@ -490,16 +490,16 @@
   "style": "counter",
   "familiarity": 58,
   "profile": {
-   "attack": 79.28417806392028,
-   "defense": 81.67674706589393,
-   "defSolidity": 87.707454136601,
-   "buildup": 55.53939161928222,
-   "press": 57.48704547515978,
-   "creativity": 67.65723171135456,
+   "attack": 67.49849305988003,
+   "defense": 69.0000031166815,
+   "defSolidity": 71.57821494929334,
+   "buildup": 49.74507695831838,
+   "press": 51.489535947227395,
+   "creativity": 61.96641002921796,
    "physical": 70.6,
    "avgOv": 73.72727272727273,
    "synergyLabel": "Low Block Counter",
-   "executionMult": 0.9122077922077922
+   "executionMult": 0.817038961038961
   },
   "readout": [
    "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -512,16 +512,16 @@
   "style": "direct",
   "familiarity": 58,
   "profile": {
-   "attack": 91.85450102199516,
-   "defense": 71.04952628667314,
-   "defSolidity": 72.41783797498483,
-   "buildup": 49.308107637951764,
-   "press": 66.1165311894455,
-   "creativity": 73.15677041362817,
+   "attack": 74.4306832595847,
+   "defense": 63.22852649455622,
+   "defSolidity": 64.04556545559518,
+   "buildup": 44.163890485746315,
+   "press": 59.21872451865596,
+   "creativity": 64.42146693935956,
    "physical": 71.44,
    "avgOv": 73.72727272727273,
    "synergyLabel": "Direct & Vertical",
-   "executionMult": 0.9122077922077922
+   "executionMult": 0.817038961038961
   },
   "readout": [
    "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -533,16 +533,16 @@
   "style": "parkbus",
   "familiarity": 58,
   "profile": {
-   "attack": 61.65951806127691,
-   "defense": 84.64142239056926,
-   "defSolidity": 91.13836899951588,
-   "buildup": 58.06233685672326,
-   "press": 55.188281838796144,
-   "creativity": 64.92878001147173,
+   "attack": 60.183688337261664,
+   "defense": 74.3488462755391,
+   "defSolidity": 80.54926416875699,
+   "buildup": 52.00480831905145,
+   "press": 49.43059776540921,
+   "creativity": 59.69909270358615,
    "physical": 69.76,
    "avgOv": 73.72727272727273,
    "synergyLabel": "Park The Bus",
-   "executionMult": 0.9122077922077922
+   "executionMult": 0.817038961038961
   },
   "readout": [
    "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -554,16 +554,16 @@
   "style": "wingplay",
   "familiarity": 59,
   "profile": {
-   "attack": 96.77694373599887,
-   "defense": 73.08476298518143,
-   "defSolidity": 70.33333441375287,
-   "buildup": 70.18067757909625,
-   "press": 65.38282312925172,
-   "creativity": 85.03491739329306,
+   "attack": 77.34176154563649,
+   "defense": 61.93937706393117,
+   "defSolidity": 60.295948492502596,
+   "buildup": 62.878389008560994,
+   "press": 58.57975056689343,
+   "creativity": 72.71553842122285,
    "physical": 70,
    "avgOv": 73.72727272727273,
    "synergyLabel": "Wing Play",
-   "executionMult": 0.9171428571428571
+   "executionMult": 0.8217142857142856
   },
   "readout": [
    "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -576,16 +576,16 @@
   "style": "balanced",
   "familiarity": 62,
   "profile": {
-   "attack": 74.99062860875893,
-   "defense": 77.06039515862835,
-   "defSolidity": 75.66247308070626,
-   "buildup": 68.29426051176546,
-   "press": 64.80737167594313,
-   "creativity": 70.8306660058988,
+   "attack": 69.00528043210431,
+   "defense": 68.25211411398402,
+   "defSolidity": 70.34146476333467,
+   "buildup": 61.24403919249066,
+   "press": 58.1171123479695,
+   "creativity": 65.19008446055632,
    "physical": 70,
    "avgOv": 73.72727272727273,
    "synergyLabel": null,
-   "executionMult": 0.931948051948052
+   "executionMult": 0.8357402597402597
   },
   "readout": [
    "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
@@ -596,16 +596,16 @@
   "style": "gegenpress",
   "familiarity": 54,
   "profile": {
-   "attack": 94.075978768112,
-   "defense": 68.2173297197725,
-   "defSolidity": 70.18839771364887,
-   "buildup": 65.13962823862535,
-   "press": 73.6991666549644,
-   "creativity": 71.99149726286976,
+   "attack": 77.86118992474742,
+   "defense": 60.35972021518065,
+   "defSolidity": 59.92406489567239,
+   "buildup": 58.2692553417459,
+   "press": 65.46077374561948,
+   "creativity": 63.06203036301291,
    "physical": 70.2109090909091,
    "avgOv": 71.45454545454545,
    "synergyLabel": "Gegenpress",
-   "executionMult": 0.8924675324675324
+   "executionMult": 0.7983376623376623
   },
   "readout": [
    "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -618,16 +618,16 @@
   "style": "possession",
   "familiarity": 59,
   "profile": {
-   "attack": 77.1550779693931,
-   "defense": 72.39628881937539,
-   "defSolidity": 74.54390798934405,
-   "buildup": 44.645675045038324,
-   "press": 61.612346938775524,
-   "creativity": 77.11903212132437,
+   "attack": 69.77264647889487,
+   "defense": 65.05703163756714,
+   "defSolidity": 68.16579487696396,
+   "buildup": 40.000299510757074,
+   "press": 55.2015918367347,
+   "creativity": 68.91731855569657,
    "physical": 66.1309090909091,
    "avgOv": 71.45454545454545,
    "synergyLabel": "Possession Control",
-   "executionMult": 0.9171428571428571
+   "executionMult": 0.8217142857142856
   },
   "readout": [
    "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
@@ -638,16 +638,16 @@
   "style": "counter",
   "familiarity": 59,
   "profile": {
-   "attack": 79.99766821765006,
-   "defense": 81.24671739080395,
-   "defSolidity": 87.51386024794681,
-   "buildup": 51.04115736469887,
-   "press": 54.990575510204096,
-   "creativity": 63.824576998391926,
+   "attack": 68.24011761111937,
+   "defense": 67.95105994606561,
+   "defSolidity": 70.55315518416086,
+   "buildup": 45.730332891237985,
+   "press": 49.26881469387756,
+   "creativity": 58.55918941751784,
    "physical": 67.69090909090909,
    "avgOv": 71.45454545454545,
    "synergyLabel": "Low Block Counter",
-   "executionMult": 0.9171428571428571
+   "executionMult": 0.8217142857142856
   },
   "readout": [
    "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -660,16 +660,16 @@
   "style": "direct",
   "familiarity": 59,
   "profile": {
-   "attack": 92.65812969275069,
-   "defense": 70.56200310508967,
-   "defSolidity": 71.93771739080395,
-   "buildup": 45.30170699620337,
-   "press": 63.66674693877552,
-   "creativity": 69.28749138379818,
+   "attack": 75.25032431976726,
+   "defense": 62.162204917330364,
+   "defSolidity": 62.98391920304465,
+   "buildup": 40.58807143958906,
+   "press": 57.04223183673469,
+   "creativity": 60.968824412043844,
    "physical": 68.53090909090909,
    "avgOv": 71.45454545454545,
    "synergyLabel": "Direct & Vertical",
-   "executionMult": 0.9171428571428571
+   "executionMult": 0.8217142857142856
   },
   "readout": [
    "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -679,18 +679,18 @@
  {
   "xiIndex": 4,
   "style": "parkbus",
-  "familiarity": 58,
+  "familiarity": 59,
   "profile": {
-   "attack": 61.85479056462986,
-   "defense": 83.77421128516912,
-   "defSolidity": 90.27115789411572,
-   "buildup": 53.34077594418088,
-   "press": 52.39591243042673,
-   "creativity": 60.77138974049978,
+   "attack": 60.97098638520045,
+   "defense": 73.31902620568782,
+   "defSolidity": 79.70100715806878,
+   "buildup": 48.04922516429687,
+   "press": 47.19809469387756,
+   "creativity": 56.29574176054814,
    "physical": 66.8509090909091,
    "avgOv": 71.45454545454545,
    "synergyLabel": "Park The Bus",
-   "executionMult": 0.9122077922077922
+   "executionMult": 0.8217142857142856
   },
   "readout": [
    "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -702,16 +702,16 @@
   "style": "wingplay",
   "familiarity": 60,
   "profile": {
-   "attack": 97.54550918458446,
-   "defense": 72.60143128864662,
-   "defSolidity": 69.83519752241286,
-   "buildup": 64.84035803279575,
-   "press": 62.91205936920224,
-   "creativity": 81.33383992691329,
+   "attack": 78.1366076021492,
+   "defense": 60.88474083506107,
+   "defSolidity": 59.23196161428185,
+   "buildup": 58.11157270905434,
+   "press": 56.38338256029685,
+   "creativity": 69.33523513912495,
    "physical": 67.0909090909091,
    "avgOv": 71.45454545454545,
    "synergyLabel": "Wing Play",
-   "executionMult": 0.922077922077922
+   "executionMult": 0.8263896103896103
   },
   "readout": [
    "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -724,16 +724,16 @@
   "style": "balanced",
   "familiarity": 62,
   "profile": {
-   "attack": 75.16742589721845,
-   "defense": 76.17441752589038,
-   "defSolidity": 74.7764954479683,
-   "buildup": 62.759780892374934,
-   "press": 61.954575139146584,
-   "creativity": 66.55209565237712,
+   "attack": 69.36327033783225,
+   "defense": 66.79109417439699,
+   "defSolidity": 68.88044482374764,
+   "buildup": 56.2809005014787,
+   "press": 55.5588185528757,
+   "creativity": 61.35320375556987,
    "physical": 67.0909090909091,
    "avgOv": 71.45454545454545,
    "synergyLabel": null,
-   "executionMult": 0.931948051948052
+   "executionMult": 0.8357402597402597
   },
   "readout": [
    "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
@@ -744,16 +744,16 @@
   "style": "gegenpress",
   "familiarity": 53,
   "profile": {
-   "attack": 99,
-   "defense": 69.28424453368983,
-   "defSolidity": 72.00837120155566,
-   "buildup": 76.97396240099187,
-   "press": 83.7826423005566,
-   "creativity": 83.12563876662188,
+   "attack": 86.94941285104112,
+   "defense": 61.85816587533532,
+   "defSolidity": 61.73571396422635,
+   "buildup": 69.3863938255287,
+   "press": 74.28641687074831,
+   "creativity": 74.48228463718284,
    "physical": 79.57454545454546,
    "avgOv": 80.36363636363636,
    "synergyLabel": "Gegenpress",
-   "executionMult": 0.8875324675324675
+   "executionMult": 0.7936623376623376
   },
   "readout": [
    "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -766,16 +766,16 @@
   "style": "possession",
   "familiarity": 58,
   "profile": {
-   "attack": 83.19011748307284,
-   "defense": 73.49101605714185,
-   "defSolidity": 75.52170563565845,
-   "buildup": 51.711544819333646,
-   "press": 72.02749288806434,
-   "creativity": 87.9999176287562,
+   "attack": 79.07030242182303,
+   "defense": 66.83446882950821,
+   "defSolidity": 69.77267800297692,
+   "buildup": 46.64879591078505,
+   "press": 64.51300729746447,
+   "creativity": 80.16312924379254,
    "physical": 75.49454545454546,
    "avgOv": 80.36363636363636,
    "synergyLabel": "Possession Control",
-   "executionMult": 0.9122077922077922
+   "executionMult": 0.817038961038961
   },
   "readout": [
    "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
@@ -786,16 +786,16 @@
   "style": "counter",
   "familiarity": 58,
   "profile": {
-   "attack": 86.07353968769732,
-   "defense": 82.29382125194705,
-   "defSolidity": 90.14894390706971,
-   "buildup": 60.704552564222425,
-   "press": 65.4413526283241,
-   "creativity": 75.07209066949436,
+   "attack": 77.68423439862754,
+   "defense": 69.63085764111753,
+   "defSolidity": 73.84314739580729,
+   "buildup": 54.82325723348875,
+   "press": 58.61398599876317,
+   "creativity": 70.12824048748702,
    "physical": 77.05454545454545,
    "avgOv": 80.36363636363636,
    "synergyLabel": "Low Block Counter",
-   "executionMult": 0.9122077922077922
+   "executionMult": 0.817038961038961
   },
   "readout": [
    "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -808,16 +808,16 @@
   "style": "direct",
   "familiarity": 58,
   "profile": {
-   "attack": 98.8985167394371,
-   "defense": 71.66660047272626,
-   "defSolidity": 73.03491216103795,
-   "buildup": 53.90758986530593,
-   "press": 74.0708383426098,
-   "creativity": 80.9217787505572,
+   "attack": 84.71621245815612,
+   "defense": 63.64554989079812,
+   "defSolidity": 64.46258885183708,
+   "buildup": 48.68591800278373,
+   "press": 66.34317457019174,
+   "creativity": 72.89691638564669,
    "physical": 77.89454545454545,
    "avgOv": 80.36363636363636,
    "synergyLabel": "Direct & Vertical",
-   "executionMult": 0.9122077922077922
+   "executionMult": 0.817038961038961
   },
   "readout": [
    "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -829,16 +829,16 @@
   "style": "parkbus",
   "familiarity": 57,
   "profile": {
-   "attack": 67.95316359269776,
-   "defense": 84.79724616803587,
-   "defSolidity": 92.85181182460153,
-   "buildup": 62.83019670252498,
-   "press": 62.80098614718618,
-   "creativity": 71.69665818886783,
+   "attack": 69.8127001176988,
+   "defense": 74.70668827382428,
+   "defSolidity": 82.35193271826873,
+   "buildup": 56.702052193092996,
+   "press": 56.2314240692641,
+   "creativity": 67.24374211911257,
    "physical": 76.21454545454546,
    "avgOv": 80.36363636363636,
    "synergyLabel": "Park The Bus",
-   "executionMult": 0.9072727272727272
+   "executionMult": 0.8123636363636364
   },
   "readout": [
    "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -850,16 +850,16 @@
   "style": "wingplay",
   "familiarity": 59,
   "profile": {
-   "attack": 99,
-   "defense": 73.70517555663746,
-   "defSolidity": 70.95374698520888,
-   "buildup": 76.33546819635225,
-   "press": 73.38016326530615,
-   "creativity": 93.59446837204622,
+   "attack": 87.87239664288867,
+   "defense": 61.95968128364478,
+   "defSolidity": 60.316252712216205,
+   "buildup": 68.93141305382265,
+   "press": 65.74496870748301,
+   "creativity": 81.82484148595121,
    "physical": 76.45454545454545,
    "avgOv": 80.36363636363636,
    "synergyLabel": "Wing Play",
-   "executionMult": 0.9171428571428571
+   "executionMult": 0.8217142857142856
   },
   "readout": [
    "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -872,16 +872,16 @@
   "style": "balanced",
   "familiarity": 61,
   "profile": {
-   "attack": 81.61348002388466,
-   "defense": 77.27941663355074,
-   "defSolidity": 75.88889715303127,
-   "buildup": 73.8902502070207,
-   "press": 72.54759492888067,
-   "creativity": 78.15634748983925,
+   "attack": 79.02707238528922,
+   "defense": 68.41078343654826,
+   "defSolidity": 70.4884457742106,
+   "buildup": 66.76413640221163,
+   "press": 65.03874607297467,
+   "creativity": 73.2757613130647,
    "physical": 76.45454545454545,
    "avgOv": 80.36363636363636,
    "synergyLabel": null,
-   "executionMult": 0.9270129870129871
+   "executionMult": 0.8310649350649351
   },
   "readout": [
    "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
@@ -892,16 +892,16 @@
   "style": "gegenpress",
   "familiarity": 50,
   "profile": {
-   "attack": 92.59422815431559,
-   "defense": 68.64551110101205,
-   "defSolidity": 70.56728724334414,
-   "buildup": 67.00601150978257,
-   "press": 74.98832900432902,
-   "creativity": 70.23173286132419,
+   "attack": 77.71655539263762,
+   "defense": 62.30843908968119,
+   "defSolidity": 61.544888148523825,
+   "buildup": 59.85870361540576,
+   "press": 66.46981633477635,
+   "creativity": 61.43523675005567,
    "physical": 74.84727272727274,
    "avgOv": 74.45454545454545,
    "synergyLabel": "Gegenpress",
-   "executionMult": 0.8727272727272728
+   "executionMult": 0.7796363636363637
   },
   "readout": [
    "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -914,16 +914,16 @@
   "style": "possession",
   "familiarity": 55,
   "profile": {
-   "attack": 76.42574767666737,
-   "defense": 72.82988770005309,
-   "defSolidity": 74.57961219281123,
-   "buildup": 45.667081052315744,
-   "press": 63.85090702947848,
-   "creativity": 74.71491860952322,
+   "attack": 69.86176684625467,
+   "defense": 66.99959331401739,
+   "defSolidity": 69.49687380752478,
+   "buildup": 40.86377649242817,
+   "press": 57.1350113378685,
+   "creativity": 66.68288562699101,
    "physical": 70.76727272727274,
    "avgOv": 74.45454545454545,
    "synergyLabel": "Possession Control",
-   "executionMult": 0.8974025974025974
+   "executionMult": 0.803012987012987
   },
   "readout": [
    "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
@@ -934,16 +934,16 @@
   "style": "counter",
   "familiarity": 55,
   "profile": {
-   "attack": 79.03144286482504,
-   "defense": 81.48982276498816,
-   "defSolidity": 86.82438264954804,
-   "buildup": 52.63902552533448,
-   "press": 57.37166027623173,
-   "creativity": 62.32252248746797,
+   "attack": 68.75036893316083,
+   "defense": 69.84132495091909,
+   "defSolidity": 72.3485099437041,
+   "buildup": 47.1024055901951,
+   "press": 51.33725757163473,
+   "creativity": 57.11162739358997,
    "physical": 72.32727272727273,
    "avgOv": 74.45454545454545,
    "synergyLabel": "Low Block Counter",
-   "executionMult": 0.8974025974025974
+   "executionMult": 0.803012987012987
   },
   "readout": [
    "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -956,16 +956,16 @@
   "style": "direct",
   "familiarity": 55,
   "profile": {
-   "attack": 91.21416051772997,
-   "defense": 71.0350825052479,
-   "defSolidity": 72.3811864013518,
-   "buildup": 46.72779782850465,
-   "press": 65.8610888476603,
-   "creativity": 67.76454714621518,
+   "attack": 75.40469059794425,
+   "defense": 64.222560458356,
+   "defSolidity": 65.02557344536899,
+   "buildup": 41.81292612636902,
+   "press": 58.93376042877758,
+   "creativity": 59.552943743144276,
    "physical": 73.16727272727273,
    "avgOv": 74.45454545454545,
    "synergyLabel": "Direct & Vertical",
-   "executionMult": 0.8974025974025974
+   "executionMult": 0.803012987012987
   },
   "readout": [
    "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -975,18 +975,18 @@
  {
   "xiIndex": 6,
   "style": "parkbus",
-  "familiarity": 54,
+  "familiarity": 55,
   "profile": {
-   "attack": 61.935713179115034,
-   "defense": 83.9422071854397,
-   "defSolidity": 89.42592435715687,
-   "buildup": 54.83927341594309,
-   "press": 54.807139476396635,
-   "creativity": 59.374552113731916,
+   "attack": 61.338602470574386,
+   "defense": 75.05898089208301,
+   "defSolidity": 80.72468363378576,
+   "buildup": 49.342577908244955,
+   "press": 49.313664844362,
+   "creativity": 54.940967337891564,
    "physical": 71.48727272727274,
    "avgOv": 74.45454545454545,
    "synergyLabel": "Park The Bus",
-   "executionMult": 0.8924675324675324
+   "executionMult": 0.803012987012987
   },
   "readout": [
    "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -998,16 +998,16 @@
   "style": "wingplay",
   "familiarity": 56,
   "profile": {
-   "attack": 95.99257747605212,
-   "defense": 73.04993185103014,
-   "defSolidity": 70.34291886401715,
-   "buildup": 66.66560553968178,
-   "press": 65.14949536178109,
-   "creativity": 78.70386012873956,
+   "attack": 78.32050765456735,
+   "defense": 63.07381415700034,
+   "defSolidity": 61.458437533623716,
+   "buildup": 59.67281720961268,
+   "press": 58.31573712636571,
+   "creativity": 67.27376246315035,
    "physical": 71.72727272727273,
    "avgOv": 74.45454545454545,
    "synergyLabel": "Wing Play",
-   "executionMult": 0.9023376623376623
+   "executionMult": 0.8076883116883117
   },
   "readout": [
    "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1020,16 +1020,16 @@
   "style": "balanced",
   "familiarity": 58,
   "profile": {
-   "attack": 74.72714222079888,
-   "defense": 76.58560456856864,
-   "defSolidity": 75.21729288025696,
-   "buildup": 64.54141082679696,
-   "press": 64.26576293547724,
-   "creativity": 64.98225152355482,
+   "attack": 69.90202241513688,
+   "defense": 68.8114498789796,
+   "defSolidity": 70.85404728157701,
+   "buildup": 57.80793334190561,
+   "press": 57.56104324881469,
+   "creativity": 59.836859924496494,
    "physical": 71.72727272727273,
    "avgOv": 74.45454545454545,
    "synergyLabel": null,
-   "executionMult": 0.9122077922077922
+   "executionMult": 0.817038961038961
   },
   "readout": [
    "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
@@ -1040,16 +1040,16 @@
   "style": "gegenpress",
   "familiarity": 55,
   "profile": {
-   "attack": 99,
-   "defense": 74.55023749258802,
-   "defSolidity": 77.18566363807396,
-   "buildup": 78.74411488295176,
-   "press": 86.41151573902289,
-   "creativity": 84.20084140871994,
+   "attack": 89.32317357111351,
+   "defense": 69.09787547187024,
+   "defSolidity": 68.57944573965449,
+   "buildup": 71.74724917998687,
+   "press": 77.11180759431045,
+   "creativity": 75.61342709618573,
    "physical": 84.40636363636364,
    "avgOv": 84.72727272727273,
    "synergyLabel": "Gegenpress",
-   "executionMult": 0.8974025974025974
+   "executionMult": 0.803012987012987
   },
   "readout": [
    "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1062,16 +1062,16 @@
   "style": "possession",
   "familiarity": 60,
   "profile": {
-   "attack": 85.66021272101511,
-   "defense": 78.90529411016945,
-   "defSolidity": 81.0462955023638,
-   "buildup": 52.81858845168727,
-   "press": 74.14082426303857,
-   "creativity": 89.43436327705882,
+   "attack": 81.40045135822453,
+   "defense": 74.30011591992948,
+   "defSolidity": 77.44864151301731,
+   "buildup": 48.10852624861884,
+   "press": 66.96444889713463,
+   "creativity": 81.63495365946613,
    "physical": 80.32636363636364,
    "avgOv": 84.72727272727273,
    "synergyLabel": "Possession Control",
-   "executionMult": 0.922077922077922
+   "executionMult": 0.8263896103896103
   },
   "readout": [
    "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
@@ -1082,16 +1082,16 @@
   "style": "counter",
   "familiarity": 60,
   "profile": {
-   "attack": 88.65691532098167,
-   "defense": 87.80334605822141,
-   "defSolidity": 96.15327390814926,
-   "buildup": 62.10613950393535,
-   "press": 67.48342166563597,
-   "creativity": 76.03897054970403,
+   "attack": 79.79656077068645,
+   "defense": 77.12840804968789,
+   "defSolidity": 81.40726981014966,
+   "buildup": 56.71006932864112,
+   "press": 60.99791591012164,
+   "creativity": 71.19153945934137,
    "physical": 81.88636363636363,
    "avgOv": 84.72727272727273,
    "synergyLabel": "Low Block Counter",
-   "executionMult": 0.922077922077922
+   "executionMult": 0.8263896103896103
   },
   "readout": [
    "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1104,16 +1104,16 @@
   "style": "direct",
   "familiarity": 60,
   "profile": {
-   "attack": 99,
-   "defense": 77.06113826601361,
-   "defSolidity": 78.44425514913048,
-   "buildup": 55.15406854345586,
-   "press": 76.20627880849311,
-   "creativity": 81.87045302993819,
+   "attack": 87.00096980243872,
+   "defense": 71.07431818511054,
+   "defSolidity": 71.90070779550015,
+   "buildup": 50.36456557862703,
+   "press": 68.81556162440735,
+   "creativity": 73.91885971670995,
    "physical": 82.72636363636363,
    "avgOv": 84.72727272727273,
    "synergyLabel": "Direct & Vertical",
-   "executionMult": 0.922077922077922
+   "executionMult": 0.8263896103896103
   },
   "readout": [
    "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1125,16 +1125,16 @@
   "style": "parkbus",
   "familiarity": 59,
   "profile": {
-   "attack": 70.00929228230532,
-   "defense": 90.31412694249734,
-   "defSolidity": 98.90469837106876,
-   "buildup": 64.24652972065809,
-   "press": 64.81104278911567,
-   "creativity": 72.63007004212959,
+   "attack": 71.9968643830604,
+   "defense": 82.22954723914617,
+   "defSolidity": 90.2549567629557,
+   "buildup": 58.59351083689421,
+   "press": 58.58209832199548,
+   "creativity": 68.27668053969126,
    "physical": 81.04636363636364,
    "avgOv": 84.72727272727273,
    "synergyLabel": "Park The Bus",
-   "executionMult": 0.9171428571428571
+   "executionMult": 0.8217142857142856
   },
   "readout": [
    "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1146,16 +1146,16 @@
   "style": "wingplay",
   "familiarity": 61,
   "profile": {
-   "attack": 99,
-   "defense": 79.14220153758187,
-   "defSolidity": 76.3611625765429,
-   "buildup": 78.0443808623918,
-   "press": 75.51099794475368,
-   "creativity": 95.0470039084859,
+   "attack": 90.13983615302269,
+   "defense": 69.4025005233894,
+   "defSolidity": 67.74037065325953,
+   "buildup": 71.21686193030732,
+   "press": 68.21592051123481,
+   "creativity": 83.1301501041927,
    "physical": 81.28636363636363,
    "avgOv": 84.72727272727273,
    "synergyLabel": "Wing Play",
-   "executionMult": 0.9270129870129871
+   "executionMult": 0.8310649350649351
   },
   "readout": [
    "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1168,16 +1168,16 @@
   "style": "balanced",
   "familiarity": 63,
   "profile": {
-   "attack": 83.95298325769602,
-   "defense": 82.79549691188717,
-   "defSolidity": 81.39017223656249,
-   "buildup": 75.53585808409413,
-   "press": 74.67543621727481,
-   "creativity": 79.1457944537557,
+   "attack": 81.1603272254566,
+   "defense": 75.99475065916987,
+   "defSolidity": 78.09578962020882,
+   "buildup": 68.96899616818824,
+   "press": 67.51271828488973,
+   "creativity": 74.36555027778148,
    "physical": 81.28636363636363,
    "avgOv": 84.72727272727273,
    "synergyLabel": null,
-   "executionMult": 0.9368831168831169
+   "executionMult": 0.8404155844155844
   },
   "readout": [
    "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
@@ -1188,16 +1188,16 @@
   "style": "gegenpress",
   "familiarity": 51,
   "profile": {
-   "attack": 91.40617321398148,
-   "defense": 67.96810024807293,
-   "defSolidity": 69.8336160060943,
-   "buildup": 66.61294471184262,
-   "press": 74.09475596051217,
-   "creativity": 69.42104580993121,
+   "attack": 75.18262795634342,
+   "defense": 60.89250500414347,
+   "defSolidity": 60.22872696490378,
+   "buildup": 59.527803448321976,
+   "press": 65.7106291981035,
+   "creativity": 60.72428920259379,
    "physical": 72.12,
    "avgOv": 73.36363636363636,
    "synergyLabel": "Gegenpress",
-   "executionMult": 0.8776623376623377
+   "executionMult": 0.7843116883116883
   },
   "readout": [
    "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1210,16 +1210,16 @@
   "style": "possession",
   "familiarity": 56,
   "profile": {
-   "attack": 75.0259056709757,
-   "defense": 72.13485577520056,
-   "defSolidity": 73.99233735602195,
-   "buildup": 45.45556647550469,
-   "press": 62.70960296846014,
-   "creativity": 74.04922656652445,
+   "attack": 67.19844119215244,
+   "defense": 65.54382435911586,
+   "defSolidity": 68.20343526334327,
+   "buildup": 40.68757326201191,
+   "press": 56.13177357245931,
+   "creativity": 66.10748374933407,
    "physical": 68.04,
    "avgOv": 73.36363636363636,
    "synergyLabel": "Possession Control",
-   "executionMult": 0.9023376623376623
+   "executionMult": 0.8076883116883117
   },
   "readout": [
    "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
@@ -1230,16 +1230,16 @@
   "style": "counter",
   "familiarity": 56,
   "profile": {
-   "attack": 77.68485818686591,
-   "defense": 80.84241421675901,
-   "defSolidity": 86.4068298011746,
-   "buildup": 52.29918715185805,
-   "press": 56.19472504638222,
-   "creativity": 61.426648639509835,
+   "attack": 65.98139447189844,
+   "defense": 68.40308806578257,
+   "defSolidity": 70.93384477573929,
+   "buildup": 46.81334265037933,
+   "press": 50.3002639620697,
+   "creativity": 56.33546304016225,
    "physical": 69.6,
    "avgOv": 73.36363636363636,
    "synergyLabel": "Low Block Counter",
-   "executionMult": 0.9023376623376623
+   "executionMult": 0.8076883116883117
   },
   "readout": [
    "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1252,16 +1252,16 @@
   "style": "direct",
   "familiarity": 56,
   "profile": {
-   "attack": 89.97135256055829,
-   "defense": 70.33018045052525,
-   "defSolidity": 71.68368694403173,
-   "buildup": 46.42437336762248,
-   "press": 64.7308393320965,
-   "creativity": 66.85392705268751,
+   "attack": 72.71802924998845,
+   "defense": 62.75439863963427,
+   "defSolidity": 63.56208695132258,
+   "buildup": 41.55475861368994,
+   "press": 57.94099539064113,
+   "creativity": 58.7510058002447,
    "physical": 70.44,
    "avgOv": 73.36363636363636,
    "synergyLabel": "Direct & Vertical",
-   "executionMult": 0.9023376623376623
+   "executionMult": 0.8076883116883117
   },
   "readout": [
    "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1273,16 +1273,16 @@
   "style": "parkbus",
   "familiarity": 55,
   "profile": {
-   "attack": 60.3496270638598,
-   "defense": 83.31682934509973,
-   "defSolidity": 89.05023482850521,
-   "buildup": 54.52337410312461,
-   "press": 53.62593032364464,
-   "creativity": 58.47438171742241,
+   "attack": 58.188642655671174,
+   "defense": 73.22275598972432,
+   "defSolidity": 78.88845873142706,
+   "buildup": 48.78855669384082,
+   "press": 47.9855068563183,
+   "creativity": 53.841688327678305,
    "physical": 68.76,
    "avgOv": 73.36363636363636,
    "synergyLabel": "Park The Bus",
-   "executionMult": 0.8974025974025974
+   "executionMult": 0.803012987012987
   },
   "readout": [
    "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1294,16 +1294,16 @@
   "style": "wingplay",
   "familiarity": 57,
   "profile": {
-   "attack": 94.73631522046328,
-   "defense": 72.34792116634038,
-   "defSolidity": 69.6261029845222,
-   "buildup": 66.28027909990999,
-   "press": 64.0052106782107,
-   "creativity": 78.01564589140195,
+   "attack": 75.60058216700956,
+   "defense": 61.59138091838229,
+   "defSolidity": 59.96665364565502,
+   "buildup": 59.34675090549055,
+   "press": 57.30967561327564,
+   "creativity": 66.59048842324255,
    "physical": 69,
    "avgOv": 73.36363636363636,
    "synergyLabel": "Wing Play",
-   "executionMult": 0.9072727272727272
+   "executionMult": 0.8123636363636364
   },
   "readout": [
    "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1316,16 +1316,16 @@
   "style": "balanced",
   "familiarity": 59,
   "profile": {
-   "attack": 73.2175157495443,
-   "defense": 75.88641558498367,
-   "defSolidity": 74.51070129926937,
-   "buildup": 64.164585572843,
-   "press": 63.09651700680275,
-   "creativity": 64.0727209123145,
+   "attack": 67.07711451646477,
+   "defense": 67.32962203004901,
+   "defSolidity": 69.38390774433472,
+   "buildup": 57.48827043847241,
+   "press": 56.53133424036283,
+   "creativity": 59.04939285299133,
    "physical": 69,
    "avgOv": 73.36363636363636,
    "synergyLabel": null,
-   "executionMult": 0.9171428571428571
+   "executionMult": 0.8217142857142856
   },
   "readout": [
    "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
@@ -1336,16 +1336,16 @@
   "style": "gegenpress",
   "familiarity": 55,
   "profile": {
-   "attack": 99,
-   "defense": 70.0451988187836,
-   "defSolidity": 73.07752311108656,
-   "buildup": 78.11070856922774,
-   "press": 85.8520920531849,
-   "creativity": 85.18840719720085,
+   "attack": 90.01872707409572,
+   "defense": 62.470734208290914,
+   "defSolidity": 62.561844156235345,
+   "buildup": 70.67784527560485,
+   "press": 76.16731136672851,
+   "creativity": 77.15151065424419,
    "physical": 81.02909090909091,
    "avgOv": 81,
    "synergyLabel": "Gegenpress",
-   "executionMult": 0.8974025974025974
+   "executionMult": 0.803012987012987
   },
   "readout": [
    "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1358,16 +1358,16 @@
   "style": "possession",
   "familiarity": 60,
   "profile": {
-   "attack": 86.52333135982049,
-   "defense": 74.2763831718176,
-   "defSolidity": 76.49313037936679,
-   "buildup": 52.43920904777695,
-   "press": 73.56601844980418,
-   "creativity": 90.3820331145247,
+   "attack": 82.09713293869277,
+   "defense": 67.52102304403816,
+   "defSolidity": 70.75089775163669,
+   "buildup": 47.46699900361163,
+   "press": 65.9924573077716,
+   "creativity": 83.15772028137968,
    "physical": 76.94909090909091,
    "avgOv": 81,
    "synergyLabel": "Possession Control",
-   "executionMult": 0.922077922077922
+   "executionMult": 0.8263896103896103
   },
   "readout": [
    "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
@@ -1378,16 +1378,16 @@
   "style": "counter",
   "familiarity": 60,
   "profile": {
-   "attack": 89.53645075240067,
-   "defense": 83.17443511986954,
-   "defSolidity": 91.5243629697974,
-   "buildup": 61.59009308832386,
-   "press": 66.90861585240158,
-   "creativity": 77.00921347701366,
+   "attack": 80.49967935241625,
+   "defense": 70.33552159966466,
+   "defSolidity": 74.61438336012641,
+   "buildup": 55.8374393653621,
+   "press": 60.02592432075862,
+   "creativity": 72.73453665664837,
    "physical": 78.5090909090909,
    "avgOv": 81,
    "synergyLabel": "Low Block Counter",
-   "executionMult": 0.922077922077922
+   "executionMult": 0.8263896103896103
   },
   "readout": [
    "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1400,16 +1400,16 @@
   "style": "direct",
   "familiarity": 60,
   "profile": {
-   "attack": 99,
-   "defense": 72.43222732766175,
-   "defSolidity": 73.81534421077863,
-   "buildup": 54.694538561254625,
-   "press": 75.63147299525872,
-   "creativity": 82.90448583706547,
+   "attack": 87.72227887291879,
+   "defense": 64.24245211633675,
+   "defSolidity": 65.06884172672636,
+   "buildup": 49.58750440861831,
+   "press": 67.84357003504432,
+   "creativity": 75.51902702151776,
    "physical": 79.3490909090909,
    "avgOv": 81,
    "synergyLabel": "Direct & Vertical",
-   "executionMult": 0.922077922077922
+   "executionMult": 0.8263896103896103
   },
   "readout": [
    "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1419,18 +1419,18 @@
  {
   "xiIndex": 9,
   "style": "parkbus",
-  "familiarity": 59,
+  "familiarity": 60,
   "profile": {
-   "attack": 70.85025293458435,
-   "defense": 85.70999045705497,
-   "defSolidity": 94.3005618856264,
-   "buildup": 63.738764431534285,
-   "press": 64.23931340136056,
-   "creativity": 73.54855243615752,
+   "attack": 73.17891314876164,
+   "defense": 75.93313283013053,
+   "defSolidity": 84.15111840011609,
+   "buildup": 58.06364469546504,
+   "press": 57.9434225025768,
+   "creativity": 70.16619325889154,
    "physical": 77.66909090909091,
    "avgOv": 81,
    "synergyLabel": "Park The Bus",
-   "executionMult": 0.9171428571428571
+   "executionMult": 0.8263896103896103
   },
   "readout": [
    "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1442,16 +1442,16 @@
   "style": "wingplay",
   "familiarity": 61,
   "profile": {
-   "attack": 99,
-   "defense": 74.48851614632052,
-   "defSolidity": 71.70747718528156,
-   "buildup": 77.42949688707456,
-   "press": 74.93311570604001,
-   "creativity": 96.22365896353332,
+   "attack": 90.89917553702004,
+   "defense": 62.459234064967276,
+   "defSolidity": 60.79710419483741,
+   "buildup": 70.17678264832197,
+   "press": 67.23842984951557,
+   "creativity": 84.84606878697755,
    "physical": 77.9090909090909,
    "avgOv": 81,
    "synergyLabel": "Wing Play",
-   "executionMult": 0.9270129870129871
+   "executionMult": 0.8310649350649351
   },
   "readout": [
    "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1464,16 +1464,16 @@
   "style": "balanced",
   "familiarity": 63,
   "profile": {
-   "attack": 84.86857242618271,
-   "defense": 78.09226261480684,
-   "defSolidity": 76.68693793948216,
-   "buildup": 74.94073786935836,
-   "press": 74.09140112760257,
-   "creativity": 80.16177190542615,
+   "attack": 81.88398666384448,
+   "defense": 69.06812750568847,
+   "defSolidity": 71.16916646672742,
+   "buildup": 67.9617456088466,
+   "press": 66.52422947845805,
+   "creativity": 75.96178705963895,
    "physical": 77.9090909090909,
    "avgOv": 81,
    "synergyLabel": null,
-   "executionMult": 0.9368831168831169
+   "executionMult": 0.8404155844155844
   },
   "readout": [
    "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
@@ -1484,16 +1484,16 @@
   "style": "gegenpress",
   "familiarity": 54,
   "profile": {
-   "attack": 94.41117493818511,
-   "defense": 73.83607983785888,
-   "defSolidity": 75.4446017951822,
-   "buildup": 68.23557165382668,
-   "press": 77.99686945646945,
-   "creativity": 69.97845023961558,
+   "attack": 78.99299146795293,
+   "defense": 69.62335109451381,
+   "defSolidity": 68.3401115475243,
+   "buildup": 61.03866502770713,
+   "press": 69.09627251563252,
+   "creativity": 61.26130238551757,
    "physical": 75.02909090909091,
    "avgOv": 77.63636363636364,
    "synergyLabel": "Gegenpress",
-   "executionMult": 0.8924675324675324
+   "executionMult": 0.7983376623376623
   },
   "readout": [
    "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1506,16 +1506,16 @@
   "style": "possession",
   "familiarity": 59,
   "profile": {
-   "attack": 77.57593753571825,
-   "defense": 78.17038854782794,
-   "defSolidity": 80.22352244951284,
-   "buildup": 46.500268134853265,
-   "press": 65.7888650793651,
-   "creativity": 75.45238328541461,
+   "attack": 71.05220507916012,
+   "defense": 74.34631081106556,
+   "defSolidity": 77.3436027003804,
+   "buildup": 41.6619224784542,
+   "press": 58.94354391534392,
+   "creativity": 67.42408427156062,
    "physical": 70.94909090909091,
    "avgOv": 77.63636363636364,
    "synergyLabel": "Possession Control",
-   "executionMult": 0.9171428571428571
+   "executionMult": 0.8217142857142856
   },
   "readout": [
    "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
@@ -1526,16 +1526,16 @@
   "style": "counter",
   "familiarity": 59,
   "profile": {
-   "attack": 80.32008746755025,
-   "defense": 87.02081711925652,
-   "defSolidity": 93.28795997639936,
-   "buildup": 53.56384601503761,
-   "press": 59.16709365079367,
-   "creativity": 62.02257272739787,
+   "attack": 69.48108975401962,
+   "defense": 77.3230243853462,
+   "defSolidity": 79.92511962344145,
+   "buildup": 47.99053618045114,
+   "press": 53.01076677248678,
+   "creativity": 56.944683410234695,
    "physical": 72.5090909090909,
    "avgOv": 77.63636363636364,
    "synergyLabel": "Low Block Counter",
-   "executionMult": 0.9171428571428571
+   "executionMult": 0.8217142857142856
   },
   "readout": [
    "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1548,16 +1548,16 @@
   "style": "direct",
   "familiarity": 59,
   "profile": {
-   "attack": 92.7023639003093,
-   "defense": 76.33610283354223,
-   "defSolidity": 77.71181711925651,
-   "buildup": 47.548115527528516,
-   "press": 67.84326507936508,
-   "creativity": 67.10298267958443,
+   "attack": 76.38225399241009,
+   "defense": 71.76783179287685,
+   "defSolidity": 72.58954607859114,
+   "buildup": 42.60074151313769,
+   "press": 60.78418391534392,
+   "creativity": 59.011613498237374,
    "physical": 73.3490909090909,
    "avgOv": 77.63636363636364,
    "synergyLabel": "Direct & Vertical",
-   "executionMult": 0.9171428571428571
+   "executionMult": 0.8217142857142856
   },
   "readout": [
    "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1567,18 +1567,18 @@
  {
   "xiIndex": 10,
   "style": "parkbus",
-  "familiarity": 58,
+  "familiarity": 59,
   "profile": {
-   "attack": 62.37854877880131,
-   "defense": 89.51724109154843,
-   "defSolidity": 96.01418770049504,
-   "buildup": 55.822910505589505,
-   "press": 56.54995709475711,
-   "creativity": 59.25830847232643,
+   "attack": 62.29198969893183,
+   "defense": 82.5194952789017,
+   "defSolidity": 88.90147623128266,
+   "buildup": 50.285125192335684,
+   "press": 50.940046772486774,
+   "creativity": 54.932762290162835,
    "physical": 71.66909090909091,
    "avgOv": 77.63636363636364,
    "synergyLabel": "Park The Bus",
-   "executionMult": 0.9122077922077922
+   "executionMult": 0.8217142857142856
   },
   "readout": [
    "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1590,16 +1590,16 @@
   "style": "wingplay",
   "familiarity": 60,
   "profile": {
-   "attack": 96.99212921020796,
-   "defense": 78.4066009391724,
-   "defSolidity": 75.64036717293864,
-   "buildup": 67.84629938482571,
-   "press": 67.111050986051,
-   "creativity": 78.315529795591,
+   "attack": 79.0714617087368,
+   "defense": 70.98112660687028,
+   "defSolidity": 69.32834738609105,
+   "buildup": 60.80557355570746,
+   "press": 60.14662530062531,
+   "creativity": 66.72726674909352,
    "physical": 71.9090909090909,
    "avgOv": 77.63636363636364,
    "synergyLabel": "Wing Play",
-   "executionMult": 0.922077922077922
+   "executionMult": 0.8263896103896103
   },
   "readout": [
    "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1612,16 +1612,16 @@
   "style": "balanced",
   "familiarity": 62,
   "profile": {
-   "attack": 75.36352972248062,
-   "defense": 82.04172702056263,
-   "defSolidity": 80.64380494264056,
-   "buildup": 65.66926853791372,
-   "press": 66.19851370851372,
-   "creativity": 64.54016189166252,
+   "attack": 70.57382480149603,
+   "defense": 76.43360169047459,
+   "defSolidity": 78.52295233982524,
+   "buildup": 58.89003301214915,
+   "press": 59.36464261664262,
+   "creativity": 59.54896795053216,
    "physical": 71.9090909090909,
    "avgOv": 77.63636363636364,
    "synergyLabel": null,
-   "executionMult": 0.931948051948052
+   "executionMult": 0.8357402597402597
   },
   "readout": [
    "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
@@ -1632,16 +1632,16 @@
   "style": "gegenpress",
   "familiarity": 53,
   "profile": {
-   "attack": 95.43474190017942,
-   "defense": 72.4614419362719,
-   "defSolidity": 74.61042996356012,
-   "buildup": 71.84436152351556,
-   "press": 81.90872784992787,
-   "creativity": 77.03421566124143,
+   "attack": 80.88714569027262,
+   "defense": 68.09086542679316,
+   "defSolidity": 67.16801848413857,
+   "buildup": 64.24572170654204,
+   "press": 72.61069752765754,
+   "creativity": 67.55807865690522,
    "physical": 79.2109090909091,
    "avgOv": 79,
    "synergyLabel": "Gegenpress",
-   "executionMult": 0.8875324675324675
+   "executionMult": 0.7936623376623376
   },
   "readout": [
    "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1654,16 +1654,16 @@
   "style": "possession",
   "familiarity": 58,
   "profile": {
-   "attack": 78.71903738428512,
-   "defense": 76.75654642818904,
-   "defSolidity": 78.73380005517942,
-   "buildup": 48.63825042488921,
-   "press": 70.10147955747958,
-   "creativity": 82.32801886591312,
+   "attack": 72.99729915067547,
+   "defense": 72.89112715144346,
+   "defSolidity": 75.75665642504893,
+   "buildup": 43.563918148215116,
+   "press": 62.78793112073114,
+   "creativity": 73.56241939780291,
    "physical": 75.1309090909091,
    "avgOv": 79,
    "synergyLabel": "Possession Control",
-   "executionMult": 0.9122077922077922
+   "executionMult": 0.817038961038961
   },
   "readout": [
    "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
@@ -1674,16 +1674,16 @@
   "style": "counter",
   "familiarity": 58,
   "profile": {
-   "attack": 81.45827699438505,
-   "defense": 85.55935162299424,
-   "defSolidity": 91.59005869370131,
-   "buildup": 56.52413965823652,
-   "press": 63.515339297739324,
-   "creativity": 69.20194083918001,
+   "attack": 71.55473224177818,
+   "defense": 75.80858500384234,
+   "defSolidity": 78.38679683645418,
+   "buildup": 50.627088185919355,
+   "press": 56.88890982202984,
+   "creativity": 63.34996271500604,
    "physical": 76.69090909090909,
    "avgOv": 79,
    "synergyLabel": "Low Block Counter",
-   "executionMult": 0.9122077922077922
+   "executionMult": 0.817038961038961
   },
   "readout": [
    "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1696,16 +1696,16 @@
   "style": "direct",
   "familiarity": 58,
   "profile": {
-   "attack": 93.87580471419058,
-   "defense": 74.93213084377345,
-   "defSolidity": 76.30044253208514,
-   "buildup": 50.185007922739416,
-   "press": 72.14482501202502,
-   "creativity": 74.49138608883331,
+   "attack": 78.42704863541614,
+   "defense": 70.16540939471713,
+   "defSolidity": 70.98244835575609,
+   "buildup": 44.949305501642684,
+   "press": 64.61809839345841,
+   "creativity": 65.61684480608089,
    "physical": 77.53090909090909,
    "avgOv": 79,
    "synergyLabel": "Direct & Vertical",
-   "executionMult": 0.9122077922077922
+   "executionMult": 0.817038961038961
   },
   "readout": [
    "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1717,16 +1717,16 @@
   "style": "parkbus",
   "familiarity": 58,
   "profile": {
-   "attack": 63.945760285884276,
-   "defense": 88.52402694766957,
-   "defSolidity": 95.02097355661618,
-   "buildup": 59.03649620708664,
-   "press": 61.216575661375686,
-   "creativity": 66.6276861687433,
+   "attack": 64.28387159700692,
+   "defense": 81.06326228159897,
+   "defSolidity": 87.26368017481686,
+   "buildup": 52.87733555495778,
+   "press": 54.82997164021166,
+   "creativity": 61.22075534832232,
    "physical": 75.8509090909091,
    "avgOv": 79,
    "synergyLabel": "Park The Bus",
-   "executionMult": 0.9122077922077922
+   "executionMult": 0.817038961038961
   },
   "readout": [
    "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1738,16 +1738,16 @@
   "style": "wingplay",
   "familiarity": 59,
   "profile": {
-   "attack": 98.48079837574996,
-   "defense": 76.98837252137767,
-   "defSolidity": 74.2369439499491,
-   "buildup": 71.35410045112782,
-   "press": 71.44373015873018,
-   "creativity": 85.92522488644141,
+   "attack": 81.24924366315562,
+   "defense": 69.15542240219624,
+   "defSolidity": 67.51199383076766,
+   "buildup": 63.92971741353382,
+   "press": 64.01002116402117,
+   "creativity": 73.56653733778879,
    "physical": 76.0909090909091,
    "avgOv": 79,
    "synergyLabel": "Wing Play",
-   "executionMult": 0.9171428571428571
+   "executionMult": 0.8217142857142856
   },
   "readout": [
    "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1760,16 +1760,16 @@
   "style": "balanced",
   "familiarity": 61,
   "profile": {
-   "attack": 76.73066110092617,
-   "defense": 80.597946785677,
-   "defSolidity": 79.20742730515752,
-   "buildup": 69.06844826141601,
-   "press": 70.59032227032229,
-   "creativity": 71.92603070061229,
+   "attack": 72.7167852486417,
+   "defense": 74.85647887635389,
+   "defSolidity": 76.93414121401624,
+   "buildup": 61.91969937159615,
+   "press": 63.28405579605581,
+   "creativity": 66.14364509279142,
    "physical": 76.0909090909091,
    "avgOv": 79,
    "synergyLabel": null,
-   "executionMult": 0.9270129870129871
+   "executionMult": 0.8310649350649351
   },
   "readout": [
    "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
@@ -1778,18 +1778,18 @@
  {
   "xiIndex": 12,
   "style": "gegenpress",
-  "familiarity": 57,
+  "familiarity": 58,
   "profile": {
-   "attack": 99,
-   "defense": 74.18333329199233,
-   "defSolidity": 76.7420140829153,
-   "buildup": 77.55447186664608,
-   "press": 84.331168013468,
-   "creativity": 83.72142168171847,
+   "attack": 89.50471158388233,
+   "defense": 69.88564794490675,
+   "defSolidity": 69.3174416062633,
+   "buildup": 69.8412100497343,
+   "press": 75.29029156325156,
+   "creativity": 75.31228525190696,
    "physical": 80.48363636363636,
    "avgOv": 81.0909090909091,
    "synergyLabel": "Gegenpress",
-   "executionMult": 0.9072727272727272
+   "executionMult": 0.817038961038961
   },
   "readout": [
    "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1802,16 +1802,16 @@
   "style": "possession",
   "familiarity": 62,
   "profile": {
-   "attack": 84.64091274657557,
-   "defense": 78.53078620535494,
-   "defSolidity": 80.88033437913745,
-   "buildup": 52.15305663925208,
-   "press": 71.40706782106783,
-   "creativity": 89.67416611454749,
+   "attack": 80.97753974784696,
+   "defense": 74.47066976551626,
+   "defSolidity": 77.92287107897943,
+   "buildup": 46.769140201353814,
+   "press": 64.03550206830207,
+   "creativity": 81.55091907680153,
    "physical": 76.40363636363637,
    "avgOv": 81.0909090909091,
    "synergyLabel": "Possession Control",
-   "executionMult": 0.931948051948052
+   "executionMult": 0.8357402597402597
   },
   "readout": [
    "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
@@ -1822,16 +1822,16 @@
   "style": "counter",
   "familiarity": 62,
   "profile": {
-   "attack": 87.65585626852267,
-   "defense": 87.52408490665366,
-   "defSolidity": 96.37759140016014,
-   "buildup": 61.09660133971291,
-   "press": 64.6784028860029,
-   "creativity": 75.67109688579616,
+   "attack": 79.11327943138681,
+   "defense": 77.4122417905839,
+   "defSolidity": 81.75809114123325,
+   "buildup": 54.789415961722476,
+   "press": 58.0014573929774,
+   "creativity": 70.57297776903997,
    "physical": 77.96363636363635,
    "avgOv": 81.0909090909091,
    "synergyLabel": "Low Block Counter",
-   "executionMult": 0.931948051948052
+   "executionMult": 0.8357402597402597
   },
   "readout": [
    "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1844,16 +1844,16 @@
   "style": "direct",
   "familiarity": 62,
   "profile": {
-   "attack": 99,
-   "defense": 76.66689010145885,
-   "defSolidity": 78.06481217938092,
-   "buildup": 54.25348400679117,
-   "press": 73.49463145743147,
-   "creativity": 81.10651101478274,
+   "attack": 86.3848807404994,
+   "defense": 71.51933399090855,
+   "defSolidity": 72.35507425064881,
+   "buildup": 48.65273415280135,
+   "press": 65.90756025012026,
+   "creativity": 72.91999925185388,
    "physical": 78.80363636363636,
    "avgOv": 81.0909090909091,
    "synergyLabel": "Direct & Vertical",
-   "executionMult": 0.931948051948052
+   "executionMult": 0.8357402597402597
   },
   "readout": [
    "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1865,16 +1865,16 @@
   "style": "parkbus",
   "familiarity": 62,
   "profile": {
-   "attack": 68.99639573430628,
-   "defense": 90.55291607548483,
-   "defSolidity": 99,
-   "buildup": 63.62731181266951,
-   "press": 62.32989379509381,
-   "creativity": 72.89641257332657,
+   "attack": 71.96899692699823,
+   "defense": 82.87568197716801,
+   "defSolidity": 91.48380665249267,
+   "buildup": 57.05887360324565,
+   "press": 55.89539193843195,
+   "creativity": 68.26525233521016,
    "physical": 77.12363636363636,
    "avgOv": 81.0909090909091,
    "synergyLabel": "Park The Bus",
-   "executionMult": 0.931948051948052
+   "executionMult": 0.8357402597402597
   },
   "readout": [
    "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1886,16 +1886,16 @@
   "style": "wingplay",
   "familiarity": 63,
   "profile": {
-   "attack": 99,
-   "defense": 78.7592638010145,
-   "defSolidity": 75.94861445036514,
-   "buildup": 76.88043133287766,
-   "press": 72.76892616642617,
-   "creativity": 93.9775103176409,
+   "attack": 89.28851216744664,
+   "defense": 70.25081277238262,
+   "defSolidity": 68.56998160355144,
+   "buildup": 68.96432592754614,
+   "press": 65.27616786916788,
+   "creativity": 81.77804385977545,
    "physical": 77.36363636363636,
    "avgOv": 81.0909090909091,
    "synergyLabel": "Wing Play",
-   "executionMult": 0.9368831168831169
+   "executionMult": 0.8404155844155844
   },
   "readout": [
    "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1908,16 +1908,16 @@
   "style": "balanced",
   "familiarity": 66,
   "profile": {
-   "attack": 82.94700070940486,
-   "defense": 82.85893035422687,
-   "defSolidity": 81.4313978866944,
-   "buildup": 74.78888646837034,
-   "press": 72.2534102934103,
-   "creativity": 79.01117922449053,
+   "attack": 80.84217426293341,
+   "defense": 76.77025226971449,
+   "defSolidity": 78.90635616581838,
+   "buildup": 67.14670330959363,
+   "press": 64.87031072631073,
+   "creativity": 73.99045371728118,
    "physical": 77.36363636363636,
    "avgOv": 81.0909090909091,
    "synergyLabel": null,
-   "executionMult": 0.9516883116883117
+   "executionMult": 0.8544415584415584
   },
   "readout": [
    "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
@@ -1928,16 +1928,16 @@
   "style": "gegenpress",
   "familiarity": 59,
   "profile": {
-   "attack": 99,
-   "defense": 73.99575601855535,
-   "defSolidity": 76.2921780933447,
-   "buildup": 75.69649357070095,
-   "press": 83.36590793650794,
-   "creativity": 82.30255036136134,
+   "attack": 83.34872542416842,
+   "defense": 68.9421172217098,
+   "defSolidity": 68.24637202066981,
+   "buildup": 67.8202852054006,
+   "press": 73.81520296296296,
+   "creativity": 72.36343310168787,
    "physical": 75.2109090909091,
    "avgOv": 78.18181818181819,
    "synergyLabel": "Gegenpress",
-   "executionMult": 0.9171428571428571
+   "executionMult": 0.8217142857142856
   },
   "readout": [
    "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1950,16 +1950,16 @@
   "style": "possession",
   "familiarity": 64,
   "profile": {
-   "attack": 81.13815046908552,
-   "defense": 78.34112470214718,
-   "defSolidity": 80.89970427772822,
-   "buildup": 51.08815672651815,
-   "press": 69.8114006734007,
-   "creativity": 88.73384336813712,
+   "attack": 75.19556751804491,
+   "defense": 73.81979525040028,
+   "defSolidity": 77.59134760638537,
+   "buildup": 45.84126495460547,
+   "press": 62.64158114478117,
+   "creativity": 79.43809819666751,
    "physical": 71.1309090909091,
    "avgOv": 78.18181818181819,
    "synergyLabel": "Possession Control",
-   "executionMult": 0.9418181818181819
+   "executionMult": 0.8450909090909091
   },
   "readout": [
    "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
@@ -1968,18 +1968,18 @@
  {
   "xiIndex": 13,
   "style": "counter",
-  "familiarity": 63,
+  "familiarity": 64,
   "profile": {
-   "attack": 83.68230227407219,
-   "defense": 86.97154447192233,
-   "defSolidity": 94.20636409674195,
-   "buildup": 59.231821654135345,
-   "press": 62.68129745069748,
-   "creativity": 73.8024773250129,
+   "attack": 73.08777838737126,
+   "defense": 76.82876357803428,
+   "defSolidity": 79.551834285105,
+   "buildup": 53.42851536842106,
+   "press": 56.54002478114481,
+   "creativity": 67.98627636664268,
    "physical": 72.69090909090909,
    "avgOv": 78.18181818181819,
    "synergyLabel": "Low Block Counter",
-   "executionMult": 0.9368831168831169
+   "executionMult": 0.8450909090909091
   },
   "readout": [
    "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -1992,16 +1992,16 @@
   "style": "direct",
   "familiarity": 64,
   "profile": {
-   "attack": 97.32858240249735,
-   "defense": 76.45748833851083,
-   "defSolidity": 77.8702156112381,
-   "buildup": 52.86915782751112,
-   "press": 71.92107340067342,
-   "creativity": 79.44120974122487,
+   "attack": 80.48915959193187,
+   "defense": 70.9673742089542,
+   "defSolidity": 71.81246511804511,
+   "buildup": 47.43935242900997,
+   "press": 64.5345847811448,
+   "creativity": 70.14151006755608,
    "physical": 73.53090909090909,
    "avgOv": 78.18181818181819,
    "synergyLabel": "Direct & Vertical",
-   "executionMult": 0.9418181818181819
+   "executionMult": 0.8450909090909091
   },
   "readout": [
    "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2013,16 +2013,16 @@
   "style": "parkbus",
   "familiarity": 63,
   "profile": {
-   "attack": 64.84205350190818,
-   "defense": 90.01641460179246,
-   "defSolidity": 99,
-   "buildup": 61.79946356624699,
-   "press": 60.32035199615203,
-   "creativity": 71.12939546097861,
+   "attack": 65.61641777167755,
+   "defense": 81.82659719179048,
+   "defSolidity": 90.63228492627822,
+   "buildup": 55.43619193649813,
+   "press": 54.109379240019265,
+   "creativity": 65.39383928142165,
    "physical": 71.8509090909091,
    "avgOv": 78.18181818181819,
    "synergyLabel": "Park The Bus",
-   "executionMult": 0.9368831168831169
+   "executionMult": 0.8404155844155844
   },
   "readout": [
    "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2032,18 +2032,18 @@
  {
   "xiIndex": 13,
   "style": "wingplay",
-  "familiarity": 64,
+  "familiarity": 65,
   "profile": {
-   "attack": 99,
-   "defense": 78.15276106578357,
-   "defSolidity": 75.32730652032902,
-   "buildup": 74.67818462519936,
-   "press": 70.80030976430979,
-   "creativity": 91.83797846325749,
+   "attack": 83.24024052312006,
+   "defense": 69.85466030998559,
+   "defSolidity": 68.15512784245313,
+   "buildup": 67.3792467787651,
+   "press": 63.88038980278982,
+   "creativity": 78.99580615694725,
    "physical": 72.0909090909091,
    "avgOv": 78.18181818181819,
    "synergyLabel": "Wing Play",
-   "executionMult": 0.9418181818181819
+   "executionMult": 0.8497662337662337
   },
   "readout": [
    "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2056,16 +2056,16 @@
   "style": "balanced",
   "familiarity": 67,
   "profile": {
-   "attack": 78.68485884642489,
-   "defense": 82.25117708113346,
-   "defSolidity": 80.8162420161984,
-   "buildup": 72.64063035888843,
-   "press": 70.23918566618569,
-   "creativity": 77.02847670037735,
+   "attack": 74.23766213144079,
+   "defense": 75.76275508737491,
+   "defSolidity": 77.91054729516712,
+   "buildup": 65.23653243960341,
+   "press": 63.07986166426169,
+   "creativity": 70.89536912712656,
    "physical": 72.0909090909091,
    "avgOv": 78.18181818181819,
    "synergyLabel": null,
-   "executionMult": 0.9566233766233767
+   "executionMult": 0.8591168831168832
   },
   "readout": [
    "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
@@ -2074,18 +2074,18 @@
  {
   "xiIndex": 14,
   "style": "gegenpress",
-  "familiarity": 56,
+  "familiarity": 57,
   "profile": {
-   "attack": 96.09555369217826,
-   "defense": 72.50839756856304,
-   "defSolidity": 74.51860203101344,
-   "buildup": 67.45498964866712,
-   "press": 77.84517142857143,
-   "creativity": 70.86248319112107,
+   "attack": 80.98759023803619,
+   "defense": 67.9617526198153,
+   "defSolidity": 67.1191365435198,
+   "buildup": 60.72890777926635,
+   "press": 69.46927636363637,
+   "creativity": 62.43673609614417,
    "physical": 74.12,
    "avgOv": 75.45454545454545,
    "synergyLabel": "Gegenpress",
-   "executionMult": 0.9023376623376623
+   "executionMult": 0.8123636363636364
   },
   "readout": [
    "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2098,16 +2098,16 @@
   "style": "possession",
   "familiarity": 61,
   "profile": {
-   "attack": 78.78621453589876,
-   "defense": 76.8087445925185,
-   "defSolidity": 79.08482372140861,
-   "buildup": 46.08130599832915,
-   "press": 65.04283621933624,
-   "creativity": 76.65880640428354,
+   "attack": 72.42152921650897,
+   "defense": 72.27064156790489,
+   "defSolidity": 75.59565476375093,
+   "buildup": 41.31178107936507,
+   "press": 58.31074776334778,
+   "creativity": 68.5449273433579,
    "physical": 70.04,
    "avgOv": 75.45454545454545,
    "synergyLabel": "Possession Control",
-   "executionMult": 0.9270129870129871
+   "executionMult": 0.8310649350649351
   },
   "readout": [
    "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
@@ -2118,16 +2118,16 @@
   "style": "counter",
   "familiarity": 61,
   "profile": {
-   "attack": 81.65412681472306,
-   "defense": 85.75441991719383,
-   "defSolidity": 92.50101443378834,
-   "buildup": 52.88970138072454,
-   "press": 58.34980245310247,
-   "creativity": 62.77112703297717,
+   "attack": 70.63402586663747,
+   "defense": 75.27128648769752,
+   "defSolidity": 77.92146022507127,
+   "buildup": 47.41549132467532,
+   "press": 52.310458932178946,
+   "creativity": 57.66536858942247,
    "physical": 71.6,
    "avgOv": 75.45454545454545,
    "synergyLabel": "Low Block Counter",
-   "executionMult": 0.9270129870129871
+   "executionMult": 0.8310649350649351
   },
   "readout": [
    "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2138,18 +2138,18 @@
  {
   "xiIndex": 14,
   "style": "direct",
-  "familiarity": 61,
+  "familiarity": 62,
   "profile": {
-   "attack": 94.28548853729718,
-   "defense": 74.95471861849252,
-   "defSolidity": 76.34523809901201,
-   "buildup": 46.94619285182654,
-   "press": 67.11934531024532,
-   "creativity": 67.86977416197838,
+   "attack": 78.20282821703664,
+   "defense": 70.01647194547994,
+   "defSolidity": 70.8522122052202,
+   "buildup": 42.32391989914179,
+   "press": 60.51084490620491,
+   "creativity": 60.0219939573868,
    "physical": 72.44,
    "avgOv": 75.45454545454545,
    "synergyLabel": "Direct & Vertical",
-   "executionMult": 0.9270129870129871
+   "executionMult": 0.8357402597402597
   },
   "readout": [
    "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2161,16 +2161,16 @@
   "style": "parkbus",
   "familiarity": 61,
   "profile": {
-   "attack": 63.44466561838864,
-   "defense": 88.76721212498605,
-   "defSolidity": 96.04941414518807,
-   "buildup": 55.49177804511278,
-   "press": 56.01372972582974,
-   "creativity": 60.267418232894734,
+   "attack": 63.5197079918586,
+   "defense": 80.54751074255762,
+   "defSolidity": 87.2976048262517,
+   "buildup": 49.74824685714285,
+   "press": 50.216175295815304,
+   "creativity": 55.6003096390043,
    "physical": 70.76,
    "avgOv": 75.45454545454545,
    "synergyLabel": "Park The Bus",
-   "executionMult": 0.9270129870129871
+   "executionMult": 0.8310649350649351
   },
   "readout": [
    "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2180,18 +2180,18 @@
  {
   "xiIndex": 14,
   "style": "wingplay",
-  "familiarity": 62,
+  "familiarity": 63,
   "profile": {
-   "attack": 98.64936703763645,
-   "defense": 77.03125555575116,
-   "defSolidity": 74.235411399907,
-   "buildup": 67.0824709774436,
-   "press": 66.36764502164503,
-   "creativity": 79.67027082209825,
+   "attack": 80.87375795455723,
+   "defense": 69.14010635046348,
+   "defSolidity": 67.45927518163231,
+   "buildup": 60.49388046115287,
+   "press": 59.84926204906206,
+   "creativity": 68.22039176123108,
    "physical": 71,
    "avgOv": 75.45454545454545,
    "synergyLabel": "Wing Play",
-   "executionMult": 0.931948051948052
+   "executionMult": 0.8404155844155844
   },
   "readout": [
    "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2204,16 +2204,16 @@
   "style": "balanced",
   "familiarity": 65,
   "profile": {
-   "attack": 76.84592077837175,
-   "defense": 81.09525597791664,
-   "defSolidity": 79.67512610778677,
-   "buildup": 65.26285714285713,
-   "press": 65.76516233766236,
-   "creativity": 65.67011122622523,
+   "attack": 72.13491373542462,
+   "defense": 74.70539685759339,
+   "defSolidity": 76.82981244200897,
+   "buildup": 58.57721904761904,
+   "press": 59.028067243867255,
+   "creativity": 60.64228579749638,
    "physical": 71,
    "avgOv": 75.45454545454545,
    "synergyLabel": null,
-   "executionMult": 0.9467532467532468
+   "executionMult": 0.8497662337662337
   },
   "readout": [
    "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
@@ -2224,16 +2224,16 @@
   "style": "gegenpress",
   "familiarity": 55,
   "profile": {
-   "attack": 99,
-   "defense": 74.19592225145666,
-   "defSolidity": 76.6743227528833,
-   "buildup": 78.39589374660112,
-   "press": 84.44159595959596,
-   "creativity": 83.80364214735853,
+   "attack": 88.24186808900969,
+   "defense": 69.34766717808522,
+   "defSolidity": 68.66872675956179,
+   "buildup": 71.15933422755715,
+   "press": 74.8461638095238,
+   "creativity": 75.65672746121818,
    "physical": 82.39272727272727,
    "avgOv": 82.81818181818181,
    "synergyLabel": "Gegenpress",
-   "executionMult": 0.8974025974025974
+   "executionMult": 0.803012987012987
   },
   "readout": [
    "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2246,16 +2246,16 @@
   "style": "possession",
   "familiarity": 60,
   "profile": {
-   "attack": 84.25288343772883,
-   "defense": 78.54123648180006,
-   "defSolidity": 80.68819518064045,
-   "buildup": 52.61002102146862,
-   "press": 72.11673881673883,
-   "creativity": 89.3965605967085,
+   "attack": 80.39326872442192,
+   "defense": 74.3308917401009,
+   "defSolidity": 77.47904802334666,
+   "buildup": 47.75584055317177,
+   "press": 64.63284963924964,
+   "creativity": 82.01140303824616,
    "physical": 78.31272727272727,
    "avgOv": 82.81818181818181,
    "synergyLabel": "Possession Control",
-   "executionMult": 0.922077922077922
+   "executionMult": 0.8263896103896103
   },
   "readout": [
    "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
@@ -2266,16 +2266,16 @@
   "style": "counter",
   "familiarity": 60,
   "profile": {
-   "attack": 87.15891644496227,
-   "defense": 87.439288429852,
-   "defSolidity": 95.78921627977985,
-   "buildup": 61.8224380861244,
-   "press": 65.45933621933622,
-   "creativity": 75.87649717934569,
+   "attack": 78.75382671727685,
+   "defense": 77.23536548330287,
+   "defSolidity": 81.51422724376464,
+   "buildup": 56.23033271907039,
+   "press": 58.66631665223666,
+   "creativity": 71.45625580507082,
    "physical": 79.87272727272726,
    "avgOv": 82.81818181818181,
    "synergyLabel": "Low Block Counter",
-   "executionMult": 0.922077922077922
+   "executionMult": 0.8263896103896103
   },
   "readout": [
    "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2288,16 +2288,16 @@
   "style": "direct",
   "familiarity": 60,
   "profile": {
-   "attack": 99,
-   "defense": 76.6970806376442,
-   "defSolidity": 78.08019752076109,
-   "buildup": 54.90143757164172,
-   "press": 74.18219336219336,
-   "creativity": 81.35566952448313,
+   "attack": 85.85777007065823,
+   "defense": 71.39655921523457,
+   "defSolidity": 72.22294882562419,
+   "buildup": 49.93736882076157,
+   "press": 66.48396236652236,
+   "creativity": 73.86782678755947,
    "physical": 80.71272727272726,
    "avgOv": 82.81818181818181,
    "synergyLabel": "Direct & Vertical",
-   "executionMult": 0.922077922077922
+   "executionMult": 0.8263896103896103
   },
   "readout": [
    "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2307,18 +2307,18 @@
  {
   "xiIndex": 15,
   "style": "parkbus",
-  "familiarity": 59,
+  "familiarity": 60,
   "profile": {
-   "attack": 68.7063598226873,
-   "defense": 89.95201779157554,
-   "defSolidity": 98.54258922014697,
-   "buildup": 63.96738093077856,
-   "press": 62.79779047619049,
-   "creativity": 72.72565856429517,
+   "attack": 71.52014760875701,
+   "defense": 82.64636150990849,
+   "defSolidity": 90.86434707989406,
+   "buildup": 58.45231338945604,
+   "press": 56.58381483405484,
+   "creativity": 69.16161470630902,
    "physical": 79.03272727272727,
    "avgOv": 82.81818181818181,
    "synergyLabel": "Park The Bus",
-   "executionMult": 0.9171428571428571
+   "executionMult": 0.8263896103896103
   },
   "readout": [
    "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2330,16 +2330,16 @@
   "style": "wingplay",
   "familiarity": 61,
   "profile": {
-   "attack": 99,
-   "defense": 78.77619543176485,
-   "defSolidity": 75.99515647072589,
-   "buildup": 77.70634255748462,
-   "press": 73.47607936507937,
-   "creativity": 93.77233121359257,
+   "attack": 88.8026664563333,
+   "defense": 70.12835523609573,
+   "defSolidity": 68.46622536596585,
+   "buildup": 70.64506846753245,
+   "press": 65.87113015873017,
+   "creativity": 82.48953558343159,
    "physical": 79.27272727272727,
    "avgOv": 82.81818181818181,
    "synergyLabel": "Wing Play",
-   "executionMult": 0.9270129870129871
+   "executionMult": 0.8310649350649351
   },
   "readout": [
    "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2352,16 +2352,16 @@
   "style": "balanced",
   "familiarity": 63,
   "profile": {
-   "attack": 82.30980414573213,
-   "defense": 82.42559385117494,
-   "defSolidity": 81.02026917585026,
-   "buildup": 75.20868509426057,
-   "press": 72.61885137085137,
-   "creativity": 78.81416154905753,
+   "attack": 80.05235837984688,
+   "defense": 76.20538820654626,
+   "defSolidity": 78.30642716758521,
+   "buildup": 68.41525060745704,
+   "press": 65.14154574314576,
+   "creativity": 74.48535788519106,
    "physical": 79.27272727272727,
    "avgOv": 82.81818181818181,
    "synergyLabel": null,
-   "executionMult": 0.9368831168831169
+   "executionMult": 0.8404155844155844
   },
   "readout": [
    "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
@@ -2372,16 +2372,16 @@
   "style": "gegenpress",
   "familiarity": 56,
   "profile": {
-   "attack": 99,
-   "defense": 72.96301580688603,
-   "defSolidity": 75.51661860690412,
-   "buildup": 76.80163928472209,
-   "press": 84.47317575757576,
-   "creativity": 82.92278538514617,
+   "attack": 88.77043210344385,
+   "defense": 67.85532500159213,
+   "defSolidity": 67.29827358400871,
+   "buildup": 68.74564695445359,
+   "press": 74.85864673400674,
+   "creativity": 73.9502669506666,
    "physical": 79.84727272727274,
    "avgOv": 79.81818181818181,
    "synergyLabel": "Gegenpress",
-   "executionMult": 0.9023376623376623
+   "executionMult": 0.8076883116883117
   },
   "readout": [
    "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2394,16 +2394,16 @@
   "style": "possession",
   "familiarity": 61,
   "profile": {
-   "attack": 84.67015678241548,
-   "defense": 77.27579482066322,
-   "defSolidity": 79.5442313094564,
-   "buildup": 51.67867266945468,
-   "press": 71.85208994708996,
-   "creativity": 88.72313970059675,
+   "attack": 80.89939876739906,
+   "defense": 72.76271470721234,
+   "defSolidity": 76.08182302538668,
+   "buildup": 46.329806969231484,
+   "press": 64.41522751322752,
+   "creativity": 80.46937488550562,
    "physical": 75.76727272727274,
    "avgOv": 79.81818181818181,
    "synergyLabel": "Possession Control",
-   "executionMult": 0.9270129870129871
+   "executionMult": 0.8310649350649351
   },
   "readout": [
    "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
@@ -2414,16 +2414,16 @@
   "style": "counter",
   "familiarity": 61,
   "profile": {
-   "attack": 87.61783136009109,
-   "defense": 86.22147014533856,
-   "defSolidity": 94.82209063595904,
-   "buildup": 60.50345420369106,
-   "press": 65.1590561808562,
-   "creativity": 74.94513349021096,
+   "attack": 79.14317960357116,
+   "defense": 75.69632208548302,
+   "defSolidity": 80.00862569298663,
+   "buildup": 54.241202597402605,
+   "press": 58.41493868205869,
+   "creativity": 69.68813785913574,
    "physical": 77.32727272727273,
    "avgOv": 79.81818181818181,
    "synergyLabel": "Low Block Counter",
-   "executionMult": 0.9270129870129871
+   "executionMult": 0.8310649350649351
   },
   "readout": [
    "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2436,16 +2436,16 @@
   "style": "direct",
   "familiarity": 61,
   "profile": {
-   "attack": 99,
-   "defense": 75.42176884663725,
-   "defSolidity": 76.81228832715674,
-   "buildup": 53.72610177741521,
-   "press": 73.92859903799905,
-   "creativity": 80.35370884803586,
+   "attack": 86.31673372957577,
+   "defense": 69.86037604800251,
+   "defSolidity": 70.69144098306744,
+   "buildup": 48.16532228832101,
+   "press": 66.27681296777297,
+   "creativity": 72.02377242262087,
    "physical": 78.16727272727273,
    "avgOv": 79.81818181818181,
    "synergyLabel": "Direct & Vertical",
-   "executionMult": 0.9270129870129871
+   "executionMult": 0.8310649350649351
   },
   "readout": [
    "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2457,16 +2457,16 @@
   "style": "parkbus",
   "familiarity": 61,
   "profile": {
-   "attack": 69.2429372476206,
-   "defense": 89.23426235313077,
-   "defSolidity": 98.37049034735877,
-   "buildup": 63.02366255815494,
-   "press": 62.82298345358347,
-   "creativity": 72.21395443044139,
+   "attack": 71.96397600959078,
+   "defense": 81.1115871672035,
+   "defSolidity": 89.52381112102745,
+   "buildup": 56.50056338500211,
+   "press": 56.320655045695055,
+   "creativity": 67.41915236265568,
    "physical": 76.48727272727274,
    "avgOv": 79.81818181818181,
    "synergyLabel": "Park The Bus",
-   "executionMult": 0.9270129870129871
+   "executionMult": 0.8310649350649351
   },
   "readout": [
    "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2478,16 +2478,16 @@
   "style": "wingplay",
   "familiarity": 62,
   "profile": {
-   "attack": 99,
-   "defense": 77.50079218186023,
-   "defSolidity": 74.70494802601607,
-   "buildup": 76.1542168147642,
-   "press": 73.21314862914863,
-   "creativity": 92.88669930089274,
+   "attack": 89.21619533287428,
+   "defense": 68.6388376335864,
+   "defSolidity": 66.96735711410588,
+   "buildup": 68.29258863522442,
+   "press": 65.65513573833573,
+   "creativity": 80.67352068631452,
    "physical": 76.72727272727273,
    "avgOv": 79.81818181818181,
    "synergyLabel": "Wing Play",
-   "executionMult": 0.931948051948052
+   "executionMult": 0.8357402597402597
   },
   "readout": [
    "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2500,16 +2500,16 @@
   "style": "balanced",
   "familiarity": 65,
   "profile": {
-   "attack": 83.04372517319145,
-   "defense": 81.57225179791875,
-   "defSolidity": 80.15212192778888,
-   "buildup": 74.08853162966068,
-   "press": 72.71941558441559,
-   "creativity": 78.25062738210335,
+   "attack": 80.87760588391016,
+   "defense": 75.04987155728234,
+   "defSolidity": 77.17428714169793,
+   "buildup": 66.49877642787321,
+   "press": 65.26991495911496,
+   "creativity": 73.06778510613692,
    "physical": 76.72727272727273,
    "avgOv": 79.81818181818181,
    "synergyLabel": null,
-   "executionMult": 0.9467532467532468
+   "executionMult": 0.8497662337662337
   },
   "readout": [
    "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
@@ -2520,16 +2520,16 @@
   "style": "gegenpress",
   "familiarity": 55,
   "profile": {
-   "attack": 94.13301132062308,
-   "defense": 73.55769831880338,
-   "defSolidity": 75.49772104262603,
-   "buildup": 68.79677705789402,
-   "press": 80.60852356902356,
-   "creativity": 70.18321798594812,
+   "attack": 78.0604851951206,
+   "defense": 69.56699189773802,
+   "defSolidity": 68.47525231969736,
+   "buildup": 61.560670319011614,
+   "press": 71.4162574122174,
+   "creativity": 61.45704040600862,
    "physical": 76.39272727272727,
    "avgOv": 75.72727272727273,
    "synergyLabel": "Gegenpress",
-   "executionMult": 0.8974025974025974
+   "executionMult": 0.803012987012987
   },
   "readout": [
    "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2542,16 +2542,16 @@
   "style": "possession",
   "familiarity": 60,
   "profile": {
-   "attack": 77.10489845353301,
-   "defense": 77.88546370005788,
-   "defSolidity": 80.04315322623587,
-   "buildup": 46.860619589050835,
-   "press": 68.1782708032708,
-   "creativity": 75.91308157827928,
+   "attack": 70.06134273416188,
+   "defense": 74.24406861294935,
+   "defSolidity": 77.39326677372094,
+   "buildup": 41.99767529141525,
+   "press": 61.10309475709476,
+   "creativity": 67.8567281116075,
    "physical": 72.31272727272727,
    "avgOv": 75.72727272727273,
    "synergyLabel": "Possession Control",
-   "executionMult": 0.922077922077922
+   "executionMult": 0.8263896103896103
   },
   "readout": [
    "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
@@ -2562,16 +2562,16 @@
   "style": "counter",
   "familiarity": 60,
   "profile": {
-   "attack": 79.8857049516229,
-   "defense": 86.78351564810983,
-   "defSolidity": 93.28928765388184,
-   "buildup": 54.001881749829124,
-   "press": 61.52086820586821,
-   "creativity": 62.22083171084405,
+   "attack": 68.37279958915697,
+   "defense": 77.25375908013669,
+   "defSolidity": 79.87984161981923,
+   "buildup": 48.3978554859877,
+   "press": 55.13656177008178,
+   "creativity": 57.147263016586976,
    "physical": 73.87272727272726,
    "avgOv": 75.72727272727273,
    "synergyLabel": "Low Block Counter",
-   "executionMult": 0.922077922077922
+   "executionMult": 0.8263896103896103
   },
   "readout": [
    "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2584,16 +2584,16 @@
   "style": "direct",
   "familiarity": 60,
   "profile": {
-   "attack": 92.32164164941297,
-   "defense": 76.04130785590203,
-   "defSolidity": 77.42442473901892,
-   "buildup": 47.93737386476946,
-   "press": 70.24372534872535,
-   "creativity": 67.21341790262865,
+   "attack": 75.33798676406781,
+   "defense": 71.71228748021959,
+   "defSolidity": 72.5386770906092,
+   "buildup": 42.96268977131001,
+   "press": 62.95420748436749,
+   "creativity": 59.122743152453836,
    "physical": 74.71272727272726,
    "avgOv": 75.72727272727273,
    "synergyLabel": "Direct & Vertical",
-   "executionMult": 0.922077922077922
+   "executionMult": 0.8263896103896103
   },
   "readout": [
    "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2605,16 +2605,16 @@
   "style": "parkbus",
   "familiarity": 60,
   "profile": {
-   "attack": 62.00110839463117,
-   "defense": 89.78026889486308,
-   "defSolidity": 96.79830641290062,
-   "buildup": 56.575119440830825,
-   "press": 59.19723184223185,
-   "creativity": 59.81845091106991,
+   "attack": 61.24095987767976,
+   "defense": 82.44652782736526,
+   "defSolidity": 89.01173417657161,
+   "buildup": 50.70405634167531,
+   "press": 53.05405995189996,
+   "creativity": 55.172688594244825,
    "physical": 73.03272727272727,
    "avgOv": 75.72727272727273,
    "synergyLabel": "Park The Bus",
-   "executionMult": 0.922077922077922
+   "executionMult": 0.8263896103896103
   },
   "readout": [
    "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2626,16 +2626,16 @@
   "style": "wingplay",
   "familiarity": 61,
   "profile": {
-   "attack": 96.4904495845133,
-   "defense": 78.11691288020491,
-   "defSolidity": 75.33587391916595,
-   "buildup": 68.38792734563683,
-   "press": 69.51653222703224,
-   "creativity": 78.50868805082708,
+   "attack": 77.96440210147455,
+   "defense": 71.00079485099297,
+   "defSolidity": 69.3386649808631,
+   "buildup": 61.309613991342,
+   "press": 62.32140557960558,
+   "creativity": 66.84714102577291,
    "physical": 73.27272727272727,
    "avgOv": 75.72727272727273,
    "synergyLabel": "Wing Play",
-   "executionMult": 0.9270129870129871
+   "executionMult": 0.8310649350649351
   },
   "readout": [
    "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2648,16 +2648,16 @@
   "style": "balanced",
   "familiarity": 64,
   "profile": {
-   "attack": 75.14627970173444,
-   "defense": 82.18996171934722,
-   "defSolidity": 80.77723444661996,
-   "buildup": 66.53844183773217,
-   "press": 68.97858922558923,
-   "creativity": 65.05006579624623,
+   "attack": 69.81572755655912,
+   "defense": 76.78960821036017,
+   "defSolidity": 78.90233548308746,
+   "buildup": 59.70476402737049,
+   "press": 61.89430168350169,
+   "creativity": 60.05943004616491,
    "physical": 73.27272727272727,
    "avgOv": 75.72727272727273,
    "synergyLabel": null,
-   "executionMult": 0.9418181818181819
+   "executionMult": 0.8450909090909091
   },
   "readout": [
    "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
@@ -2666,18 +2666,18 @@
  {
   "xiIndex": 18,
   "style": "gegenpress",
-  "familiarity": 56,
+  "familiarity": 57,
   "profile": {
-   "attack": 99,
-   "defense": 74.21102736321615,
-   "defSolidity": 76.54408322987506,
-   "buildup": 74.05354424783366,
-   "press": 83.57585108225109,
-   "creativity": 79.15591149542611,
+   "attack": 87.10981124909823,
+   "defense": 70.08811997043857,
+   "defSolidity": 69.34661765760426,
+   "buildup": 66.66950632974225,
+   "press": 74.62853764309766,
+   "creativity": 69.9032088550804,
    "physical": 79.75636363636364,
    "avgOv": 79.9090909090909,
    "synergyLabel": "Gegenpress",
-   "executionMult": 0.9023376623376623
+   "executionMult": 0.8123636363636364
   },
   "readout": [
    "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2690,16 +2690,16 @@
   "style": "possession",
   "familiarity": 61,
   "profile": {
-   "attack": 82.62818651448119,
-   "defense": 78.55793449957577,
-   "defSolidity": 80.80539052089583,
-   "buildup": 50.032939046443076,
-   "press": 70.93022703222705,
-   "creativity": 84.97031633784974,
+   "attack": 78.62515444049785,
+   "defense": 74.57353361986972,
+   "defSolidity": 77.8709121110922,
+   "buildup": 44.85441069571288,
+   "press": 63.58877960557962,
+   "creativity": 75.99617620394585,
    "physical": 75.67636363636365,
    "avgOv": 79.9090909090909,
    "synergyLabel": "Possession Control",
-   "executionMult": 0.9270129870129871
+   "executionMult": 0.8310649350649351
   },
   "readout": [
    "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
@@ -2710,16 +2710,16 @@
   "style": "counter",
   "familiarity": 61,
   "profile": {
-   "attack": 85.54719996939414,
-   "defense": 87.50360982425109,
-   "defSolidity": 94.2502043408456,
-   "buildup": 58.264864210526305,
-   "press": 64.23719326599328,
-   "creativity": 71.15290108366528,
+   "attack": 76.85769387679008,
+   "defense": 77.53122971216867,
+   "defSolidity": 80.1814034495424,
+   "buildup": 52.23431199999998,
+   "press": 57.588490774410786,
+   "creativity": 65.17960906366783,
    "physical": 77.23636363636363,
    "avgOv": 79.9090909090909,
    "synergyLabel": "Low Block Counter",
-   "executionMult": 0.9270129870129871
+   "executionMult": 0.8310649350649351
   },
   "readout": [
    "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2730,18 +2730,18 @@
  {
   "xiIndex": 18,
   "style": "direct",
-  "familiarity": 61,
+  "familiarity": 62,
   "profile": {
-   "attack": 98.32296983032258,
-   "defense": 76.70390852554979,
-   "defSolidity": 78.09442800606926,
-   "buildup": 51.732677952358905,
-   "press": 73.00673612313614,
-   "creativity": 76.45010940290366,
+   "attack": 84.51846680197583,
+   "defense": 72.16707594195461,
+   "defSolidity": 73.00281620169487,
+   "buildup": 46.63913269249369,
+   "press": 65.8185693891294,
+   "creativity": 67.75751838193183,
    "physical": 78.07636363636364,
    "avgOv": 79.9090909090909,
    "synergyLabel": "Direct & Vertical",
-   "executionMult": 0.9270129870129871
+   "executionMult": 0.8357402597402597
   },
   "readout": [
    "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2753,16 +2753,16 @@
   "style": "parkbus",
   "familiarity": 61,
   "profile": {
-   "attack": 67.23175114857953,
-   "defense": 90.51640203204332,
-   "defSolidity": 99,
-   "buildup": 60.809143425131744,
-   "press": 61.901120538720555,
-   "creativity": 68.50345929992255,
+   "attack": 69.70180577885684,
+   "defense": 82.89653301664532,
+   "defSolidity": 91.30875697046928,
+   "buildup": 54.51525225638876,
+   "press": 55.49420713804715,
+   "creativity": 62.98390084047872,
    "physical": 76.39636363636365,
    "avgOv": 79.9090909090909,
    "synergyLabel": "Park The Bus",
-   "executionMult": 0.9270129870129871
+   "executionMult": 0.8310649350649351
   },
   "readout": [
    "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2772,18 +2772,18 @@
  {
   "xiIndex": 18,
   "style": "wingplay",
-  "familiarity": 62,
+  "familiarity": 63,
   "profile": {
-   "attack": 99,
-   "defense": 78.78975748528924,
-   "defSolidity": 75.99391332944509,
-   "buildup": 73.4869487901572,
-   "press": 72.28637806637808,
-   "creativity": 88.72299141899914,
+   "attack": 87.33102363600038,
+   "defense": 71.07496428669019,
+   "defSolidity": 69.39413311785901,
+   "buildup": 66.26933431032124,
+   "press": 65.18667917267918,
+   "creativity": 76.33326349004464,
    "physical": 76.63636363636364,
    "avgOv": 79.9090909090909,
    "synergyLabel": "Wing Play",
-   "executionMult": 0.931948051948052
+   "executionMult": 0.8404155844155844
   },
   "readout": [
    "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2796,16 +2796,16 @@
   "style": "balanced",
   "familiarity": 65,
   "profile": {
-   "attack": 80.89051423177078,
-   "defense": 82.88169397489723,
-   "defSolidity": 81.46156410476736,
-   "buildup": 71.49361332216169,
-   "press": 71.77792207792209,
-   "creativity": 74.32472237670576,
+   "attack": 78.52557734078829,
+   "defense": 76.95845467851136,
+   "defSolidity": 79.08287026292695,
+   "buildup": 64.16968596564725,
+   "press": 64.42486964886966,
+   "creativity": 68.41030386057241,
    "physical": 76.63636363636364,
    "avgOv": 79.9090909090909,
    "synergyLabel": null,
-   "executionMult": 0.9467532467532468
+   "executionMult": 0.8497662337662337
   },
   "readout": [
    "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."
@@ -2816,16 +2816,16 @@
   "style": "gegenpress",
   "familiarity": 61,
   "profile": {
-   "attack": 99,
-   "defense": 76.83645614104773,
-   "defSolidity": 79.6338280778799,
-   "buildup": 74.61271830073719,
-   "press": 86.43469090909092,
-   "creativity": 78.46252181050548,
+   "attack": 88.39399548416196,
+   "defense": 72.34871893299221,
+   "defSolidity": 71.84589799023492,
+   "buildup": 66.89012425750593,
+   "press": 76.52815284271286,
+   "creativity": 68.9502612339474,
    "physical": 81.48363636363636,
    "avgOv": 80.72727272727273,
    "synergyLabel": "Gegenpress",
-   "executionMult": 0.9270129870129871
+   "executionMult": 0.8310649350649351
   },
   "readout": [
    "Identity detected: Gegenpress — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2838,16 +2838,16 @@
   "style": "possession",
   "familiarity": 66,
   "profile": {
-   "attack": 84.44117911601886,
-   "defense": 81.26091741715825,
-   "defSolidity": 83.98115579593087,
-   "buildup": 50.48747246807143,
-   "press": 72.34946031746034,
-   "creativity": 85.24016029628204,
+   "attack": 80.30318770823784,
+   "defense": 77.27759404826601,
+   "defSolidity": 81.32501154883545,
+   "buildup": 45.32849056522046,
+   "press": 64.95654603174604,
+   "creativity": 76.34547100292069,
    "physical": 77.40363636363637,
    "avgOv": 80.72727272727273,
    "synergyLabel": "Possession Control",
-   "executionMult": 0.9516883116883117
+   "executionMult": 0.8544415584415584
   },
   "readout": [
    "Identity detected: Possession Control — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled."
@@ -2858,16 +2858,16 @@
   "style": "counter",
   "familiarity": 66,
   "profile": {
-   "attack": 87.62582074139303,
-   "defense": 90.44470962495046,
-   "defSolidity": 98.42831712855796,
-   "buildup": 58.6224973342447,
-   "press": 65.47827070707072,
-   "creativity": 70.17661604920906,
+   "attack": 77.95459941770599,
+   "defense": 80.3383135007662,
+   "defSolidity": 83.11050166815438,
+   "buildup": 52.632250881749826,
+   "press": 58.787477979798,
+   "creativity": 64.43606556061012,
    "physical": 78.96363636363635,
    "avgOv": 80.72727272727273,
    "synergyLabel": "Low Block Counter",
-   "executionMult": 0.9516883116883117
+   "executionMult": 0.8544415584415584
   },
   "readout": [
    "Identity detected: Low Block Counter — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2880,16 +2880,16 @@
   "style": "direct",
   "familiarity": 66,
   "profile": {
-   "attack": 99,
-   "defense": 79.35754079378162,
-   "defSolidity": 80.7850732613141,
-   "buildup": 52.047121032297255,
-   "press": 74.48124213564215,
-   "creativity": 75.31180659734618,
+   "attack": 85.50847075932256,
+   "defense": 74.46423044900284,
+   "defSolidity": 75.3186720074444,
+   "buildup": 46.72876892681361,
+   "press": 66.87049512265513,
+   "creativity": 66.46269357476928,
    "physical": 79.80363636363636,
    "avgOv": 80.72727272727273,
    "synergyLabel": "Direct & Vertical",
-   "executionMult": 0.9516883116883117
+   "executionMult": 0.8544415584415584
   },
   "readout": [
    "Identity detected: Direct & Vertical — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2901,16 +2901,16 @@
   "style": "parkbus",
   "familiarity": 66,
   "profile": {
-   "attack": 68.02576267044432,
-   "defense": 93.53769663793749,
-   "defSolidity": 99,
-   "buildup": 61.24733125482329,
-   "press": 63.080016161616186,
-   "creativity": 67.52383141666179,
+   "attack": 71.04383889727201,
+   "defense": 85.81341058629731,
+   "defSolidity": 93.51287840736512,
+   "buildup": 54.98887033184134,
+   "press": 56.634285252525274,
+   "creativity": 62.23891087412557,
    "physical": 78.12363636363636,
    "avgOv": 80.72727272727273,
    "synergyLabel": "Park The Bus",
-   "executionMult": 0.9516883116883117
+   "executionMult": 0.8544415584415584
   },
   "readout": [
    "Identity detected: Park The Bus — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2922,16 +2922,16 @@
   "style": "wingplay",
   "familiarity": 67,
   "profile": {
-   "attack": 99,
-   "defense": 81.4909785035492,
-   "defSolidity": 78.62110837367908,
-   "buildup": 74.01109756208704,
-   "press": 73.72908946608949,
-   "creativity": 88.64235456150253,
+   "attack": 88.2048199916284,
+   "defense": 73.44712074215339,
+   "defSolidity": 71.72888697591962,
+   "buildup": 66.46731096832991,
+   "press": 66.21404733044734,
+   "creativity": 75.43393680226475,
    "physical": 78.36363636363636,
    "avgOv": 80.72727272727273,
    "synergyLabel": "Wing Play",
-   "executionMult": 0.9566233766233767
+   "executionMult": 0.8591168831168832
   },
   "readout": [
    "Identity detected: Wing Play — starting to take shape. This specific combination carries a genuine bonus in the simulation when it's well-drilled.",
@@ -2944,16 +2944,16 @@
   "style": "balanced",
   "familiarity": 70,
   "profile": {
-   "attack": 82.22487391394613,
-   "defense": 85.66646046402072,
-   "defSolidity": 84.20931760687786,
-   "buildup": 71.97450076804915,
-   "press": 73.17015873015875,
-   "creativity": 73.28860856810579,
+   "attack": 79.58504570377431,
+   "defense": 79.7421339056084,
+   "defSolidity": 81.92499104846554,
+   "buildup": 64.6923748079877,
+   "press": 65.76706031746033,
+   "creativity": 67.61981153314785,
    "physical": 78.36363636363636,
    "avgOv": 80.72727272727273,
    "synergyLabel": null,
-   "executionMult": 0.9714285714285715
+   "executionMult": 0.8731428571428571
   },
   "readout": [
    "No real identity here — every dial is sat close to neutral. A side with no discernible game plan is there to be picked apart; commit to a clearer approach, even an unconventional one."

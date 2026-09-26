@@ -1,5 +1,8 @@
-import { clamp, seasonLabel } from "./util.js";
-import { simulateMatch } from "./match.js";
+import { seasonLabel } from "./util.js";
+import { simulateMatch, simulateRivalMatch } from "./match.js";
+
+export const USER_TEAM = "__USER__";
+export const USER_TEAM_NAME = "Your XI";
 
 // Standard "circle method" round-robin scheduler. Produces 2*(n-1) rounds for
 // n teams, each round a full set of pairings, second half mirrored home/away —
@@ -25,63 +28,72 @@ export function roundRobinSchedule(teamIds) {
 }
 
 export function buildUserFixtureList(opponentNamesShuffled) {
-  const teams = ["__USER__", ...opponentNamesShuffled];
+  const teams = [USER_TEAM, ...opponentNamesShuffled];
   const rounds = roundRobinSchedule(teams);
   return rounds.map((round, i) => {
-    const pair = round.find(([h, a]) => h === "__USER__" || a === "__USER__");
-    const isHome = pair[0] === "__USER__";
+    const pair = round.find(([h, a]) => h === USER_TEAM || a === USER_TEAM);
+    const isHome = pair[0] === USER_TEAM;
     return { week: i + 1, name: isHome ? pair[1] : pair[0], home: isHome };
   });
 }
 
-// Estimated final points for the 19 real rivals, derived transparently from
-// their strength rating and historical pedigree (see DATASET.opponents /
-// build_final.py) rather than simulated match-by-match. `weight` (derived
-// from each club's long-run mean squad strength across every real PL season
-// on file) raises or lowers their expected baseline — consistently strong
-// clubs get a meaningfully better weighted chance, weaker-history clubs a
-// lower one. `vol` (derived from the historical spread of that same data)
-// sets how much light randomisation is layered on top — volatile clubs swing
-// further from their baseline, steady ones are more predictable — which is
-// what leaves room for upsets without it being pure noise.
-export function estimateClubPoints(opp, rng) {
-  const base = (20 + (opp.ov - 55) * 1.63) * opp.weight;
-  const noise = (rng.next() - 0.5) * opp.vol;
-  return Math.round(clamp(base + noise, 17, 97));
+function record(row, gf, ga) {
+  row.gf += gf; row.ga += ga;
+  if (gf > ga) { row.w++; row.pts += 3; }
+  else if (gf === ga) { row.d++; row.pts += 1; }
+  else row.l++;
+}
+
+function byStanding(a, b) {
+  return b.pts - a.pts || (b.gf - b.ga) - (a.gf - a.ga) || b.gf - a.gf;
+}
+
+// Every one of the 380 fixtures is played: the user's through simulateMatch
+// as before, rival against rival through its mirror. Each table row carries
+// the club's real record and its points after every week.
+export function simulateLeague(profile, familiarity, oppList, rng) {
+  const shuffled = rng.shuffle(oppList);
+  const teams = [USER_TEAM, ...shuffled.map((o) => o.name)];
+  const nameToOpp = Object.fromEntries(oppList.map((o) => [o.name, o]));
+  const rows = Object.fromEntries(teams.map((name) => [name, {
+    name: name === USER_TEAM ? USER_TEAM_NAME : name, pts: 0, isUser: name === USER_TEAM, w: 0, d: 0, l: 0, gf: 0, ga: 0, weekly: [],
+  }]));
+
+  const matches = [];
+  roundRobinSchedule(teams).forEach((round, i) => {
+    for (const [home, away] of round) {
+      let hg, ag;
+      if (home === USER_TEAM || away === USER_TEAM) {
+        const isHome = home === USER_TEAM;
+        const opponent = isHome ? away : home;
+        const res = simulateMatch(profile, nameToOpp[opponent], isHome, familiarity, rng);
+        const outcome = res.gf > res.ga ? "W" : res.gf === res.ga ? "D" : "L";
+        matches.push({ week: i + 1, opponent, home: isHome, gf: res.gf, ga: res.ga, outcome });
+        [hg, ag] = isHome ? [res.gf, res.ga] : [res.ga, res.gf];
+      } else {
+        ({ hg, ag } = simulateRivalMatch(nameToOpp[home], nameToOpp[away], rng));
+      }
+      record(rows[home], hg, ag);
+      record(rows[away], ag, hg);
+    }
+    for (const row of Object.values(rows)) row.weekly.push(row.pts);
+  });
+
+  const table = Object.values(rows).sort(byStanding);
+  table.forEach((row, i) => { row.position = i + 1; });
+  return { matches, table };
 }
 
 export function simulateSeason(profile, familiarity, oppList, rng) {
-  const shuffledNames = rng.shuffle(oppList).map((o) => o.name);
-  const fixtures = buildUserFixtureList(shuffledNames);
-  const nameToOpp = Object.fromEntries(oppList.map((o) => [o.name, o]));
-
-  let w = 0, d = 0, l = 0, gf = 0, ga = 0;
-  const matches = fixtures.map((fx) => {
-    const res = simulateMatch(profile, nameToOpp[fx.name], fx.home, familiarity, rng);
-    gf += res.gf; ga += res.ga;
-    let outcome;
-    if (res.gf > res.ga) { w++; outcome = "W"; }
-    else if (res.gf === res.ga) { d++; outcome = "D"; }
-    else { l++; outcome = "L"; }
-    return { week: fx.week, opponent: fx.name, home: fx.home, gf: res.gf, ga: res.ga, outcome };
-  });
-
-  const pts = w * 3 + d;
-
-  const table = oppList.map((o) => ({ name: o.name, pts: estimateClubPoints(o, rng), isUser: false }));
-  table.push({ name: "Your XI", pts, isUser: true, w, d, l, gf, ga });
-  table.sort((a, b) => b.pts - a.pts);
-  const position = table.findIndex((t) => t.isUser) + 1;
-  table.forEach((row, i) => { row.position = i + 1; });
-
+  const { matches, table } = simulateLeague(profile, familiarity, oppList, rng);
+  const { w, d, l, gf, ga, pts, position } = table.find((row) => row.isUser);
   const tier = seasonTier({ w, l, pts, position });
-
   return { matches, w, d, l, gf, ga, pts, tier, position, table };
 }
 
 export function seasonTier({ w, l, pts, position }) {
-  if (w === 38) return { name: "THE PERFECT SEASON", sub: "38 wins from 38 — a perfect season no Premier League side has ever managed.", color: "amber" };
-  if (l === 0 && position === 1) return { name: "Invincibles", sub: "Champions and unbeaten from August to May — a status only one Premier League side has ever achieved.", color: "amber" };
+  if (w === 38) return { name: "THE PERFECT SEASON", sub: "38 wins from 38 — a perfect season no top-flight side has ever managed.", color: "amber" };
+  if (l === 0 && position === 1) return { name: "Invincibles", sub: "Champions and unbeaten from August to May — a status only one top-flight side has ever achieved.", color: "amber" };
   if (pts >= 100) return { name: "Centurions", sub: "Past the 100-point mark — a ruthless, record-breaking points total that dwarfs most title-winning campaigns.", color: "amber" };
   if (position === 1) return { name: "Champions", sub: "Crowned champions of England — the trophy, the open-top bus, the lot.", color: "emerald" };
   if (position <= 5) return { name: "Champions League", sub: "A top-five finish and Champions League football to plan for next season.", color: "sky" };
