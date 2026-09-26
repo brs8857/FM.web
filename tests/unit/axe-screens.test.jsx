@@ -41,8 +41,8 @@ function mount(state, extra = {}) {
 
 afterEach(cleanup);
 
-// Each case runs axe several times; the default 5 s is too tight when the
-// whole suite shares the machine, and a timed-out run leaves axe busy for the next.
+// A full axe pass over a whole screen takes seconds in jsdom (the season test
+// is ~4 s on an idle machine), so the 5 s default flakes on a loaded runner.
 describe("axe: every screen", { timeout: 30_000 }, () => {
   it("first run", async () => {
     mount(null, firstRunPrefs);
@@ -80,7 +80,7 @@ describe("axe: every screen", { timeout: 30_000 }, () => {
     mount(draftState());
     fireEvent.click(screen.getByRole("button", { name: "Continue the draft" }));
     await check("draft, cuttings on the desk");
-    fireEvent.click(screen.getAllByRole("button", { name: /Club season/ })[0]);
+    fireEvent.click(within(screen.getByRole("list", { name: "Cuttings" })).getAllByRole("button")[0]);
     await check("cutting sheet");
     fireEvent.click(screen.getByRole("dialog").querySelector("li button"));
     await check("confirm pick");

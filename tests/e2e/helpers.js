@@ -28,7 +28,7 @@ export async function draftFullXI(page, { onPick } = {}) {
   for (let pick = 0; pick < 11; pick++) {
     const draw = page.getByRole("button", { name: "Draw", exact: true });
     await draw.click();
-    const cuttings = page.getByRole("button", { name: /Club season/ });
+    const cuttings = page.getByRole("list", { name: "Cuttings" }).getByRole("button");
     await expect(cuttings.first()).toBeVisible({ timeout: 10_000 });
     if (onPick) await onPick(page, pick);
     await cuttings.first().click();
@@ -56,7 +56,7 @@ export async function playTo(page, option = "The end of the season") {
 }
 
 // Answers "Replace X (suspended)": swaps each banned starter with the last
-// bench player on his sheet, then returns to the Season tab.
+// player on his sheet who isn't banned too, then returns to the Season tab.
 export async function coverBans(page) {
   for (let i = 0; i < 6; i++) {
     const replace = page.getByRole("button", { name: /^Replace .+ \(suspended\)$/ }).first();
@@ -64,14 +64,15 @@ export async function coverBans(page) {
     await page.getByRole("tab", { name: "Squad" }).click();
     await page.getByRole("button", { name: /Suspended for the next match/ }).first().click();
     await page.getByRole("button", { name: "Swap with…" }).click();
-    await page.getByRole("region", { name: "Swap with" }).getByRole("button").last().click();
+    await page.getByRole("region", { name: "Swap with" }).getByRole("listitem")
+      .filter({ hasNotText: "Suspended for the next match" }).last().getByRole("button").click();
     await page.getByRole("tab", { name: "Season" }).click();
   }
 }
 
 // Plays on to the back page, covering any ban that stops a run.
 export async function finishSeason(page) {
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 40; i++) {
     if (await page.getByRole("button", { name: "Share" }).isVisible().catch(() => false)) return;
     await coverBans(page);
     await playTo(page, "The end of the season");

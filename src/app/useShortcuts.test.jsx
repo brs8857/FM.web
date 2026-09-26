@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, within } from "@testing-library/react";
 import App from "./App.jsx";
 import { makeMiniDataset } from "../../tests/fixtures/miniDataset.js";
 import { fakeStorage, makeSaveText } from "../../tests/fixtures/saves.js";
@@ -42,8 +42,8 @@ describe("shortcuts", () => {
     fireEvent.keyDown(window, { key: "d", ctrlKey: true });
     expect(screen.getByRole("button", { name: "Draw" })).toBeTruthy();
     fireEvent.keyDown(window, { key: "D" });
-    expect(screen.getAllByRole("button", { name: /Club season/ })).toHaveLength(3);
-    fireEvent.click(screen.getAllByRole("button", { name: /Club season/ })[0]);
+    expect(within(screen.getByRole("list", { name: "Cuttings" })).getAllByRole("button")).toHaveLength(3);
+    fireEvent.click(within(screen.getByRole("list", { name: "Cuttings" })).getAllByRole("button")[0]);
     fireEvent.keyDown(window, { key: "1" });
     expect(screen.getByRole("dialog")).toBeTruthy();
   });

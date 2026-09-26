@@ -5,6 +5,7 @@
   border-radius: var(--radius-paper);
   overflow: hidden;
   width: 100%;
+  padding-block: var(--space-2);
 }
 .compact {
   --board-max-h: 42vh;

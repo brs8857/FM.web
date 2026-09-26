@@ -75,18 +75,20 @@ export function selectProfile(live, instructions, familiarity) {
   return computeTeamProfile(live, instructions, familiarity);
 }
 
+export function isBanned(state, player) {
+  return Boolean(player) && state.discipline?.[player.id]?.banned > 0;
+}
+
 // Starters serving a ban. Each must be swapped out before the next match
 // while the bench has anyone free to come in; with nobody, the side plays
 // a man short.
 export function selectSuspended(state) {
-  const discipline = state.discipline ?? {};
-  return state.assignments.filter((a) => a.player && discipline[a.player.id]?.banned > 0)
+  return state.assignments.filter((a) => isBanned(state, a.player))
     .map((a) => ({ slotId: a.slotId, id: a.player.id, name: a.player.name }));
 }
 
 export function selectBlockingBan(state) {
-  const discipline = state.discipline ?? {};
-  const cover = state.bench.some((b) => b.player && !(discipline[b.player.id]?.banned > 0));
+  const cover = state.bench.some((b) => b.player && !isBanned(state, b.player));
   return cover ? selectSuspended(state)[0] ?? null : null;
 }
 

@@ -75,6 +75,21 @@ describe("SquadTab", () => {
     expect(screen.getByTestId("live-region").textContent).toMatch(/swapped/);
   });
 
+  it("marks a banned bench player on the bench and in Swap with…", () => {
+    const base = makeSeason3TacticsState();
+    const banned = base.bench[1].player;
+    render(<Harness initial={{ ...base, discipline: { [banned.id]: { yellows: 0, banned: 1 } } }} />);
+    const bench = screen.getByRole("heading", { name: "Bench" }).parentElement;
+    expect(within(bench).getAllByRole("button", { name: /Suspended for the next match/ }).map((b) => b.textContent))
+      .toEqual([expect.stringContaining(banned.name)]);
+    const sheet = screen.getByRole("heading", { name: "Team sheet" }).parentElement;
+    fireEvent.click(within(sheet).getAllByRole("button")[0]);
+    fireEvent.click(screen.getByRole("button", { name: "Swap with…" }));
+    const swapList = screen.getByRole("region", { name: "Swap with" });
+    expect(within(swapList).getAllByRole("button", { name: /Suspended for the next match/ }).map((b) => b.textContent))
+      .toEqual([expect.stringContaining(banned.name)]);
+  });
+
   it("shows the overall only once ratings are revealed, and a bench sheet without a job", () => {
     const state = makeSeason3TacticsState();
     render(<Harness initial={state} revealed />);

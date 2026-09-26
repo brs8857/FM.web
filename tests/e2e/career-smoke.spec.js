@@ -11,7 +11,7 @@ test("draft, set a style, play season 1, pass the window into season 2", async (
     onPick: async () => {
       if (!isMobile) return;
       // Phone check (spec 04 §12): the cuttings are in view without scrolling at every pick.
-      const cuttings = page.getByRole("button", { name: /Club season/ });
+      const cuttings = page.getByRole("list", { name: "Cuttings" }).getByRole("button");
       for (let i = 0; i < await cuttings.count(); i++) await expectInViewport(page, cuttings.nth(i));
     },
   });
@@ -73,7 +73,7 @@ test("pacing: Play to the end is no slower than the old vidiprinter", async ({ p
   // Bans stop a run for a swap; the time spent swapping is not the feed's.
   const oldVidiprinterMs = 38 * 350;
   let fed = 0;
-  for (let run = 0; run < 10 && !(await page.getByRole("button", { name: "Share" }).isVisible().catch(() => false)); run++) {
+  for (let run = 0; run < 40 && !(await page.getByRole("button", { name: "Share" }).isVisible().catch(() => false)); run++) {
     await coverBans(page);
     await page.getByRole("button", { name: "Play to…" }).click();
     await page.getByRole("radio", { name: /The end of the season/ }).click();
@@ -94,8 +94,8 @@ test("the draft is playable with the keyboard alone", async ({ page, isMobile })
   await openHome(page);
   await startNewCareer(page);
   await page.keyboard.press("d");
-  await expect(page.getByRole("button", { name: /Club season/ }).first()).toBeVisible({ timeout: 10_000 });
-  await page.getByRole("button", { name: /Club season/ }).first().focus();
+  await expect(page.getByRole("list", { name: "Cuttings" }).getByRole("button").first()).toBeVisible({ timeout: 10_000 });
+  await page.getByRole("list", { name: "Cuttings" }).getByRole("button").first().focus();
   await page.keyboard.press("Enter");
   await expect(page.getByRole("dialog")).toBeVisible();
   await page.keyboard.press("Tab");

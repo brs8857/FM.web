@@ -13,7 +13,10 @@ import { ROLES, DUTY_INFO } from "../../engine/roles.js";
 import { STAT_KEYS, STAT_LABELS } from "../../engine/players.js";
 import { POSITION_LABEL, BRIEF_LABEL, CONCEPT, roleLabel, briefLabel } from "../../content/labels.js";
 import { playerMeta } from "../Draft/CuttingSheet.jsx";
+import { isBanned } from "../../state/selectors.js";
 import styles from "./PlayerSheet.module.css";
+
+export const BAN_MARK = { label: "ban", title: "Suspended for the next match" };
 
 export function entryFor(state, target) {
   if (!target) return null;
@@ -57,7 +60,8 @@ export default function PlayerSheet({ target, state, dispatch, clubSeason, revea
         <section className={styles.section} aria-label="Swap with">
           <h3 className={styles.subheading}>Swap with…</h3>
           <ul className={styles.rows}>
-            {others.map((o) => <TeamSheetRow key={`${o.kind}-${o.id}`} code={o.code} name={o.player.name} meta={playerMeta(o.player)} onClick={() => swap(o)} />)}
+            {others.map((o) => <TeamSheetRow key={`${o.kind}-${o.id}`} code={o.code} name={o.player.name} meta={playerMeta(o.player)}
+              mark={isBanned(state, o.player) ? BAN_MARK : undefined} onClick={() => swap(o)} />)}
           </ul>
           <Button variant="ghost" onClick={() => setSwapping(false)}>Cancel</Button>
         </section>

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { render, screen, fireEvent, act, within } from "@testing-library/react";
 import { useReducer } from "react";
 import Draft from "./Draft.jsx";
 import { shirtOrder } from "./CuttingSheet.jsx";
@@ -39,7 +39,7 @@ describe("Draft", () => {
     expect(screen.getByText("Nobody picked yet")).toBeTruthy();
     expect(screen.getByRole("group", { name: "Chalkboard" })).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "Draw" }));
-    const cuttings = screen.getAllByRole("button", { name: /Club season/ });
+    const cuttings = within(screen.getByRole("list", { name: "Cuttings" })).getAllByRole("button");
     expect(cuttings).toHaveLength(3);
     expect(screen.getByTestId("live-region").textContent).toMatch(/3 cuttings drawn/);
     fireEvent.click(cuttings[0]);
@@ -68,7 +68,7 @@ describe("Draft", () => {
     expect(spy.state.draw.options).not.toEqual(before);
     fireEvent.click(screen.getByRole("button", { name: /Redraw, 1 redraw left/ }));
     expect(screen.getByRole("button", { name: /Redraw, no redraws left/ }).disabled).toBe(true);
-    fireEvent.click(screen.getAllByRole("button", { name: /Club season/ })[0]);
+    fireEvent.click(within(screen.getByRole("list", { name: "Cuttings" })).getAllByRole("button")[0]);
     fireEvent.click(screen.getByRole("dialog").querySelector("li button"));
     fireEvent.click(screen.getByRole("button", { name: "Pick" }));
     fireEvent.click(screen.getByRole("button", { name: "Draw" }));

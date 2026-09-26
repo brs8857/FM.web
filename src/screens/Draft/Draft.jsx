@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Chalkboard from "../../pitch/Chalkboard.jsx";
 import CoachNote from "../../app/CoachNote.jsx";
+import { useMediaQuery } from "../../app/useMediaQuery.js";
 import { useAnnounce } from "../../ui/LiveRegion.jsx";
 import { selectDraftSummary, selectEraIndex, previewPick } from "../../state/selectors.js";
 import { nextEmptySlotIndex } from "../../engine/squad.js";
@@ -12,9 +13,14 @@ import ConfirmPick from "./ConfirmPick.jsx";
 import TeamSheetSlip from "./TeamSheetSlip.jsx";
 import styles from "./Draft.module.css";
 
+const TWO_COLUMNS = "(min-width: 600px)";
+
 // The draft (spec 04 §5.2): a compact chalkboard, the squad strip, the draw.
+// On a phone the strip follows the draw, so the board and all three cuttings
+// fit one screen at every pick (spec 04 §12).
 export default function Draft({ state, dataset, dispatch, instant, clubSeason, prefs, onDismissNote }) {
   const announce = useAnnounce();
+  const twoColumns = useMediaQuery(TWO_COLUMNS);
   const [openIdx, setOpenIdx] = useState(null);
   const [candidate, setCandidate] = useState(null);
   const [lastEmpty, setLastEmpty] = useState(false);
@@ -60,14 +66,15 @@ export default function Draft({ state, dataset, dispatch, instant, clubSeason, p
     <div className={styles.draft}>
       <div className={styles.board}>
         <Chalkboard assignments={state.assignments} bench={state.bench} mode="draft" activeSlotId={state.draftDone ? null : slot?.slotId ?? null} compact />
-        <SquadStrip summary={summary} />
+        {twoColumns && <SquadStrip summary={summary} />}
       </div>
       <div className={styles.content}>
-        <CoachNote id="draft" prefs={prefs} onDismiss={onDismissNote} />
         {state.draftDone
           ? <TeamSheetSlip state={state} summary={summary} />
           : <Draw draw={{ ...state.draw, lastEmpty }} slotType={slot?.type} eraIndex={eraIndex} instant={instant} selected={openIdx} labelFor={labelFor}
             onDraw={() => dispatch({ type: "DRAW" })} onLand={onLand} onRedraw={onRedraw} onOpen={setOpenIdx} />}
+        {!twoColumns && <SquadStrip summary={summary} />}
+        <CoachNote id="draft" prefs={prefs} onDismiss={onDismissNote} />
       </div>
       <CuttingSheet option={open} title={open ? labelFor(open) : ""} slotType={slot?.type} onClose={() => setOpenIdx(null)} onChoose={setCandidate} />
       <ConfirmPick player={candidate} preview={candidate ? previewPick(state, candidate) : null} clubSeason={open ? labelFor(open) : ""}
