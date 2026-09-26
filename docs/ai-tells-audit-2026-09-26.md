@@ -342,3 +342,43 @@ Changed (commit below), each face chosen for a job in the subject:
   `tokens.test.js` pins the eight faces; `npm run build:standalone` still
   inlines all eight. The share slip draws with the same faces. About names
   them.
+
+### 2.6 UI patterns (V3)
+
+Found:
+- **A coloured stripe down the left of a card**, the most-cited AI tell in
+  the UI sources: the coach's note (`ui/Callout`) and the Home notice.
+- **Stat tiles** in Club › Record: a grid of small grey labels over big
+  numbers ("Best finish / 14th · 2026-27", "Titles / No titles").
+- **Card in card**: on match day the identity line, itself a bordered
+  panel, sat inside the fixture card.
+- **Pills**: besides the chips (spec 04 §3.4 asks for pill chips), the
+  Next action and both identity labels were pills. The Next pill was 36 px
+  tall, under the 44 pt target spec 04 §8.2 sets, and at 390 px it pushed
+  the screen title down to "Se…".
+- **The position bar** on match day and the vidiprinter was a full-width
+  block of the signal colour, the loudest thing on screen for a line of
+  text.
+- Shadows: none outside the chalkboard's lifted markers, where they mean
+  "picked up". The one radius (4 px) with pill chips is spec 04's, kept.
+
+Changed (commit below):
+- Coach's note and Home notice are boxouts: a heavy ink rule on top and a
+  tinted panel, as a paper sets a sidebar, matching the cuttings' top rule.
+- The record's totals are a fact box: one ruled line each, label left,
+  figure right, under a heavy rule.
+- The identity line is a ruled band, not a panel, so it nests nowhere.
+- Identity labels are stamps (square corners, 2 px ink border); the Next
+  action is a 44 px paper-cornered button whose "Next" label is dropped
+  under 600 px, and the top bar keeps 6.5 rem for the title.
+- The position bar is the vidiprinter's strip: chalk on the slate, with
+  chalk-outlined Pause and Skip.
+
+Logged, not changed:
+- Small buttons (`size="sm"`: Redraw, Reset shape, Pause, Skip, Sign to
+  bench, Copy) are 36 px tall, below spec 04's 44 pt (they pass WCAG
+  2.2's 24 px). Raising them changes the draft desk's height, which the
+  fold criterion depends on; worth a pass of its own.
+- `src/pitch/**` (the bench label and the "empty" slot label now render in
+  Courier Prime through the mono token) is left to the orchestrator's
+  chalkboard work.

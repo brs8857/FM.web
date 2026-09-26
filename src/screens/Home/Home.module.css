@@ -36,7 +36,7 @@
 .notice {
   font-size: var(--text-sm);
   padding: var(--space-3) var(--space-4);
-  border-left: 3px solid var(--signal);
+  border-top: 2px solid var(--ink);
   background: var(--paper-2);
 }
 .resume {
@@ -52,9 +52,9 @@
 }
 .chip {
   display: inline-block;
-  padding: 2px var(--space-3);
-  border: 1px solid var(--ink);
-  border-radius: var(--radius-chip);
+  padding: 0 var(--space-2);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-paper);
   font-weight: 600;
 }
 .actions {
