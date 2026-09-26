@@ -1,23 +1,22 @@
-/* Design tokens (spec 04 §3.2–3.4). Semantic names only; components never use raw hex.
-   Light "Pitch" is the default; dark "Floodlit" applies under [data-theme="dark"]
-   or when the system prefers dark and no explicit theme is set. A neutral
-   grey/white base (not the original warm newsprint beige) with pitch green
-   as the primary accent, carried through --signal, --action and --win. */
+/* Newsprint and chalkboard: off-white paper and printer's black, a green-black
+   slate for the board, and the greens of a pitch, mown grass for --signal and
+   the darker turf for --action and --win. Loss is brick, draw is newsprint grey.
+   Components use these names only, never raw hex. */
 
 :root {
-  --paper: #F5F6F3;
-  --paper-2: #E8EBE6;
-  --rule: #D2D6CF;
-  --ink: #14181A;
-  --ink-2: #4B5148;
-  --signal: #2ECC71;
-  --signal-ink: #14181A;
-  --slate: #1E3D2F;
-  --chalk: #F5F7F4;
-  --win: #1B6D3E;
-  --draw: #5B5F5A;
-  --loss: #B0413E;
-  --action: #0F5C34;
+  --paper: #F4F4F0;
+  --paper-2: #E8E9E2;
+  --rule: #CDCFC5;
+  --ink: #1A1B18;
+  --ink-2: #4D5047;
+  --signal: #67A03E;
+  --signal-ink: #1A1B18;
+  --slate: #1D3A2C;
+  --chalk: #F3F2EA;
+  --win: #2F6B2A;
+  --draw: #5E605A;
+  --loss: #A83C33;
+  --action: #265A32;
 
   --font-body: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-display: "Barlow Condensed", "Barlow", system-ui, -apple-system, sans-serif;
@@ -56,37 +55,37 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #14181A;
-    --paper-2: #1D2320;
-    --rule: #384038;
-    --ink: #ECEFE9;
-    --ink-2: #A7AEA3;
-    --signal: #34C759;
-    --signal-ink: #0B1F14;
-    --slate: #17302A;
-    --chalk: #F5F7F4;
-    --win: #6FCF97;
-    --draw: #9AA0A6;
-    --loss: #E07A74;
-    --action: #22A155;
+    --paper: #121411;
+    --paper-2: #1B1E1A;
+    --rule: #343930;
+    --ink: #EDEEE7;
+    --ink-2: #A8AC9F;
+    --signal: #93BA69;
+    --signal-ink: #10150E;
+    --slate: #172A20;
+    --chalk: #F3F2EA;
+    --win: #8CC77F;
+    --draw: #9EA296;
+    --loss: #E08A7E;
+    --action: #6E9A55;
     color-scheme: dark;
   }
 }
 
 [data-theme="dark"] {
-  --paper: #14181A;
-  --paper-2: #1D2320;
-  --rule: #384038;
-  --ink: #ECEFE9;
-  --ink-2: #A7AEA3;
-  --signal: #34C759;
-  --signal-ink: #0B1F14;
-  --slate: #17302A;
-  --chalk: #F5F7F4;
-  --win: #6FCF97;
-  --draw: #9AA0A6;
-  --loss: #E07A74;
-  --action: #22A155;
+  --paper: #121411;
+  --paper-2: #1B1E1A;
+  --rule: #343930;
+  --ink: #EDEEE7;
+  --ink-2: #A8AC9F;
+  --signal: #93BA69;
+  --signal-ink: #10150E;
+  --slate: #172A20;
+  --chalk: #F3F2EA;
+  --win: #8CC77F;
+  --draw: #9EA296;
+  --loss: #E08A7E;
+  --action: #6E9A55;
   color-scheme: dark;
 }
 

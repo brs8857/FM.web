@@ -29,9 +29,6 @@
 .loss {
   color: var(--loss);
 }
-.signal {
-  color: var(--signal);
-}
 .muted {
   color: var(--ink-2);
 }

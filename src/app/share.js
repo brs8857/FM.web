@@ -21,8 +21,8 @@ function wrap(ctx, text, maxWidth) {
 }
 
 export function renderSlip(ctx, slip) {
-  const paper = cssVar("--paper", "#F5F6F3"), ink = cssVar("--ink", "#14181A"), ink2 = cssVar("--ink-2", "#4B5148");
-  const rule = cssVar("--rule", "#D2D6CF"), signal = cssVar("--signal", "#2ECC71");
+  const paper = cssVar("--paper", "#F4F4F0"), ink = cssVar("--ink", "#1A1B18"), ink2 = cssVar("--ink-2", "#4D5047");
+  const rule = cssVar("--rule", "#CDCFC5"), signal = cssVar("--signal", "#67A03E");
   const display = '"Barlow Condensed", "Barlow", sans-serif', body = '"Barlow", sans-serif', mono = '"IBM Plex Mono", monospace';
   const margin = 80, width = SHARE_WIDTH - margin * 2;
   ctx.fillStyle = paper;

@@ -254,3 +254,46 @@ Logged for the owner, not changed:
   but are pinned by `engine/season.test.js` and the golden seasons.
 - `Saves.jsx` names its handler `handleFile`; left alone because the brief
   keeps the import flow off limits except for copy.
+
+### 2.4 Palette (V1)
+
+Found:
+- The default "Pitch" theme's attention colour was Flat UI's Emerald
+  (`#2ECC71`) in light and Apple's `systemGreen` (`#34C759`) in dark, with
+  emerald-leaning buttons (`#0F5C34`, `#22A155`). Those are "success"
+  greens (hue 145, 60–70% saturation), the colour of a toast that says
+  "Saved!", not of a pitch; filled into the Next pill and the position bar
+  they gave the dark theme the neon-on-black sports-app look spec 03 §3.3
+  set out to avoid.
+- Club themes pushed every token to at least half the kit colour's
+  saturation, and the signal to 85–90%: Arsenal got `#F4252C`, Liverpool
+  a hot pink-red `#EE2C4C`, Everton and Chelsea electric blues (`#3877F5`,
+  `#157CF3`) close to Tailwind's `blue-500`; paper was tinted pink, blue or
+  yellow at 48% saturation, and dark paper went maroon (`#220C0C`) or brown
+  (`#221C0C`).
+- Two text pairs outside the checked list failed AA: the toast's action
+  (signal text on the action fill, 3.8:1 before and worse after) and
+  selected text in dark (light ink on the light signal).
+
+Changed (commit below), keeping the owner's 2.5.0 direction (a neutral
+base with pitch green as the accent) but mixing the values from the
+subject rather than a stock set:
+- Light: newsprint `#F4F4F0` paper (neutral, a touch warm, not beige),
+  printer's black `#1A1B18`, grass green `#67A03E` for the signal (hue 95,
+  44% saturation: mown turf, not a success toast), dark turf `#265A32` for
+  buttons, `#2F6B2A` for wins, brick `#A83C33` for losses, newsprint grey
+  for draws, a green-black `#1D3A2C` chalkboard with warm chalk `#F3F2EA`.
+- Dark ("Floodlit"): a night `#121411` with the faintest green in it,
+  chalky floodlit grass `#93BA69` for the signal, a dusty turf `#6E9A55`
+  for buttons: lit, not glowing.
+- All 28 checked pairs pass (ink on paper 15.7:1; signal ink on signal
+  5.5:1 light, 8.3:1 dark). `tokens.test.js` pins the new values and fails
+  if any stock success-green (Flat UI, iOS, Tailwind) comes back.
+- `clubTheme.js`: surfaces are now capped at a whisper of the kit colour
+  (paper at 20% saturation, dark paper 16%), buttons and boards at 62%,
+  the signal at 40–60%; results use the default theme's turf hue (114)
+  instead of emerald (145). Arsenal's signal is now `#D45458`, Everton's
+  `#547ED4`; every club still passes every pair in both modes.
+- The toast action is paper-on-action with an underline; selected text
+  uses `--signal-ink`. Manifest, `theme-color` metas and the share slip's
+  fallbacks follow the new values.

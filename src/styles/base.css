@@ -129,7 +129,7 @@ svg {
 
 ::selection {
   background: var(--signal);
-  color: var(--ink);
+  color: var(--signal-ink);
 }
 
 .mono,

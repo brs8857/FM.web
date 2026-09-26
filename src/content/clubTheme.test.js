@@ -87,7 +87,7 @@ describe("club theme derivation", () => {
     for (const club of CLUBS) {
       for (const mode of ["light", "dark"]) {
         const t = clubTheme(club.key)[mode];
-        expect(Math.abs(hexToHsl(t.win).h - 145), `${club.key} ${mode} win`).toBeLessThanOrEqual(2);
+        expect(Math.abs(hexToHsl(t.win).h - 114), `${club.key} ${mode} win`).toBeLessThanOrEqual(2);
         expect(hexToHsl(t.loss).h, `${club.key} ${mode} loss`).toBeLessThanOrEqual(4);
         expect(contrast(t.win, t.loss), `${club.key} ${mode} win vs loss`).toBeGreaterThan(1);
         expect(new Set([t.win, t.draw, t.loss]).size).toBe(3);

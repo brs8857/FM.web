@@ -15,8 +15,8 @@ export const manifest = {
   start_url: "./",
   scope: "./",
   display: "standalone",
-  background_color: "#F5F6F3",
-  theme_color: "#1E3D2F",
+  background_color: "#F4F4F0",
+  theme_color: "#1D3A2C",
   icons: [
     { src: "icons/icon-192.png", sizes: "192x192", type: "image/png" },
     { src: "icons/icon-512.png", sizes: "512x512", type: "image/png" },

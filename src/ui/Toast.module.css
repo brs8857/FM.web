@@ -26,8 +26,10 @@
   flex: 1;
 }
 .action {
-  color: var(--signal);
+  color: var(--paper);
   font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
   min-height: 36px;
   padding: 0 var(--space-2);
 }

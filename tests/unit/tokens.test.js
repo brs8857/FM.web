@@ -18,10 +18,12 @@ describe("design tokens", () => {
     }
   });
 
-  it("uses the pitch and floodlit values", () => {
+  it("uses the newsprint-and-turf values, not the stock greens they replaced", () => {
     const themes = parseThemes(tokens);
-    expect(themes.light).toMatchObject({ paper: "#F5F6F3", ink: "#14181A", signal: "#2ECC71", slate: "#1E3D2F", chalk: "#F5F7F4" });
-    expect(themes.dark).toMatchObject({ paper: "#14181A", ink: "#ECEFE9", signal: "#34C759", slate: "#17302A", action: "#22A155" });
+    expect(themes.light).toMatchObject({ paper: "#F4F4F0", ink: "#1A1B18", signal: "#67A03E", slate: "#1D3A2C", chalk: "#F3F2EA", action: "#265A32" });
+    expect(themes.dark).toMatchObject({ paper: "#121411", ink: "#EDEEE7", signal: "#93BA69", slate: "#172A20", action: "#6E9A55" });
+    const stock = ["#2ECC71", "#27AE60", "#34C759", "#30D158", "#22C55E", "#16A34A", "#10B981", "#059669"];
+    for (const theme of [themes.light, themes.dark]) expect(Object.values(theme).filter((hex) => stock.includes(hex))).toEqual([]);
   });
 
   it("guards system dark behind an explicit light theme", () => {

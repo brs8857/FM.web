@@ -15,12 +15,19 @@ import colours from "./clubColours.json";
 // with only the lightness solved against the club's paper; the W/D/L letters
 // carry the meaning where a red club's loss red or a green club's win green
 // would otherwise read as a club colour.
+//
+// Surfaces (paper, rules, ink, chalk) take at most a whisper of the club's
+// colour: printed paper in club colours reads as a novelty shop, not a
+// newspaper. Only the board, the buttons and the signal carry it fully, and
+// even those are held below full saturation so a red club's signal is a
+// brick red rather than a neon one.
 
 export const COLOUR_TOKENS = ["paper", "paper-2", "rule", "ink", "ink-2", "signal", "signal-ink", "slate", "chalk", "win", "draw", "loss", "action"];
 
 const CHROMA_MIN = 0.12;
 const YELLOW = [35, 75];
-const RESULT_HUES = { win: { h: 145, s: 0.6 }, draw: { h: 0, s: 0.03 }, loss: { h: 2, s: 0.5 } };
+const RESULT_HUES = { win: { h: 114, s: 0.45 }, draw: { h: 0, s: 0.03 }, loss: { h: 2, s: 0.5 } };
+const MAX_SAT = 0.62;
 
 export const CLUBS = Object.entries(colours).map(([key, c]) => ({ key, name: c.name, colours: c.colours }));
 
@@ -80,8 +87,11 @@ function solve(base, constraints, direction) {
   }
 }
 
-const withSat = (c, s, l) => ({ h: c.h, s: chromatic(c) ? Math.min(1, Math.max(s, c.s * 0.5)) : 0, l });
-const tone = (c, s, l) => hslToHex(withSat(c, s, l));
+// `withSat` gives the colour at least `s` (the board, buttons); `faint` at
+// most `s` (the surfaces). Neither goes past MAX_SAT.
+const withSat = (c, s, l) => ({ h: c.h, s: chromatic(c) ? Math.min(MAX_SAT, Math.max(s, c.s * 0.5)) : 0, l });
+const faint = (c, s, l) => ({ h: c.h, s: chromatic(c) ? Math.min(s, c.s) : 0, l });
+const tone = (c, s, l) => hslToHex(faint(c, s, l));
 
 function roles(primaryHex, secondaryHex) {
   const a = hexToHsl(primaryHex), b = hexToHsl(secondaryHex);
@@ -96,26 +106,26 @@ function roles(primaryHex, secondaryHex) {
 
 export function deriveClubTheme(primaryHex, secondaryHex) {
   const { tint, accent, board, action } = roles(primaryHex, secondaryHex);
-  const signalBase = chromatic(accent) ? { h: accent.h, s: Math.min(0.9, Math.max(accent.s, 0.55)), l: accent.l } : { h: 0, s: 0, l: 0.75 };
-  const chalk = tone(accent, 0.3, 0.96);
+  const signalBase = chromatic(accent) ? { h: accent.h, s: Math.min(0.6, Math.max(accent.s * 0.7, 0.4)), l: accent.l } : { h: 0, s: 0, l: 0.75 };
+  const chalk = tone(accent, 0.25, 0.955);
 
   const light = {};
-  light.paper = tone(tint, 0.45, 0.955);
-  light["paper-2"] = tone(tint, 0.35, 0.915);
-  light.rule = tone(tint, 0.2, 0.8);
-  light.ink = solve(withSat(tint, 0.35, 0.09), [[light["paper-2"], 4.5]], -1);
-  light["ink-2"] = solve(withSat(tint, 0.25, 0.32), [[light.paper, 6], [light["paper-2"], 4.5]], -1);
+  light.paper = tone(tint, 0.2, 0.955);
+  light["paper-2"] = tone(tint, 0.17, 0.915);
+  light.rule = tone(tint, 0.14, 0.8);
+  light.ink = solve(faint(tint, 0.3, 0.09), [[light["paper-2"], 4.5]], -1);
+  light["ink-2"] = solve(faint(tint, 0.2, 0.32), [[light.paper, 6], [light["paper-2"], 4.5]], -1);
   light.slate = solve(withSat(board, 0.45, 0.2), [[chalk, 4.5]], -1);
   light.chalk = chalk;
   light.action = solve(withSat(action, 0.7, 0.42), [[light.paper, 4.5]], -1);
   light["signal-ink"] = light.ink;
 
   const darkT = {};
-  darkT.paper = tone(tint, 0.2, 0.09);
-  darkT["paper-2"] = tone(tint, 0.18, 0.135);
-  darkT.rule = tone(tint, 0.15, 0.25);
-  darkT.ink = solve(withSat(tint, 0.15, 0.93), [[darkT["paper-2"], 4.5]], 1);
-  darkT["ink-2"] = solve(withSat(tint, 0.12, 0.68), [[darkT.paper, 6], [darkT["paper-2"], 4.5]], 1);
+  darkT.paper = tone(tint, 0.16, 0.09);
+  darkT["paper-2"] = tone(tint, 0.15, 0.135);
+  darkT.rule = tone(tint, 0.13, 0.25);
+  darkT.ink = solve(faint(tint, 0.15, 0.93), [[darkT["paper-2"], 4.5]], 1);
+  darkT["ink-2"] = solve(faint(tint, 0.12, 0.68), [[darkT.paper, 6], [darkT["paper-2"], 4.5]], 1);
   darkT.slate = solve(withSat(board, 0.45, 0.17), [[chalk, 4.5]], -1);
   darkT.chalk = chalk;
   darkT.action = solve(withSat(action, 0.6, 0.5), [[darkT.paper, 4.5]], 1);
