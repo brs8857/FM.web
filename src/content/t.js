@@ -3,19 +3,7 @@ import strings from "./strings/en-GB.json";
 // A small ICU-style formatter (decision X3: strings externalised, en-GB only
 // for now). Supports {name}, {name, plural, =0 {…} one {…} other {…}} with #
 // for the number, and {name, select, a {…} other {…}}; branches may nest.
-export const LOCALE = "en-GB";
-const plurals = new Intl.PluralRules(LOCALE);
-
-function splitTopLevel(text) {
-  const parts = [];
-  let depth = 0, start = -1;
-  for (let i = 0; i < text.length; i++) {
-    const ch = text[i];
-    if (ch === "{") { if (depth === 0) start = i; depth++; }
-    else if (ch === "}") { depth--; if (depth === 0) { parts.push(text.slice(start, i + 1)); start = -1; } }
-  }
-  return parts;
-}
+const plurals = new Intl.PluralRules("en-GB");
 
 function parseBranches(body) {
   const branches = {};
@@ -75,5 +63,3 @@ export function t(key, params) {
   const template = strings[key];
   return template === undefined ? key : format(template, params);
 }
-
-export { splitTopLevel as _splitTopLevel };

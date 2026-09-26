@@ -11,8 +11,6 @@ const NOTICES = {
   corrupt: "Your saved career couldn't be loaded, so a new one can start. The damaged save was kept aside.",
 };
 
-// Home (spec 04 §5.1): the resume card with the one next action, New career,
-// and the settings and about links.
 export default function Home({ state, next, identity, cohesion, notice, prefs, onDismissNote, onContinue, onNewCareer, onClub, onSaves, onSettings, onAbout }) {
   const inProgress = state.phase !== "formation";
   const drafting = state.phase === "draft";

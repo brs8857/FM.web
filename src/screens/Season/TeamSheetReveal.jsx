@@ -8,9 +8,6 @@ import styles from "./Season.module.css";
 
 export const REVEAL_MS = 240;
 
-// The ratings reveal (spec 04 §5.5): eleven rows print in, each overall
-// stamps in, then the squad average. Instant when resumed or under reduced
-// motion.
 export default function TeamSheetReveal({ state, instant, onKickoff }) {
   const starters = useMemo(() => state.assignments.filter((a) => a.player).sort((a, b) => a.player.ov - b.player.ov), [state.assignments]);
   const [revealed, setRevealed] = useState(instant ? starters.length : 0);

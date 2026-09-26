@@ -26,8 +26,6 @@ export function afterLine(week, row) {
   return t("season.after", { week, position: ordinal(row.position), pts: row.pts });
 }
 
-// Match day (spec 07 §7.2): where the table stands, the last report, the
-// next fixture, and the season so far. Play lives in the sticky bar.
 export default function MatchDay({ state, identity, familiarity, profile, clubName, onGoTab }) {
   const announce = useAnnounce();
   const { campaign } = state;

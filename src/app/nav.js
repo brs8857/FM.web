@@ -1,10 +1,7 @@
 import { useEffect, useReducer } from "react";
 
-// UI navigation state (spec 04 §4.1). Never saved. `mode` follows the phase:
-// set-up (formation), the draft flow, or Club with its four tabs. `home` puts
-// the Home screen over any mode (boot, Pause in the draft, the top-bar mark in
-// Club); `step` is the set-up flow's screen. `sheet` is whichever bottom sheet
-// is open, as { kind, id } or null.
+// Never saved. `home` lays the Home screen over whatever mode the phase
+// implies, so Pause in the draft and the Home button in Club keep their place.
 export const TABS = [
   { key: "squad", label: "Squad" },
   { key: "board", label: "Board" },

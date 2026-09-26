@@ -1,7 +1,8 @@
 // @vitest-environment node
 import { describe, it, expect } from "vitest";
 import { clamp, seasonLabel } from "./util.js";
-import { FORMATIONS, SLOT_TYPE_LABEL, makeInitialAssignments } from "./formations.js";
+import { FORMATIONS, makeInitialAssignments } from "./formations.js";
+import { POSITION_LABEL } from "../content/labels.js";
 import { ROLES, DUTY_INFO, defaultRoleFor, defaultDutyFor } from "./roles.js";
 import { DEFAULT_INSTRUCTIONS, STYLE_PRESETS } from "./instructions.js";
 
@@ -21,7 +22,7 @@ describe("formations and roles", () => {
       expect(formation.slots.filter((s) => s.type === "GK"), key).toHaveLength(1);
       for (const slot of formation.slots) {
         expect(ROLES[slot.type], `${key} ${slot.type}`).toBeDefined();
-        expect(SLOT_TYPE_LABEL[slot.type]).toBeDefined();
+        expect(POSITION_LABEL[slot.type]).toBeDefined();
       }
     }
   });

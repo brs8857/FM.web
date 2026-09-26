@@ -1,5 +1,3 @@
-/* Base styles (spec 04 §3.3–3.4, §8). */
-
 @font-face {
   font-family: "Barlow";
   font-style: normal;
@@ -152,8 +150,8 @@ code {
   border: 0;
 }
 
-/* Motion vocabulary (§3.4): slip, type, stamp. Durations come from tokens, so
-   reduced motion (system or the preference) makes all three instant. */
+/* Durations come from tokens, so reduced motion (system or the preference)
+   makes all three instant. */
 @keyframes slip {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }

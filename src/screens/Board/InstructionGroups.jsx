@@ -9,8 +9,6 @@ import styles from "./Board.module.css";
 const DISCIPLINE = [{ key: "structured", label: DISCIPLINE_LABEL.structured }, { key: "fluid", label: DISCIPLINE_LABEL.fluid }];
 const MARKING = [{ key: "zonal", label: MARKING_LABEL.zonal }, { key: "man", label: MARKING_LABEL.man }];
 
-// The remaining eight dials and three switches, in two collapsed groups whose
-// headers summarise their current values.
 export default function InstructionGroups({ instructions, pulse, onSet }) {
   return (
     <>

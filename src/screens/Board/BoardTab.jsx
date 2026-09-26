@@ -16,9 +16,6 @@ import { cx } from "../../ui/cx.js";
 import layout from "../TabLayout.module.css";
 import styles from "./Board.module.css";
 
-// The Board tab (spec 04 §5.4): the draggable chalkboard, the identity line,
-// the style row, the three approach dials, the two collapsed groups, and the
-// strengths bars.
 export default function BoardTab({ state, dispatch, profile, familiarity, clubSeason, revealed, suspended, prefs, onDismissNote }) {
   const announce = useAnnounce();
   const [target, setTarget] = useState(null);

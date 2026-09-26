@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import Toast from "../ui/Toast.jsx";
 
-// "Update available · Reload" when a new service worker is waiting (Phase 1
-// spec §7.1). It never reloads on its own. `register` is registerSW from
-// virtual:pwa-register, passed in so this stays testable.
+// `register` is registerSW from virtual:pwa-register, passed in so the prompt
+// can be tested without a service worker. It never reloads on its own.
 export default function UpdatePrompt({ register }) {
   const [update, setUpdate] = useState(null);
   useEffect(() => {

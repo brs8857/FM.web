@@ -1,7 +1,6 @@
 import { clamp, weightedPick } from "./util.js";
 import { playerContribution } from "./tactics.js";
 
-/* ============================== Simulation ================================ */
 export function poissonSample(lambda, rng) {
   if (lambda <= 0) return 0;
   const L = Math.exp(-lambda);
@@ -12,18 +11,13 @@ export function poissonSample(lambda, rng) {
 
 export const HOME_ADVANTAGE = 3;
 
-// Blend this season's squad strength with the club's long-run historical
-// pedigree (mean squad strength across every top-flight season they've had) —
-// a historically elite club plays a little tougher than a single season's
-// number alone would suggest, and vice versa for a historically weaker one.
+// This season's squad blended with the club's mean over every top-flight
+// season it has had, so pedigree counts for a little.
 export function rivalStrength(opp) {
   return opp.ov * 0.82 + opp.histMean * 0.18;
 }
 
-// The raw quality gap is capped and run through a wider divisor than a
-// pure stat-diff model would use — a stronger team is still favoured, but
-// no gap (however large on paper) buys a guaranteed landslide. Real upsets
-// stay genuinely possible even when you're clearly the better side.
+// The gap is capped at 33 so no mismatch is ever a certainty.
 function expectedGoals(attack, defence, cap) {
   return clamp(1.05 + clamp(attack - defence, -33, 33) / 20, 0.25, cap);
 }
@@ -34,8 +28,6 @@ function noisy(xg, noiseScale, rng) {
 
 export function simulateMatch(profile, opp, isHome, familiarity, rng) {
   const homeAdv = isHome ? HOME_ADVANTAGE : 0;
-  // Even a perfectly-drilled tactic still has an off day — the floor on
-  // variance is higher than before, so no setup is ever fully "solved".
   const noiseScale = clamp(1.1 - familiarity / 150, 0.28, 0.9);
   const effOv = rivalStrength(opp);
 
@@ -71,13 +63,6 @@ export function simulateRivalMatch(home, away, rng) {
 
 export const STOPPAGE_CHANCE = 0.08;
 
-// Attributes the goals of a decided scoreline, on its own rng stream so it
-// never alters a result. The opponent's goals carry only a minute; ours go to
-// a starter drawn in proportion to his attacking contribution (job, brief,
-// position and freedom, the same number the profile is built from), so a
-// poacher pushed up top leads the scoring and a blocker almost never does.
-// Keepers never score. Minutes are distinct, ascending, and occasionally in
-// stoppage time (91-95).
 export const YELLOWS_PER_MATCH = 1.6;
 export const RED_CHANCE = 0.05;
 
@@ -87,11 +72,8 @@ export function cardScale(tackling) {
   return 0.6 + tackling / 125;
 }
 
-// Our bookings for a match: a Poisson count of yellows and a small chance
-// of a red, both scaled by the tackling dial, each carried by a starter drawn
-// by how much he defends and presses (a keeper at a tenth of his, since his
-// defending is saves, not tackles).
-// Nobody is booked twice in a match.
+// Cards go to whoever defends and presses most; a keeper's defending is saves,
+// not tackles, so he counts a tenth.
 function bookings(starters, tackling, rng) {
   const scale = cardScale(tackling);
   const on = starters.filter((a) => a.player && a.role);
@@ -112,6 +94,9 @@ function bookings(starters, tackling, rng) {
   return cards.filter(Boolean).sort((a, b) => a.minute - b.minute);
 }
 
+// Runs on its own rng stream so narrating a match never alters its score.
+// Our goals go to starters in proportion to their attacking contribution, the
+// same number the profile is built from, so the board decides who scores.
 export function matchEvents({ gf, ga }, starters, rng, { tackling = 50 } = {}) {
   const minutes = new Set();
   while (minutes.size < gf + ga) minutes.add(rng.next() < STOPPAGE_CHANCE ? 91 + rng.int(5) : 1 + rng.int(90));
@@ -126,9 +111,7 @@ export function matchEvents({ gf, ga }, starters, rng, { tackling = 50 } = {}) {
   return { goals, cards: bookings(starters, tackling, rng) };
 }
 
-// The bans a match leaves (spec 07 §5.4): those serving one have served it,
-// then a red, or a fifth yellow, bans a player for the next match. Entries
-// with nothing to carry are dropped.
+// A red, or a fifth yellow, bans a player for the next match (spec 07 §5.4).
 export const YELLOWS_FOR_BAN = 5;
 export function nextDiscipline(discipline, cards) {
   const next = {};

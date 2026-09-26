@@ -17,7 +17,6 @@ export function signed(n) {
   return n < 0 ? `−${-n}` : "±0";
 }
 
-// "Booked: Vieira 44', Keown 71'. Sent off: —"
 export function cardsLine(cards) {
   const list = (kind) => cards.filter((c) => c.kind === kind).map((c) => `${c.name} ${minuteLabel(c.minute)}`).join(", ") || "—";
   return `Booked: ${list("yellow")}. Sent off: ${list("red")}.`;
@@ -27,9 +26,8 @@ export function identityName(key) {
   return IDENTITY_LABEL[key] ?? key;
 }
 
-// One side's goals as a timeline: the minute is the term, who scored the
-// definition. The opponent's scorers are not named (spec 07 M4), so their
-// definition is the club, read out but not printed.
+// The opponent's scorers are not named (spec 07 M4): their minutes are read
+// out with the club's name, which is not printed.
 function Scorers({ side, goals, name, us }) {
   if (goals.length === 0) {
     return <p className={styles.none}><span className="visually-hidden">{side}: no goals</span><span aria-hidden="true">—</span></p>;
@@ -49,9 +47,6 @@ function Scorers({ side, goals, name, us }) {
   );
 }
 
-// The match report (spec 07 §6): the score with the home side first, who
-// scored and when, the line the board played, and where it left the table.
-// `after` is the table line; `compact` drops the kicker for rows in a list.
 export default function MatchReport({ match, clubName, after, compact = false, level = 3 }) {
   const id = useId();
   const Heading = `h${level}`;

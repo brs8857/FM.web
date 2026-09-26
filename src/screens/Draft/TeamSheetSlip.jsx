@@ -5,7 +5,6 @@ import { FORMATIONS } from "../../engine/formations.js";
 import { playerMeta } from "./CuttingSheet.jsx";
 import styles from "./Draft.module.css";
 
-// The end of the draft: the eleven in formation order, the bench, the totals.
 export default function TeamSheetSlip({ state, summary }) {
   return (
     <Slip kicker="Team sheet" title={`Your XI · ${FORMATIONS[state.formationKey].label}`}>

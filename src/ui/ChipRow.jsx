@@ -2,8 +2,6 @@ import Chip from "./Chip.jsx";
 import { useRovingKeys } from "./useRovingKeys.js";
 import styles from "./ChipRow.module.css";
 
-// A horizontally scrolling radiogroup of chips. Arrow keys move selection and
-// focus together; Home/End jump to the ends.
 export default function ChipRow({ label, options, value, onChange, tone }) {
   const index = Math.max(0, options.findIndex((o) => o.key === value));
   const onKeyDown = useRovingKeys({ count: options.length, index, onMove: (i) => onChange(options[i].key), selector: '[role="radio"]' });

@@ -6,7 +6,6 @@ import { CopyIcon } from "../../ui/icons.jsx";
 import { decodeCareerCode } from "../../app/careerCode.js";
 import styles from "./Club.module.css";
 
-// The career code (spec 04 §5.7): copy yours, or start a career from one.
 export default function CareerCode({ code, onStartFromCode }) {
   const [toast, setToast] = useState(null);
   const [entered, setEntered] = useState("");

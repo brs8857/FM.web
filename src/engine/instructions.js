@@ -15,14 +15,7 @@ export const DEFAULT_INSTRUCTIONS = {
   shape: "structured", // 'structured' | 'fluid'
 };
 
-// Style of Play presets — the first choice on the tactics board. Each one
-// heavily pre-sets every single instruction below it to a coherent, real
-// -world identity; picking one is meant to visibly rewrite the whole
-// tactics screen at once, not just nudge a couple of sliders. You can still
-// fine-tune every slider afterward, but the starting point is deliberate.
-// The first five map directly onto a named bonus in identitySynergy() —
-// stick close to the preset and that bonus stays active; drag things too
-// far from it and you lose the identity (and its bonus) entirely.
+// Each preset but Blank slate sits inside one of identitySynergy's templates.
 export const STYLE_PRESETS = [
   { key: "gegenpress", label: "Gegenpress", desc: "Klopp-school counter-pressing: collapse on the ball the instant it's lost, force turnovers in the opposition half, and punish the disorganised transition before a rest defence can form.",
     instructions: { mentality: 62, tempo: 82, directness: 58, width: 58, focus: 50, press: 84, line: 76, tackling: 76, counter: 66, crossing: 52, gkDistribution: 58, offsideTrap: true, marking: "man", shape: "fluid" } },

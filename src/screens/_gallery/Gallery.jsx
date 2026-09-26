@@ -7,9 +7,7 @@ import {
 import { CLUBS, clubTheme, clubThemeVars } from "../../content/clubTheme.js";
 import styles from "./Gallery.module.css";
 
-// Manual gallery for the primitive library, at ?gallery=1. Renders
-// every primitive in both themes side by side, under the pitch theme or
-// any club's derived colours. Not a Storybook; no deps.
+// A hand-made gallery rather than Storybook, to keep the dependencies at two.
 
 const TERMS = {
   cohesion: { title: "Cohesion", body: "How well the eleven know the system.\n\nEach player's [[brief]] shapes it." },

@@ -21,7 +21,6 @@ export function playerMeta(player) {
   return [player.age ?? "—", player.nat, player.side ? `${SIDE_LABEL[player.side]} side` : null].filter(Boolean).join(" · ");
 }
 
-// A cutting's team sheet: the eligible players for the slot being filled.
 export default function CuttingSheet({ option, title, slotType, onClose, onChoose }) {
   const position = POSITION_LABEL[slotType] ?? slotType;
   return (

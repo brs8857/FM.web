@@ -1,6 +1,3 @@
-/* Shared Club-tab layout (spec 04 §6): pinned chalkboard above the content on
-   phones, a fixed 360 px column from 600 px, up to 440 px beside a 60ch column
-   from 1024 px. */
 .tab {
   display: flex;
   flex-direction: column;

@@ -14,7 +14,6 @@ function markFor(a, suspended) {
   return a.player.slot !== a.type ? { label: "off", title: `Not a ${POSITION_LABEL[a.type].toLowerCase()}` } : undefined;
 }
 
-// The Squad tab (spec 04 §5.3): pinned board, team sheet, player sheets.
 export default function SquadTab({ state, dispatch, clubSeason, revealed, suspended, prefs, onDismissNote }) {
   const [target, setTarget] = useState(null);
   const open = (kind, id) => setTarget({ kind, id });

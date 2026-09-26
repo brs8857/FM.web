@@ -66,7 +66,6 @@ export function selectFamiliarity(live, instructions, formationKey, memory = nul
   return computeFamiliarity(live, instructions, formationKey, memory);
 }
 
-// The part of cohesion that comes from seasons in the same system.
 export function selectMemory(state) {
   const memory = state.cohesionMemory ?? EMPTY_MEMORY;
   return { seasons: memory.seasons, bonus: memoryBonus(memory, state.formationKey, identityKey(state.instructions)) };
@@ -91,8 +90,6 @@ export function selectBlockingBan(state) {
   return cover ? selectSuspended(state)[0] ?? null : null;
 }
 
-// What the next fixture's cohesion gains or loses from matches already played
-// in this system (spec 07 §4.3).
 export function selectSettling(state) {
   return settling(state.cohesionMemory ?? EMPTY_MEMORY, state.formationKey, state.instructions);
 }
@@ -138,18 +135,6 @@ export function selectTopScorers(log, n = 3) {
   return [...tally.values()].sort((a, b) => b.goals - a.goals || a.name.localeCompare(b.name)).slice(0, n);
 }
 
-// The v1 draft screen still speaks wheel/pool; the first cutting stands in
-// for the landed club-season until B11 retires it.
-export function selectLegacyWheel(state) {
-  const { spinning, options } = state.draw;
-  const first = options[0];
-  return {
-    wheel: { spinning, landed: first ? { year: first.year, clubId: first.clubId, label: first.label } : null },
-    pool: first ? first.players : [],
-    poolRelaxed: first ? first.relaxed : false,
-  };
-}
-
 // The record: every completed season, plus the one just played while its
 // result is still on screen (it joins seasonHistory when the window opens).
 export function selectSeasonHistory(state, summarize) {
@@ -164,8 +149,7 @@ export function tacticUntouched(state) {
     && Object.keys(DEFAULT_INSTRUCTIONS).every((k) => state.instructions[k] === DEFAULT_INSTRUCTIONS[k]);
 }
 
-// The one action that moves the career on (spec 04 §4.2). `tab` is the Club
-// tab that holds it; null while the career is still being set up.
+// `tab` is null while the career is still being set up.
 export function selectNextAction(state, clubName = (name) => name) {
   const { phase, season } = state;
   switch (phase) {

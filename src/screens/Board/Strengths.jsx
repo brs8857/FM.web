@@ -6,16 +6,13 @@ import { tacticalReadout } from "../../engine/readout.js";
 import { rivalStrength } from "../../engine/match.js";
 import styles from "./Board.module.css";
 
-// The match engine measures the profile against each rival's effective
-// strength (this season's squad blended with its history), so the tick on
-// every bar is the average of those nineteen numbers.
+// The tick is the average of the strengths the match engine plays you against.
 export function opponentsAverage(opponents) {
   if (!opponents?.length) return null;
   return opponents.reduce((sum, o) => sum + rivalStrength(o), 0) / opponents.length;
 }
 
-// `reference` ({ value, label }) replaces the rivals' average with one
-// opponent's strength, for the fixture card.
+// `reference` puts one opponent's strength in place of the average (the fixture card).
 export default function Strengths({ profile, familiarity, instructions, opponents, reference, notes = 3 }) {
   const id = useId();
   const tick = reference ?? { value: opponentsAverage(opponents), label: "average opponent" };

@@ -7,10 +7,7 @@ export const USER_TEAM_NAME = "Your XI";
 export const SEASON_WEEKS = 38;
 export const HALF_SEASON = 19;
 
-// Standard "circle method" round-robin scheduler. Produces 2*(n-1) rounds for
-// n teams, each round a full set of pairings, second half mirrored home/away —
-// exactly how a real top-flight fixture list is constructed, rather than
-// randomly grouping matches by opponent.
+// The circle method: 2(n-1) rounds, the second half the first with venues swapped.
 export function roundRobinSchedule(teamIds) {
   const n = teamIds.length;
   const fixed = teamIds[0];

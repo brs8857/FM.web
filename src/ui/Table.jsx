@@ -1,8 +1,6 @@
 import { cx } from "./cx.js";
 import styles from "./Table.module.css";
 
-// A newsprint table: caption, column headers, tabular mono numbers, one
-// optional highlighted row (yours).
 export default function Table({ caption, captionHidden = false, columns, rows, rowKey, isHighlighted, dense = false }) {
   return (
     <div className={styles.wrap}>

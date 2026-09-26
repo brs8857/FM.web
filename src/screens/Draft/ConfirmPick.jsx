@@ -10,7 +10,6 @@ function signed(n) {
   return n > 0 ? `+${n}` : String(n);
 }
 
-// The confirm sheet: what this pick does to the squad strip, then Pick.
 export default function ConfirmPick({ player, preview, clubSeason, onClose, onPick }) {
   const position = preview ? (POSITION_LABEL[preview.type] ?? preview.type).toLowerCase() : "";
   const effects = [];

@@ -11,7 +11,6 @@ const THEMES = [{ key: "system", label: "System" }, { key: "light", label: "Ligh
 const MOTION = [{ key: "system", label: "System" }, { key: "on", label: "Reduce" }, { key: "off", label: "Full" }];
 const CLUB_NAMES = [{ key: "real", label: "Real" }, { key: "edited", label: "Edited" }];
 
-// Per-device preferences (spec 04 §5.7).
 export default function Settings({ prefs, setPrefs }) {
   const { canInstall, install, installed, iosHint } = useInstallPrompt();
   return (

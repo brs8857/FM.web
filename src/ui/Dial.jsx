@@ -5,8 +5,6 @@ import { MinusIcon, PlusIcon } from "./icons.jsx";
 import { cx } from "./cx.js";
 import styles from "./Dial.module.css";
 
-// A slider with the value label, −/+ steppers (5 units) and an ⓘ that opens
-// the term sheet. No hover tooltips.
 export default function Dial({ label, value, onChange, min = 0, max = 100, step = 5, leftLabel, rightLabel, valueLabel, term, disabled }) {
   const id = useId();
   const set = (v) => onChange(Math.max(min, Math.min(max, v)));

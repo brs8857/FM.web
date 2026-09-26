@@ -19,9 +19,6 @@ export function eligibleSlots(assignments, player) {
   return (matching.length > 0 ? matching : assignments).map((a) => a.slotId);
 }
 
-// The transfer window (spec 04 §5.5, plan C4): eight candidates as cuttings,
-// each costing wage points from a budget set by last season's finish;
-// Replace highlights the eligible slots on the pinned chalkboard.
 export default function Window({ state, dispatch, clubSeason, clubName, prefs, onDismissNote }) {
   const announce = useAnnounce();
   const [target, setTarget] = useState(null);

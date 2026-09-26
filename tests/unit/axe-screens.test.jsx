@@ -41,7 +41,9 @@ function mount(state, extra = {}) {
 
 afterEach(cleanup);
 
-describe("axe: every screen", () => {
+// Each case runs axe several times; the default 5 s is too tight when the
+// whole suite shares the machine, and a timed-out run leaves axe busy for the next.
+describe("axe: every screen", { timeout: 30_000 }, () => {
   it("first run", async () => {
     mount(null, firstRunPrefs);
     await check("first run");

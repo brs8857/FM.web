@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { describe, it, expect } from "vitest";
-import { selectEraIndex, liveAssignments, selectNextAction, selectLegacyWheel, selectSeasonHistory, selectTopScorers } from "./selectors.js";
+import { selectEraIndex, liveAssignments, selectNextAction, selectSeasonHistory, selectTopScorers } from "./selectors.js";
 import { makeMiniDataset } from "../../tests/fixtures/miniDataset.js";
 import { makeInitialState } from "./initialState.js";
 import { CAREER_SEASONS } from "../engine/season.js";
@@ -23,18 +23,7 @@ describe("selectors", () => {
   });
 });
 
-describe("compatibility and record selectors", () => {
-  const player = { id: "p", name: "Tony Adams" };
-  const option = { year: "2000", clubId: "1", label: "Alpha FC 2000-01", players: [player], relaxed: true };
-
-  it("presents the first cutting as the legacy wheel", () => {
-    const state = makeInitialState(makeMiniDataset(), 1);
-    expect(selectLegacyWheel(state)).toEqual({ wheel: { spinning: false, landed: null }, pool: [], poolRelaxed: false });
-    expect(selectLegacyWheel({ ...state, draw: { spinning: true, options: [], redrawsLeft: 2 } }).wheel.spinning).toBe(true);
-    expect(selectLegacyWheel({ ...state, draw: { spinning: false, options: [option, { ...option, clubId: "2" }], redrawsLeft: 2 } }))
-      .toEqual({ wheel: { spinning: false, landed: { year: "2000", clubId: "1", label: "Alpha FC 2000-01" } }, pool: [player], poolRelaxed: true });
-  });
-
+describe("record selectors", () => {
   it("adds the season on screen to the record until the window opens", () => {
     const state = makeInitialState(makeMiniDataset(), 1);
     const summarize = (s) => ({ season: s.season, pts: 70 });

@@ -17,7 +17,6 @@ export const ERA_PRESETS = [
   { key: "modern", label: "Modern era", min: 2020, max: 2024 },
 ];
 
-// New career, step 1 (spec 04 §4.1): the seasons the draw comes from.
 export default function Era({ eraMin, eraMax, index, onSetEra }) {
   const preset = ERA_PRESETS.find((p) => p.min === eraMin && p.max === eraMax)?.key ?? "custom";
   const count = useMemo(() => selectEraIndex(index, eraMin, eraMax).length, [index, eraMin, eraMax]);

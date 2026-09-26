@@ -1,9 +1,8 @@
 import { cx } from "./cx.js";
 import styles from "./Ticker.module.css";
 
-// The vidiprinter: a monospaced feed, newest line at the bottom, the latest
-// line typing in block by block. It only announces when `announce` is on
-// (paused or at the half-season slip), never per tick.
+// Announcing every tick would drown a screen reader, so callers turn
+// `announce` on only when the feed stops.
 export default function Ticker({ lines, label = "Vidiprinter", announce = false, cursor = false, maxLines }) {
   const shown = maxLines ? lines.slice(-maxLines) : lines;
   return (

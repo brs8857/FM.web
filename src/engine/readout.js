@@ -1,4 +1,3 @@
-/* ------------------------------ Plain-English readout ---------------------- */
 export function tacticalReadout(profile, instructions, familiarity) {
   const notes = [];
   const { mentality: men, press: pr, line: ln, tempo: tem, directness: dir, width: wid, counter: ctr, crossing: crs, offsideTrap: trap } = instructions;

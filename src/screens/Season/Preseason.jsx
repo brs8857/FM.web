@@ -6,9 +6,6 @@ import { selectMemory, selectSettling } from "../../state/selectors.js";
 import { t } from "../../content/t.js";
 import styles from "./Season.module.css";
 
-// Pre-season (spec 04 §5.5): the opponents with the promoted clubs marked,
-// who retired over the summer, the identity and cohesion, and a nudge to
-// the Board when nothing is set.
 export default function Preseason({ state, identity, familiarity, tacticUntouched, clubName, onGoBoard }) {
   const promoted = new Set(state.lastTransition?.promoted ?? []);
   const retired = state.lastTransition?.retired ?? [];

@@ -16,8 +16,6 @@ import { selectEraIndex, liveAssignments, selectTopScorers, selectSuspended, sel
 
 const idleDraw = (draw) => ({ ...draw, spinning: false, options: [] });
 
-// A shortlist entry the club can still sign, with the state changes every
-// signing shares: the entry marked, the cost spent, the player owned.
 function affordableSigning(state, index) {
   const entry = state.shortlist[index];
   if (!entry || entry.signed) return null;
@@ -226,9 +224,6 @@ export function createReducer(dataset) {
         return { ...state, instructions: { ...preset.instructions }, selectedStyle: preset.key };
       }
       case "MOVE_PLAYER": {
-        // Literal free positioning: drag a slot's marker to any point on the pitch.
-        // The player standing there moves with it; nobody else is affected. This is
-        // the main lever for hand-crafting exactly how the team lines up.
         const x = clamp(action.x, 3, 97), y = clamp(action.y, 5, 95);
         const assignments = state.assignments.map((a) => a.slotId === action.slotId ? { ...a, pos: { x, y } } : a);
         return { ...state, assignments };
@@ -242,11 +237,8 @@ export function createReducer(dataset) {
         return { ...state, assignments };
       }
       case "SWAP_PLAYERS": {
-        // Drag-and-drop repositioning on the tactics pitch: swap the players (and
-        // bench entries) sitting in two slots/bench-spots. Each player keeps their
-        // stats, but role/duty/sliders reset to sensible defaults for their new
-        // slot's position category, since e.g. a striker's role list doesn't apply
-        // to a full-back slot.
+        // Jobs, briefs and dials reset to the new slot's defaults: a striker's
+        // jobs mean nothing in a full-back slot.
         const { fromKind, fromId, toKind, toId } = action;
         if (fromKind === "slot" && toKind === "slot") {
           if (fromId === toId) return state;

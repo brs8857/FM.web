@@ -13,9 +13,7 @@ function focusables(root) {
   return root ? [...root.querySelectorAll(FOCUSABLE)] : [];
 }
 
-// Bottom sheet: a modal dialog with a focus trap, Escape, backdrop tap and a
-// swipe-down of more than 80 px to close. Focus returns to the opener on close.
-// Sheets nest (a Term inside a Term): each handles its own Escape and stops it.
+// Sheets nest (a Term inside a Term), so each stops its own Escape.
 export default function Sheet({ open, onClose, title, children, footer, size = "md" }) {
   const panelRef = useRef(null);
   const openerRef = useRef(null);

@@ -1,6 +1,5 @@
 import styles from "./Meter.module.css";
 
-// The cohesion meter: a value out of 100 with its word ("Settled").
 export default function Meter({ label, value, valueLabel, min = 0, max = 100, showValue = false }) {
   const pct = ((value - min) / (max - min)) * 100;
   return (

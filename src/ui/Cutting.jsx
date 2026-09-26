@@ -1,8 +1,6 @@
 import { cx } from "./cx.js";
 import styles from "./Cutting.module.css";
 
-// A newsprint cutting: one club-season on the desk. Interactive when it can
-// be opened (the draft's team sheet); static otherwise.
 export default function Cutting({ kicker, title, subtitle, note, onOpen, selected = false, children, className }) {
   const body = (
     <>

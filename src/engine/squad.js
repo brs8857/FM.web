@@ -6,9 +6,6 @@ export function nextEmptySlotIndex(assignments) {
   return assignments.findIndex((a) => !a.player);
 }
 
-// Once the starting XI is complete, automatically pull a bench from the same
-// club-seasons that were drafted from (a backup keeper first, then the best
-// remaining outfield players).
 export function autoFillBench(getSquad, assignments, draftedIds, ownedIdentities = []) {
   const usedSeasons = [...new Set(assignments.map((a) => a.player.seasonKey))];
   const dids = new Set(draftedIds);
@@ -31,7 +28,6 @@ export function autoFillBench(getSquad, assignments, draftedIds, ownedIdentities
   return { bench: bench.map((p) => ({ player: p, role: null, duty: null })), draftedIds: dids };
 }
 
-/* --------------------------- The window's budget -------------------------- */
 export const WINDOW_CANDIDATES = 8;
 const COST_BANDS = [[90, 5], [84, 4], [78, 3], [72, 2]];
 const BUDGET_BY_FINISH = [[1, 9], [4, 8], [7, 7], [17, 6]];
@@ -78,9 +74,7 @@ export function generateShortlist(getSquad, index, { eraMin, eraMax }, ownedIds,
   return picked;
 }
 
-// Sign a new player into the XI at a given slot, sending whoever was there
-// to the bench (bumping the weakest bench player out to make room if it's
-// already full of 6).
+// A full bench of six loses its weakest player to make room.
 export function signToSlot(assignments, bench, slotId, newPlayer) {
   const outgoing = assignments.find((a) => a.slotId === slotId)?.player || null;
   const role = defaultRoleFor(assignments.find((a) => a.slotId === slotId).type);

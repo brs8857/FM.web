@@ -10,9 +10,7 @@ import BackPage from "./BackPage.jsx";
 import Window from "./Window.jsx";
 import styles from "./Season.module.css";
 
-// The Season tab (spec 07 §7.1): pre-season, the reveal, match day, the
-// back page and the window, one screen switching on the phase. `feed` is the
-// first week of a fast-forward still typing in on the vidiprinter.
+// `feed` is the first week of a fast-forward still typing in on the vidiprinter.
 export default function SeasonTab({ state, dispatch, identity, familiarity, profile, tacticUntouched, instant, feed, onFeedDone, careerCode, clubSeason, clubName, prefs, onDismissNote, onGoBoard, onGoTab }) {
   const { campaign, opponents } = state;
   const standingAt = useCallback((week) => selectTable({ campaign, opponents }, week).find((r) => r.isUser), [campaign, opponents]);

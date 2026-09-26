@@ -2,7 +2,6 @@ import { ArrowIcon } from "./icons.jsx";
 import { cx } from "./cx.js";
 import styles from "./NextPill.module.css";
 
-// The one "Next" action on every Club screen (spec 04 §4.2).
 export default function NextPill({ label, onClick, disabled, className }) {
   return (
     <button type="button" className={cx(styles.pill, className)} onClick={onClick} disabled={disabled}>

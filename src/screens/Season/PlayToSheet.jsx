@@ -16,8 +16,6 @@ export function playToOptions(week) {
   return options;
 }
 
-// Fast-forward (spec 07 §7.4): plays a run of fixtures with the board as it
-// stands, then types them in on the vidiprinter.
 export default function PlayToSheet({ open, onClose, week, onPlay }) {
   const [until, setUntil] = useState("next");
   const options = playToOptions(week);

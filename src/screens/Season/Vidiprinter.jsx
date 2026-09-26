@@ -29,12 +29,8 @@ export function positionText(week, row) {
   return t("season.position", { week, position: ordinal(row.position), pts: row.pts });
 }
 
-// The fast-forward feed (spec 07 §7.4): the fixtures a Play to… has just
-// played, from week `from` to the end of the log, type in with the real
-// table in the sticky bar; Pause and Skip; a half-season slip when the feed
-// crosses week 19. The results are already decided and saved, so this is
-// only the telling. `standingAt(week)` is your table row after that week.
-// Announcements happen only at pauses, never per tick.
+// The results are already decided and saved when this runs; it only tells
+// them. Announcements wait for a pause, never one per tick.
 export default function Vidiprinter({ log, from = 1, season, instant, clubName, standingAt, onDone }) {
   const announce = useAnnounce();
   const matches = log.slice(from - 1);

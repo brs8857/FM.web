@@ -54,9 +54,7 @@ function FormStrip({ matches }) {
   );
 }
 
-// One season of the record (spec 07 §8.2): the verdict, its form, who scored,
-// and every match with its report. Seasons played before the match log have
-// only the verdict.
+// Seasons played before 2.7.0 have no match log, only the verdict.
 function SeasonSheet({ season, clubName, onClose }) {
   const logged = season.matches?.length > 0;
   const scorers = logged ? selectTopScorers(season.matches, 3) : [];
@@ -85,9 +83,6 @@ function SeasonSheet({ season, clubName, onClose }) {
   );
 }
 
-// The record (spec 04 §5.7, 07 §8.2): every completed season, each opening
-// its season sheet, plus the career totals. `complete` also lists each
-// season's top scorer, for the career-complete slip.
 export default function Record({ history, clubName = (name) => name, complete = false }) {
   const [open, setOpen] = useState(null);
   const summary = recordSummary(history);

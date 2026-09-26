@@ -55,7 +55,6 @@ const SETUP_STEPS = {
   club: { subtitle: "3 of 3 · Colours", next: "Start the draft" },
 };
 
-// Next actions that are a single reducer action.
 const NEXT_ACTIONS = {
   kickOff: { type: "START_SEASON" },
   startSeason: { type: "KICKOFF" },
@@ -64,9 +63,7 @@ const NEXT_ACTIONS = {
   closeWindow: { type: "CONTINUE_SEASON" },
 };
 
-// The app: owns the reducer, autosave, navigation and preferences, and
-// renders the screens inside the shell. `?gallery=1` shows the primitive
-// gallery instead. `prefs` overrides what storage holds (tests).
+// `storage`, `prefs` and `search` are injected by tests; the app reads its own.
 export default function App({ dataset, storage: storageProp, prefs, search }) {
   const [storage] = useState(() => (storageProp !== undefined ? storageProp : getStorage()));
   const [query] = useState(() => new URLSearchParams(search ?? (typeof window === "undefined" ? "" : window.location.search)));

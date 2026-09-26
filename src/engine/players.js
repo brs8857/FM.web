@@ -41,7 +41,6 @@ export function rowToPlayer(row, seasonKey) {
   };
 }
 
-/* ------------------------------ Ageing ------------------------------------ */
 export const RETIREMENT_AGE = 36;
 const YOUNGEST_KNOWN_AGE = 15;
 
@@ -80,7 +79,6 @@ export function retires(player) {
   return player.age != null && player.age >= RETIREMENT_AGE;
 }
 
-/* -------------------------- Pool / slot matching -------------------------- */
 export function slotAccepts(slotType, player) {
   if (slotType === "ANY") return true;
   return player.slot === slotType;
@@ -99,15 +97,11 @@ export function createSquadLookup(dataset) {
 
 export function buildPool(getSquad, year, clubId, slotType, side, draftedIds, ownedIdentities = []) {
   const squad = getSquad(year, clubId);
-  // Strict position matching: a GK slot only offers goalkeepers from that exact
-  // club season, a CB slot only offers centre-backs, etc. The only fallback is
-  // for the rare case a squad has zero tagged players of that exact category
-  // left — then we open up to the rest of the available squad.
+  // A squad with nobody left for the slot offers everyone, flagged as relaxed.
   const available = (p) => !draftedIds.has(p.id) && !isOwnedIdentity(ownedIdentities, p);
   let pool = squad.filter((p) => available(p) && slotAccepts(slotType, p));
   let relaxed = false;
   if (pool.length === 0) { pool = squad.filter(available); relaxed = true; }
-  // prefer matching side first, then by overall
   pool.sort((a, b) => {
     if (side) {
       const aSide = a.side === side ? 1 : 0;

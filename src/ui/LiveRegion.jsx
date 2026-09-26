@@ -2,9 +2,7 @@ import { createContext, useCallback, useContext, useMemo, useState } from "react
 
 const AnnounceContext = createContext(() => {});
 
-// One polite live region for the whole app. `useAnnounce()` returns a function
-// that speaks a message (moves, swaps, draws, results); repeating the same
-// message still announces because each call remounts the text.
+// Each call remounts the text, so repeating a message still announces it.
 export default function LiveRegion({ children }) {
   const [message, setMessage] = useState({ text: "", n: 0 });
   const announce = useCallback((text) => setMessage((m) => ({ text, n: m.n + 1 })), []);

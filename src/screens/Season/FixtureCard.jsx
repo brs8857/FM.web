@@ -14,8 +14,6 @@ export function standing(fixture) {
   return parts.join(" · ") || "Opening day";
 }
 
-// The next fixture (spec 07 §7.2): who, where, how they stand, your
-// strengths against this opponent's, and what the board's cohesion is for it.
 export default function FixtureCard({ fixture, profile, familiarity, instructions, identity, memory, settle, clubName, onGoBoard, onGoSquad }) {
   const name = clubName(fixture.name);
   return (

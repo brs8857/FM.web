@@ -42,8 +42,6 @@ export function slipFor(state, code) {
   };
 }
 
-// The back page (spec 04 §5.5): headline, standfirst, record, the table and
-// matches under the fold, strengths, Share.
 export default function BackPage({ state, careerCode, clubName, opponents }) {
   const rail = useMediaQuery(RAIL_QUERY);
   const [toast, setToast] = useState(null);

@@ -1,8 +1,6 @@
 import { cx } from "./cx.js";
 import styles from "./StrengthBars.module.css";
 
-// Six horizontal bars replacing the radar (spec 04 §5.4): each shows a
-// reference tick (the opponents' average) so the number means something.
 export default function StrengthBars({ bars, referenceLabel = "opponents' average", max = 100 }) {
   return (
     <ul className={styles.list}>

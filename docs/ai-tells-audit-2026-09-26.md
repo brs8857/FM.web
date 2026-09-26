@@ -53,4 +53,47 @@ only their search summaries were read. Colour provenance:
 
 ## 2. Findings and changes
 
-_Appended per group below as the work lands._
+### 2.1 Code hygiene (C1–C3)
+
+Found:
+- **What-comments everywhere (C1).** Nearly every component opened with a
+  docblock listing what it renders ("The Squad tab (spec 04 §5.3): pinned
+  board, team sheet, player sheets."), the pattern of one agent pass per
+  file. The engine's comments were in a sales voice: "genuinely" eight
+  times, "meaningfully", "a big, visible lever", "masterfully drilled",
+  "there's no scripted script to any of it", `--- Section ---` and
+  `/* ==== */` banners. One was stale: `tactics.js` still described the
+  profile as feeding "the radar chart", which 2.0.0 replaced with bars.
+- **Dead code (C2).** `SLOT_TYPE_LABEL` in `engine/formations.js` (the v1
+  labels, "Full-Back / Wing-Back", only a test read it);
+  `selectLegacyWheel` in `state/selectors.js` (kept "until B11 retires
+  it"; B11 shipped in 2.0.0); `splitTopLevel` in `content/t.js`, exported
+  as `_splitTopLevel` and never called; `PauseIcon` and `PlayIcon`; four
+  string keys nobody reads (`shell.preview` "redesign preview",
+  `draft.progress`, `squad.eras`, `season.unbeaten`); two term sheets
+  nothing opens (`blank-slate`, `stat-bands`); `scripts/extract-data.mjs`,
+  a one-off that edits `src/App.jsx`, which no longer exists.
+- No TODO/FIXME or commented-out code. The only `console` call in `src` is
+  the crash log in `ErrorBoundary`, which is deliberate.
+- A flaky gate: `tests/unit/axe-screens.test.jsx` runs axe several times
+  per case and timed out at vitest's 5 s default when the whole suite ran,
+  then failed the next case with "Axe is already running".
+
+Changed (commit below):
+- Removed about 110 what-comments across 60 files in `src/app`, `src/ui`,
+  `src/screens`, `src/content`, `src/state`, `src/engine` and the CSS;
+  where a comment carried a reason, it was cut down to the reason (why a
+  prop exists, why a catch is empty, why a key remounts, why compression
+  runs once). The engine edits are comment-only: `npm test`'s golden
+  profile and season checks pass unchanged.
+- Deleted the dead code above; `basics.test.js` now checks slot types
+  against the live `POSITION_LABEL`. De-exported `isStandalone` and
+  `LOCALE`, which only their own files use.
+- Gave the axe suite a 30 s timeout.
+
+Left alone: `src/pitch/**` (the orchestrator is changing the chalkboard
+layout there), `src/screens/Draft/Draw.jsx`, `Draft.jsx` and
+`src/app/FirstRun.jsx` (changed on `claude/zen-feynman-hler0e`), to be
+done after the merge. Engine constants exported only for their own file
+(`HOME_ADVANTAGE`, `STOPPAGE_CHANCE`, …) stay exported: they are the
+tunables `sim.mjs` users look for.

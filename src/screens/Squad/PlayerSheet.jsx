@@ -20,9 +20,6 @@ export function entryFor(state, target) {
   return target.kind === "slot" ? state.assignments.find((a) => a.slotId === target.id) : state.bench[target.id];
 }
 
-// The player sheet (spec 04 §5.3): identity, five-band stats, job, brief, the
-// two personal dials, and Swap with…. `revealed` shows the overall once the
-// season has kicked off.
 export default function PlayerSheet({ target, state, dispatch, clubSeason, revealed = false, editable = true, onClose }) {
   const announce = useAnnounce();
   const [swapping, setSwapping] = useState(false);

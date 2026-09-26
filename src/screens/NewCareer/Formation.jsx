@@ -15,7 +15,6 @@ function MiniShape({ slots }) {
   );
 }
 
-// New career, step 2: the shape that sets the eleven draft slots.
 export default function Formation({ formationKey, onPick }) {
   const index = Math.max(0, KEYS.indexOf(formationKey));
   const onKeyDown = useRovingKeys({ count: KEYS.length, index, onMove: (i) => onPick(KEYS[i]), selector: '[role="radio"]' });

@@ -3,10 +3,8 @@ import { clubTheme, clubThemeCss } from "../content/clubTheme.js";
 
 export const CLUB_THEME_ID = "club-theme";
 
-// Applies the theme and motion preferences as attributes the token sheet
-// reads, and a favourite club's derived tokens as a stylesheet after it with
-// the same three blocks, so light, dark and system switching stay in CSS.
-// Both are cleared on unmount.
+// The club theme is a stylesheet with the same three blocks as tokens.css,
+// placed after it, so switching between light, dark and system stays in CSS.
 export function useDocumentPrefs(prefs) {
   const { theme, reduceMotion, club } = prefs;
   useEffect(() => {

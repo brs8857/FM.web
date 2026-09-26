@@ -1,8 +1,6 @@
 import { cx } from "./cx.js";
 import styles from "./TeamSheetRow.module.css";
 
-// One line of a printed team sheet: position code, name, the small print
-// (age · nationality · side), the job, and an optional off-position mark.
 export default function TeamSheetRow({ code, name, meta, job, mark, selected = false, onClick, trailing, dragHandle }) {
   const content = (
     <>

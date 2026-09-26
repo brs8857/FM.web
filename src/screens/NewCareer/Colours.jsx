@@ -1,8 +1,7 @@
 import ClubPicker from "./ClubPicker.jsx";
 import styles from "./Colours.module.css";
 
-// New career, step 3: the favourite club whose colours theme the app. A
-// per-device preference, not part of the career; Settings changes it later.
+// A per-device preference, not part of the career.
 export default function Colours({ club, mode, onPick }) {
   return (
     <div className={styles.colours}>

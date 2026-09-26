@@ -5,7 +5,6 @@ import { t } from "../../content/t.js";
 import { signed } from "../Season/MatchReport.jsx";
 import styles from "./Board.module.css";
 
-// What settling does to the next match's cohesion, in words.
 export function settleNote(settle) {
   const modifier = signed(settle.modifier);
   if (settle.changed) return t("season.changed", { modifier });
@@ -14,10 +13,8 @@ export function settleNote(settle) {
   return t("season.settled", { count: settle.matches, bonus: settle.modifier > 0 ? ` (${modifier})` : "" });
 }
 
-// The identity chip and cohesion meter: the first thing on the Board, and
-// the same line in pre-season and on match day. `memory` is what the seasons
-// already played in this system add to (or a change takes from) cohesion;
-// `settle` is what the matches played in it this season do for the next one.
+// `memory` is what past seasons in this system add to cohesion (or a change
+// takes away); `settle` is what this season's matches in it do for the next.
 export default function IdentityLine({ identity, familiarity, memory, settle }) {
   return (
     <section className={styles.identity} aria-label="Identity and cohesion">

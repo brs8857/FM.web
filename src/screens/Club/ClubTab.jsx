@@ -11,8 +11,6 @@ import { careerSeasonLabel, CAREER_SEASONS } from "../../engine/season.js";
 import { clubName as displayClubName } from "../../content/clubs.js";
 import styles from "./Club.module.css";
 
-// The Club tab (spec 04 §5.7): the record, the career code, saves,
-// settings, about. A complete career shows the record as a slip.
 export default function ClubTab({ history, careerComplete, careerCode, prefs, setPrefs, onDismissNote, canExport, storageAvailable, onExport, onImportFile, onStartFromCode, onNewCareer }) {
   const clubName = (name) => displayClubName(name, prefs.clubNames);
   return (

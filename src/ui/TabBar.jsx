@@ -2,8 +2,6 @@ import { useRovingKeys } from "./useRovingKeys.js";
 import { cx } from "./cx.js";
 import styles from "./TabBar.module.css";
 
-// The Club tab bar: a bottom bar on phones, a left rail at ≥ 1024 px. Tabs are
-// a tablist with roving focus; each tab controls the panel `panel-<key>`.
 export default function TabBar({ tabs, value, onChange, orientation = "horizontal", label = "Club" }) {
   const index = Math.max(0, tabs.findIndex((t) => t.key === value));
   const onKeyDown = useRovingKeys({ count: tabs.length, index, onMove: (i) => onChange(tabs[i].key), selector: '[role="tab"]', orientation });

@@ -7,9 +7,7 @@ import styles from "./ClubPicker.module.css";
 
 const PITCH = { key: null, label: "Pitch", sub: "the default green" };
 
-// A radiogroup of the pitch theme and every club, each with its two colours
-// as a swatch. `value` is the club slug or null; `mode` picks real or edited
-// names. The swatch colours are the club's own data, not design tokens.
+// The swatches are the clubs' own colours from the data, not design tokens.
 export default function ClubPicker({ value = null, mode = "real", onChange, label = "Colours" }) {
   const options = useMemo(() => [
     PITCH,

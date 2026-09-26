@@ -1,7 +1,5 @@
 import { useCallback } from "react";
 
-// Arrow-key movement for radiogroups and tablists: moves the selection and the
-// focus together, wrapping at the ends. Home/End jump to the first/last item.
 export function useRovingKeys({ count, index, onMove, selector, orientation = "both" }) {
   return useCallback((event) => {
     if (count === 0) return;

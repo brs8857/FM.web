@@ -31,10 +31,6 @@
     "title": "Identity",
     "body": "The style the engine recognises in your dials: a gegenpress, possession control, a low-block counter, wing play, direct and vertical, or park the bus. A well-drilled identity earns a bonus in the simulation.\n\nA committed set-up that matches none of them still earns a smaller bonus. Sitting on the fence with every dial near the middle is the one thing that is punished."
   },
-  "blank-slate": {
-    "title": "Blank slate",
-    "body": "Every dial at neutral and no [[identity]] bonus. A starting point for building your own system, not a system in itself."
-  },
   "mentality": {
     "title": "Mentality",
     "body": "The master dial. Scales risk and reward across every other instruction, from Contain to All-out."
@@ -106,10 +102,6 @@
   "defensive-discipline": {
     "title": "Defensive discipline",
     "body": "How rigorously a player tracks his runner and holds his line instead of being drawn out of position. Stricter is safer and less creative."
-  },
-  "stat-bands": {
-    "title": "Stat bands",
-    "body": "Every stat shows as one of five bands, from weak to elite, and the overall rating stays hidden until kick-off. Knowing the player is the edge; reading a number is not."
   },
   "settling": {
     "title": "Settling",

@@ -2,12 +2,12 @@
 export const PREFS_KEY = "fmweb.prefs";
 
 export const DEFAULT_PREFS = {
-  theme: "system", // "system" | "light" | "dark"
-  reduceMotion: "system", // "system" | "on" | "off"
+  theme: "system",
+  reduceMotion: "system",
   haptics: true,
-  clubNames: "real", // "real" | "edited"
-  club: null, // favourite club slug whose colours theme the app, or null for the pitch theme
-  seenNotes: [], // coach's notes dismissed on this device
+  clubNames: "real",
+  club: null,
+  seenNotes: [],
 };
 
 const THEMES = new Set(["system", "light", "dark"]);

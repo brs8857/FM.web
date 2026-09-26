@@ -3,7 +3,6 @@ import Button from "../../ui/Button.jsx";
 import Toast from "../../ui/Toast.jsx";
 import styles from "./Club.module.css";
 
-// Saves (spec 04 §5.7): export and import, moved here from the old menu.
 export default function Saves({ canExport, storageAvailable, onExport, onImportFile }) {
   const [toast, setToast] = useState(null);
   const fileInput = useRef(null);

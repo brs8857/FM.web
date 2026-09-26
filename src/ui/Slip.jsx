@@ -2,7 +2,6 @@ import { useId } from "react";
 import { cx } from "./cx.js";
 import styles from "./Slip.module.css";
 
-// A printed slip: a paper panel with 4 px corners and the slip motion.
 export default function Slip({ kicker, title, children, as: Tag = "section", animate = true, className }) {
   const id = useId();
   return (

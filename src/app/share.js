@@ -20,8 +20,6 @@ function wrap(ctx, text, maxWidth) {
   return lines;
 }
 
-// Draws the verdict slip (spec 04 §7) at 1080×1350 in the current theme's
-// colours: kicker, headline, standfirst, record, the eleven, the code.
 export function renderSlip(ctx, slip) {
   const paper = cssVar("--paper", "#F5F6F3"), ink = cssVar("--ink", "#14181A"), ink2 = cssVar("--ink-2", "#4B5148");
   const rule = cssVar("--rule", "#D2D6CF"), signal = cssVar("--signal", "#2ECC71");
@@ -90,8 +88,6 @@ function toBlob(canvas) {
   return new Promise((resolve, reject) => canvas.toBlob((blob) => (blob ? resolve(blob) : reject(new Error("no image"))), "image/png"));
 }
 
-// Renders the slip and hands it to the system share sheet; without one, the
-// PNG downloads and the text line goes to the clipboard.
 export async function shareSlip(slip, { nav = navigator, doc = document, createCanvas = () => doc.createElement("canvas") } = {}) {
   if (doc.fonts?.load) await Promise.allSettled([doc.fonts.load('800 150px "Barlow Condensed"'), doc.fonts.load('600 34px "IBM Plex Mono"'), doc.fonts.load('400 42px "Barlow"')]);
   const canvas = createCanvas();

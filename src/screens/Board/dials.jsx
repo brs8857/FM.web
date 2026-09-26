@@ -2,8 +2,8 @@ import Dial from "../../ui/Dial.jsx";
 import { DIAL_LABEL, DIAL_ENDS, DIAL_TERM, mentalityLabel } from "../../content/labels.js";
 import styles from "./Board.module.css";
 
-// One instruction dial. A key that changed with the last preset remounts
-// with the slip motion so the player sees what moved.
+// A dial the last preset moved remounts with the slip motion, so the player
+// sees what changed.
 export function InstructionDial({ instructions, dialKey, pulse, onSet }) {
   const value = instructions[dialKey];
   const [left, right] = DIAL_ENDS[dialKey];
@@ -16,8 +16,7 @@ export function InstructionDial({ instructions, dialKey, pulse, onSet }) {
   );
 }
 
-// A one-line summary of a group's dials: the end words past a third either
-// way, or "all at neutral".
+// A dial is named in the summary once it is past a third either way.
 export function summarize(instructions, keys, extras = []) {
   const words = keys.map((k) => {
     const v = instructions[k];

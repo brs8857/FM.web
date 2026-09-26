@@ -5,8 +5,6 @@ import styles from "./RangeSlider.module.css";
 
 const STEP_KEYS = { ArrowLeft: -1, ArrowDown: -1, ArrowRight: 1, ArrowUp: 1, PageDown: -5, PageUp: 5 };
 
-// Two handles, each a role="slider" with arrow, Page and Home/End keys, plus
-// pointer dragging on the track. `format` turns a value into its label.
 export default function RangeSlider({ label, min, max, valueMin, valueMax, onChange, format = String }) {
   const trackRef = useRef(null);
   const [dragging, setDragging] = useState(null);
