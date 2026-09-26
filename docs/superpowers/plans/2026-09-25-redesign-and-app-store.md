@@ -29,6 +29,7 @@
 | C. Career depth, part 1 | **v2.5** (web) | real league, ageing, cohesion memory, window constraint, balance thresholds | B (UI has the record book and strengths bars ready) |
 | D. Native shell | **v3.0 beta** (TestFlight) | platform adapter, Capacitor project, native storage, IAP + free-tier gate, privacy manifest, policy | B (native-feel), C (career worth buying) |
 | E. App Store release | **v3.0** | listing, age rating, rights sign-off, submission; then iCloud sync, dailies (Android: out of scope, see owner sign-off above) | D |
+| G. Bench draft and league bans | **v2.8** (web) | ten-pick bench draft from any position, Premier League ban thresholds, auto-cover in Play to… | F; spec [08](../specs/2026-09-26-08-bench-draft-and-bans.md) awaiting sign-off |
 
 The roadmap's Phase 2 remainder (own-club relegation, matchups,
 difficulty, open-ended careers) and Phase 3 (match day) follow as v4.0
@@ -302,3 +303,22 @@ after C1's re-record. `profiles.json` still never changes here.
 | Stepping every match is too slow for some players | `Play to…` keeps the old pace two taps away; the pacing criterion is measured in CI |
 | The settling numbers make change never worth it (or always) | The `sim.mjs` assertion bounds it; tune the table in 07 §4.3, not the synergy |
 | Save size with the match log | Lean entries, `order` not fixtures, rivals derived; ~55 KB for six seasons against the 512 KB guard |
+
+## Milestone G — Bench draft and league bans (spec 08, awaiting sign-off)
+
+**Goal:** the draft goes on for ten bench picks from random club-seasons,
+any position; bans follow the Premier League's thresholds; Play to… can
+cover a ban from the bench without stopping. Detail, measurements and the
+defaulted decisions G1–G11 are in
+[08 Bench draft and bans](../specs/2026-09-26-08-bench-draft-and-bans.md).
+
+**Depends on:** F shipped (v2.7.0). Takes save v5.
+
+**Global constraints:** no change to `simulateMatch`, `profiles.json`,
+`seasons.json` or the `sim.mjs` balance cells; XI draws for a career code
+stay as in v2.7.
+
+- **G1 Engine:** bench pool, league-ban rule with the red split, cover choice, bench of ten (08 §9).
+- **G2 State:** draft stages, bench draw and redraws, fill, auto-cover and covers, save v5 with migrations.
+- **G3 Screens:** bench stage of the draft, Squad tab bench of ten, Play to… toggle, cover-first swap sheet, report, feed and player-sheet lines.
+- **G4 Measure and release:** `sim.mjs --bans` (4–7 a season), e2e with auto-cover on and off, changelog, v2.8.0.
