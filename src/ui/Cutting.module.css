@@ -27,6 +27,7 @@
   font-weight: 800;
   font-size: var(--text-lg);
   line-height: 1.15;
+  overflow-wrap: anywhere;
 }
 .subtitle {
   font-size: var(--text-sm);

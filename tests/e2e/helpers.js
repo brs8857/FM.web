@@ -101,10 +101,15 @@ export async function coverBans(page) {
   }
 }
 
-// Plays on to the back page, covering any ban that stops a run.
+// Plays on to the back page, covering any ban that stops a run. Each round
+// first waits for the screen a run ends on (the back page, match day or a
+// ban to answer), since the back page appears a moment after the feed ends.
 export async function finishSeason(page) {
+  const share = page.getByRole("button", { name: "Share" });
+  const landed = share.or(page.getByRole("button", { name: "Play to…" })).or(page.getByRole("button", { name: /^Replace .+ \(suspended\)$/ }));
   for (let i = 0; i < 40; i++) {
-    if (await page.getByRole("button", { name: "Share" }).isVisible().catch(() => false)) return;
+    await landed.first().waitFor({ timeout: 20_000 });
+    if (await share.isVisible().catch(() => false)) return;
     await coverBans(page);
     await playTo(page, "The end of the season");
     await page.waitForTimeout(200);
@@ -139,7 +144,16 @@ export async function expectInViewport(page, locator) {
   expect(box.y + box.height).toBeLessThanOrEqual(viewport.height);
 }
 
+// Waits out any finite animation first (a sheet fades in over --motion-slip):
+// a scan mid-fade reads the text over the backdrop and reports contrast
+// the settled page doesn't have. Looping ones (the cursor, the pulse) never end.
+export async function settle(page) {
+  await page.waitForFunction(() => document.getAnimations()
+    .every((a) => a.playState !== "running" || a.effect?.getComputedTiming().iterations === Infinity));
+}
+
 export async function expectAxeClean(page, name) {
+  await settle(page);
   const results = await new AxeBuilder({ page }).analyze();
   const bad = results.violations.filter((v) => v.impact === "serious" || v.impact === "critical");
   expect(bad.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(" ")).join(", ")}`), `${name}: axe`).toEqual([]);
