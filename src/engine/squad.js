@@ -6,26 +6,17 @@ export function nextEmptySlotIndex(assignments) {
   return assignments.findIndex((a) => !a.player);
 }
 
-export function autoFillBench(getSquad, assignments, draftedIds, ownedIdentities = []) {
-  const usedSeasons = [...new Set(assignments.map((a) => a.player.seasonKey))];
-  const dids = new Set(draftedIds);
-  let remaining = [];
-  usedSeasons.forEach((sk) => {
-    const [year, clubId] = sk.split("_");
-    getSquad(year, clubId).forEach((p) => { if (!dids.has(p.id)) remaining.push(p); });
-  });
-  const identities = [...ownedIdentities];
-  const free = (p) => !dids.has(p.id) && !isOwnedIdentity(identities, p);
-  const gk = remaining.filter((p) => p.slot === "GK" && free(p)).sort((a, b) => b.ov - a.ov)[0];
-  const others = remaining.filter((p) => p.slot !== "GK").sort((a, b) => b.ov - a.ov);
-  const bench = [];
-  if (gk) { bench.push(gk); dids.add(gk.id); identities.push(playerIdentity(gk)); }
-  for (const p of others) {
-    if (bench.length >= 6) break;
-    if (!free(p)) continue;
-    bench.push(p); dids.add(p.id); identities.push(playerIdentity(p));
-  }
-  return { bench: bench.map((p) => ({ player: p, role: null, duty: null })), draftedIds: dids };
+export const BENCH_SIZE = 10;
+
+// "Fill the bench for me": the best-rated player on offer across a draw,
+// except that a bench still without a keeper at its last pick takes the best
+// keeper on offer. Returns null when the draw has nobody who qualifies.
+export function fillPick(options, bench) {
+  const offered = options.flatMap((o) => o.players);
+  const lastPick = bench.length === BENCH_SIZE - 1;
+  const needKeeper = lastPick && !bench.some((b) => b.player?.slot === "GK");
+  const pool = needKeeper ? offered.filter((p) => p.slot === "GK") : offered;
+  return pool.reduce((best, p) => (!best || p.ov > best.ov ? p : best), null);
 }
 
 export const WINDOW_CANDIDATES = 8;
@@ -74,7 +65,7 @@ export function generateShortlist(getSquad, index, { eraMin, eraMax }, ownedIds,
   return picked;
 }
 
-// A full bench of six loses its weakest player to make room.
+// A full bench loses its weakest player to make room.
 export function signToSlot(assignments, bench, slotId, newPlayer) {
   const outgoing = assignments.find((a) => a.slotId === slotId)?.player || null;
   const role = defaultRoleFor(assignments.find((a) => a.slotId === slotId).type);
@@ -83,7 +74,7 @@ export function signToSlot(assignments, bench, slotId, newPlayer) {
     : a);
   let newBench = bench.slice();
   if (outgoing) {
-    if (newBench.length < 6) {
+    if (newBench.length < BENCH_SIZE) {
       newBench.push({ player: outgoing, role: null, duty: null });
     } else {
       let weakestIdx = 0;
@@ -94,8 +85,11 @@ export function signToSlot(assignments, bench, slotId, newPlayer) {
   return { assignments: newAssignments, bench: newBench };
 }
 
-function benchFitIndex(bench, slotType) {
-  const fits = (b, strict) => b.player && (strict ? b.player.slot === slotType : (slotType === "GK") === (b.player.slot === "GK"));
+// The best-rated bench player for a slot: the same position first, then the
+// same kind (keeper for keeper, outfield for outfield). `available` excludes
+// anyone who can't come in, such as a banned player.
+export function benchFitIndex(bench, slotType, available = () => true) {
+  const fits = (b, strict) => b.player && available(b.player) && (strict ? b.player.slot === slotType : (slotType === "GK") === (b.player.slot === "GK"));
   for (const strict of [true, false]) {
     let best = -1;
     bench.forEach((b, i) => { if (fits(b, strict) && (best < 0 || b.player.ov > bench[best].player.ov)) best = i; });
@@ -129,7 +123,7 @@ export function progressSquad(assignments, bench, rng) {
 
 export function signToBench(bench, newPlayer) {
   const entry = { player: newPlayer, role: null, duty: null };
-  if (bench.length < 6) return [...bench, entry];
+  if (bench.length < BENCH_SIZE) return [...bench, entry];
   let weakestIdx = 0;
   bench.forEach((b, i) => { if ((b.player?.ov ?? 999) < (bench[weakestIdx].player?.ov ?? 999)) weakestIdx = i; });
   const copy = bench.slice();

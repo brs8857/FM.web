@@ -1,9 +1,9 @@
 // @vitest-environment node
 import { describe, it, expect } from "vitest";
 import { makeMiniDataset } from "../../tests/fixtures/miniDataset.js";
-import { createSquadLookup } from "./players.js";
+import { createSquadLookup, buildBenchPool } from "./players.js";
 import { makeInitialAssignments } from "./formations.js";
-import { nextEmptySlotIndex, autoFillBench, generateShortlist, signToSlot, signToBench, progressSquad, wageCost, windowBudget, budgetLeft, WINDOW_CANDIDATES } from "./squad.js";
+import { nextEmptySlotIndex, fillPick, benchFitIndex, BENCH_SIZE, generateShortlist, signToSlot, signToBench, progressSquad, wageCost, windowBudget, budgetLeft, WINDOW_CANDIDATES } from "./squad.js";
 import { createRng } from "./rng.js";
 import { playerIdentity, isSameRealPlayer } from "./identity.js";
 
@@ -19,19 +19,36 @@ describe("squad", () => {
     expect(nextEmptySlotIndex(empty.map((a, i) => ({ ...a, player: squad[i] })))).toBe(-1);
   });
 
-  it("auto-fills a bench of 6 from the drafted club-seasons: backup keeper first, then best outfielders", () => {
+  it("fills a bench pick with the best player on offer, and a keeper at the last pick if there is none", () => {
+    const options = [{ players: getSquad("2000", "1").slice(1, 6) }, { players: getSquad("2001", "2").slice(0, 8) }];
+    const offered = options.flatMap((o) => o.players);
+    const best = offered.reduce((m, p) => (p.ov > m.ov ? p : m));
+    expect(fillPick(options, [])).toBe(best);
+    const outfielders = getSquad("2006", "3").filter((p) => p.slot !== "GK").slice(0, BENCH_SIZE - 1).map(entry);
+    expect(fillPick(options, outfielders).slot).toBe("GK");
+    expect(fillPick([{ players: offered.filter((p) => p.slot !== "GK") }], outfielders)).toBeNull();
+    expect(fillPick(options, [entry(getSquad("2006", "3").find((p) => p.slot === "GK")), ...outfielders.slice(1)])).toBe(best);
+  });
+
+  it("offers anyone in the squad for the bench who isn't already at the club", () => {
     const squad = getSquad("2000", "1");
-    const assignments = makeInitialAssignments("4-3-3").map((a, i) => ({ ...a, player: squad[i + 1] }));
-    const drafted = new Set(assignments.map((a) => a.player.id));
-    const { bench, draftedIds } = autoFillBench(getSquad, assignments, drafted);
-    expect(bench).toHaveLength(6);
-    expect(bench[0].player.slot).toBe("GK");
-    const outfield = bench.slice(1).map((b) => b.player.ov);
-    expect([...outfield].sort((a, b) => b - a)).toEqual(outfield);
-    for (const b of bench) {
-      expect(drafted.has(b.player.id)).toBe(false);
-      expect(draftedIds.has(b.player.id)).toBe(true);
-    }
+    const drafted = new Set(squad.slice(0, 3).map((p) => p.id));
+    const { players, relaxed } = buildBenchPool(getSquad, "2000", "1", drafted);
+    expect(relaxed).toBe(false);
+    expect(players.map((p) => p.id)).toEqual(squad.slice(3).map((p) => p.id));
+  });
+
+  it("chooses cover by position, then by kind, never someone unavailable", () => {
+    const squad = getSquad("2000", "1");
+    const bench = [squad.find((p) => p.slot === "GK"), ...squad.filter((p) => p.slot === "CB").slice(0, 2), ...squad.filter((p) => p.slot === "ST").slice(0, 1)].map(entry);
+    const cbs = bench.filter((b) => b.player.slot === "CB");
+    const bestCb = cbs.reduce((m, b) => (b.player.ov > m.player.ov ? b : m));
+    expect(bench[benchFitIndex(bench, "CB")]).toBe(bestCb);
+    const other = cbs.find((b) => b !== bestCb);
+    expect(bench[benchFitIndex(bench, "CB", (p) => p.id !== bestCb.player.id)]).toBe(other);
+    expect(bench[benchFitIndex(bench, "GK")].player.slot).toBe("GK");
+    expect(benchFitIndex(bench, "GK", (p) => p.slot !== "GK")).toBe(-1);
+    expect(bench[benchFitIndex(bench, "AM")].player.slot).not.toBe("GK");
   });
 
   it("costs a candidate by rating band and sets the budget by last season's finish", () => {
@@ -52,14 +69,14 @@ describe("squad", () => {
     }
   });
 
-  it("signs to the bench, replacing the weakest when it's full", () => {
-    const squad = getSquad("2001", "2");
-    const six = squad.slice(0, 6).map(entry);
+  it("signs to a bench of ten, replacing the weakest when it's full", () => {
+    const full = [...getSquad("2001", "2"), ...getSquad("2000", "1")].slice(0, BENCH_SIZE).map(entry);
     const newcomer = getSquad("2006", "3")[0];
-    expect(signToBench(six.slice(0, 5), newcomer)).toHaveLength(6);
-    const weakest = six.reduce((min, b) => (b.player.ov < min.player.ov ? b : min));
-    const after = signToBench(six, newcomer);
-    expect(after).toHaveLength(6);
+    expect(BENCH_SIZE).toBe(10);
+    expect(signToBench(full.slice(0, 9), newcomer)).toHaveLength(10);
+    const weakest = full.reduce((min, b) => (b.player.ov < min.player.ov ? b : min));
+    const after = signToBench(full, newcomer);
+    expect(after).toHaveLength(10);
     expect(after.map((b) => b.player.id)).not.toContain(weakest.player.id);
     expect(after.map((b) => b.player.id)).toContain(newcomer.id);
   });
@@ -77,13 +94,11 @@ describe("squad", () => {
 });
 
 describe("bug #4: bench and shortlist never duplicate a real player", () => {
-  it("autoFillBench skips an owned identity from another drafted season", () => {
+  it("the bench pool skips an owned identity from another drafted season", () => {
     const sam2000 = getSquad("2000", "1").find((p) => p.name === "Sam Twice");
-    const squad2001 = getSquad("2001", "1");
-    const assignments = makeInitialAssignments("4-3-3").map((a, i) => ({ ...a, player: i === 10 ? sam2000 : squad2001[i + 1] }));
-    const drafted = new Set(assignments.map((a) => a.player.id));
-    const { bench } = autoFillBench(getSquad, assignments, drafted, assignments.map((a) => playerIdentity(a.player)));
-    expect(bench.map((b) => b.player.name)).not.toContain("Sam Twice");
+    const { players } = buildBenchPool(getSquad, "2001", "1", new Set([sam2000.id]), [playerIdentity(sam2000)]);
+    expect(getSquad("2001", "1").map((p) => p.name)).toContain("Sam Twice");
+    expect(players.map((p) => p.name)).not.toContain("Sam Twice");
   });
 
   it("generateShortlist excludes owned identities and repeats nobody", () => {

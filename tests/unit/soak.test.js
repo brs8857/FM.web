@@ -8,7 +8,8 @@ import { createReducer } from "../../src/state/reducer.js";
 import { makeInitialState } from "../../src/state/initialState.js";
 import { makeSaveEnvelope, toSaveText, parseSaveText, hydrateState, serializeState } from "../../src/state/save.js";
 import { STAT_KEYS, RETIREMENT_AGE } from "../../src/engine/players.js";
-import { windowBudget, budgetLeft } from "../../src/engine/squad.js";
+import { windowBudget, budgetLeft, BENCH_SIZE } from "../../src/engine/squad.js";
+import { MAX_BAN } from "../../src/engine/match.js";
 import { CAREER_SEASONS } from "../../src/engine/season.js";
 
 // Plan C6: ten-season careers on the real archive, past the six a career
@@ -22,7 +23,7 @@ const squad = (state) => [...state.assignments, ...state.bench].map((e) => e.pla
 
 function checkSquad(state, label) {
   expect(state.assignments, label).toHaveLength(11);
-  expect(state.bench.length, label).toBeLessThanOrEqual(6);
+  expect(state.bench.length, label).toBeLessThanOrEqual(BENCH_SIZE);
   const ids = squad(state).map((p) => p.id);
   expect(new Set(ids).size, label).toBe(ids.length);
   for (const p of squad(state)) {
@@ -101,7 +102,7 @@ function tinkerSeason(state, label, rng) {
     expect(entry.played.cohesion >= 12 && entry.played.cohesion <= 96, wlabel).toBe(true);
     expect(state.rngCounter, wlabel).toBe(counter);
     checkSquad(state, wlabel);
-    for (const d of Object.values(state.discipline)) expect(d.yellows < 5 && d.banned <= 1, wlabel).toBe(true);
+    for (const d of Object.values(state.discipline)) expect(d.yellows <= entry.week && d.banned >= 0 && d.banned <= MAX_BAN, wlabel).toBe(true);
     if (entry.week === saveWeek && state.phase === "matchday" && state.season <= CAREER_SEASONS) {
       const parsed = parseSaveText(toSaveText(makeSaveEnvelope(state, { gameVersion: "2.7.0" })));
       expect(parsed.ok, wlabel).toBe(true);

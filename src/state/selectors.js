@@ -3,13 +3,41 @@ import { DEFAULT_INSTRUCTIONS } from "../engine/instructions.js";
 import { computeFamiliarity, eraSpread, eraSpreadPenalty, memoryBonus, settling, EMPTY_MEMORY, SIDE_MISMATCH_PENALTY } from "../engine/familiarity.js";
 import { identityKey } from "../engine/tactics.js";
 import { CAREER_SEASONS, SEASON_WEEKS, buildUserFixtureList, leagueTable } from "../engine/season.js";
-import { nextEmptySlotIndex } from "../engine/squad.js";
+import { nextEmptySlotIndex, benchFitIndex, BENCH_SIZE } from "../engine/squad.js";
 import { t } from "../content/t.js";
 
 const DECADE_LABEL = { 1990: "'90s", 2000: "2000s", 2010: "2010s", 2020: "2020s" };
 
 function seasonYear(player) {
   return parseInt(String(player.seasonKey).split("_")[0], 10);
+}
+
+// "xi" until the eleventh pick, "bench" for the ten after it, then "done".
+export function selectDraftStage(state) {
+  if (state.draftDone) return "done";
+  return nextEmptySlotIndex(state.assignments) === -1 ? "bench" : "xi";
+}
+
+const LINE = { GK: "GK", FB: "DEF", CB: "DEF", DM: "MID", CM: "MID", WIDE: "MID", AM: "MID", ST: "ATT" };
+export const BENCH_LINES = ["GK", "DEF", "MID", "ATT"];
+
+export function benchLine(player) {
+  return LINE[player.slot] ?? "MID";
+}
+
+// The bench by line (spec 08 §4.2): how many of each so far.
+export function selectBenchSummary(state) {
+  const players = state.bench.map((b) => b.player).filter(Boolean);
+  const lines = BENCH_LINES.map((line) => ({ line, count: players.filter((p) => benchLine(p) === line).length }));
+  return { picked: players.length, size: BENCH_SIZE, lines };
+}
+
+// The cover a suspended starter would get: the best free fit on the bench.
+export function selectCover(state, slotId) {
+  const slot = state.assignments.find((a) => a.slotId === slotId);
+  if (!slot?.player) return null;
+  const idx = benchFitIndex(state.bench, slot.type, (p) => !isBanned(state, p));
+  return idx < 0 ? null : { index: idx, player: state.bench[idx].player };
 }
 
 // The squad strip during the draft (spec 04 §5.2): how many picked, which
@@ -151,6 +179,10 @@ export function selectNextAction(state, clubName = (name) => name) {
       return { key: "startDraft", label: "Start the draft", tab: null };
     case "draft": {
       if (state.draftDone) return { key: "goToBoard", label: "Go to the board", tab: null };
+      if (selectDraftStage(state) === "bench") {
+        const pick = Math.min(BENCH_SIZE, state.bench.length + 1);
+        return { key: "draftBench", label: `Draft in progress: bench pick ${pick} of ${BENCH_SIZE}`, tab: null, pick };
+      }
       const filled = state.assignments.filter((a) => a.player).length;
       const pick = Math.min(11, filled + 1);
       const idx = nextEmptySlotIndex(state.assignments);

@@ -65,6 +65,7 @@ export const STOPPAGE_CHANCE = 0.08;
 
 export const YELLOWS_PER_MATCH = 1.6;
 export const RED_CHANCE = 0.05;
+export const SECOND_YELLOW_SHARE = 0.5;
 
 // Aggressive tackling costs cards: 0.6x the rate at Cautious, 1.0x at the
 // midpoint, 1.4x at Aggressive.
@@ -90,7 +91,13 @@ function bookings(starters, tackling, rng) {
   const cards = [];
   const yellows = poissonSample(YELLOWS_PER_MATCH * scale, rng);
   for (let i = 0; i < yellows; i++) cards.push(draw("yellow"));
-  if (rng.next() < RED_CHANCE * scale) cards.push(draw("red"));
+  // Half the reds are a second yellow; the kind is drawn after the carrier,
+  // and every draw here comes after the goals, so no score depends on it.
+  if (rng.next() < RED_CHANCE * scale) {
+    const red = draw("red");
+    if (red && rng.next() < SECOND_YELLOW_SHARE) red.kind = "second-yellow";
+    cards.push(red);
+  }
   return cards.filter(Boolean).sort((a, b) => a.minute - b.minute);
 }
 
@@ -111,18 +118,33 @@ export function matchEvents({ gf, ga }, starters, rng, { tackling = 50 } = {}) {
   return { goals, cards: bookings(starters, tackling, rng) };
 }
 
-// A red, or a fifth yellow, bans a player for the next match (spec 07 §5.4).
-export const YELLOWS_FOR_BAN = 5;
-export function nextDiscipline(discipline, cards) {
+// The English top flight's rule (spec 08 §5.1). Yellows are a season total: the
+// fifth by week 19 costs a match, the tenth by week 32 two, the fifteenth
+// three. A straight red costs three; a second yellow one, and its two
+// yellows don't join the total. `banned` counts matches still to serve.
+export const YELLOW_BANS = [{ yellows: 5, byWeek: 19, matches: 1 }, { yellows: 10, byWeek: 32, matches: 2 }, { yellows: 15, byWeek: Infinity, matches: 3 }];
+export const RED_BAN = { red: 3, "second-yellow": 1 };
+export const MAX_BAN = 3;
+
+export function yellowBan(yellows, week) {
+  return YELLOW_BANS.find((b) => b.yellows === yellows && week <= b.byWeek)?.matches ?? 0;
+}
+
+// The next threshold still live at `week`, for the player sheet.
+export function nextYellowBan(yellows, week) {
+  return YELLOW_BANS.find((b) => b.yellows > yellows && week <= b.byWeek) ?? null;
+}
+
+export function nextDiscipline(discipline, cards, week) {
   const next = {};
   for (const [id, d] of Object.entries(discipline)) next[id] = { yellows: d.yellows, banned: Math.max(0, d.banned - 1) };
   const bans = [];
   for (const card of cards) {
     const d = next[card.id] ?? { yellows: 0, banned: 0 };
-    if (card.kind === "red") next[card.id] = { yellows: 0, banned: 1 };
-    else if (d.yellows + 1 >= YELLOWS_FOR_BAN) next[card.id] = { yellows: 0, banned: 1 };
-    else next[card.id] = { ...d, yellows: d.yellows + 1 };
-    if (next[card.id].banned > 0 && !bans.some((b) => b.id === card.id)) bans.push({ id: card.id, name: card.name });
+    const yellows = card.kind === "yellow" ? d.yellows + 1 : d.yellows;
+    const ban = card.kind === "yellow" ? yellowBan(yellows, week) : RED_BAN[card.kind];
+    next[card.id] = { yellows, banned: Math.max(d.banned, ban) };
+    if (ban > 0) bans.push({ id: card.id, name: card.name, matches: ban });
   }
   for (const [id, d] of Object.entries(next)) if (d.yellows === 0 && d.banned === 0) delete next[id];
   return { discipline: next, bans };

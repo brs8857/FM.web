@@ -2,19 +2,77 @@ import { clamp } from "../engine/util.js";
 import { FORMATIONS, makeInitialAssignments } from "../engine/formations.js";
 import { ROLES, defaultRoleFor, defaultDutyFor } from "../engine/roles.js";
 import { STYLE_PRESETS } from "../engine/instructions.js";
-import { createSquadLookup, buildPool } from "../engine/players.js";
+import { createSquadLookup, buildPool, buildBenchPool } from "../engine/players.js";
 import { computeTeamProfile, identityKey } from "../engine/tactics.js";
 import { computeFamiliarity, nextMemory, settling, afterMatch, EMPTY_MEMORY } from "../engine/familiarity.js";
 import { buildUserFixtureList, simulateFixture, eventRng, seasonResult, SEASON_WEEKS, HALF_SEASON } from "../engine/season.js";
 import { matchEvents, nextDiscipline } from "../engine/match.js";
 import { applyPromotionRelegation } from "../engine/league.js";
-import { nextEmptySlotIndex, autoFillBench, generateShortlist, signToSlot, signToBench, progressSquad, wageCost, windowBudget, budgetLeft } from "../engine/squad.js";
+import { nextEmptySlotIndex, fillPick, benchFitIndex, BENCH_SIZE, generateShortlist, signToSlot, signToBench, progressSquad, wageCost, windowBudget, budgetLeft } from "../engine/squad.js";
 import { playerIdentity } from "../engine/identity.js";
-import { makeInitialState, DRAW_OPTIONS } from "./initialState.js";
+import { makeInitialState, DRAW_OPTIONS, REDRAWS } from "./initialState.js";
 import { takeRng } from "./rngState.js";
-import { selectEraIndex, liveAssignments, selectTopScorers, selectSuspended, selectBlockingBan } from "./selectors.js";
+import { selectEraIndex, liveAssignments, selectTopScorers, selectSuspended, selectBlockingBan, selectDraftStage, isBanned } from "./selectors.js";
 
 const idleDraw = (draw) => ({ ...draw, spinning: false, options: [] });
+
+// A bench player into a starting slot, the starter to his place on the bench.
+// Job, brief and dials reset to the slot's defaults.
+function benchToSlot(state, benchIdx, slotId) {
+  const assignments = state.assignments.map((a) => ({ ...a }));
+  const bench = state.bench.map((b) => ({ ...b }));
+  const toA = assignments.find((a) => a.slotId === slotId);
+  const incoming = bench[benchIdx].player;
+  const role = defaultRoleFor(toA.type);
+  bench[benchIdx] = { player: toA.player, role: null, duty: null };
+  Object.assign(toA, { player: incoming, role: role.key, duty: defaultDutyFor(role), sliderAtt: 50, sliderDef: 50 });
+  return { assignments, bench };
+}
+
+// The best free fit on the bench for a suspended starter (spec 08 §6.2),
+// recorded so the starter can go back once the ban is served.
+export function coverBan(state, slotId) {
+  const slot = state.assignments.find((a) => a.slotId === slotId);
+  if (!slot?.player || !isBanned(state, slot.player)) return state;
+  const idx = benchFitIndex(state.bench, slot.type, (p) => !isBanned(state, p));
+  if (idx < 0) return state;
+  const cover = { slotId, starterId: slot.player.id, coverId: state.bench[idx].player.id };
+  return { ...state, ...benchToSlot(state, idx, slotId), covers: [...(state.covers ?? []).filter((c) => c.slotId !== slotId), cover] };
+}
+
+function coverAll(state) {
+  return selectSuspended(state).reduce((s, { slotId }) => coverBan(s, slotId), state);
+}
+
+// Puts each covered starter back once his ban is served (or, with `all`,
+// regardless), but only where both players are still where the cover put
+// them; a cover the manager has since rearranged is dropped.
+export function restoreCovers(state, all = false) {
+  let next = state;
+  const keep = [];
+  for (const c of state.covers ?? []) {
+    if (!all && next.discipline?.[c.starterId]?.banned > 0) { keep.push(c); continue; }
+    const slot = next.assignments.find((a) => a.slotId === c.slotId);
+    const benchIdx = next.bench.findIndex((b) => b.player?.id === c.starterId);
+    if (slot?.player?.id === c.coverId && benchIdx >= 0) next = { ...next, ...benchToSlot(next, benchIdx, c.slotId) };
+  }
+  return { ...next, covers: keep };
+}
+
+function coveredNames(state) {
+  const everyone = [...state.assignments, ...state.bench].map((e) => e.player).filter(Boolean);
+  const name = (id) => everyone.find((p) => p.id === id)?.name ?? "";
+  return (state.covers ?? []).map((c) => ({ in: name(c.coverId), out: name(c.starterId) }));
+}
+
+function addToBench(state, player) {
+  const draftedIds = new Set(state.draftedIds);
+  draftedIds.add(player.id);
+  return {
+    ...state, draftedIds, draftedIdentities: [...state.draftedIdentities, playerIdentity(player)],
+    bench: [...state.bench, { player, role: null, duty: null }],
+  };
+}
 
 function affordableSigning(state, index) {
   const entry = state.shortlist[index];
@@ -84,9 +142,10 @@ function playMatch(state) {
   const { live, settle, familiarity, profile } = lineupFor(state);
   const result = simulateFixture(profile, familiarity, opponent, fixture, campaign.seed);
   const { goals, cards } = matchEvents(result, live, eventRng(campaign.seed, fixture.week), { tackling: state.instructions.tackling });
-  const { discipline, bans } = nextDiscipline(state.discipline ?? {}, cards);
+  const { discipline, bans } = nextDiscipline(state.discipline ?? {}, cards, fixture.week);
   const played = { identity: identityKey(state.instructions), cohesion: familiarity, settle: settle.modifier, mentality: state.instructions.mentality, changed: settle.changed };
-  const log = [...campaign.log, { ...result, goals, cards, bans: bans.map((b) => b.name), played }];
+  const covered = coveredNames(state);
+  const log = [...campaign.log, { ...result, goals, cards, bans: bans.map((b) => ({ name: b.name, matches: b.matches })), ...(covered.length ? { covered } : {}), played }];
   const next = { ...state, discipline, campaign: { ...campaign, week: campaign.week + 1, log }, cohesionMemory: afterMatch(state.cohesionMemory ?? EMPTY_MEMORY, settle) };
   if (fixture.week < SEASON_WEEKS) return next;
   const cohesionMemory = nextMemory(state.cohesionMemory, state.formationKey, seasonStyle(log));
@@ -103,13 +162,22 @@ export function playToTarget(week, until) {
   return week <= HALF_SEASON ? HALF_SEASON : SEASON_WEEKS;
 }
 
+// One match, then any covered starter whose ban is now served goes back.
+function playOne(state) {
+  const next = playMatch(state);
+  return next === state ? state : restoreCovers(next);
+}
+
+// With auto-cover on, each suspended starter's best fit comes in before the
+// match instead of the run stopping (spec 08 §6).
 function playTo(state, until) {
   if (state.phase !== "matchday" || !state.campaign) return state;
   const target = playToTarget(state.campaign.week, until);
   let current = state;
   while (current.phase === "matchday" && current.campaign.week <= target) {
-    const next = playMatch(current);
-    if (next === current) break;
+    const ready = current.autoCover ? coverAll(current) : current;
+    const next = playOne(ready);
+    if (next === ready) break;
     current = next;
     if (until === "defeat" && current.campaign.log.at(-1).outcome === "L") break;
   }
@@ -126,6 +194,12 @@ export function createReducer(dataset) {
     const eraIndex = selectEraIndex(dataset.index, state.eraMin, state.eraMax);
     if (eraIndex.length === 0) return state;
     const [rng, next] = takeRng(state);
+    return { ...next, draw: { ...state.draw, spinning: false, options: deal(state, eraIndex, rng) } };
+  }
+
+  // In the bench stage every available player in a squad is on offer.
+  function deal(state, eraIndex, rng) {
+    const bench = selectDraftStage(state) === "bench";
     const idx = nextEmptySlotIndex(state.assignments);
     let slotType = "GK", side = null;
     if (idx >= 0) { slotType = state.assignments[idx].type; side = state.assignments[idx].side; }
@@ -137,11 +211,27 @@ export function createReducer(dataset) {
       const key = `${entry.y}_${entry.c}`;
       if (seen.has(key)) continue;
       seen.add(key);
-      const { players, relaxed } = buildPool(getSquad, entry.y, entry.c, slotType, side, state.draftedIds, state.draftedIdentities);
+      const { players, relaxed } = bench
+        ? buildBenchPool(getSquad, entry.y, entry.c, state.draftedIds, state.draftedIdentities)
+        : buildPool(getSquad, entry.y, entry.c, slotType, side, state.draftedIds, state.draftedIdentities);
       if (players.length === 0) continue;
       options.push({ year: entry.y, clubId: entry.c, label: entry.label, players, relaxed });
     }
-    return { ...next, draw: { ...state.draw, spinning: false, options } };
+    return options;
+  }
+
+  // "Fill the bench for me" (spec 08 §4.3): one draw from the career's
+  // stream, then a deal per remaining pick from it.
+  function fillBench(state) {
+    if (selectDraftStage(state) !== "bench") return state;
+    const eraIndex = selectEraIndex(dataset.index, state.eraMin, state.eraMax);
+    const [rng, next] = takeRng(state);
+    let current = { ...next, draw: idleDraw(state.draw) };
+    for (let tries = 0; current.bench.length < BENCH_SIZE && tries < BENCH_SIZE * 20; tries++) {
+      const player = fillPick(deal(current, eraIndex, rng), current.bench);
+      if (player) current = addToBench(current, player);
+    }
+    return { ...current, draftDone: true };
   }
 
   return function reducer(state, action) {
@@ -175,8 +265,13 @@ export function createReducer(dataset) {
         return land({ ...state, draw: { ...state.draw, redrawsLeft: state.draw.redrawsLeft - 1 } });
       }
       case "PICK_PLAYER": {
+        const stage = selectDraftStage(state);
+        if (stage === "done") return state;
+        if (stage === "bench") {
+          const next = addToBench({ ...state, draw: idleDraw(state.draw) }, action.player);
+          return { ...next, draftDone: next.bench.length >= BENCH_SIZE };
+        }
         const idx = nextEmptySlotIndex(state.assignments);
-        if (idx < 0) return state;
         const draftedIds = new Set(state.draftedIds);
         draftedIds.add(action.player.id);
         const draftedIdentities = [...state.draftedIdentities, playerIdentity(action.player)];
@@ -184,16 +279,13 @@ export function createReducer(dataset) {
         const duty = defaultDutyFor(role);
         const assignments = state.assignments.slice();
         assignments[idx] = { ...assignments[idx], player: action.player, role: role.key, duty };
-        const draftDone = nextEmptySlotIndex(assignments) === -1;
-        if (draftDone) {
-          const { bench, draftedIds: withBench } = autoFillBench(getSquad, assignments, draftedIds, draftedIdentities);
-          return {
-            ...state, assignments, draftedIds: withBench,
-            draftedIdentities: [...draftedIdentities, ...bench.map((b) => playerIdentity(b.player))],
-            draw: idleDraw(state.draw), draftDone, bench,
-          };
-        }
-        return { ...state, assignments, draftedIds, draftedIdentities, draw: idleDraw(state.draw), draftDone };
+        // The eleventh pick opens the bench stage, with its own two redraws.
+        const xiDone = nextEmptySlotIndex(assignments) === -1;
+        const draw = xiDone ? { ...idleDraw(state.draw), redrawsLeft: REDRAWS } : idleDraw(state.draw);
+        return { ...state, assignments, draftedIds, draftedIdentities, draw };
+      }
+      case "FILL_BENCH": {
+        return fillBench(state);
       }
       case "SKIP_TO_TACTICS": {
         return { ...state, phase: "tactics", draw: idleDraw(state.draw) };
@@ -256,15 +348,7 @@ export function createReducer(dataset) {
           return { ...state, assignments };
         }
         if (fromKind === "bench" && toKind === "slot") {
-          const assignments = state.assignments.map((a) => ({ ...a }));
-          const bench = state.bench.map((b) => ({ ...b }));
-          const toA = assignments.find((a) => a.slotId === toId);
-          const benchEntry = bench[fromId];
-          const outgoingPlayer = toA.player;
-          const role = defaultRoleFor(toA.type);
-          Object.assign(toA, { player: benchEntry.player, role: role.key, duty: defaultDutyFor(role), sliderAtt: 50, sliderDef: 50 });
-          bench[fromId] = { player: outgoingPlayer, role: null, duty: null };
-          return { ...state, assignments, bench };
+          return { ...state, ...benchToSlot(state, fromId, toId) };
         }
         if (fromKind === "slot" && toKind === "bench") {
           const assignments = state.assignments.map((a) => ({ ...a }));
@@ -298,19 +382,25 @@ export function createReducer(dataset) {
         return { ...state, phase: "matchday" };
       }
       case "PLAY_MATCH": {
-        return playMatch(state);
+        return playOne(state);
+      }
+      case "COVER_BAN": {
+        return state.phase === "matchday" ? coverBan(state, action.slotId) : state;
+      }
+      case "SET_AUTO_COVER": {
+        return { ...state, autoCover: Boolean(action.on) };
       }
       case "PLAY_TO": {
         return playTo(state, action.until);
       }
       case "GOTO_TRANSFER": {
-        const [rng, next] = takeRng(state);
+        const [rng, next] = takeRng(restoreCovers(state, true));
         const shortlist = generateShortlist(getSquad, dataset.index, { eraMin: state.eraMin, eraMax: state.eraMax }, state.draftedIds, rng, { ownedIdentities: state.draftedIdentities })
           .map((player) => ({ player, signed: false, cost: wageCost(player) }));
         const { opponents, relegated, promoted } = applyPromotionRelegation(state.opponents, state.simulation?.table, dataset.championship, rng);
         const seasonHistory = state.simulation ? [...state.seasonHistory, summarizeSeason(state)] : state.seasonHistory;
         const transferBudget = { points: windowBudget(state.simulation?.position ?? 20), spent: 0 };
-        return { ...next, phase: "transfer", shortlist, transferBudget, opponents, lastTransition: { relegated, promoted }, seasonHistory, campaign: null, discipline: {} };
+        return { ...next, phase: "transfer", shortlist, transferBudget, opponents, lastTransition: { relegated, promoted }, seasonHistory, campaign: null, discipline: {}, covers: [] };
       }
       case "SIGN_SHORTLIST_TO_BENCH": {
         const signing = affordableSigning(state, action.index);

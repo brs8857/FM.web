@@ -112,3 +112,10 @@ export function buildPool(getSquad, year, clubId, slotType, side, draftedIds, ow
   });
   return { players: pool, relaxed };
 }
+
+// A bench pick takes anyone from the squad: no slot to fit, so no ordering by
+// fit or side. The cutting sheet puts them in shirt order.
+export function buildBenchPool(getSquad, year, clubId, draftedIds, ownedIdentities = []) {
+  const players = getSquad(year, clubId).filter((p) => !draftedIds.has(p.id) && !isOwnedIdentity(ownedIdentities, p));
+  return { players, relaxed: false };
+}

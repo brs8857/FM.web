@@ -1,13 +1,13 @@
 import { selectBlockingBan } from "../../src/state/selectors.js";
 
-// Swaps each banned starter for a free bench player, one of his position if
-// there is one, as a player answering "Replace X (suspended)" would.
+// Answers "Replace X (suspended)" with the suggested cover, as Play to…
+// does on its own with auto-cover on; where nobody of his kind is free, swaps
+// in any free bench player instead.
 export function coverBans(state, dispatch) {
   for (let ban = selectBlockingBan(state); ban; ban = selectBlockingBan(state = dispatch.last())) {
-    const slot = state.assignments.find((a) => a.slotId === ban.slotId);
-    const free = state.bench.map((b, i) => ({ b, i })).filter(({ b }) => b.player && !(state.discipline[b.player.id]?.banned > 0));
-    const pick = free.find(({ b }) => b.player.slot === slot.type) ?? free[0];
-    dispatch({ type: "SWAP_PLAYERS", fromKind: "bench", fromId: pick.i, toKind: "slot", toId: ban.slotId });
+    if (dispatch({ type: "COVER_BAN", slotId: ban.slotId }) !== state) continue;
+    const pick = state.bench.findIndex((b) => b.player && !(state.discipline[b.player.id]?.banned > 0));
+    dispatch({ type: "SWAP_PLAYERS", fromKind: "bench", fromId: pick, toKind: "slot", toId: ban.slotId });
   }
 }
 

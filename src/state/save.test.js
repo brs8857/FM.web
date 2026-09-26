@@ -45,8 +45,8 @@ function asV1(state, { landed = false } = {}) {
 }
 
 describe("save format", () => {
-  it("is version 4", () => {
-    expect(SAVE_VERSION).toBe(4);
+  it("is version 5", () => {
+    expect(SAVE_VERSION).toBe(5);
   });
 
   it("round-trips a mid-career state exactly", () => {
@@ -54,7 +54,7 @@ describe("save format", () => {
     const text = toSaveText(makeSaveEnvelope(state, { gameVersion: "2.0.0", now: NOW }));
     const parsed = parseSaveText(text);
     expect(parsed.ok).toBe(true);
-    expect(parsed.save).toMatchObject({ app: "fm-web", saveVersion: 4, gameVersion: "2.0.0", savedAt: "2026-09-11T20:00:00.000Z" });
+    expect(parsed.save).toMatchObject({ app: "fm-web", saveVersion: 5, gameVersion: "2.0.0", savedAt: "2026-09-11T20:00:00.000Z" });
     const restored = hydrateState(parsed.save.state);
     expect(restored.draftedIds).toBeInstanceOf(Set);
     expect(restored.seasonHistory).toHaveLength(2);
@@ -83,7 +83,7 @@ describe("save format", () => {
 
     const parsed = parseSaveText(text);
     expect(parsed.ok).toBe(true);
-    expect(parsed.save.saveVersion).toBe(4);
+    expect(parsed.save.saveVersion).toBe(5);
     expect(parsed.save.gameVersion).toBe("1.1.0");
     const { state } = parsed.save;
     expect(state).not.toHaveProperty("wheel");
@@ -195,7 +195,7 @@ describe("save format", () => {
 
     const parsed = parseSaveText(text);
     expect(parsed.ok).toBe(true);
-    expect(parsed.save.saveVersion).toBe(4);
+    expect(parsed.save.saveVersion).toBe(5);
     const { state } = parsed.save;
     // Three seasons of Gegenpress in the 4-3-3, all champions, the window open.
     expect(state.seasonHistory.map((h) => h.identity)).toEqual(["Gegenpress", "Gegenpress", "Gegenpress"]);
@@ -218,6 +218,30 @@ describe("save format", () => {
     expect(next.simulation.matches).toHaveLength(38);
   });
 
+  it("migrates a real 2.7.0 save on match day with a ban running, and plays the season on", () => {
+    const text = readFileSync("tests/fixtures/save-v4.json", "utf8");
+    const envelope = JSON.parse(text);
+    expect(envelope).toMatchObject({ app: "fm-web", saveVersion: 4, gameVersion: "2.7.0", state: { phase: "matchday", season: 2 } });
+    expect(envelope.state.bench).toHaveLength(6);
+    expect(envelope.state.campaign.log.flatMap((m) => m.bans).every((b) => typeof b === "string")).toBe(true);
+
+    const parsed = parseSaveText(text);
+    expect(parsed.ok).toBe(true);
+    const { state } = parsed.save;
+    expect(parsed.save.saveVersion).toBe(5);
+    expect(state).toMatchObject({ autoCover: true, covers: [], draftDone: true, discipline: envelope.state.discipline });
+    expect(state.bench).toHaveLength(6);
+
+    const dataset = { ...JSON.parse(readFileSync("src/data/players.json", "utf8")), championship: JSON.parse(readFileSync("src/data/championship.json", "utf8")) };
+    const reducer = createReducer(dataset);
+    const next = reducer(hydrateState(state), { type: "PLAY_TO", until: "end" });
+    expect(next).toMatchObject({ phase: "result", season: 2 });
+    expect(next.simulation.matches).toHaveLength(38);
+    const window = reducer(next, { type: "GOTO_TRANSFER" });
+    expect(window.covers).toEqual([]);
+    expect(validateSave(JSON.parse(toSaveText(makeSaveEnvelope(window, { gameVersion: "2.8.0", now: NOW })))).ok).toBe(true);
+  });
+
   it("migrates a real 2.5.0 save paused at the ratings reveal by restarting that season from kick-off", () => {
     const text = readFileSync("tests/fixtures/save-v3.json", "utf8");
     const envelope = JSON.parse(text);
@@ -227,7 +251,7 @@ describe("save format", () => {
     const parsed = parseSaveText(text);
     expect(parsed.ok).toBe(true);
     const { state } = parsed.save;
-    expect(parsed.save.saveVersion).toBe(4);
+    expect(parsed.save.saveVersion).toBe(5);
     expect(state).toMatchObject({ phase: "tactics", season: 2, simulation: null, campaign: null, discipline: {}, rngCounter: envelope.state.rngCounter });
     expect(state.cohesionMemory).toEqual({ ...EMPTY_MEMORY, formationKey: "4-3-3", styleKey: "Gegenpress", seasons: 1 });
     expect(state.seasonHistory).toHaveLength(1);
@@ -302,7 +326,17 @@ describe("save format", () => {
     expect(damaged((s) => { delete s.campaign.log[0].played; })).toBe(false);
     expect(damaged((s) => { s.campaign = null; })).toBe(false);
     expect(damaged((s) => { s.cohesionMemory.matches = -1; })).toBe(false);
-    expect(damaged((s) => { s.discipline = { x: { yellows: 5, banned: 0 } }; })).toBe(false);
+    expect(damaged((s) => { s.discipline = { x: { yellows: 12, banned: 3 } }; })).toBe(true);
+    expect(damaged((s) => { s.discipline = { x: { yellows: 5, banned: 4 } }; })).toBe(false);
+    expect(damaged((s) => { s.campaign.log[0].bans = [{ name: "X", matches: 3 }]; })).toBe(true);
+    expect(damaged((s) => { s.campaign.log[0].bans = [{ name: "X", matches: 0 }]; })).toBe(false);
+    expect(damaged((s) => { s.campaign.log[0].cards = [{ minute: 10, slotId: "CB1", name: "X", kind: "second-yellow" }]; })).toBe(true);
+    expect(damaged((s) => { s.campaign.log[0].covered = [{ in: "A", out: "B" }]; })).toBe(true);
+    expect(damaged((s) => { s.campaign.log[0].covered = [{ in: "A" }]; })).toBe(false);
+    expect(damaged((s) => { s.autoCover = "yes"; })).toBe(false);
+    expect(damaged((s) => { s.covers = [{ slotId: "CB1", starterId: s.assignments[0].player.id, coverId: s.bench[0].player.id }]; })).toBe(true);
+    expect(damaged((s) => { s.covers = [{ slotId: "CB1", starterId: "nobody", coverId: s.bench[0].player.id }]; })).toBe(false);
+    expect(damaged((s) => { s.bench = [...s.bench, ...s.bench, ...s.bench].slice(0, 11); })).toBe(false);
     expect(damaged((s) => { delete s.discipline; })).toBe(false);
     expect(damaged((s) => { s.campaign.log[0].cards = [{ minute: 10, slotId: "CB1", name: "X", kind: "orange" }]; })).toBe(false);
   });

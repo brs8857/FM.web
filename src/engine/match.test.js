@@ -6,7 +6,7 @@ import { makeInitialAssignments } from "./formations.js";
 import { ROLES, defaultRoleFor, defaultDutyFor } from "./roles.js";
 import { createRng } from "./rng.js";
 import { weightedPick } from "./util.js";
-import { matchEvents, cardScale, nextDiscipline } from "./match.js";
+import { matchEvents, cardScale, nextDiscipline, yellowBan, nextYellowBan } from "./match.js";
 
 const getSquad = createSquadLookup(makeMiniDataset());
 const squad = getSquad("2000", "1");
@@ -99,21 +99,62 @@ describe("cards", () => {
     }
   });
 
-  it("bans for one match after a red or a fifth yellow, and the ban is served by the next match", () => {
-    const card = (id, kind) => ({ minute: 10, slotId: "X", id, name: id, kind });
+  const card = (id, kind) => ({ minute: 10, slotId: "X", id, name: id, kind });
+  const yellowsTo = (n, week) => {
     let d = {};
-    for (let i = 1; i <= 4; i++) {
-      const next = nextDiscipline(d, [card("vieira", "yellow")]);
-      expect(next.bans).toEqual([]);
-      d = next.discipline;
+    for (let i = 0; i < n; i++) d = nextDiscipline(d, [card("vieira", "yellow")], week).discipline;
+    return d;
+  };
+
+  it("bans for one match at the fifth yellow by week 19, not after", () => {
+    const four = yellowsTo(4, 10);
+    expect(four).toEqual({ vieira: { yellows: 4, banned: 0 } });
+    const fifth = nextDiscipline(four, [card("vieira", "yellow")], 19);
+    expect(fifth.discipline).toEqual({ vieira: { yellows: 5, banned: 1 } });
+    expect(fifth.bans).toEqual([{ id: "vieira", name: "vieira", matches: 1 }]);
+    expect(nextDiscipline(four, [card("vieira", "yellow")], 20)).toEqual({ discipline: { vieira: { yellows: 5, banned: 0 } }, bans: [] });
+  });
+
+  it("bans for two at the tenth by week 32 and three at the fifteenth", () => {
+    const nine = { vieira: { yellows: 9, banned: 0 } };
+    expect(nextDiscipline(nine, [card("vieira", "yellow")], 32).bans[0].matches).toBe(2);
+    expect(nextDiscipline(nine, [card("vieira", "yellow")], 33).bans).toEqual([]);
+    expect(nextDiscipline({ vieira: { yellows: 14, banned: 0 } }, [card("vieira", "yellow")], 38).bans[0].matches).toBe(3);
+    expect(yellowBan(6, 5)).toBe(0);
+    expect(nextYellowBan(4, 19)).toMatchObject({ yellows: 5 });
+    expect(nextYellowBan(4, 20)).toMatchObject({ yellows: 10 });
+    expect(nextYellowBan(12, 36)).toMatchObject({ yellows: 15 });
+  });
+
+  it("bans a straight red for three and a second yellow for one, without adding to the yellows", () => {
+    const red = nextDiscipline({ adams: { yellows: 2, banned: 0 } }, [card("adams", "red")], 5);
+    expect(red.discipline).toEqual({ adams: { yellows: 2, banned: 3 } });
+    expect(red.bans[0].matches).toBe(3);
+    const second = nextDiscipline({ keown: { yellows: 4, banned: 0 } }, [card("keown", "second-yellow")], 5);
+    expect(second.discipline).toEqual({ keown: { yellows: 4, banned: 1 } });
+  });
+
+  it("serves a ban one match at a time and keeps the longer of two", () => {
+    let d = nextDiscipline({}, [card("adams", "red")], 5).discipline;
+    for (const left of [2, 1]) {
+      d = nextDiscipline(d, [], 6).discipline;
+      expect(d.adams.banned).toBe(left);
     }
-    expect(d).toEqual({ vieira: { yellows: 4, banned: 0 } });
-    const fifth = nextDiscipline(d, [card("vieira", "yellow"), card("adams", "red")]);
-    expect(fifth.discipline).toEqual({ vieira: { yellows: 0, banned: 1 }, adams: { yellows: 0, banned: 1 } });
-    expect(fifth.bans.map((b) => b.name)).toEqual(["vieira", "adams"]);
-    const served = nextDiscipline(fifth.discipline, []);
-    expect(served).toEqual({ discipline: {}, bans: [] });
-    expect(nextDiscipline({ keown: { yellows: 2, banned: 0 } }, [card("keown", "red")]).discipline).toEqual({ keown: { yellows: 0, banned: 1 } });
+    expect(nextDiscipline(d, [], 8)).toEqual({ discipline: {}, bans: [] });
+    const overlap = nextDiscipline({ adams: { yellows: 4, banned: 3 } }, [card("adams", "yellow")], 10);
+    expect(overlap.discipline.adams).toEqual({ yellows: 5, banned: 2 });
+  });
+
+  it("makes about half the reds second yellows", () => {
+    let reds = 0, seconds = 0;
+    for (let seed = 1; seed <= 4000; seed++) {
+      for (const c of matchEvents({ gf: 0, ga: 0 }, xi, createRng(seed), { tackling: 100 }).cards) {
+        if (c.kind === "red") reds++;
+        if (c.kind === "second-yellow") seconds++;
+      }
+    }
+    expect(seconds / (reds + seconds)).toBeGreaterThan(0.4);
+    expect(seconds / (reds + seconds)).toBeLessThan(0.6);
   });
 });
 

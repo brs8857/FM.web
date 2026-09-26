@@ -9,13 +9,13 @@ import { createSquadLookup } from "../../src/engine/players.js";
 import { makeInitialAssignments } from "../../src/engine/formations.js";
 import { computeFamiliarity, EMPTY_MEMORY, SETTLING } from "../../src/engine/familiarity.js";
 import { buildUserFixtureList } from "../../src/engine/season.js";
-import { wageCost, windowBudget } from "../../src/engine/squad.js";
-import { liveAssignments, selectNextAction, selectNextFixture, selectSettling, selectTable, selectTopScorers, selectSuspended } from "../../src/state/selectors.js";
+import { wageCost, windowBudget, BENCH_SIZE } from "../../src/engine/squad.js";
+import { liveAssignments, selectNextAction, selectNextFixture, selectSettling, selectTable, selectTopScorers, selectSuspended, selectCover, selectDraftStage } from "../../src/state/selectors.js";
 
 export function checkInvariants(state, action, previous) {
   const label = action.type;
   expect(state.assignments, label).toHaveLength(11);
-  expect(state.bench.length, label).toBeLessThanOrEqual(6);
+  expect(state.bench.length, label).toBeLessThanOrEqual(BENCH_SIZE);
   const ids = [...state.assignments, ...state.bench].map((e) => e.player?.id).filter(Boolean);
   expect(new Set(ids).size, label).toBe(ids.length);
   expect(state.opponents, label).toHaveLength(19);
@@ -48,7 +48,8 @@ describe("reducer career walkthrough", () => {
     expect(final.phase).toBe("result");
     expect(final.simulation.season).toBe(6);
     expect(final.simulation.matches).toHaveLength(38);
-    expect(final.draw.redrawsLeft).toBe(REDRAWS - 1);
+    // One redraw spent on the XI; the bench started again with its own two.
+    expect(final.draw.redrawsLeft).toBe(REDRAWS);
     expect(final.seasonHistory).toHaveLength(5);
     expect(final.seasonHistory[4]).toMatchObject({ season: 5, seed: 7, identity: "Gegenpress" });
   });
@@ -186,7 +187,59 @@ describe("the draw", () => {
     expect(sawClub1).toBe(true); // sanity: confirms the scenario was actually exercised, not just hoped for
   });
 
-  it("ignores draw actions once the XI is complete", () => {
+  it("after the eleventh pick, drafts ten for the bench from whole squads with two fresh redraws", () => {
+    const dataset = makeMiniDataset();
+    const reducer = createReducer(dataset);
+    let s = reducer(reducer(makeInitialState(dataset, 11), { type: "SET_ERA", min: 2000, max: 2011 }), { type: "START_DRAFT" });
+    for (let pick = 0; pick < 11; pick++) {
+      s = reducer(reducer(s, { type: "DRAW" }), { type: "LAND" });
+      if (pick === 0) s = reducer(reducer(s, { type: "REDRAW" }), { type: "REDRAW" });
+      s = reducer(s, { type: "PICK_PLAYER", player: s.draw.options[0].players[0] });
+    }
+    expect(selectDraftStage(s)).toBe("bench");
+    expect(s.bench).toEqual([]);
+    expect(s.draw.redrawsLeft).toBe(REDRAWS);
+    expect(selectNextAction(s)).toMatchObject({ key: "draftBench", label: "Draft in progress: bench pick 1 of 10" });
+    const getSquad = createSquadLookup(dataset);
+    for (let pick = 0; pick < BENCH_SIZE; pick++) {
+      s = reducer(reducer(s, { type: "DRAW" }), { type: "LAND" });
+      for (const o of s.draw.options) {
+        expect(o.relaxed).toBe(false);
+        const free = getSquad(o.year, o.clubId).filter((p) => !s.draftedIds.has(p.id) && !s.draftedIdentities.some((i) => isSameRealPlayer(i, playerIdentity(p))));
+        expect(o.players.map((p) => p.id).sort()).toEqual(free.map((p) => p.id).sort());
+      }
+      const last = s.draw.options.at(-1).players.at(-1);
+      s = reducer(s, { type: "PICK_PLAYER", player: last });
+      expect(s.bench.at(-1).player).toBe(last);
+      expect(s.draftedIds.has(last.id)).toBe(true);
+    }
+    expect(s.bench).toHaveLength(BENCH_SIZE);
+    expect(s.draftDone).toBe(true);
+    expect(selectDraftStage(s)).toBe("done");
+    expect(reducer(s, { type: "PICK_PLAYER", player: s.bench[0].player })).toBe(s);
+  });
+
+  it("fills the rest of the bench in one step, the same way every time, with a keeper", () => {
+    const dataset = makeMiniDataset();
+    const reducer = createReducer(dataset);
+    let s = reducer(reducer(makeInitialState(dataset, 12), { type: "SET_ERA", min: 2000, max: 2011 }), { type: "START_DRAFT" });
+    for (let pick = 0; pick < 12; pick++) {
+      s = reducer(reducer(s, { type: "DRAW" }), { type: "LAND" });
+      s = reducer(s, { type: "PICK_PLAYER", player: s.draw.options[0].players.find((p) => pick < 11 || p.slot !== "GK") });
+    }
+    expect(s.bench).toHaveLength(1);
+    const filled = reducer(s, { type: "FILL_BENCH" });
+    expect(filled).toEqual(reducer(s, { type: "FILL_BENCH" }));
+    expect(filled.bench).toHaveLength(BENCH_SIZE);
+    expect(filled.draftDone).toBe(true);
+    expect(filled.rngCounter).toBe(s.rngCounter + 1);
+    expect(filled.bench.some((b) => b.player.slot === "GK")).toBe(true);
+    const ids = [...filled.assignments, ...filled.bench].map((e) => e.player.id);
+    expect(new Set(ids).size).toBe(21);
+    expect(reducer(filled, { type: "FILL_BENCH" })).toBe(filled);
+  });
+
+  it("ignores draw actions once the XI and bench are drafted", () => {
     const dataset = makeMiniDataset();
     const reducer = createReducer(dataset);
     const done = playCareer({ reducer, initialState: makeInitialState(dataset, 7), seasons: 1 });
@@ -363,7 +416,8 @@ describe("discipline", () => {
     const log = state.campaign.log;
     expect(log.flatMap((m) => m.cards).length).toBeGreaterThan(20);
     expect(log.flatMap((m) => m.bans).length).toBeGreaterThan(0);
-    for (const m of log) for (const name of m.bans) expect(m.cards.some((c) => c.name === name)).toBe(true);
+    for (const m of log) for (const ban of m.bans) expect(m.cards.some((c) => c.name === ban.name)).toBe(true);
+    for (const ban of log.flatMap((m) => m.bans)) expect([1, 2, 3]).toContain(ban.matches);
   });
 
   it("a banned starter blocks Play until he is swapped out, and the Next pill sends the player to the squad", () => {
@@ -373,12 +427,50 @@ describe("discipline", () => {
     expect(selectSuspended(banned)).toEqual([{ slotId: "CB1", id: starter.player.id, name: starter.player.name }]);
     expect(selectNextAction(banned)).toEqual({ key: "replaceSuspended", label: `Replace ${starter.player.name} (suspended)`, tab: "squad", slotId: "CB1" });
     expect(reducer(banned, { type: "PLAY_MATCH" })).toBe(banned);
-    expect(reducer(banned, { type: "PLAY_TO", until: "end" })).toBe(banned);
+    const manual = { ...banned, autoCover: false };
+    expect(reducer(manual, { type: "PLAY_TO", until: "end" })).toBe(manual);
     const swapped = reducer(banned, { type: "SWAP_PLAYERS", fromKind: "bench", fromId: 0, toKind: "slot", toId: "CB1" });
     expect(selectNextAction(swapped).key).toBe("playMatch");
     const played = reducer(swapped, { type: "PLAY_MATCH" });
     expect(played.campaign.week).toBe(2);
     expect(played.discipline[starter.player.id]).toBeUndefined();
+  });
+
+  it("auto-cover brings in the best fit during Play to… and puts the starter back after the ban", () => {
+    const state = day();
+    const starter = state.assignments.find((a) => a.slotId === "CB1");
+    const banned = { ...state, discipline: { [starter.player.id]: { yellows: 0, banned: 2 } } };
+    const cover = selectCover(banned, "CB1");
+    expect(cover).not.toBeNull();
+    const one = reducer(banned, { type: "PLAY_TO", until: "next" });
+    expect(one.campaign.week).toBe(2);
+    expect(one.assignments.find((a) => a.slotId === "CB1").player.id).toBe(cover.player.id);
+    expect(one.covers).toEqual([{ slotId: "CB1", starterId: starter.player.id, coverId: cover.player.id }]);
+    expect(one.campaign.log[0].covered).toEqual([{ in: cover.player.name, out: starter.player.name }]);
+    const two = reducer(one, { type: "PLAY_TO", until: "next" });
+    expect(two.campaign.week).toBe(3);
+    expect(two.assignments.find((a) => a.slotId === "CB1").player.id).toBe(starter.player.id);
+    expect(two.bench.some((b) => b.player?.id === cover.player.id)).toBe(true);
+    expect(two.covers).toEqual([]);
+  });
+
+  it("a one-tap cover is recorded, and a cover the manager rearranges is dropped, not reversed", () => {
+    const state = day();
+    const starter = state.assignments.find((a) => a.slotId === "CB1");
+    const banned = { ...state, discipline: { [starter.player.id]: { yellows: 0, banned: 1 } } };
+    const covered = reducer(banned, { type: "COVER_BAN", slotId: "CB1" });
+    expect(selectNextAction(covered).key).toBe("playMatch");
+    expect(covered.covers).toHaveLength(1);
+    const moved = reducer(covered, { type: "SWAP_PLAYERS", fromKind: "slot", fromId: "CB1", toKind: "slot", toId: "CB2" });
+    const played = reducer(moved, { type: "PLAY_MATCH" });
+    expect(played.covers).toEqual([]);
+    expect(played.assignments.find((a) => a.slotId === "CB2").player.id).toBe(moved.assignments.find((a) => a.slotId === "CB2").player.id);
+    expect(played.bench.some((b) => b.player?.id === starter.player.id)).toBe(true);
+    expect(reducer({ ...banned, phase: "tactics" }, { type: "COVER_BAN", slotId: "CB1" }).covers).toEqual([]);
+  });
+
+  it("sets auto-cover", () => {
+    expect(reducer(day(), { type: "SET_AUTO_COVER", on: false }).autoCover).toBe(false);
   });
 
   it("with nobody on the bench, a ban leaves the place empty rather than stopping the season", () => {

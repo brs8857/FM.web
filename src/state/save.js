@@ -2,13 +2,14 @@ import { FORMATIONS } from "../engine/formations.js";
 import { careerSeasonLabel, CAREER_SEASONS, SEASON_WEEKS, buildUserFixtureList } from "../engine/season.js";
 import { STAT_KEYS } from "../engine/players.js";
 import { EMPTY_MEMORY } from "../engine/familiarity.js";
-import { wageCost, windowBudget } from "../engine/squad.js";
+import { wageCost, windowBudget, BENCH_SIZE } from "../engine/squad.js";
+import { MAX_BAN } from "../engine/match.js";
 import { STYLE_PRESETS } from "../engine/instructions.js";
 import { REDRAWS } from "./initialState.js";
 import legacyClubIds from "../data/legacyClubIds.json";
 import { PRODUCT_NAME } from "../content/product.js";
 
-export const SAVE_VERSION = 4;
+export const SAVE_VERSION = 5;
 export const APP_ID = "fm-web"; // the envelope id from 1.1.0, kept so old saves load
 export const SAVE_ERRORS = {
   notFmWeb: `This isn't an ${PRODUCT_NAME} save.`,
@@ -113,6 +114,12 @@ const migrations = {
     };
     return { ...save, saveVersion: 4, state };
   },
+  // v4 (2.7.0): no auto-cover and no covers. A bench of six stays six, with
+  // room for four more from the window. Yellows carried "since the last ban",
+  // and now mean the season's total; the difference is left to stand.
+  4(save) {
+    return { ...save, saveVersion: 5, state: { ...save.state, autoCover: true, covers: [] } };
+  },
 };
 
 export function rememberedSystem(state) {
@@ -212,12 +219,21 @@ function isGoal(g) {
 
 function isCard(c) {
   return isObject(c) && Number.isInteger(c.minute) && c.minute >= 1 && c.minute <= 95
-    && typeof c.slotId === "string" && typeof c.name === "string" && (c.kind === "yellow" || c.kind === "red");
+    && typeof c.slotId === "string" && typeof c.name === "string" && ["yellow", "second-yellow", "red"].includes(c.kind);
 }
 
 function isDiscipline(d) {
-  return isObject(d) && Object.values(d).every((e) => isObject(e) && Number.isInteger(e.yellows) && e.yellows >= 0 && e.yellows < 5
-    && Number.isInteger(e.banned) && e.banned >= 0);
+  return isObject(d) && Object.values(d).every((e) => isObject(e) && Number.isInteger(e.yellows) && e.yellows >= 0
+    && Number.isInteger(e.banned) && e.banned >= 0 && e.banned <= MAX_BAN);
+}
+
+// A ban in the log: a name (2.7.0 logs, always one match) or { name, matches }.
+function isBan(b) {
+  return typeof b === "string" || (isObject(b) && typeof b.name === "string" && Number.isInteger(b.matches) && b.matches >= 1 && b.matches <= MAX_BAN);
+}
+
+function isCovered(list) {
+  return list === undefined || (Array.isArray(list) && list.every((c) => isObject(c) && typeof c.in === "string" && typeof c.out === "string"));
 }
 
 function isMatchEntry(m, week) {
@@ -226,7 +242,7 @@ function isMatchEntry(m, week) {
   if (m.outcome !== (m.gf > m.ga ? "W" : m.gf === m.ga ? "D" : "L")) return false;
   if (!Array.isArray(m.goals) || m.goals.length !== m.gf + m.ga || !m.goals.every(isGoal)) return false;
   if (m.goals.filter((g) => g.us).length !== m.gf) return false;
-  if (!Array.isArray(m.cards) || !m.cards.every(isCard) || !isStringArray(m.bans)) return false;
+  if (!Array.isArray(m.cards) || !m.cards.every(isCard) || !Array.isArray(m.bans) || !m.bans.every(isBan) || !isCovered(m.covered)) return false;
   return isObject(m.played) && Number.isInteger(m.played.cohesion) && typeof m.played.changed === "boolean";
 }
 
@@ -261,6 +277,13 @@ function isCampaign(c, opponents) {
   return c.log.every((m, i) => m.opponent === fixtures[i].name && m.home === fixtures[i].home);
 }
 
+// Each cover names a slot and two players, both at the club.
+function isCovers(covers, s) {
+  if (!Array.isArray(covers)) return false;
+  const ids = new Set([...s.assignments, ...s.bench].map((e) => e?.player?.id).filter(Boolean));
+  return covers.every((c) => isObject(c) && s.assignments.some((a) => a.slotId === c.slotId) && ids.has(c.starterId) && ids.has(c.coverId));
+}
+
 function isValidState(s) {
   if (!isObject(s)) return false;
   if (!Object.hasOwn(PHASE_LABELS, s.phase)) return false;
@@ -272,7 +295,7 @@ function isValidState(s) {
   if (!formation) return false;
   if (!Array.isArray(s.assignments) || s.assignments.length !== 11) return false;
   if (!s.assignments.every((a, i) => isObject(a) && a.slotId === formation.slots[i].id && isPlayerOrNull(a.player) && isObject(a.pos))) return false;
-  if (!Array.isArray(s.bench) || s.bench.length > 6 || !s.bench.every((b) => isObject(b) && isPlayerOrNull(b.player))) return false;
+  if (!Array.isArray(s.bench) || s.bench.length > BENCH_SIZE || !s.bench.every((b) => isObject(b) && isPlayerOrNull(b.player))) return false;
   if (!Array.isArray(s.opponents) || s.opponents.length !== 19 || !s.opponents.every((o) => isObject(o) && typeof o.name === "string")) return false;
   if (!Array.isArray(s.draftedIds) || !s.draftedIds.every((id) => typeof id === "string")) return false;
   if (!Array.isArray(s.draftedIdentities)) return false;
@@ -288,6 +311,7 @@ function isValidState(s) {
   if (s.simulation !== null && !(isObject(s.simulation) && Array.isArray(s.simulation.matches) && Array.isArray(s.simulation.table))) return false;
   if (s.campaign !== null && !isCampaign(s.campaign, s.opponents)) return false;
   if (!isDiscipline(s.discipline)) return false;
+  if (typeof s.autoCover !== "boolean" || !isCovers(s.covers, s)) return false;
   if ((s.phase === "reveal" || s.phase === "matchday") && s.campaign === null) return false;
   if (s.phase === "matchday" && s.campaign.week > SEASON_WEEKS) return false;
   if (s.phase === "result" && s.simulation === null) return false;
