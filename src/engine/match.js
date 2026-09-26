@@ -1,4 +1,5 @@
-import { clamp } from "./util.js";
+import { clamp, weightedPick } from "./util.js";
+import { playerContribution } from "./tactics.js";
 
 /* ============================== Simulation ================================ */
 export function poissonSample(lambda, rng) {
@@ -66,4 +67,27 @@ export function simulateRivalMatch(home, away, rng) {
   const noisyHome = noisy(xgHome, rivalNoise(home), rng);
   const noisyAway = noisy(xgAway, rivalNoise(away), rng);
   return { hg: poissonSample(noisyHome, rng), ag: poissonSample(noisyAway, rng) };
+}
+
+export const STOPPAGE_CHANCE = 0.08;
+
+// Attributes the goals of a decided scoreline, on its own rng stream so it
+// never alters a result. The opponent's goals carry only a minute; ours go to
+// a starter drawn in proportion to his attacking contribution (job, brief,
+// position and freedom, the same number the profile is built from), so a
+// poacher pushed up top leads the scoring and a blocker almost never does.
+// Keepers never score. Minutes are distinct, ascending, and occasionally in
+// stoppage time (91-95).
+export function matchEvents({ gf, ga }, starters, rng) {
+  const minutes = new Set();
+  while (minutes.size < gf + ga) minutes.add(rng.next() < STOPPAGE_CHANCE ? 91 + rng.int(5) : 1 + rng.int(90));
+  const sides = rng.shuffle([...Array(gf).fill(true), ...Array(ga).fill(false)]);
+  const outfield = starters.filter((a) => a.player && a.role && a.type !== "GK");
+  const weights = outfield.map((a) => Math.max(0, playerContribution(a).att));
+  const goals = [...minutes].sort((a, b) => a - b).map((minute, i) => {
+    if (!sides[i]) return { minute, us: false };
+    const a = weightedPick(outfield, weights, rng) ?? rng.pick(outfield);
+    return { minute, us: true, slotId: a.slotId, id: a.player.id, name: a.player.name };
+  });
+  return { goals };
 }
