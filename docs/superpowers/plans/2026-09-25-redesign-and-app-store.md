@@ -30,10 +30,12 @@
 | D. Native shell | **v3.0 beta** (TestFlight) | platform adapter, Capacitor project, native storage, IAP + free-tier gate, privacy manifest, policy | B (native-feel), C (career worth buying) |
 | E. App Store release | **v3.0** | listing, age rating, rights sign-off, submission; then iCloud sync, dailies (Android: out of scope, see owner sign-off above) | D |
 | G. Bench draft and league bans | **v2.8** (web) | ten-pick bench draft from any position, top-flight ban thresholds, auto-cover in Play to… | F; spec [08](../specs/2026-09-26-08-bench-draft-and-bans.md), built as v2.8.0 |
+| H. Championship mode | proposed, no release yet | choose a league at new-career setup; own-club promotion and relegation both ways; Championship play-offs | G; spec [09](../specs/2026-09-26-09-championship-mode.md), **draft only — awaiting the owner's decision in spec 09 §2 before any task starts** |
 
-The roadmap's Phase 2 remainder (own-club relegation, matchups,
-difficulty, open-ended careers) and Phase 3 (match day) follow as v4.0
-and v5.0; see the updated roadmap.
+The roadmap's Phase 2 remainder (matchups, difficulty, open-ended
+careers) and Phase 3 (match day) follow as v4.0 and v5.0; see the
+updated roadmap. Own-club relegation, also part of Phase 2, is now
+scoped as milestone H above.
 
 ## 2. Owner decisions consolidated
 
@@ -322,3 +324,30 @@ stay as in v2.7.
 - **G2 State:** draft stages, bench draw and redraws, fill, auto-cover and covers, save v5 with migrations.
 - **G3 Screens:** bench stage of the draft, Squad tab bench of ten, Play to… toggle, cover-first swap sheet, report, feed and player-sheet lines.
 - **G4 Measure and release:** `sim.mjs --bans` (4–7 a season), e2e with auto-cover on and off, changelog, v2.8.0.
+
+## Milestone H — Championship mode (proposed 2026-09-26, not approved)
+
+**Goal:** a new career chooses Premier League or Championship; a
+Championship career drafts, sets a tactic and plays a season the same
+way; 1st-2nd promote automatically, 3rd-6th go through a play-off; a
+relegated Premier League career carries on the same career in the
+Championship, and a promoted Championship career carries on in the
+Premier League. Full design, the Championship draft-data question and
+the owner decisions H1–H5 are in
+[09 Championship mode and cross-division careers](../specs/2026-09-26-09-championship-mode.md).
+
+**No task in this milestone starts until the owner has answered spec 09
+§11**, most of all **H1**: whether the Championship draft reuses the
+existing top-flight archive (buildable now) or waits on a real
+2016-onward Championship archive to be sourced (blocked; no timeline).
+The rest of the milestone (H-a to H-d, H-f) needs no new data either way
+and could, if the owner prefers, be built and released ahead of H-e.
+
+**Depends on:** G shipped (v2.8.0). Takes a new save version.
+
+- **H-a Engine:** season length and team count generalised off literal constants; the Championship's own opponent table; tier-aware season labels and budget bands (09 §4-5).
+- **H-b Engine:** both-ways promotion and relegation; the play-off semi-finals and final (09 §6).
+- **H-c State/save:** `tier`, the `"playoffs"` phase, the save-version bump and its migration (09 §8).
+- **H-d Screens:** the League step, tier-aware Era and Colours, Season tab promotion/relegation bands and the play-off bracket, Club/Record tier history (09 §7).
+- **H-e Data** *(gated on H1)*: curate the Championship draft pool from the existing archive, or integrate a newly-sourced Championship archive through `derive-ratings.mjs`.
+- **H-f Measure and release:** a `sim.mjs` balance pass for the 24-team competition, end-to-end tests for a full promotion and a full relegation in one career, changelog, version.

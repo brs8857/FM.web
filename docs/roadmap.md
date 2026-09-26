@@ -1,6 +1,6 @@
 # FM.WEB Roadmap
 
-_Created 2026-09-11. Updated 2026-09-26 (career depth, part 1 built). Living document: update it when a phase starts, ships, or changes scope._
+_Created 2026-09-11. Updated 2026-09-26 (career depth, part 1 built; Championship mode scoped as milestone H, spec drafted, awaiting sign-off). Living document: update it when a phase starts, ships, or changes scope._
 
 **A phase isn't finished until it's shipped and tested** (see [Definition of done](#definition-of-done)).
 Each phase gets its own design cycle before any code is written:
@@ -138,6 +138,10 @@ window, so any engine change is likely to need a re-tune.
 - **A real league**: all 20 clubs play every fixture, so the table matches the results.
   This fixes rival points that ignore your results and a points total inflated by about 12%. _(moved to 1C)_
 - **Relegation for you too**: your club can go down and play in the Championship, and win promotion back.
+  _Scoped 2026-09-26 as milestone H, with a Championship start and play-offs added to the original ask: see
+  [09 Championship mode and cross-division careers](superpowers/specs/2026-09-26-09-championship-mode.md).
+  Drafting real Championship players is blocked on the same lost data pipeline named below; the spec proposes
+  reusing the existing archive instead. Awaiting the owner's decision; nothing built._
 - **Players change over time**: ageing, development, decline and retirement. _(moved to 1C)_
 - **Familiarity grows** the longer you keep a system, and drops when you change it. _(moved to 1C, as "cohesion")_
 - **Transfer market**: budget and valuations replace five random free signings.
