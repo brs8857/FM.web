@@ -31,19 +31,16 @@
 .withRail .main {
   padding: var(--space-5) var(--space-6);
 }
-.sticky {
+.footer {
   position: sticky;
   bottom: 0;
-  z-index: 20;
+  z-index: 21;
+}
+.sticky {
   padding: var(--space-2) var(--space-4);
   padding-bottom: calc(var(--space-2) + env(safe-area-inset-bottom));
   background: var(--paper);
   border-top: 1px solid var(--rule);
-}
-.column > :last-child:not(.main) {
-  position: sticky;
-  bottom: 0;
-  z-index: 21;
 }
 .sticky + * {
   border-top: 0;

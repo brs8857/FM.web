@@ -2,7 +2,8 @@ import { describe, it, expect } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import App from "./App.jsx";
 import { makeMiniDataset } from "../../tests/fixtures/miniDataset.js";
-import { fakeStorage, makeSaveText } from "../../tests/fixtures/saves.js";
+import { fakeStorage, makeSaveText, makeSeason3State } from "../../tests/fixtures/saves.js";
+import { selectNextAction } from "../state/selectors.js";
 import { SAVE_KEY } from "../state/storage.js";
 import { DEFAULT_PREFS, PREFS_KEY } from "../state/prefs.js";
 import { encodeCareerCode } from "./careerCode.js";
@@ -53,6 +54,31 @@ describe("App", () => {
     expect(screen.getByRole("heading", { level: 1, name: "Era XI" })).toBeTruthy();
     unmount();
     expect(document.documentElement.dataset.theme).toBeUndefined();
+  });
+
+  it("resumes a season in progress on match day and plays it from the sticky bar, the K key and Play to…", () => {
+    const state = makeSeason3State(11);
+    const storage = fakeStorage({ [SAVE_KEY]: makeSaveText(state) });
+    render(<App dataset={makeMiniDataset()} storage={storage} prefs={{ ...prefs, reduceMotion: "on" }} />);
+    const label = (s) => selectNextAction(s).label;
+    expect(label(state)).toMatch(/^Play week 12: .+ \([HA]\)$/);
+    fireEvent.click(screen.getByRole("button", { name: label(state) }));
+    expect(screen.getByRole("tab", { name: "Season", selected: true })).toBeTruthy();
+    expect(screen.getByRole("article", { name: /Your XI/ })).toBeTruthy();
+    const saved = () => JSON.parse(storage.data.get(SAVE_KEY)).state;
+    fireEvent.click(screen.getAllByRole("button", { name: label(state) }).at(-1));
+    expect(saved().campaign.week).toBe(13);
+    fireEvent.click(screen.getByRole("tab", { name: "Board" }));
+    const week13 = saved();
+    fireEvent.keyDown(window, { key: "k" });
+    expect(saved().campaign.week).toBe(14);
+    expect(screen.getByRole("tab", { name: "Season", selected: true })).toBeTruthy();
+    expect(label(week13)).not.toBe(label(saved()));
+    fireEvent.click(screen.getByRole("button", { name: "Play to…" }));
+    fireEvent.click(screen.getByRole("radio", { name: /The end of the season/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Play" }));
+    expect(saved().phase).toBe("result");
+    expect(screen.getByRole("button", { name: "Share" })).toBeTruthy();
   });
 
   it("walks a new career from Home through era, shape and colours into the draft", () => {

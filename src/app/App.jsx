@@ -31,6 +31,7 @@ import Draft from "../screens/Draft/Draft.jsx";
 import SquadTab from "../screens/Squad/SquadTab.jsx";
 import BoardTab from "../screens/Board/BoardTab.jsx";
 import SeasonTab from "../screens/Season/SeasonTab.jsx";
+import PlayToSheet from "../screens/Season/PlayToSheet.jsx";
 import ClubTab from "../screens/Club/ClubTab.jsx";
 import Settings from "../screens/Club/Settings.jsx";
 import Saves from "../screens/Club/Saves.jsx";
@@ -44,6 +45,7 @@ import Button from "../ui/Button.jsx";
 import IconButton from "../ui/IconButton.jsx";
 import Sheet from "../ui/Sheet.jsx";
 import { HomeIcon } from "../ui/icons.jsx";
+import styles from "./App.module.css";
 
 const TITLES = { squad: "Squad", board: "Board", season: "Season", club: "Club" };
 
@@ -57,6 +59,7 @@ const SETUP_STEPS = {
 const NEXT_ACTIONS = {
   kickOff: { type: "START_SEASON" },
   startSeason: { type: "KICKOFF" },
+  playMatch: { type: "PLAY_MATCH" },
   openWindow: { type: "GOTO_TRANSFER" },
   closeWindow: { type: "CONTINUE_SEASON" },
 };
@@ -78,8 +81,8 @@ export default function App({ dataset, storage: storageProp, prefs, search }) {
   );
 }
 
-// True until the phase first changes after a resume, so the reveal and the
-// vidiprinter a player comes back to are shown instantly rather than replayed.
+// True until the phase first changes after a resume, so the reveal a player
+// comes back to is shown instantly rather than replayed.
 function useResumed(phase, initially) {
   const [resumed, setResumed] = useState(initially);
   const seen = useRef(phase);
@@ -100,9 +103,11 @@ function Game({ dataset, storageProp, initialPrefs }) {
   const [confirmNew, setConfirmNew] = useState(false);
   const [pending, setPending] = useState(null); // { kind: "import", state } | { kind: "code", ...decoded }
   const [homeSheet, setHomeSheet] = useState(null);
-  const [feedDoneSeason, setFeedDoneSeason] = useState(null);
+  const [feed, setFeed] = useState(null);
+  const [playTo, setPlayTo] = useState(false);
   const [resumed, setResumed] = useResumed(state.phase, boot.status === "ok");
-  const next = selectNextAction(state);
+  const clubName = useCallback((name) => displayClubName(name, prefs.clubNames), [prefs.clubNames]);
+  const next = selectNextAction(state, clubName);
   const [nav, navDispatch] = useNav(state.phase, next.tab ?? "season");
   const persistRequested = useRef(false);
   const reducedMotion = useReducedMotion(prefs);
@@ -117,10 +122,8 @@ function Game({ dataset, storageProp, initialPrefs }) {
   const identity = identityLabel(profile.synergyLabel, state.instructions);
   const cohesion = cohesionLabel(familiarity);
   const clubSeason = useCallback((seasonKey) => clubSeasonLabel(dataset, seasonKey, prefs.clubNames), [dataset, prefs.clubNames]);
-  const clubName = useCallback((name) => displayClubName(name, prefs.clubNames), [prefs.clubNames]);
   const revealed = state.phase === "reveal" || state.phase === "matchday" || state.phase === "result";
   const careerCode = encodeCareerCode({ seed: state.careerSeed, eraMin: state.eraMin, eraMax: state.eraMax, formationKey: state.formationKey });
-  const feedDone = state.phase === "result" && (instant || feedDoneSeason === state.season);
 
   const inProgress = state.phase !== "formation";
 
@@ -188,17 +191,27 @@ function Game({ dataset, storageProp, initialPrefs }) {
     else if (action) dispatch(action);
   };
 
+  // Fast-forward: the fixtures are played in one step and saved, then type
+  // in on the vidiprinter from the first of them (instantly under reduced
+  // motion).
+  const runPlayTo = (until) => {
+    if (until !== "next" && !reducedMotion) setFeed(state.campaign.week);
+    dispatch({ type: "PLAY_TO", until });
+    goTab("season");
+  };
+  const onFeedDone = useCallback(() => setFeed(null), []);
+
   const sticky = stickyFor();
   function stickyFor() {
-    if (nav.mode !== "club") return null;
+    if (nav.mode !== "club" || feed != null) return null;
     if (state.phase === "tactics" && (nav.tab === "board" || nav.tab === "season")) {
       return { label: `Kick off season ${state.season}`, run: () => { dispatch({ type: "START_SEASON" }); goTab("season"); } };
     }
-    if (nav.tab !== next.tab) return null;
-    if (state.phase === "result") {
-      if (!feedDone) return null;
-      if (next.key === "careerComplete") return { label: next.label, run: () => goTab("club") };
+    if (next.key === "playMatch" && nav.tab !== "club") {
+      return { label: next.label, run: () => { dispatch(NEXT_ACTIONS.playMatch); goTab("season"); }, playTo: true };
     }
+    if (nav.tab !== next.tab) return null;
+    if (next.key === "careerComplete") return { label: next.label, run: () => goTab("club") };
     const action = NEXT_ACTIONS[next.key];
     return action ? { label: next.label, run: () => dispatch(action) } : null;
   }
@@ -275,18 +288,26 @@ function Game({ dataset, storageProp, initialPrefs }) {
       start={<IconButton label="Home" onClick={() => navDispatch({ type: "HOME" })}><HomeIcon /></IconButton>}
       onBack={nav.history.length > 0 ? () => navDispatch({ type: "BACK" }) : undefined}
       next={<NextPill label={next.label} onClick={goNext} />}
-      sticky={sticky ? <Button block onClick={sticky.run}>{sticky.label}</Button> : undefined}>
+      sticky={sticky ? (
+        <div className={styles.stickyRow}>
+          <Button block onClick={sticky.run}>{sticky.label}</Button>
+          {sticky.playTo && <Button variant="ghost" onClick={() => setPlayTo(true)}>{t("season.playTo")}</Button>}
+        </div>
+      ) : undefined}>
       {nav.tab === "squad" && <SquadTab state={state} dispatch={dispatch} clubSeason={clubSeason} revealed={revealed} prefs={prefs} onDismissNote={markSeen} />}
       {nav.tab === "board" && <BoardTab state={state} dispatch={dispatch} profile={profile} familiarity={familiarity} clubSeason={clubSeason} revealed={revealed} prefs={prefs} onDismissNote={markSeen} />}
       {nav.tab === "season" && (
-        <SeasonTab state={state} dispatch={dispatch} identity={identity} familiarity={familiarity} tacticUntouched={tacticUntouched(state)}
-          instant={instant} feedDone={feedDone} onFeedDone={() => setFeedDoneSeason(state.season)} careerCode={careerCode}
-          clubSeason={clubSeason} clubName={clubName} prefs={prefs} onDismissNote={markSeen} onGoBoard={() => goTab("board")} />
+        <SeasonTab state={state} dispatch={dispatch} identity={identity} familiarity={familiarity} profile={profile} tacticUntouched={tacticUntouched(state)}
+          instant={instant} feed={feed} onFeedDone={onFeedDone} careerCode={careerCode}
+          clubSeason={clubSeason} clubName={clubName} prefs={prefs} onDismissNote={markSeen} onGoBoard={() => goTab("board")} onGoTab={goTab} />
       )}
       {nav.tab === "club" && (
         <ClubTab history={selectSeasonHistory(state, summarizeSeason)} careerComplete={next.key === "careerComplete"} careerCode={careerCode}
           prefs={prefs} setPrefs={setPrefs} onDismissNote={markSeen} canExport={inProgress} storageAvailable={Boolean(storage)}
           onExport={exportCareer} onImportFile={onImportFile} onStartFromCode={onStartFromCode} onNewCareer={onNewCareer} />
+      )}
+      {state.phase === "matchday" && state.campaign && (
+        <PlayToSheet open={playTo} onClose={() => setPlayTo(false)} week={state.campaign.week} onPlay={runPlayTo} />
       )}
       <ConfirmSheet open={confirmNew} title="Start a new career?" confirmLabel="Start over" onConfirm={() => startNewCareer()} onClose={() => setConfirmNew(false)}>
         <p>Your current career ({t("shell.season", { season: state.season, label: careerSeasonLabel(state.season) })}) will be replaced. Export it first if you want to keep it.</p>

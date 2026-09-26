@@ -4,11 +4,11 @@ import Slip from "../../ui/Slip.jsx";
 import Ticker from "../../ui/Ticker.jsx";
 import { useAnnounce } from "../../ui/LiveRegion.jsx";
 import { t } from "../../content/t.js";
-import { careerSeasonLabel } from "../../engine/season.js";
+import { careerSeasonLabel, HALF_SEASON } from "../../engine/season.js";
 import styles from "./Season.module.css";
 
 export const TICK_MS = 350;
-export const HALF_SEASON = 19;
+export { HALF_SEASON };
 const TONE = { W: "win", D: "draw", L: "loss" };
 
 export function ordinal(n) {
@@ -25,29 +25,27 @@ export function resultLine(match, clubName) {
   return { id: match.week, tone: TONE[match.outcome], text: `WK ${String(match.week).padStart(2)}  ${pad(`${clubName(match.opponent).toUpperCase()} ${venue}`, 26)} ${match.gf}-${match.ga}  ${match.outcome}` };
 }
 
-// The running position: your points so far against each rival's points
-// after the same week. Only points are kept week by week, so a tie goes your
-// way until the final week, where the table's goal-difference order stands.
-export function runningPosition(simulation, week) {
-  const played = simulation.matches.slice(0, week);
-  const pts = played.reduce((sum, m) => sum + (m.outcome === "W" ? 3 : m.outcome === "D" ? 1 : 0), 0);
-  const rivals = simulation.table.filter((r) => !r.isUser).map((r) => (week > 0 ? r.weekly[week - 1] : 0));
-  const position = week >= simulation.matches.length ? simulation.position : 1 + rivals.filter((p) => p > pts).length;
-  const w = played.filter((m) => m.outcome === "W").length, d = played.filter((m) => m.outcome === "D").length, l = played.length - w - d;
-  return { pts, position, w, d, l };
+export function positionText(week, row) {
+  return t("season.position", { week, position: ordinal(row.position), pts: row.pts });
 }
 
-// The vidiprinter (spec 04 §5.5): results type in, newest at the bottom, with
-// a sticky position ticker; Pause and Skip; a half-season slip at week 19.
+// The fast-forward feed (spec 07 §7.4): the fixtures a Play to… has just
+// played, from week `from` to the end of the log, type in with the real
+// table in the sticky bar; Pause and Skip; a half-season slip when the feed
+// crosses week 19. The results are already decided and saved, so this is
+// only the telling. `standingAt(week)` is your table row after that week.
 // Announcements happen only at pauses, never per tick.
-export default function Vidiprinter({ simulation, season, instant, clubName, onDone }) {
+export default function Vidiprinter({ log, from = 1, season, instant, clubName, standingAt, onDone }) {
   const announce = useAnnounce();
-  const total = simulation.matches.length;
+  const matches = log.slice(from - 1);
+  const total = matches.length;
   const [shown, setShown] = useState(instant ? total : 0);
   const [paused, setPaused] = useState(false);
-  const [halfSeen, setHalfSeen] = useState(instant);
+  const crossesHalf = from <= HALF_SEASON && log.length > HALF_SEASON;
+  const [halfSeen, setHalfSeen] = useState(instant || !crossesHalf);
   const doneFired = useRef(false);
-  const atHalf = shown === HALF_SEASON && !halfSeen;
+  const week = from - 1 + shown;
+  const atHalf = week === HALF_SEASON && !halfSeen;
   const done = shown >= total;
 
   useEffect(() => {
@@ -60,13 +58,13 @@ export default function Vidiprinter({ simulation, season, instant, clubName, onD
     return () => clearTimeout(timer);
   }, [shown, paused, atHalf, done, onDone]);
 
-  const running = runningPosition(simulation, shown);
-  const positionText = t("season.position", { week: shown, position: ordinal(running.position), pts: running.pts });
-  const lines = simulation.matches.slice(0, shown).map((m) => resultLine(m, clubName));
+  const row = week > 0 ? standingAt(week) : null;
+  const barText = row ? positionText(week, row) : t("season.kickoff", { season });
+  const lines = matches.slice(0, shown).map((m) => resultLine(m, clubName));
 
   const speak = (why) => {
     const latest = lines[lines.length - 1];
-    announce(`${why}. ${latest ? `${latest.text}. ` : ""}${positionText}.`);
+    announce(`${why}. ${latest ? `${latest.text}. ` : ""}${barText}.`);
   };
   const pause = () => { setPaused(true); speak("Paused"); };
   const resume = () => setPaused(false);
@@ -75,14 +73,14 @@ export default function Vidiprinter({ simulation, season, instant, clubName, onD
 
   useEffect(() => {
     if (!atHalf) return;
-    const half = runningPosition(simulation, HALF_SEASON);
-    announce(`Half-season. ${t("season.record", half)}. ${t("season.position", { week: HALF_SEASON, position: ordinal(half.position), pts: half.pts })}.`);
-  }, [atHalf, simulation, announce]);
+    const half = standingAt(HALF_SEASON);
+    announce(`Half-season. ${t("season.record", half)}. ${positionText(HALF_SEASON, half)}.`);
+  }, [atHalf, standingAt, announce]);
 
   return (
     <div className={styles.stack}>
       <div className={styles.positionBar}>
-        <span className={styles.position}>{positionText}</span>
+        <span className={styles.position}>{barText}</span>
         {!done && (
           <span className={styles.controls}>
             {paused
@@ -92,11 +90,11 @@ export default function Vidiprinter({ simulation, season, instant, clubName, onD
           </span>
         )}
       </div>
-      <Ticker lines={lines.length ? lines : [{ id: 0, text: `SEASON ${season} · ${careerSeasonLabel(season).toUpperCase()} · KICK-OFF`, tone: "muted" }]}
+      <Ticker lines={lines.length ? lines : [{ id: 0, text: `SEASON ${season} · ${careerSeasonLabel(season).toUpperCase()} · WEEK ${from}`, tone: "muted" }]}
         label="Vidiprinter" announce={false} cursor={!done} />
-      {atHalf && (
-        <Slip kicker="Half-season" title={`${ordinal(running.position)} at the turn`}>
-          <p className={styles.mono}>{t("season.record", running)} · {t("season.position", { week: shown, position: ordinal(running.position), pts: running.pts })}</p>
+      {atHalf && row && (
+        <Slip kicker="Half-season" title={`${ordinal(row.position)} at the turn`}>
+          <p className={styles.mono}>{t("season.record", row)} · {positionText(week, row)}</p>
           <p className={styles.lede}>A stopping point. The second half plays when you are ready.</p>
           <Button onClick={continueHalf}>Continue</Button>
         </Slip>

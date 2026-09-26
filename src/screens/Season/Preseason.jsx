@@ -2,7 +2,7 @@ import Button from "../../ui/Button.jsx";
 import Callout from "../../ui/Callout.jsx";
 import IdentityLine from "../Board/IdentityLine.jsx";
 import { careerSeasonLabel } from "../../engine/season.js";
-import { selectMemory } from "../../state/selectors.js";
+import { selectMemory, selectSettling } from "../../state/selectors.js";
 import { t } from "../../content/t.js";
 import styles from "./Season.module.css";
 
@@ -18,6 +18,7 @@ export default function Preseason({ state, identity, familiarity, tacticUntouche
       <div>
         <h2 className={styles.heading}>Season {state.season} · {careerSeasonLabel(state.season)}</h2>
         <p className={styles.lede}>Thirty-eight matches, home and away against nineteen rivals. The ratings are revealed at kick-off.</p>
+        <p className={styles.lede}>The fixture list is drawn at kick-off.</p>
       </div>
       {retired.length > 0 && (
         <Callout title="Retired">
@@ -31,7 +32,7 @@ export default function Preseason({ state, identity, familiarity, tacticUntouche
           <Button variant="ghost" size="sm" onClick={onGoBoard}>Go to the board</Button>
         </Callout>
       )}
-      <IdentityLine identity={identity} familiarity={familiarity} memory={selectMemory(state)} />
+      <IdentityLine identity={identity} familiarity={familiarity} memory={selectMemory(state)} settle={selectSettling(state)} />
       <section>
         <h3 className={styles.subheading}>The opposition</h3>
         <ol className={styles.opponents}>

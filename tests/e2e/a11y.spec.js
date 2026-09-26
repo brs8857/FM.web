@@ -48,6 +48,18 @@ test("every screen passes axe and never scrolls sideways", async ({ page }) => {
   await page.getByRole("button", { name: "Kick off season 1" }).first().click();
   await expectAxeClean(page, "reveal");
   await page.getByRole("button", { name: "Start season 1" }).click({ timeout: 15_000 });
+  await expectAxeClean(page, "match day");
+  await expectNoHorizontalScroll(page);
+  await snap(page, "match-day");
+  await page.getByRole("button", { name: /^Play week 1: / }).first().click();
+  await page.getByRole("button", { name: /Season so far/ }).click();
+  await page.getByRole("list", { name: "Results" }).getByRole("button").first().click();
+  await expectAxeClean(page, "match day, report row open");
+  await expectNoHorizontalScroll(page);
+  await page.getByRole("button", { name: "Play to…" }).click();
+  await expectAxeClean(page, "play to sheet");
+  await page.getByRole("radio", { name: /The end of the season/ }).click();
+  await page.getByRole("button", { name: "Play", exact: true }).click();
   await expectAxeClean(page, "vidiprinter");
   await page.getByRole("button", { name: "Skip to end" }).click();
   await expect(page.getByRole("button", { name: "Share" })).toBeVisible();
@@ -68,6 +80,9 @@ test("reduced motion shows the reveal and the season instantly", async ({ page }
   await page.getByRole("button", { name: "Kick off season 1" }).first().click();
   await expect(page.getByText("Squad average")).toBeVisible({ timeout: 2000 });
   await page.getByRole("button", { name: "Start season 1" }).click();
+  await page.getByRole("button", { name: "Play to…" }).click();
+  await page.getByRole("radio", { name: /The end of the season/ }).click();
+  await page.getByRole("button", { name: "Play", exact: true }).click();
   await expect(page.getByRole("button", { name: "Share" })).toBeVisible({ timeout: 2000 });
   await expect(page.getByRole("button", { name: "Skip to end" })).toHaveCount(0);
 });

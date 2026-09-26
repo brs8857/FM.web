@@ -44,6 +44,15 @@ describe("useAutosave", () => {
     expect(storage.setItem).toHaveBeenCalledTimes(2);
   });
 
+  it("saves immediately after every match played", () => {
+    const campaign = (week) => ({ seed: 1, order: [], week, log: [] });
+    const { storage, rerender } = setup(state("matchday", { campaign: campaign(4) }));
+    act(() => vi.advanceTimersByTime(500));
+    rerender(state("matchday", { campaign: campaign(5) }));
+    expect(storage.setItem).toHaveBeenCalledTimes(2);
+    expect(JSON.parse(storage.data.get(SAVE_KEY)).state.campaign.week).toBe(5);
+  });
+
   it("does nothing while disabled", () => {
     const { storage } = setup(state("tactics"), { enabled: false });
     act(() => vi.advanceTimersByTime(1000));

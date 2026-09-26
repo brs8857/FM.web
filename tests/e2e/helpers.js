@@ -46,13 +46,24 @@ export async function setStyle(page, name = "Gegenpress") {
   await page.getByRole("radio", { name, exact: true }).click();
 }
 
-// Kick off, start the season after the reveal, skip the vidiprinter, and
-// open the window from the back page.
+// Fast-forward from match day: Play to… the chosen run, then skip the feed.
+export async function playTo(page, option = "The end of the season") {
+  await page.getByRole("button", { name: "Play to…" }).click();
+  await page.getByRole("radio", { name: new RegExp(option) }).click();
+  await page.getByRole("button", { name: "Play", exact: true }).click();
+  const skip = page.getByRole("button", { name: "Skip to end" });
+  if (await skip.isVisible().catch(() => false)) await skip.click();
+}
+
+// Kick off, start the season after the reveal, fast-forward to the half and
+// then the end, and open the window from the back page.
 export async function playSeasonToWindow(page, season = 1) {
   await page.getByRole("button", { name: `Kick off season ${season}` }).first().click();
   await page.getByRole("button", { name: `Start season ${season}` }).click({ timeout: 15_000 });
-  const skip = page.getByRole("button", { name: "Skip to end" });
-  if (await skip.isVisible().catch(() => false)) await skip.click();
+  await expect(page.getByRole("button", { name: /^Play week 1: / }).first()).toBeVisible();
+  await playTo(page, "The half");
+  await expect(page.getByRole("button", { name: /^Play week 20: / }).first()).toBeVisible({ timeout: 20_000 });
+  await playTo(page, "The end of the season");
   await page.getByRole("button", { name: "Open the window" }).first().click({ timeout: 20_000 });
   await expect(page.getByRole("heading", { name: /The window/ })).toBeVisible();
 }

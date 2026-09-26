@@ -3,9 +3,15 @@ import { makeSaveEnvelope, serializeState, toSaveText } from "../state/save.js";
 import { writeAutosave } from "../state/storage.js";
 import { APP_VERSION } from "../version.js";
 
+// A phase change or a match played is a stopping point and saves at once;
+// anything else saves after a pause.
+function checkpoint(state) {
+  return `${state.phase}:${state.campaign?.week ?? ""}`;
+}
+
 export function useAutosave({ state, storage, enabled, onWriteError, delayMs = 500 }) {
   const lastWritten = useRef(null);
-  const lastPhase = useRef(state.phase);
+  const lastCheckpoint = useRef(checkpoint(state));
   const latest = useRef(state);
   const onErrorRef = useRef(onWriteError);
 
@@ -23,10 +29,10 @@ export function useAutosave({ state, storage, enabled, onWriteError, delayMs = 5
   }, [storage]);
 
   useEffect(() => {
-    const phaseChanged = lastPhase.current !== state.phase;
-    lastPhase.current = state.phase;
+    const stopped = lastCheckpoint.current !== checkpoint(state);
+    lastCheckpoint.current = checkpoint(state);
     if (!enabled || !storage || state.phase === "formation") return undefined;
-    if (phaseChanged) {
+    if (stopped) {
       persist(state);
       return undefined;
     }

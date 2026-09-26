@@ -8,7 +8,8 @@ import styles from "./Shell.module.css";
 export const RAIL_QUERY = "(min-width: 1024px)";
 
 // The app frame (spec 04 §6): top bar, the tab panel, an optional sticky bar
-// above the tabs, and the Club tab bar (bottom on phones and tablets, a left
+// above the tabs (the two share one footer, so the bar is never under the
+// tabs), and the Club tab bar (bottom on phones and tablets, a left
 // rail at 1024 px and up). Set-up and draft modes have no tab bar; Home has
 // no top bar (it carries its own masthead).
 export default function Shell({ mode, tab, onTab, title, subtitle, onBack, start, next, end, sticky, children }) {
@@ -27,8 +28,12 @@ export default function Shell({ mode, tab, onTab, title, subtitle, onBack, start
         <main className={styles.main} tabIndex={-1}>
           {club ? <div id={`panel-${tab}`} role="tabpanel" aria-labelledby={`tab-${tab}`}>{children}</div> : children}
         </main>
-        {sticky && <div className={styles.sticky}>{sticky}</div>}
-        {club && !rail && tabs}
+        {(sticky || (club && !rail)) && (
+          <div className={styles.footer}>
+            {sticky && <div className={styles.sticky}>{sticky}</div>}
+            {club && !rail && tabs}
+          </div>
+        )}
       </div>
     </div>
   );

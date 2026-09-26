@@ -54,20 +54,26 @@ export function renderSlip(ctx, slip) {
   ctx.fillStyle = ink;
   ctx.font = `600 44px ${mono}`;
   ctx.fillText(slip.record, margin, y);
+  if (slip.topScorer) {
+    y += 50;
+    ctx.fillStyle = ink2;
+    ctx.font = `400 34px ${mono}`;
+    ctx.fillText(slip.topScorer, margin, y);
+  }
   y += 50;
   ctx.fillStyle = rule;
   ctx.fillRect(margin, y, width, 3);
 
-  y += 70;
+  y += 60;
   ctx.fillStyle = ink;
   ctx.font = `600 34px ${mono}`;
   const column = Math.ceil(slip.eleven.length / 2);
   slip.eleven.forEach((name, i) => {
     const x = margin + (i < column ? 0 : width / 2);
     const row = i < column ? i : i - column;
-    ctx.fillText(name.toUpperCase(), x, y + row * 46);
+    ctx.fillText(name.toUpperCase(), x, y + row * 44);
   });
-  y += column * 46 + 40;
+  y += column * 44 + 40;
 
   ctx.fillStyle = rule;
   ctx.fillRect(margin, y, width, 3);

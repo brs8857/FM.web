@@ -156,8 +156,42 @@
   font-weight: 600;
   margin-top: var(--space-2);
 }
+.matchday {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.matchdayGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: start;
+}
+.fixtureBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+.fixtureActions {
+  display: flex;
+  gap: var(--space-2);
+}
+.topScorer {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
 @media (min-width: 600px) {
   .headline {
     font-size: 4.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  .wide {
+    max-width: none;
+  }
+  .matchdayGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }

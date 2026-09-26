@@ -1,0 +1,104 @@
+.report {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  color: var(--ink);
+}
+.kicker {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.score {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-xl);
+  line-height: 1.05;
+}
+.compact .score {
+  font-size: var(--text-lg);
+}
+.win {
+  color: var(--win);
+}
+.draw {
+  color: var(--draw);
+}
+.loss {
+  color: var(--loss);
+}
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+.columns > :last-child {
+  text-align: right;
+}
+.scorers {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.goal {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+.columns > :last-child .goal {
+  justify-content: flex-start;
+}
+.report dd {
+  margin: 0;
+}
+.minute {
+  color: var(--ink-2);
+  flex: none;
+}
+.scorer {
+  overflow-wrap: anywhere;
+}
+.none {
+  color: var(--ink-2);
+}
+.played {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  font-size: var(--text-sm);
+}
+.played > div {
+  display: flex;
+  gap: var(--space-1);
+}
+.played dt {
+  color: var(--ink-2);
+}
+.played dt::after {
+  content: ":";
+}
+.played .changed dt::after {
+  content: none;
+}
+.chip {
+  font-family: var(--font-display);
+  font-weight: 800;
+}
+.changed {
+  color: var(--signal-ink);
+  background: var(--signal);
+  border-radius: var(--radius-paper);
+  padding: 0 var(--space-2);
+}
+.table {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--rule);
+}

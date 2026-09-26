@@ -25,7 +25,7 @@
   },
   "cohesion": {
     "title": "Cohesion",
-    "body": "How well the eleven know this system. Coherent set-ups, players in their natural positions and an XI from close seasons raise it; extreme dials, wandering positions and a squad spanning decades lower it.\n\nIt also remembers: every season kept in the same shape and identity adds a little (up to +8), and changing either costs −4 for the season of the change.\n\nLow cohesion makes results streaky and gates the bonus an [[identity]] gives."
+    "body": "How well the eleven know this system. Coherent set-ups, players in their natural positions and an XI from close seasons raise it; extreme dials, wandering positions and a squad spanning decades lower it.\n\nIt also remembers: every season kept in the same shape and identity adds a little (up to +8), and changing either costs −4 for the season of the change. Within a season it [[settling|settles]] too.\n\nLow cohesion makes results streaky and gates the bonus an [[identity]] gives."
   },
   "identity": {
     "title": "Identity",
@@ -110,5 +110,9 @@
   "stat-bands": {
     "title": "Stat bands",
     "body": "Every stat shows as one of five bands, from weak to elite, and the overall rating stays hidden until kick-off. Knowing the player is the edge; reading a number is not."
+  },
+  "settling": {
+    "title": "Settling",
+    "body": "Cohesion for the next match from the matches already played this season in the same system: the shape, the seven identity dials and the discipline. The first match of a season, or the first after a change, costs −3; the next two −2 and −1; from the seventh match in a row it pays +3.\n\nSwapping players and moving the other dials do not count as a change."
   }
 }

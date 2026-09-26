@@ -23,7 +23,7 @@ const SLIPS = [
     ),
   },
   {
-    key: "ticker", text: "The season plays out on the vidiprinter, then the back page gives its verdict. Six seasons make a career.",
+    key: "ticker", text: "The season plays one match at a time, with a report after each; the back page gives its verdict. Six seasons make a career.",
     visual: <Ticker lines={[{ id: 1, text: "WK 01  EVERTON (H)     2-0  W", tone: "win" }, { id: 2, text: "WK 02  LEEDS (A)       1-1  D", tone: "draw" }]} label="Example results" />,
   },
 ];

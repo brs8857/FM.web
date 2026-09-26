@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from "vitest";
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
+import { render, screen, fireEvent, cleanup, within } from "@testing-library/react";
 import axe from "axe-core";
 import App from "../../src/app/App.jsx";
 import { makeMiniDataset } from "../fixtures/miniDataset.js";
@@ -106,7 +106,7 @@ describe("axe: every screen", () => {
     await check("term sheet");
   });
 
-  it("season: pre-season, reveal, vidiprinter, back page, window", async () => {
+  it("season: pre-season, reveal, match day, play to, back page, window", async () => {
     mount(makeSeason3TacticsState());
     fireEvent.click(screen.getByRole("button", { name: "Kick off season 3" }));
     await check("pre-season");
@@ -114,6 +114,19 @@ describe("axe: every screen", () => {
     mount(makeSeason3State(), { reduceMotion: "on" });
     fireEvent.click(screen.getByRole("button", { name: "Start season 3" }));
     await check("reveal");
+    cleanup();
+    mount(makeSeason3State(0), { reduceMotion: "on" });
+    fireEvent.click(screen.getByRole("button", { name: /^Play week 1: / }));
+    await check("match day, week 1");
+    cleanup();
+    mount(makeSeason3State(11), { reduceMotion: "on" });
+    fireEvent.click(screen.getByRole("button", { name: /^Play week 12: / }));
+    await check("match day with a report");
+    fireEvent.click(screen.getByRole("button", { name: /Season so far/ }));
+    fireEvent.click(within(screen.getByRole("list", { name: "Results" })).getAllByRole("button")[0]);
+    await check("match day, season so far and a report row open");
+    fireEvent.click(screen.getByRole("button", { name: "Play to…" }));
+    await check("play to sheet");
     cleanup();
     mount(resultState(), { reduceMotion: "off" });
     fireEvent.click(screen.getByRole("button", { name: "Open the window" }));
