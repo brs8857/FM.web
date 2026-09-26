@@ -24,8 +24,9 @@ describe("useDocumentPrefs", () => {
     const { light, dark } = clubTheme("arsenal");
     expect(css).toContain(`--paper: ${light.paper};`);
     expect(css).toContain(`--paper: ${dark.paper};`);
-    expect(css).toMatch(/@media \(prefers-color-scheme: dark\)\s*\{\s*:root:not\(\[data-theme="light"\]\)/);
-    expect(css).toMatch(/\[data-theme="dark"\]\s*\{/);
+    expect(css).toMatch(/^:root:root \{/);
+    expect(css).toMatch(/@media \(prefers-color-scheme: dark\)\s*\{\s*:root:root:not\(\[data-theme="light"\]\)/);
+    expect(css).toMatch(/:root:root\[data-theme="dark"\]\s*\{/);
     expect(css).toContain("color-scheme: dark;");
     rerender({ ...DEFAULT_PREFS, club: "chelsea", theme: "dark" });
     expect(document.querySelectorAll(`#${CLUB_THEME_ID}`)).toHaveLength(1);

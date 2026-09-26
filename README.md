@@ -16,8 +16,11 @@ app from the browser (Chrome and Edge offer **Install app** under Settings;
 on iPhone use Share → Add to Home Screen) and works offline once it has
 loaded.
 
-For a single file that runs from disk, `npm run build:standalone` writes
-`dist/standalone/index.html`; double-click it in any modern browser.
+For a single file that runs from disk, `release/era-xi.html` is the current
+build, and `npm run build:standalone` writes a fresh one to
+`dist/standalone/index.html`; open it in any modern browser. On iPhone, open
+it through a link in Safari rather than from the Files app, whose preview
+does not run the game.
 
 **How a career goes.** Choose an era and a shape. Each pick draws three
 club-seasons from that era; open a cutting to see its team sheet in shirt

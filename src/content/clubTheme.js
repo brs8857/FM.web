@@ -147,12 +147,16 @@ export function deriveClubTheme(primaryHex, secondaryHex) {
 // The derived tokens as a stylesheet with the same three blocks as
 // tokens.css, so it overrides the static theme by cascade order alone and
 // checkContrast() reads it exactly as it reads tokens.css.
+// Each selector carries one more :root than its twin in tokens.css, so the
+// club wins on specificity wherever the sheet lands. A host that wraps the
+// page in its own <head> (the artifact viewer does) puts this sheet before
+// the app's inlined styles, and a tie would go to tokens.css.
 export function clubThemeCss({ light, dark }) {
   const block = (tokens, scheme) => COLOUR_TOKENS.map((t) => `  --${t}: ${tokens[t]};`).join("\n") + `\n  color-scheme: ${scheme};`;
   return [
-    `:root {\n${block(light, "light")}\n}`,
-    `@media (prefers-color-scheme: dark) {\n  :root:not([data-theme="light"]) {\n${block(dark, "dark")}\n  }\n}`,
-    `[data-theme="dark"] {\n${block(dark, "dark")}\n}`,
+    `:root:root {\n${block(light, "light")}\n}`,
+    `@media (prefers-color-scheme: dark) {\n  :root:root:not([data-theme="light"]) {\n${block(dark, "dark")}\n  }\n}`,
+    `:root:root[data-theme="dark"] {\n${block(dark, "dark")}\n}`,
   ].join("\n");
 }
 
