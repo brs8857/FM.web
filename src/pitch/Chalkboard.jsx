@@ -12,10 +12,11 @@ const noop = () => {};
 
 // The chalkboard. Modes: "draft" (static, the active slot pulses), "view"
 // (markers open sheets, no moving) and "board" (drag, keyboard, swap).
-// `highlightSlots` marks the eligible slots in the window's Replace flow.
+// `highlightSlots` marks the eligible slots in the window's Replace flow;
+// `suspended` (a Set of player ids) crosses out banned starters.
 export default function Chalkboard({
   assignments, bench = [], mode = "view", activeSlotId = null, highlightSlots = [], selectedId = null,
-  onSelect, onOpenSheet, dispatch = noop, announce, compact = false, className,
+  onSelect, onOpenSheet, dispatch = noop, announce, compact = false, className, suspended,
 }) {
   const interactive = mode !== "draft";
   const draggable = mode === "board";
@@ -56,6 +57,7 @@ export default function Chalkboard({
             lifted={keys.selected?.kind === "slot" && keys.selected.id === a.slotId}
             dragging={dragInfo?.kind === "slot" && dragInfo.id === a.slotId}
             onTap={onSelect} onDragStart={startDrag} onKeyDown={keys.onKeyDown}
+            suspended={Boolean(a.player && suspended?.has(a.player.id))}
             emptyLabel={mode === "draft" ? "empty" : a.slotId} />
         ))}
         {dragInfo && pointer && (

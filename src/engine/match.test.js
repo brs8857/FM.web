@@ -6,7 +6,7 @@ import { makeInitialAssignments } from "./formations.js";
 import { ROLES, defaultRoleFor, defaultDutyFor } from "./roles.js";
 import { createRng } from "./rng.js";
 import { weightedPick } from "./util.js";
-import { matchEvents } from "./match.js";
+import { matchEvents, cardScale, nextDiscipline } from "./match.js";
 
 const getSquad = createSquadLookup(makeMiniDataset());
 const squad = getSquad("2000", "1");
@@ -39,7 +39,7 @@ describe("matchEvents", () => {
 
   it("replays exactly from the same stream", () => {
     expect(matchEvents({ gf: 3, ga: 2 }, xi, createRng(5))).toEqual(matchEvents({ gf: 3, ga: 2 }, xi, createRng(5)));
-    expect(matchEvents({ gf: 0, ga: 0 }, xi, createRng(5))).toEqual({ goals: [] });
+    expect(matchEvents({ gf: 0, ga: 0 }, xi, createRng(5)).goals).toEqual([]);
   });
 
   it("gives the goals to a poacher pushed up top at least ten times as often as to a blocker", () => {
@@ -63,6 +63,57 @@ describe("matchEvents", () => {
     const blank = xi.map((a) => ({ ...a, role: { ...a.role, att: 0 } }));
     const { goals } = matchEvents({ gf: 4, ga: 0 }, blank, createRng(3));
     expect(goals.every((g) => g.us && g.slotId !== "GK")).toBe(true);
+  });
+});
+
+describe("cards", () => {
+  it("books about 1.6 a match at the midpoint, more for aggressive tackling, fewer for cautious, and keepers rarely", () => {
+    expect([0, 50, 100].map(cardScale)).toEqual([0.6, 1, 1.4]);
+    const rate = (tackling) => {
+      const rng = createRng(tackling + 1);
+      let yellows = 0, reds = 0, keeper = 0;
+      for (let i = 0; i < 4000; i++) {
+        for (const c of matchEvents({ gf: 1, ga: 1 }, xi, rng, { tackling }).cards) {
+          if (c.kind === "yellow") yellows++; else reds++;
+          if (c.slotId === "GK") keeper++;
+        }
+      }
+      return { yellows: yellows / 4000, reds: reds / 4000, keeper: keeper / 4000 };
+    };
+    const mid = rate(50), cautious = rate(0), aggressive = rate(100);
+    expect(mid.yellows).toBeGreaterThan(1.45);
+    expect(mid.yellows).toBeLessThan(1.75);
+    expect(mid.reds).toBeGreaterThan(0.03);
+    expect(mid.reds).toBeLessThan(0.07);
+    expect(aggressive.yellows).toBeGreaterThan(mid.yellows * 1.25);
+    expect(cautious.yellows).toBeLessThan(mid.yellows * 0.75);
+    expect(mid.keeper).toBeLessThan(0.05);
+  });
+
+  it("never books a player twice in one match, and lists the cards in minute order", () => {
+    for (let seed = 1; seed <= 200; seed++) {
+      const { cards } = matchEvents({ gf: 2, ga: 2 }, xi, createRng(seed), { tackling: 100 });
+      expect(new Set(cards.map((c) => c.id)).size).toBe(cards.length);
+      expect(cards.map((c) => c.minute)).toEqual([...cards.map((c) => c.minute)].sort((a, b) => a - b));
+      for (const c of cards) expect(xi.find((a) => a.slotId === c.slotId).player.id).toBe(c.id);
+    }
+  });
+
+  it("bans for one match after a red or a fifth yellow, and the ban is served by the next match", () => {
+    const card = (id, kind) => ({ minute: 10, slotId: "X", id, name: id, kind });
+    let d = {};
+    for (let i = 1; i <= 4; i++) {
+      const next = nextDiscipline(d, [card("vieira", "yellow")]);
+      expect(next.bans).toEqual([]);
+      d = next.discipline;
+    }
+    expect(d).toEqual({ vieira: { yellows: 4, banned: 0 } });
+    const fifth = nextDiscipline(d, [card("vieira", "yellow"), card("adams", "red")]);
+    expect(fifth.discipline).toEqual({ vieira: { yellows: 0, banned: 1 }, adams: { yellows: 0, banned: 1 } });
+    expect(fifth.bans.map((b) => b.name)).toEqual(["vieira", "adams"]);
+    const served = nextDiscipline(fifth.discipline, []);
+    expect(served).toEqual({ discipline: {}, bans: [] });
+    expect(nextDiscipline({ keown: { yellows: 2, banned: 0 } }, [card("keown", "red")]).discipline).toEqual({ keown: { yellows: 0, banned: 1 } });
   });
 });
 

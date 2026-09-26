@@ -78,7 +78,41 @@ export const STOPPAGE_CHANCE = 0.08;
 // poacher pushed up top leads the scoring and a blocker almost never does.
 // Keepers never score. Minutes are distinct, ascending, and occasionally in
 // stoppage time (91-95).
-export function matchEvents({ gf, ga }, starters, rng) {
+export const YELLOWS_PER_MATCH = 1.6;
+export const RED_CHANCE = 0.05;
+
+// Aggressive tackling costs cards: 0.6x the rate at Cautious, 1.0x at the
+// midpoint, 1.4x at Aggressive.
+export function cardScale(tackling) {
+  return 0.6 + tackling / 125;
+}
+
+// Our bookings for a match: a Poisson count of yellows and a small chance
+// of a red, both scaled by the tackling dial, each carried by a starter drawn
+// by how much he defends and presses (a keeper at a tenth of his, since his
+// defending is saves, not tackles).
+// Nobody is booked twice in a match.
+function bookings(starters, tackling, rng) {
+  const scale = cardScale(tackling);
+  const on = starters.filter((a) => a.player && a.role);
+  const weights = on.map((a) => {
+    const c = playerContribution(a);
+    return Math.max(0, c.def + c.press) * (a.type === "GK" ? 0.1 : 1);
+  });
+  const draw = (kind) => {
+    const a = weightedPick(on, weights, rng);
+    if (!a) return null;
+    weights[on.indexOf(a)] = 0;
+    return { minute: rng.next() < STOPPAGE_CHANCE ? 91 + rng.int(5) : 1 + rng.int(90), slotId: a.slotId, id: a.player.id, name: a.player.name, kind };
+  };
+  const cards = [];
+  const yellows = poissonSample(YELLOWS_PER_MATCH * scale, rng);
+  for (let i = 0; i < yellows; i++) cards.push(draw("yellow"));
+  if (rng.next() < RED_CHANCE * scale) cards.push(draw("red"));
+  return cards.filter(Boolean).sort((a, b) => a.minute - b.minute);
+}
+
+export function matchEvents({ gf, ga }, starters, rng, { tackling = 50 } = {}) {
   const minutes = new Set();
   while (minutes.size < gf + ga) minutes.add(rng.next() < STOPPAGE_CHANCE ? 91 + rng.int(5) : 1 + rng.int(90));
   const sides = rng.shuffle([...Array(gf).fill(true), ...Array(ga).fill(false)]);
@@ -89,5 +123,24 @@ export function matchEvents({ gf, ga }, starters, rng) {
     const a = weightedPick(outfield, weights, rng) ?? rng.pick(outfield);
     return { minute, us: true, slotId: a.slotId, id: a.player.id, name: a.player.name };
   });
-  return { goals };
+  return { goals, cards: bookings(starters, tackling, rng) };
+}
+
+// The bans a match leaves (spec 07 §5.4): those serving one have served it,
+// then a red, or a fifth yellow, bans a player for the next match. Entries
+// with nothing to carry are dropped.
+export const YELLOWS_FOR_BAN = 5;
+export function nextDiscipline(discipline, cards) {
+  const next = {};
+  for (const [id, d] of Object.entries(discipline)) next[id] = { yellows: d.yellows, banned: Math.max(0, d.banned - 1) };
+  const bans = [];
+  for (const card of cards) {
+    const d = next[card.id] ?? { yellows: 0, banned: 0 };
+    if (card.kind === "red") next[card.id] = { yellows: 0, banned: 1 };
+    else if (d.yellows + 1 >= YELLOWS_FOR_BAN) next[card.id] = { yellows: 0, banned: 1 };
+    else next[card.id] = { ...d, yellows: d.yellows + 1 };
+    if (next[card.id].banned > 0 && !bans.some((b) => b.id === card.id)) bans.push({ id: card.id, name: card.name });
+  }
+  for (const [id, d] of Object.entries(next)) if (d.yellows === 0 && d.banned === 0) delete next[id];
+  return { discipline: next, bans };
 }

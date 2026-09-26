@@ -93,3 +93,14 @@
     animation: none;
   }
 }
+.suspended .disc {
+  position: relative;
+}
+.suspended .disc::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  background:
+    linear-gradient(45deg, transparent calc(50% - 1.5px), var(--loss) calc(50% - 1.5px), var(--loss) calc(50% + 1.5px), transparent calc(50% + 1.5px)),
+    linear-gradient(-45deg, transparent calc(50% - 1.5px), var(--loss) calc(50% - 1.5px), var(--loss) calc(50% + 1.5px), transparent calc(50% + 1.5px));
+}

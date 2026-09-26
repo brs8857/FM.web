@@ -12,7 +12,7 @@ import LiveRegion from "../../ui/LiveRegion.jsx";
 import { TermsProvider } from "../../ui/Term.jsx";
 import terms from "../../content/terms.json";
 import { makeMiniDataset } from "../../../tests/fixtures/miniDataset.js";
-import { makeSeason3TacticsState, makeSeason3State, makeSeason3ResultState } from "../../../tests/fixtures/saves.js";
+import { makeSeason3TacticsState, makeSeason3State, makeSeason3OpenState, makeSeason3ResultState } from "../../../tests/fixtures/saves.js";
 import { createReducer, lineupFor } from "../../state/reducer.js";
 import { tacticUntouched, selectNextFixture, selectTopScorers } from "../../state/selectors.js";
 import { clubSeasonLabel } from "../../content/clubs.js";
@@ -144,7 +144,7 @@ describe("SeasonTab", () => {
 
   it("shows the last report, the table after it, and announces each match once", () => {
     const spy = {};
-    render(<Harness initial={makeSeason3State(11)} spy={spy} />);
+    render(<Harness initial={makeSeason3OpenState(11)} spy={spy} />);
     const last = spy.state.campaign.log[10];
     const report = screen.getByRole("article", { name: /Your XI/ });
     expect(within(report).getByText(`Week 11 · ${last.home ? "Home" : "Away"}`)).toBeTruthy();
@@ -170,9 +170,25 @@ describe("SeasonTab", () => {
     expect(screen.getByRole("table", { name: /Table after week 12/ })).toBeTruthy();
   });
 
+  it("prints the cards and who misses the next match, and sends a banned starter's manager to the squad", () => {
+    const spy = { onGoTab: vi.fn() };
+    const base = makeSeason3OpenState(3);
+    const starter = base.assignments.find((a) => a.slotId === "CB1").player;
+    const last = { ...base.campaign.log[2], cards: [{ minute: 44, slotId: "CB1", id: starter.id, name: starter.name, kind: "red" }], bans: [starter.name] };
+    const state = { ...base, bench: makeSeason3State(0).bench, campaign: { ...base.campaign, log: [...base.campaign.log.slice(0, 2), last] }, discipline: { [starter.id]: { yellows: 0, banned: 1 } } };
+    render(<Harness initial={state} spy={spy} />);
+    const report = screen.getByRole("article", { name: /Your XI/ });
+    expect(within(report).getByText(`Booked: —. Sent off: ${starter.name} 44'.`)).toBeTruthy();
+    expect(within(report).getByText(`${starter.name} misses the next match`)).toBeTruthy();
+    const note = screen.getByRole("note", { name: "Suspended" });
+    expect(note.textContent).toContain(`${starter.name} is banned for this match.`);
+    fireEvent.click(within(note).getByRole("button", { name: "Go to the squad" }));
+    expect(spy.onGoTab).toHaveBeenCalledWith("squad");
+  });
+
   it("marks a system changed this week in the next report", () => {
     const spy = {};
-    render(<Harness initial={makeSeason3State(3)} spy={spy} />);
+    render(<Harness initial={makeSeason3OpenState(3)} spy={spy} />);
     act(() => spy.dispatch({ type: "SET_INSTRUCTION", key: "mentality", value: 10 }));
     expect(screen.getByText("Just changed: cohesion −3 this match")).toBeTruthy();
     act(() => spy.dispatch({ type: "PLAY_MATCH" }));
@@ -184,7 +200,7 @@ describe("SeasonTab", () => {
   it("types a fast-forward in, pauses at the half-season slip, announces only then, and ends on the back page", () => {
     vi.useFakeTimers();
     const spy = {};
-    render(<Harness initial={makeSeason3State(0)} instant={false} spy={spy} />);
+    render(<Harness initial={makeSeason3OpenState(0)} instant={false} spy={spy} />);
     act(() => spy.playTo("end"));
     const state = spy.state;
     expect(state.phase).toBe("result");
@@ -218,7 +234,7 @@ describe("SeasonTab", () => {
   it("feeds only the weeks a run played, back to match day, with no slip when it stops at the half", () => {
     vi.useFakeTimers();
     const spy = {};
-    render(<Harness initial={makeSeason3State(10)} instant={false} spy={spy} />);
+    render(<Harness initial={makeSeason3OpenState(10)} instant={false} spy={spy} />);
     act(() => spy.playTo("half"));
     expect(spy.state.campaign.week).toBe(20);
     const log = screen.getByRole("log", { name: "Vidiprinter" });

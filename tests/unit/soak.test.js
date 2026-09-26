@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
-import { playCareer } from "../fixtures/playCareer.js";
+import { playCareer, playWholeSeason } from "../fixtures/playCareer.js";
 import { createReducer } from "../../src/state/reducer.js";
 import { makeInitialState } from "../../src/state/initialState.js";
 import { makeSaveEnvelope, toSaveText, parseSaveText, hydrateState, serializeState } from "../../src/state/save.js";
@@ -92,7 +92,7 @@ function soak(seed) {
     checkSquad(state, label);
 
     const memory = state.cohesionMemory;
-    state = reducer(reducer(reducer(state, { type: "START_SEASON" }), { type: "KICKOFF" }), { type: "PLAY_TO", until: "end" });
+    state = playWholeSeason(reducer, state);
     expect(state.cohesionMemory, label).toEqual({ ...memory, seasons: memory.seasons + 1 });
     checkSeason(state, label);
     log.positions.push(state.simulation.position);

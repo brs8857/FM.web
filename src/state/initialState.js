@@ -24,6 +24,7 @@ export function makeInitialState(dataset, careerSeed) {
     eraMax: 2024,
     simulation: null, // the finished season, from its last match through the window
     campaign: null, // the season in progress, from kick-off to the window: { seed, order, week, log }
+    discipline: {}, // { [playerId]: { yellows, banned } } this season, cleared at the window
     season: 1, // 1 = 2026-27, up to 6 = 2031-32, then the career ends
     seasonHistory: [], // one summary per completed season, appended when the window opens
     shortlist: [], // { player, signed, cost }[] — the current window's eight candidates

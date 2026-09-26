@@ -76,6 +76,21 @@ export function selectProfile(live, instructions, familiarity) {
   return computeTeamProfile(live, instructions, familiarity);
 }
 
+// Starters serving a ban. Each must be swapped out before the next match
+// while the bench has anyone free to come in; with nobody, the side plays
+// a man short.
+export function selectSuspended(state) {
+  const discipline = state.discipline ?? {};
+  return state.assignments.filter((a) => a.player && discipline[a.player.id]?.banned > 0)
+    .map((a) => ({ slotId: a.slotId, id: a.player.id, name: a.player.name }));
+}
+
+export function selectBlockingBan(state) {
+  const discipline = state.discipline ?? {};
+  const cover = state.bench.some((b) => b.player && !(discipline[b.player.id]?.banned > 0));
+  return cover ? selectSuspended(state)[0] ?? null : null;
+}
+
 // What the next fixture's cohesion gains or loses from matches already played
 // in this system (spec 07 §4.3).
 export function selectSettling(state) {
@@ -169,6 +184,8 @@ export function selectNextAction(state, clubName = (name) => name) {
     case "reveal":
       return { key: "startSeason", label: `Start season ${season}`, tab: "season" };
     case "matchday": {
+      const suspended = selectBlockingBan(state);
+      if (suspended) return { key: "replaceSuspended", label: t("season.suspended", { name: suspended.name }), tab: "squad", slotId: suspended.slotId };
       const fixture = selectNextFixture(state);
       if (!fixture) return { key: "unknown", label: "Continue", tab: "season" };
       const label = t("season.play", { week: fixture.week, opponent: clubName(fixture.name), venue: fixture.home ? "H" : "A" });

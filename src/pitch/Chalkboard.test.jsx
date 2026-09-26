@@ -32,6 +32,15 @@ describe("Chalkboard", () => {
     expect(screen.queryAllByRole("button")).toHaveLength(0);
   });
 
+  it("crosses out and names a suspended starter", () => {
+    const { assignments, bench } = fixture();
+    render(<Chalkboard assignments={assignments} bench={bench} mode="view" suspended={new Set(["Tony Adams-CB"])} />);
+    const adams = screen.getByRole("button", { name: /Tony Adams/ });
+    expect(adams.getAttribute("aria-label")).toMatch(/^Centre-back, Tony Adams\. Suspended\./);
+    expect(adams.className).toMatch(/suspended/);
+    expect(screen.getByRole("button", { name: /David Seaman/ }).getAttribute("aria-label")).not.toMatch(/Suspended/);
+  });
+
   it("treats a press that travels under 8 px as a tap, and beyond it as a drag", () => {
     const { assignments, bench } = fixture();
     const onSelect = vi.fn();

@@ -6,13 +6,13 @@ import { createSquadLookup, buildPool } from "../engine/players.js";
 import { computeTeamProfile, identityKey } from "../engine/tactics.js";
 import { computeFamiliarity, nextMemory, settling, afterMatch, EMPTY_MEMORY } from "../engine/familiarity.js";
 import { buildUserFixtureList, simulateFixture, eventRng, seasonResult, SEASON_WEEKS, HALF_SEASON } from "../engine/season.js";
-import { matchEvents } from "../engine/match.js";
+import { matchEvents, nextDiscipline } from "../engine/match.js";
 import { applyPromotionRelegation } from "../engine/league.js";
 import { nextEmptySlotIndex, autoFillBench, generateShortlist, signToSlot, signToBench, progressSquad, wageCost, windowBudget, budgetLeft } from "../engine/squad.js";
 import { playerIdentity } from "../engine/identity.js";
 import { makeInitialState, DRAW_OPTIONS } from "./initialState.js";
 import { takeRng } from "./rngState.js";
-import { selectEraIndex, liveAssignments, selectTopScorers } from "./selectors.js";
+import { selectEraIndex, liveAssignments, selectTopScorers, selectSuspended, selectBlockingBan } from "./selectors.js";
 
 const idleDraw = (draw) => ({ ...draw, spinning: false, options: [] });
 
@@ -54,9 +54,11 @@ export function summarizeSeason(state) {
 }
 
 // What the board is for the next fixture: cohesion with the seasons in this
-// system and the settling, and the profile it plays to.
+// system and the settling, and the profile it plays to. A banned starter
+// nobody could replace leaves his place empty.
 export function lineupFor(state) {
-  const live = liveAssignments(state.assignments);
+  const banned = new Set(selectSuspended(state).map((s) => s.slotId));
+  const live = liveAssignments(state.assignments).map((a) => (banned.has(a.slotId) ? { ...a, player: null, role: null } : a));
   const memory = state.cohesionMemory ?? EMPTY_MEMORY;
   const settle = settling(memory, state.formationKey, state.instructions);
   const familiarity = computeFamiliarity(live, state.instructions, state.formationKey, memory);
@@ -78,14 +80,16 @@ function seasonStyle(log) {
 function playMatch(state) {
   const { campaign } = state;
   if (state.phase !== "matchday" || !campaign || campaign.week > SEASON_WEEKS) return state;
+  if (selectBlockingBan(state)) return state;
   const fixture = buildUserFixtureList(campaign.order)[campaign.week - 1];
   const opponent = state.opponents.find((o) => o.name === fixture.name);
   const { live, settle, familiarity, profile } = lineupFor(state);
   const result = simulateFixture(profile, familiarity, opponent, fixture, campaign.seed);
-  const { goals } = matchEvents(result, live, eventRng(campaign.seed, fixture.week));
+  const { goals, cards } = matchEvents(result, live, eventRng(campaign.seed, fixture.week), { tackling: state.instructions.tackling });
+  const { discipline, bans } = nextDiscipline(state.discipline ?? {}, cards);
   const played = { identity: identityKey(state.instructions), cohesion: familiarity, settle: settle.modifier, mentality: state.instructions.mentality, changed: settle.changed };
-  const log = [...campaign.log, { ...result, goals, played }];
-  const next = { ...state, campaign: { ...campaign, week: campaign.week + 1, log }, cohesionMemory: afterMatch(state.cohesionMemory ?? EMPTY_MEMORY, settle) };
+  const log = [...campaign.log, { ...result, goals, cards, bans: bans.map((b) => b.name), played }];
+  const next = { ...state, discipline, campaign: { ...campaign, week: campaign.week + 1, log }, cohesionMemory: afterMatch(state.cohesionMemory ?? EMPTY_MEMORY, settle) };
   if (fixture.week < SEASON_WEEKS) return next;
   const cohesionMemory = nextMemory(state.cohesionMemory, state.formationKey, seasonStyle(log));
   const simulation = { ...seasonResult(state.opponents, campaign.order, log, campaign.seed), profile, familiarity, instructions: state.instructions, season: state.season };
@@ -293,7 +297,7 @@ export function createReducer(dataset) {
         const seed = rng.int(2 ** 32);
         return {
           ...next, phase: "reveal", simulation: null,
-          campaign: { seed, order, week: 1, log: [] },
+          campaign: { seed, order, week: 1, log: [] }, discipline: {},
           cohesionMemory: { ...state.cohesionMemory, signature: null, matches: 0 },
         };
       }
@@ -314,7 +318,7 @@ export function createReducer(dataset) {
         const { opponents, relegated, promoted } = applyPromotionRelegation(state.opponents, state.simulation?.table, dataset.championship, rng);
         const seasonHistory = state.simulation ? [...state.seasonHistory, summarizeSeason(state)] : state.seasonHistory;
         const transferBudget = { points: windowBudget(state.simulation?.position ?? 20), spent: 0 };
-        return { ...next, phase: "transfer", shortlist, transferBudget, opponents, lastTransition: { relegated, promoted }, seasonHistory, campaign: null };
+        return { ...next, phase: "transfer", shortlist, transferBudget, opponents, lastTransition: { relegated, promoted }, seasonHistory, campaign: null, discipline: {} };
       }
       case "SIGN_SHORTLIST_TO_BENCH": {
         const signing = affordableSigning(state, action.index);

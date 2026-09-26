@@ -19,7 +19,7 @@ import styles from "./Board.module.css";
 // The Board tab (spec 04 §5.4): the draggable chalkboard, the identity line,
 // the style row, the three approach dials, the two collapsed groups, and the
 // strengths bars.
-export default function BoardTab({ state, dispatch, profile, familiarity, clubSeason, revealed, prefs, onDismissNote }) {
+export default function BoardTab({ state, dispatch, profile, familiarity, clubSeason, revealed, suspended, prefs, onDismissNote }) {
   const announce = useAnnounce();
   const [target, setTarget] = useState(null);
   const [pulse, setPulse] = useState({ keys: [], n: 0 });
@@ -38,7 +38,7 @@ export default function BoardTab({ state, dispatch, profile, familiarity, clubSe
   return (
     <div className={cx(layout.tab, layout.wide)}>
       <div className={layout.board}>
-        <Chalkboard assignments={state.assignments} bench={state.bench} mode="board" compact onSelect={open} onOpenSheet={open} dispatch={dispatch} announce={announce} />
+        <Chalkboard assignments={state.assignments} bench={state.bench} mode="board" compact onSelect={open} onOpenSheet={open} dispatch={dispatch} announce={announce} suspended={suspended} />
         <div className={styles.boardTools}>
           <p className={styles.hint}>Drag a marker anywhere, or drop it on a teammate to swap. Tab to a marker and press Enter to move it with the keys.</p>
           <Button variant="ghost" size="sm" onClick={() => { dispatch({ type: "RESET_POSITIONS" }); announce("Shape reset."); }}>Reset shape</Button>

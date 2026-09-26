@@ -3,7 +3,7 @@ import { render, screen, fireEvent, cleanup, within } from "@testing-library/rea
 import axe from "axe-core";
 import App from "../../src/app/App.jsx";
 import { makeMiniDataset } from "../fixtures/miniDataset.js";
-import { fakeStorage, makeSaveText, makeSeason3TacticsState, makeSeason3State, makeSeason3ResultState } from "../fixtures/saves.js";
+import { fakeStorage, makeSaveText, makeSeason3TacticsState, makeSeason3State, makeSeason3OpenState, makeSeason3ResultState } from "../fixtures/saves.js";
 import { createReducer } from "../../src/state/reducer.js";
 import { makeInitialState } from "../../src/state/initialState.js";
 import { SAVE_KEY } from "../../src/state/storage.js";
@@ -119,7 +119,7 @@ describe("axe: every screen", () => {
     fireEvent.click(screen.getByRole("button", { name: /^Play week 1: / }));
     await check("match day, week 1");
     cleanup();
-    mount(makeSeason3State(11), { reduceMotion: "on" });
+    mount(makeSeason3OpenState(11), { reduceMotion: "on" });
     fireEvent.click(screen.getByRole("button", { name: /^Play week 12: / }));
     await check("match day with a report");
     fireEvent.click(screen.getByRole("button", { name: /Season so far/ }));

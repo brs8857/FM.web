@@ -107,6 +107,7 @@ const migrations = {
       phase: reveal ? "tactics" : s.phase,
       simulation: reveal ? null : s.simulation,
       campaign: null,
+      discipline: {},
       cohesionMemory: { ...memory, signature: null, matches: 0 },
       seasonHistory: Array.isArray(s.seasonHistory) ? s.seasonHistory.map((h) => (isObject(h) ? { ...h, matches: [], topScorer: null } : h)) : s.seasonHistory,
     };
@@ -209,12 +210,23 @@ function isGoal(g) {
     && (g.us === false || (g.us === true && typeof g.slotId === "string" && typeof g.name === "string"));
 }
 
+function isCard(c) {
+  return isObject(c) && Number.isInteger(c.minute) && c.minute >= 1 && c.minute <= 95
+    && typeof c.slotId === "string" && typeof c.name === "string" && (c.kind === "yellow" || c.kind === "red");
+}
+
+function isDiscipline(d) {
+  return isObject(d) && Object.values(d).every((e) => isObject(e) && Number.isInteger(e.yellows) && e.yellows >= 0 && e.yellows < 5
+    && Number.isInteger(e.banned) && e.banned >= 0);
+}
+
 function isMatchEntry(m, week) {
   if (!isObject(m) || m.week !== week || typeof m.opponent !== "string" || typeof m.home !== "boolean") return false;
   if (!Number.isInteger(m.gf) || !Number.isInteger(m.ga) || m.gf < 0 || m.ga < 0) return false;
   if (m.outcome !== (m.gf > m.ga ? "W" : m.gf === m.ga ? "D" : "L")) return false;
   if (!Array.isArray(m.goals) || m.goals.length !== m.gf + m.ga || !m.goals.every(isGoal)) return false;
   if (m.goals.filter((g) => g.us).length !== m.gf) return false;
+  if (!Array.isArray(m.cards) || !m.cards.every(isCard) || !isStringArray(m.bans)) return false;
   return isObject(m.played) && Number.isInteger(m.played.cohesion) && typeof m.played.changed === "boolean";
 }
 
@@ -275,6 +287,7 @@ function isValidState(s) {
   if (!Number.isInteger(s.eraMin) || !Number.isInteger(s.eraMax)) return false;
   if (s.simulation !== null && !(isObject(s.simulation) && Array.isArray(s.simulation.matches) && Array.isArray(s.simulation.table))) return false;
   if (s.campaign !== null && !isCampaign(s.campaign, s.opponents)) return false;
+  if (!isDiscipline(s.discipline)) return false;
   if ((s.phase === "reveal" || s.phase === "matchday") && s.campaign === null) return false;
   if (s.phase === "matchday" && s.campaign.week > SEASON_WEEKS) return false;
   if (s.phase === "result" && s.simulation === null) return false;

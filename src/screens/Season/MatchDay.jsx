@@ -3,7 +3,9 @@ import Disclosure from "../../ui/Disclosure.jsx";
 import Slip from "../../ui/Slip.jsx";
 import Table from "../../ui/Table.jsx";
 import { useAnnounce } from "../../ui/LiveRegion.jsx";
-import { selectTable, selectNextFixture, selectMemory, selectSettling } from "../../state/selectors.js";
+import Button from "../../ui/Button.jsx";
+import Callout from "../../ui/Callout.jsx";
+import { selectTable, selectNextFixture, selectMemory, selectSettling, selectSuspended } from "../../state/selectors.js";
 import { careerSeasonLabel } from "../../engine/season.js";
 import { t } from "../../content/t.js";
 import FixtureCard from "./FixtureCard.jsx";
@@ -35,6 +37,7 @@ export default function MatchDay({ state, identity, familiarity, profile, clubNa
   const fixture = selectNextFixture(state);
   const played = campaign.log.length;
   const bar = played === 0 ? t("season.barStart") : t("season.bar", { week: campaign.week, position: ordinal(you.position), pts: you.pts });
+  const suspended = selectSuspended(state);
   const seen = useRef(played);
 
   useEffect(() => {
@@ -49,6 +52,12 @@ export default function MatchDay({ state, identity, familiarity, profile, clubNa
       <div className={styles.positionBar}>
         <span className={styles.position}>{bar}</span>
       </div>
+      {suspended.length > 0 && (
+        <Callout title="Suspended">
+          {suspended.map((s) => s.name).join(" and ")} {suspended.length === 1 ? "is" : "are"} banned for this match. Swap {suspended.length === 1 ? "him" : "them"} out before you play.{" "}
+          <Button variant="ghost" size="sm" onClick={() => onGoTab("squad")}>Go to the squad</Button>
+        </Callout>
+      )}
       <div className={styles.matchdayGrid}>
         {last && (
           <Slip key={last.week} title="Last match">

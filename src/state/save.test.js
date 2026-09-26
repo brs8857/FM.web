@@ -2,7 +2,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { makeMiniDataset } from "../../tests/fixtures/miniDataset.js";
-import { playCareer } from "../../tests/fixtures/playCareer.js";
+import { playCareer, playMatches, playWholeSeason } from "../../tests/fixtures/playCareer.js";
 import { createReducer } from "./reducer.js";
 import { makeInitialState, REDRAWS } from "./initialState.js";
 import {
@@ -122,7 +122,7 @@ describe("save format", () => {
     next = reducer(next, { type: "START_SEASON" });
     expect(next.phase).toBe("reveal");
     expect(next.rngCounter).toBe(envelope.state.rngCounter + 2); // the summer and the season each take a draw
-    next = reducer(reducer(next, { type: "KICKOFF" }), { type: "PLAY_TO", until: "end" });
+    next = playMatches(reducer, reducer(next, { type: "KICKOFF" }));
     expect(next.simulation.matches).toHaveLength(38);
     expect(next.rngCounter).toBe(envelope.state.rngCounter + 2);
     next = reducer(next, { type: "GOTO_TRANSFER" });
@@ -213,7 +213,7 @@ describe("save format", () => {
     const aged = next.assignments.filter((a, i) => a.player && state.assignments[i].player?.id === a.player.id && typeof a.player.age === "number");
     expect(aged.length).toBeGreaterThan(0);
     for (const a of aged) expect(a.player.age).toBe(state.assignments.find((b) => b.player?.id === a.player.id).player.age + 1);
-    next = reducer(reducer(reducer(next, { type: "START_SEASON" }), { type: "KICKOFF" }), { type: "PLAY_TO", until: "end" });
+    next = playWholeSeason(reducer, next);
     expect(next.cohesionMemory).toEqual({ ...EMPTY_MEMORY, formationKey: "4-3-3", styleKey: "Gegenpress", seasons: 4 });
     expect(next.simulation.matches).toHaveLength(38);
   });
@@ -228,7 +228,7 @@ describe("save format", () => {
     expect(parsed.ok).toBe(true);
     const { state } = parsed.save;
     expect(parsed.save.saveVersion).toBe(4);
-    expect(state).toMatchObject({ phase: "tactics", season: 2, simulation: null, campaign: null, rngCounter: envelope.state.rngCounter });
+    expect(state).toMatchObject({ phase: "tactics", season: 2, simulation: null, campaign: null, discipline: {}, rngCounter: envelope.state.rngCounter });
     expect(state.cohesionMemory).toEqual({ ...EMPTY_MEMORY, formationKey: "4-3-3", styleKey: "Gegenpress", seasons: 1 });
     expect(state.seasonHistory).toHaveLength(1);
     expect(state.seasonHistory[0]).toMatchObject({ season: 1, matches: [], topScorer: null });
@@ -236,8 +236,7 @@ describe("save format", () => {
 
     const dataset = { ...JSON.parse(readFileSync("src/data/players.json", "utf8")), championship: JSON.parse(readFileSync("src/data/championship.json", "utf8")) };
     const reducer = createReducer(dataset);
-    let next = reducer(hydrateState(state), { type: "START_SEASON" });
-    next = reducer(reducer(next, { type: "KICKOFF" }), { type: "PLAY_TO", until: "end" });
+    const next = playWholeSeason(reducer, hydrateState(state));
     expect(next).toMatchObject({ phase: "result", season: 2 });
     expect(next.cohesionMemory.seasons).toBe(2);
     expect(parseSaveText(toSaveText(makeSaveEnvelope(next, { gameVersion: "2.7.0", now: NOW }))).ok).toBe(true);
@@ -277,8 +276,7 @@ describe("save format", () => {
   it("round-trips a season in progress and resumes it on the same fixture", () => {
     const dataset = makeMiniDataset();
     const reducer = createReducer(dataset);
-    let state = reducer(reducer(midCareerState(), { type: "START_SEASON" }), { type: "KICKOFF" });
-    for (let i = 0; i < 11; i++) state = reducer(state, { type: "PLAY_MATCH" });
+    const state = playMatches(reducer, reducer(reducer(midCareerState(), { type: "START_SEASON" }), { type: "KICKOFF" }), 11);
     const text = toSaveText(makeSaveEnvelope(state, { gameVersion: "2.7.0", now: NOW }));
     const parsed = parseSaveText(text);
     expect(parsed.ok).toBe(true);
@@ -304,6 +302,9 @@ describe("save format", () => {
     expect(damaged((s) => { delete s.campaign.log[0].played; })).toBe(false);
     expect(damaged((s) => { s.campaign = null; })).toBe(false);
     expect(damaged((s) => { s.cohesionMemory.matches = -1; })).toBe(false);
+    expect(damaged((s) => { s.discipline = { x: { yellows: 5, banned: 0 } }; })).toBe(false);
+    expect(damaged((s) => { delete s.discipline; })).toBe(false);
+    expect(damaged((s) => { s.campaign.log[0].cards = [{ minute: 10, slotId: "CB1", name: "X", kind: "orange" }]; })).toBe(false);
   });
 
   it("rebuilds the memory from the seasons played so far", () => {

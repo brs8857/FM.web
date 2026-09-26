@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "r
 import { createReducer } from "../state/reducer.js";
 import { makeInitialState } from "../state/initialState.js";
 import { newCareerSeed } from "../state/rngState.js";
-import { selectNextAction, liveAssignments, selectFamiliarity, selectProfile, tacticUntouched } from "../state/selectors.js";
+import { selectNextAction, liveAssignments, selectFamiliarity, selectProfile, tacticUntouched, selectSuspended } from "../state/selectors.js";
 import { getStorage, readAutosave, clearAutosave, requestPersistentStorage, writeAutosave } from "../state/storage.js";
 import { readPrefs } from "../state/prefs.js";
 import { hydrateState, makeSaveEnvelope, toSaveText, describeSave } from "../state/save.js";
@@ -122,6 +122,7 @@ function Game({ dataset, storageProp, initialPrefs }) {
   const identity = identityLabel(profile.synergyLabel, state.instructions);
   const cohesion = cohesionLabel(familiarity);
   const clubSeason = useCallback((seasonKey) => clubSeasonLabel(dataset, seasonKey, prefs.clubNames), [dataset, prefs.clubNames]);
+  const suspended = useMemo(() => new Set(selectSuspended(state).map((s) => s.id)), [state]);
   const revealed = state.phase === "reveal" || state.phase === "matchday" || state.phase === "result";
   const careerCode = encodeCareerCode({ seed: state.careerSeed, eraMin: state.eraMin, eraMax: state.eraMax, formationKey: state.formationKey });
 
@@ -207,6 +208,7 @@ function Game({ dataset, storageProp, initialPrefs }) {
     if (state.phase === "tactics" && (nav.tab === "board" || nav.tab === "season")) {
       return { label: `Kick off season ${state.season}`, run: () => { dispatch({ type: "START_SEASON" }); goTab("season"); } };
     }
+    if (next.key === "replaceSuspended" && nav.tab !== "squad" && nav.tab !== "club") return { label: next.label, run: () => goTab("squad") };
     if (next.key === "playMatch" && nav.tab !== "club") {
       return { label: next.label, run: () => { dispatch(NEXT_ACTIONS.playMatch); goTab("season"); }, playTo: true };
     }
@@ -294,8 +296,8 @@ function Game({ dataset, storageProp, initialPrefs }) {
           {sticky.playTo && <Button variant="ghost" onClick={() => setPlayTo(true)}>{t("season.playTo")}</Button>}
         </div>
       ) : undefined}>
-      {nav.tab === "squad" && <SquadTab state={state} dispatch={dispatch} clubSeason={clubSeason} revealed={revealed} prefs={prefs} onDismissNote={markSeen} />}
-      {nav.tab === "board" && <BoardTab state={state} dispatch={dispatch} profile={profile} familiarity={familiarity} clubSeason={clubSeason} revealed={revealed} prefs={prefs} onDismissNote={markSeen} />}
+      {nav.tab === "squad" && <SquadTab state={state} dispatch={dispatch} clubSeason={clubSeason} revealed={revealed} suspended={suspended} prefs={prefs} onDismissNote={markSeen} />}
+      {nav.tab === "board" && <BoardTab state={state} dispatch={dispatch} profile={profile} suspended={suspended} familiarity={familiarity} clubSeason={clubSeason} revealed={revealed} prefs={prefs} onDismissNote={markSeen} />}
       {nav.tab === "season" && (
         <SeasonTab state={state} dispatch={dispatch} identity={identity} familiarity={familiarity} profile={profile} tacticUntouched={tacticUntouched(state)}
           instant={instant} feed={feed} onFeedDone={onFeedDone} careerCode={careerCode}

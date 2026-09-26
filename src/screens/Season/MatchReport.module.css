@@ -102,3 +102,13 @@
   padding-top: var(--space-2);
   border-top: 1px solid var(--rule);
 }
+.cards {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--ink-2);
+}
+.ban {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--loss);
+}

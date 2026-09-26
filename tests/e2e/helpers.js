@@ -55,6 +55,31 @@ export async function playTo(page, option = "The end of the season") {
   if (await skip.isVisible().catch(() => false)) await skip.click();
 }
 
+// Answers "Replace X (suspended)": swaps each banned starter with the last
+// bench player on his sheet, then returns to the Season tab.
+export async function coverBans(page) {
+  for (let i = 0; i < 6; i++) {
+    const replace = page.getByRole("button", { name: /^Replace .+ \(suspended\)$/ }).first();
+    if (!(await replace.isVisible().catch(() => false))) break;
+    await page.getByRole("tab", { name: "Squad" }).click();
+    await page.getByRole("button", { name: /Suspended for the next match/ }).first().click();
+    await page.getByRole("button", { name: "Swap with…" }).click();
+    await page.getByRole("region", { name: "Swap with" }).getByRole("button").last().click();
+    await page.getByRole("tab", { name: "Season" }).click();
+  }
+}
+
+// Plays on to the back page, covering any ban that stops a run.
+export async function finishSeason(page) {
+  for (let i = 0; i < 10; i++) {
+    if (await page.getByRole("button", { name: "Share" }).isVisible().catch(() => false)) return;
+    await coverBans(page);
+    await playTo(page, "The end of the season");
+    await page.waitForTimeout(200);
+  }
+  await expect(page.getByRole("button", { name: "Share" })).toBeVisible({ timeout: 20_000 });
+}
+
 // Kick off, start the season after the reveal, fast-forward to the half and
 // then the end, and open the window from the back page.
 export async function playSeasonToWindow(page, season = 1) {
@@ -62,8 +87,8 @@ export async function playSeasonToWindow(page, season = 1) {
   await page.getByRole("button", { name: `Start season ${season}` }).click({ timeout: 15_000 });
   await expect(page.getByRole("button", { name: /^Play week 1: / }).first()).toBeVisible();
   await playTo(page, "The half");
-  await expect(page.getByRole("button", { name: /^Play week 20: / }).first()).toBeVisible({ timeout: 20_000 });
-  await playTo(page, "The end of the season");
+  await expect(page.getByRole("button", { name: /^(Play week \d+|Replace .+ \(suspended\))/ }).first()).toBeVisible({ timeout: 20_000 });
+  await finishSeason(page);
   await page.getByRole("button", { name: "Open the window" }).first().click({ timeout: 20_000 });
   await expect(page.getByRole("heading", { name: /The window/ })).toBeVisible();
 }

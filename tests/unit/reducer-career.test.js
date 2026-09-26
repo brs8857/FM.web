@@ -1,8 +1,8 @@
 // @vitest-environment node
 import { describe, it, expect } from "vitest";
 import { makeMiniDataset } from "../fixtures/miniDataset.js";
-import { playCareer } from "../fixtures/playCareer.js";
-import { createReducer, summarizeSeason, playToTarget } from "../../src/state/reducer.js";
+import { playCareer, playMatches } from "../fixtures/playCareer.js";
+import { createReducer, summarizeSeason, playToTarget, lineupFor } from "../../src/state/reducer.js";
 import { makeInitialState, DRAW_OPTIONS, REDRAWS } from "../../src/state/initialState.js";
 import { playerIdentity, isSameRealPlayer } from "../../src/engine/identity.js";
 import { createSquadLookup } from "../../src/engine/players.js";
@@ -10,7 +10,7 @@ import { makeInitialAssignments } from "../../src/engine/formations.js";
 import { computeFamiliarity, EMPTY_MEMORY, SETTLING } from "../../src/engine/familiarity.js";
 import { buildUserFixtureList } from "../../src/engine/season.js";
 import { wageCost, windowBudget } from "../../src/engine/squad.js";
-import { liveAssignments, selectNextAction, selectNextFixture, selectSettling, selectTable, selectTopScorers } from "../../src/state/selectors.js";
+import { liveAssignments, selectNextAction, selectNextFixture, selectSettling, selectTable, selectTopScorers, selectSuspended } from "../../src/state/selectors.js";
 
 export function checkInvariants(state, action, previous) {
   const label = action.type;
@@ -242,9 +242,8 @@ describe("cohesion memory", () => {
     expect(played.seasonHistory.map((s) => s.familiarity)).toHaveLength(2);
     const one = playCareer({ reducer, initialState: makeInitialState(dataset, 7), seasons: 1 });
     expect(one.cohesionMemory.seasons).toBe(1);
-    const fresh = computeFamiliarity(liveAssignments(one.assignments), one.instructions, one.formationKey);
-    expect(one.simulation.familiarity).toBe(fresh + SETTLING.at(-1));
-    expect(one.campaign.log.map((m) => m.played.cohesion - fresh)).toEqual(Array.from({ length: 38 }, (_, i) => SETTLING[Math.min(i, SETTLING.length - 1)]));
+    expect(one.simulation.familiarity).toBe(one.campaign.log.at(-1).played.cohesion);
+    expect(one.campaign.log.map((m) => m.played.settle)).toEqual(Array.from({ length: 38 }, (_, i) => SETTLING[Math.min(i, SETTLING.length - 1)]));
     let state = reducer(one, { type: "GOTO_TRANSFER" });
     state = reducer(state, { type: "CONTINUE_SEASON" });
     const kickOff = (s) => reducer(reducer(reducer(s, { type: "START_SEASON" }), { type: "KICKOFF" }), { type: "PLAY_MATCH" });
@@ -254,7 +253,7 @@ describe("cohesion memory", () => {
     const changed = kickOff(reducer(state, { type: "SET_STYLE", key: "parkbus" }));
     const parkbus = computeFamiliarity(liveAssignments(state.assignments), changed.instructions, state.formationKey);
     expect(changed.campaign.log[0].played.cohesion).toBe(parkbus - 4 + SETTLING[0]);
-    const finished = reducer(changed, { type: "PLAY_TO", until: "end" });
+    const finished = playMatches(reducer, changed);
     expect(finished.cohesionMemory).toEqual({ ...EMPTY_MEMORY, formationKey: "4-3-3", styleKey: "Park The Bus", seasons: 1 });
   });
 });
@@ -285,7 +284,7 @@ describe("match day", () => {
     const counter = state.rngCounter;
     const fixtures = buildUserFixtureList(state.campaign.order);
     for (let week = 1; week <= 38; week++) {
-      state = reducer(state, { type: "PLAY_MATCH" });
+      state = playMatches(reducer, state, 1);
       const entry = state.campaign.log.at(-1);
       expect(entry).toMatchObject({ week, opponent: fixtures[week - 1].name, home: fixtures[week - 1].home });
       expect(entry.goals).toHaveLength(entry.gf + entry.ga);
@@ -302,7 +301,8 @@ describe("match day", () => {
   it("reads the board before every fixture: a change at week 10 costs settling and shows in the log", () => {
     let state = reducer(reducer(tactics(), { type: "START_SEASON" }), { type: "KICKOFF" });
     state = reducer(state, { type: "PLAY_TO", until: "next" });
-    for (let i = 1; i < 9; i++) state = reducer(state, { type: "PLAY_MATCH" });
+    state = playMatches(reducer, state, 8);
+    state = { ...state, discipline: {} };
     expect(state.campaign.week).toBe(10);
     expect(selectSettling(state)).toMatchObject({ matches: 9, modifier: SETTLING.at(-1), changed: false });
     state = reducer(state, { type: "SET_INSTRUCTION", key: "mentality", value: 20 });
@@ -317,7 +317,9 @@ describe("match day", () => {
   });
 
   it("PLAY_TO stops at the half, the end, or after a defeat", () => {
-    const day = reducer(reducer(tactics(), { type: "START_SEASON" }), { type: "KICKOFF" });
+    // With nobody on the bench a ban cannot stop play (the side goes a man
+    // short), so only the run's own stops show here.
+    const day = { ...reducer(reducer(tactics(), { type: "START_SEASON" }), { type: "KICKOFF" }), bench: [] };
     expect(playToTarget(1, "half")).toBe(19);
     expect(playToTarget(20, "half")).toBe(38);
     const half = reducer(day, { type: "PLAY_TO", until: "half" });
@@ -338,11 +340,62 @@ describe("match day", () => {
     const fixture = buildUserFixtureList(day.campaign.order)[0];
     expect(selectNextAction(day)).toEqual({ key: "playMatch", label: `Play week 1: ${fixture.name} (${fixture.home ? "H" : "A"})`, tab: "season", week: 1, opponent: fixture.name, home: fixture.home });
     expect(selectNextFixture(day)).toMatchObject({ week: 1, name: fixture.name, row: { pts: 0 } });
-    const later = reducer(day, { type: "PLAY_TO", until: "half" });
+    const later = reducer({ ...day, bench: [] }, { type: "PLAY_TO", until: "half" });
     expect(selectNextAction(later, (n) => n.toUpperCase()).label).toMatch(/^Play week 20: [A-Z0-9 ]+ \([HA]\)$/);
     expect(selectTable(later)).toHaveLength(20);
     expect(selectTable(later).every((r) => r.w + r.d + r.l === 19)).toBe(true);
     expect(selectTable(later, 5).every((r) => r.w + r.d + r.l === 5)).toBe(true);
+  });
+});
+
+describe("discipline", () => {
+  const dataset = makeMiniDataset();
+  const reducer = createReducer(dataset);
+  const day = () => reducer(reducer(playCareer({ reducer, initialState: makeInitialState(dataset, 4242), seasons: 0 }), { type: "START_SEASON" }), { type: "KICKOFF" });
+
+  it("records every card and each ban it caused in the log", () => {
+    let state = day();
+    while (state.phase === "matchday") {
+      state = playMatches(reducer, state, 1);
+      const m = state.campaign.log.at(-1);
+      for (const c of m.cards) expect(state.assignments.some((a) => a.player?.id === c.id) || state.bench.some((b) => b.player?.id === c.id)).toBe(true);
+    }
+    const log = state.campaign.log;
+    expect(log.flatMap((m) => m.cards).length).toBeGreaterThan(20);
+    expect(log.flatMap((m) => m.bans).length).toBeGreaterThan(0);
+    for (const m of log) for (const name of m.bans) expect(m.cards.some((c) => c.name === name)).toBe(true);
+  });
+
+  it("a banned starter blocks Play until he is swapped out, and the Next pill sends the player to the squad", () => {
+    const state = day();
+    const starter = state.assignments.find((a) => a.slotId === "CB1");
+    const banned = { ...state, discipline: { [starter.player.id]: { yellows: 0, banned: 1 } } };
+    expect(selectSuspended(banned)).toEqual([{ slotId: "CB1", id: starter.player.id, name: starter.player.name }]);
+    expect(selectNextAction(banned)).toEqual({ key: "replaceSuspended", label: `Replace ${starter.player.name} (suspended)`, tab: "squad", slotId: "CB1" });
+    expect(reducer(banned, { type: "PLAY_MATCH" })).toBe(banned);
+    expect(reducer(banned, { type: "PLAY_TO", until: "end" })).toBe(banned);
+    const swapped = reducer(banned, { type: "SWAP_PLAYERS", fromKind: "bench", fromId: 0, toKind: "slot", toId: "CB1" });
+    expect(selectNextAction(swapped).key).toBe("playMatch");
+    const played = reducer(swapped, { type: "PLAY_MATCH" });
+    expect(played.campaign.week).toBe(2);
+    expect(played.discipline[starter.player.id]).toBeUndefined();
+  });
+
+  it("with nobody on the bench, a ban leaves the place empty rather than stopping the season", () => {
+    const state = day();
+    const starter = state.assignments.find((a) => a.slotId === "ST");
+    const banned = { ...state, bench: [], discipline: { [starter.player.id]: { yellows: 0, banned: 1 } } };
+    expect(selectNextAction(banned).key).toBe("playMatch");
+    expect(lineupFor(banned).live.find((a) => a.slotId === "ST").player).toBeNull();
+    const played = reducer(banned, { type: "PLAY_MATCH" });
+    expect(played.campaign.log[0].goals.every((g) => g.slotId !== "ST")).toBe(true);
+    expect(played.campaign.log[0].played.cohesion).toBe(50);
+  });
+
+  it("clears every ban and booking between seasons", () => {
+    const state = playMatches(reducer, day());
+    const window = reducer({ ...state, discipline: { x: { yellows: 3, banned: 1 } } }, { type: "GOTO_TRANSFER" });
+    expect(window.discipline).toEqual({});
   });
 });
 

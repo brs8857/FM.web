@@ -10,18 +10,18 @@ export const DRAG_THRESHOLD_PX = 8;
 export default function Marker({
   kind, id, code, position, player, x, y, interactive = true, draggable = false,
   active = false, highlighted = false, selected = false, lifted = false, dragging = false,
-  onTap, onDragStart, onKeyDown, emptyLabel = "empty",
+  onTap, onDragStart, onKeyDown, emptyLabel = "empty", suspended = false,
 }) {
   const press = useRef(null);
   const surname = player ? player.name.split(" ").slice(-1)[0] : null;
   const hint = !player ? "" : lifted ? " Selected. Arrow keys move, Enter on another player swaps, Escape cancels." : interactive ? " Press Enter to select." : "";
-  const label = player ? `${position}, ${player.name}.${hint}` : `${position}, ${emptyLabel}.`;
+  const label = player ? `${position}, ${player.name}.${suspended ? " Suspended." : ""}${hint}` : `${position}, ${emptyLabel}.`;
   const style = kind === "slot" ? { left: `${x}%`, top: `${y}%` } : undefined;
   const data = kind === "slot" ? { "data-slot-id": id } : { "data-bench-idx": id };
   const className = cx(
     styles.marker, styles[kind], player ? styles.filled : styles.empty,
     active && styles.active, highlighted && styles.highlighted, selected && styles.selected, lifted && styles.lifted,
-    dragging && styles.dragging, draggable && player && styles.draggable,
+    dragging && styles.dragging, draggable && player && styles.draggable, suspended && styles.suspended,
   );
   const inner = (
     <>

@@ -3,6 +3,7 @@ import { Term } from "../../ui/Term.jsx";
 import { cx } from "../../ui/cx.js";
 import { CONCEPT, IDENTITY_LABEL, cohesionLabel, mentalityLabel } from "../../content/labels.js";
 import { USER_TEAM_NAME } from "../../engine/season.js";
+import { t } from "../../content/t.js";
 import styles from "./MatchReport.module.css";
 
 const TONE = { W: "win", D: "draw", L: "loss" };
@@ -14,6 +15,12 @@ export function minuteLabel(minute) {
 export function signed(n) {
   if (n > 0) return `+${n}`;
   return n < 0 ? `−${-n}` : "±0";
+}
+
+// "Booked: Vieira 44', Keown 71'. Sent off: —"
+export function cardsLine(cards) {
+  const list = (kind) => cards.filter((c) => c.kind === kind).map((c) => `${c.name} ${minuteLabel(c.minute)}`).join(", ") || "—";
+  return `Booked: ${list("yellow")}. Sent off: ${list("red")}.`;
 }
 
 export function identityName(key) {
@@ -71,6 +78,8 @@ export default function MatchReport({ match, clubName, after, compact = false, l
           {played.changed && <div className={styles.changed}><dt className="visually-hidden">System</dt><dd>Changed this week</dd></div>}
         </dl>
       )}
+      {match.cards && <p className={styles.cards}>{cardsLine(match.cards)}</p>}
+      {match.bans?.map((name) => <p key={name} className={styles.ban}>{t("season.misses", { name })}</p>)}
       {after && <p className={styles.table}>{after}</p>}
     </article>
   );

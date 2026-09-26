@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import App from "./App.jsx";
 import { makeMiniDataset } from "../../tests/fixtures/miniDataset.js";
-import { fakeStorage, makeSaveText, makeSeason3State } from "../../tests/fixtures/saves.js";
+import { fakeStorage, makeSaveText, makeSeason3OpenState } from "../../tests/fixtures/saves.js";
 import { selectNextAction } from "../state/selectors.js";
 import { SAVE_KEY } from "../state/storage.js";
 import { DEFAULT_PREFS, PREFS_KEY } from "../state/prefs.js";
@@ -57,7 +57,7 @@ describe("App", () => {
   });
 
   it("resumes a season in progress on match day and plays it from the sticky bar, the K key and Play to…", () => {
-    const state = makeSeason3State(11);
+    const state = makeSeason3OpenState(11);
     const storage = fakeStorage({ [SAVE_KEY]: makeSaveText(state) });
     render(<App dataset={makeMiniDataset()} storage={storage} prefs={{ ...prefs, reduceMotion: "on" }} />);
     const label = (s) => selectNextAction(s).label;
