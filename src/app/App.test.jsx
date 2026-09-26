@@ -81,6 +81,24 @@ describe("App", () => {
     expect(screen.getByRole("button", { name: "Share" })).toBeTruthy();
   });
 
+  it("keeps the next action out of reach while a Play to… run types in on the vidiprinter", () => {
+    const state = makeSeason3OpenState(11);
+    const storage = fakeStorage({ [SAVE_KEY]: makeSaveText(state) });
+    render(<App dataset={makeMiniDataset()} storage={storage} prefs={{ ...prefs, reduceMotion: "off" }} />);
+    const saved = () => JSON.parse(storage.data.get(SAVE_KEY)).state;
+    fireEvent.click(screen.getByRole("button", { name: selectNextAction(state).label }));
+    fireEvent.click(screen.getByRole("button", { name: "Play to…" }));
+    fireEvent.click(screen.getByRole("radio", { name: /The end of the season/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Play" }));
+    expect(saved().phase).toBe("result");
+    const next = selectNextAction(saved()).label;
+    expect(screen.queryByRole("button", { name: next })).toBeNull();
+    fireEvent.keyDown(window, { key: "k" });
+    expect(saved().phase).toBe("result");
+    fireEvent.click(screen.getByRole("button", { name: "Skip to end" }));
+    expect(screen.getAllByRole("button", { name: next }).length).toBeGreaterThan(0);
+  });
+
   it("walks a new career from Home through era, shape and colours into the draft", () => {
     const storage = fakeStorage();
     const { unmount } = render(<App dataset={makeMiniDataset()} storage={storage} prefs={prefs} />);

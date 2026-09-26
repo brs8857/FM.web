@@ -13,7 +13,9 @@ import styles from "./Season.module.css";
 // The Season tab (spec 07 §7.1): pre-season, the reveal, match day, the
 // back page and the window, one screen switching on the phase. `feed` is the
 // first week of a fast-forward still typing in on the vidiprinter.
-export default function SeasonTab({ state, dispatch, identity, familiarity, profile, tacticUntouched, instant, feed, onFeedDone, careerCode, clubSeason, clubName, prefs, onDismissNote, onGoBoard, onGoTab }) {
+// `revealInstant` also covers a reveal the player resumed into; a feed is
+// never saved, so the vidiprinter follows reduced motion alone.
+export default function SeasonTab({ state, dispatch, identity, familiarity, profile, tacticUntouched, instant, revealInstant = instant, feed, onFeedDone, careerCode, clubSeason, clubName, prefs, onDismissNote, onGoBoard, onGoTab }) {
   const { campaign, opponents } = state;
   const standingAt = useCallback((week) => selectTable({ campaign, opponents }, week).find((r) => r.isUser), [campaign, opponents]);
   if (state.phase === "transfer") {
@@ -27,7 +29,7 @@ export default function SeasonTab({ state, dispatch, identity, familiarity, prof
         <Preseason state={state} identity={identity} familiarity={familiarity} tacticUntouched={tacticUntouched} clubName={clubName} onGoBoard={onGoBoard} />
       )}
       {state.phase === "reveal" && campaign && (
-        <TeamSheetReveal state={state} instant={instant} onKickoff={() => dispatch({ type: "KICKOFF" })} />
+        <TeamSheetReveal state={state} instant={revealInstant} onKickoff={() => dispatch({ type: "KICKOFF" })} />
       )}
       {feeding && (
         <Vidiprinter log={campaign.log} from={feed} season={state.season} instant={instant} clubName={clubName} standingAt={standingAt} onDone={onFeedDone} />
