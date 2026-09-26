@@ -1,5 +1,5 @@
 import { FORMATIONS } from "../engine/formations.js";
-import { careerSeasonLabel, CAREER_SEASONS } from "../engine/season.js";
+import { careerSeasonLabel, CAREER_SEASONS, SEASON_WEEKS, buildUserFixtureList } from "../engine/season.js";
 import { STAT_KEYS } from "../engine/players.js";
 import { EMPTY_MEMORY } from "../engine/familiarity.js";
 import { wageCost, windowBudget } from "../engine/squad.js";
@@ -8,7 +8,7 @@ import { REDRAWS } from "./initialState.js";
 import legacyClubIds from "../data/legacyClubIds.json";
 import { PRODUCT_NAME } from "../content/product.js";
 
-export const SAVE_VERSION = 3;
+export const SAVE_VERSION = 4;
 export const APP_ID = "fm-web"; // the envelope id from 1.1.0, kept so old saves load
 export const SAVE_ERRORS = {
   notFmWeb: `This isn't an ${PRODUCT_NAME} save.`,
@@ -18,7 +18,7 @@ export const SAVE_ERRORS = {
 
 const PHASE_LABELS = {
   formation: "Formation", draft: "Draft", tactics: "Tactics",
-  reveal: "Ratings reveal", result: "Season result", transfer: "Transfer window",
+  reveal: "Ratings reveal", matchday: "Match day", result: "Season result", transfer: "Transfer window",
 };
 
 // 1.1.0 keyed club-seasons by Transfermarkt's numeric club ids; v2 uses slugs
@@ -92,6 +92,26 @@ const migrations = {
     };
     return { ...save, saveVersion: 3, state };
   },
+  // v3 (2.5.0): a season was simulated whole at kick-off. Seasons already
+  // recorded have no match log. A season revealed but not yet seen restarts
+  // from kick-off (its results will be drawn afresh, fixture by fixture), so
+  // the seasons memory it had already counted is given back; a season on its
+  // back page keeps its results, without scorers.
+  3(save) {
+    const s = save.state;
+    const reveal = s.phase === "reveal";
+    let memory = isObject(s.cohesionMemory) ? s.cohesionMemory : { ...EMPTY_MEMORY };
+    if (reveal) memory = memory.seasons > 1 ? { ...memory, seasons: memory.seasons - 1 } : rememberedSystem({ ...s, phase: "tactics" });
+    const state = {
+      ...s,
+      phase: reveal ? "tactics" : s.phase,
+      simulation: reveal ? null : s.simulation,
+      campaign: null,
+      cohesionMemory: { ...memory, signature: null, matches: 0 },
+      seasonHistory: Array.isArray(s.seasonHistory) ? s.seasonHistory.map((h) => (isObject(h) ? { ...h, matches: [], topScorer: null } : h)) : s.seasonHistory,
+    };
+    return { ...save, saveVersion: 4, state };
+  },
 };
 
 export function rememberedSystem(state) {
@@ -101,7 +121,7 @@ export function rememberedSystem(state) {
   if (!last) return { ...EMPTY_MEMORY };
   let seasons = 0;
   while (seasons < played.length && played[played.length - 1 - seasons] === last) seasons++;
-  return { formationKey: state.formationKey, styleKey: last, seasons };
+  return { ...EMPTY_MEMORY, formationKey: state.formationKey, styleKey: last, seasons };
 }
 
 export function serializeState(state) {
@@ -184,15 +204,49 @@ function isDraw(d) {
     && Array.isArray(d.options) && d.options.every(isDrawOption);
 }
 
+function isGoal(g) {
+  return isObject(g) && Number.isInteger(g.minute) && g.minute >= 1 && g.minute <= 95
+    && (g.us === false || (g.us === true && typeof g.slotId === "string" && typeof g.name === "string"));
+}
+
+function isMatchEntry(m, week) {
+  if (!isObject(m) || m.week !== week || typeof m.opponent !== "string" || typeof m.home !== "boolean") return false;
+  if (!Number.isInteger(m.gf) || !Number.isInteger(m.ga) || m.gf < 0 || m.ga < 0) return false;
+  if (m.outcome !== (m.gf > m.ga ? "W" : m.gf === m.ga ? "D" : "L")) return false;
+  if (!Array.isArray(m.goals) || m.goals.length !== m.gf + m.ga || !m.goals.every(isGoal)) return false;
+  if (m.goals.filter((g) => g.us).length !== m.gf) return false;
+  return isObject(m.played) && Number.isInteger(m.played.cohesion) && typeof m.played.changed === "boolean";
+}
+
+function isMatchLog(log) {
+  return Array.isArray(log) && log.every((m, i) => isMatchEntry(m, i + 1));
+}
+
 function isSeasonSummary(s) {
   return isObject(s) && Number.isInteger(s.season) && s.season >= 1 && s.season <= CAREER_SEASONS
     && Number.isInteger(s.position) && ["pts", "w", "d", "l", "gf", "ga", "familiarity"].every((k) => Number.isInteger(s[k]))
-    && typeof s.tier === "string" && (s.identity === null || typeof s.identity === "string") && isUint32(s.seed);
+    && typeof s.tier === "string" && (s.identity === null || typeof s.identity === "string") && isUint32(s.seed)
+    && isMatchLog(s.matches) && (s.matches.length === 0 || s.matches.length === SEASON_WEEKS)
+    && (s.topScorer === null || (isObject(s.topScorer) && typeof s.topScorer.name === "string" && Number.isInteger(s.topScorer.goals)));
 }
 
 function isMemory(m) {
   return isObject(m) && (m.formationKey === null || typeof m.formationKey === "string")
-    && (m.styleKey === null || typeof m.styleKey === "string") && Number.isInteger(m.seasons) && m.seasons >= 0;
+    && (m.styleKey === null || typeof m.styleKey === "string") && Number.isInteger(m.seasons) && m.seasons >= 0
+    && (m.signature === null || typeof m.signature === "string") && Number.isInteger(m.matches) && m.matches >= 0;
+}
+
+// The season in progress: its seed, the rivals in draw order (the same
+// nineteen the league holds), the next week, and a log of every fixture
+// played so far, in the order the fixture list has them.
+function isCampaign(c, opponents) {
+  if (!isObject(c) || !isUint32(c.seed) || !Number.isInteger(c.week) || c.week < 1 || c.week > SEASON_WEEKS + 1) return false;
+  if (!isStringArray(c.order) || c.order.length !== 19 || new Set(c.order).size !== 19) return false;
+  const names = new Set(opponents.map((o) => o.name));
+  if (!c.order.every((name) => names.has(name))) return false;
+  if (!isMatchLog(c.log) || c.log.length !== c.week - 1) return false;
+  const fixtures = buildUserFixtureList(c.order);
+  return c.log.every((m, i) => m.opponent === fixtures[i].name && m.home === fixtures[i].home);
 }
 
 function isValidState(s) {
@@ -220,5 +274,9 @@ function isValidState(s) {
   if (!Number.isInteger(s.season) || s.season < 1 || s.season > CAREER_SEASONS) return false;
   if (!Number.isInteger(s.eraMin) || !Number.isInteger(s.eraMax)) return false;
   if (s.simulation !== null && !(isObject(s.simulation) && Array.isArray(s.simulation.matches) && Array.isArray(s.simulation.table))) return false;
+  if (s.campaign !== null && !isCampaign(s.campaign, s.opponents)) return false;
+  if ((s.phase === "reveal" || s.phase === "matchday") && s.campaign === null) return false;
+  if (s.phase === "matchday" && s.campaign.week > SEASON_WEEKS) return false;
+  if (s.phase === "result" && s.simulation === null) return false;
   return true;
 }

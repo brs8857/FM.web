@@ -2,14 +2,15 @@
 import { describe, it, expect } from "vitest";
 import { makeMiniDataset } from "../fixtures/miniDataset.js";
 import { playCareer } from "../fixtures/playCareer.js";
-import { createReducer, summarizeSeason } from "../../src/state/reducer.js";
+import { createReducer, summarizeSeason, playToTarget } from "../../src/state/reducer.js";
 import { makeInitialState, DRAW_OPTIONS, REDRAWS } from "../../src/state/initialState.js";
 import { playerIdentity, isSameRealPlayer } from "../../src/engine/identity.js";
 import { createSquadLookup } from "../../src/engine/players.js";
 import { makeInitialAssignments } from "../../src/engine/formations.js";
-import { computeFamiliarity } from "../../src/engine/familiarity.js";
+import { computeFamiliarity, EMPTY_MEMORY, SETTLING } from "../../src/engine/familiarity.js";
+import { buildUserFixtureList } from "../../src/engine/season.js";
 import { wageCost, windowBudget } from "../../src/engine/squad.js";
-import { liveAssignments } from "../../src/state/selectors.js";
+import { liveAssignments, selectNextAction, selectNextFixture, selectSettling, selectTable, selectTopScorers } from "../../src/state/selectors.js";
 
 export function checkInvariants(state, action, previous) {
   const label = action.type;
@@ -237,21 +238,111 @@ describe("cohesion memory", () => {
     const dataset = makeMiniDataset();
     const reducer = createReducer(dataset);
     const played = playCareer({ reducer, initialState: makeInitialState(dataset, 7), seasons: 3 });
-    expect(played.cohesionMemory).toEqual({ formationKey: "4-3-3", styleKey: "Gegenpress", seasons: 3 });
+    expect(played.cohesionMemory).toEqual({ ...EMPTY_MEMORY, formationKey: "4-3-3", styleKey: "Gegenpress", seasons: 3 });
     expect(played.seasonHistory.map((s) => s.familiarity)).toHaveLength(2);
     const one = playCareer({ reducer, initialState: makeInitialState(dataset, 7), seasons: 1 });
     expect(one.cohesionMemory.seasons).toBe(1);
     const fresh = computeFamiliarity(liveAssignments(one.assignments), one.instructions, one.formationKey);
-    expect(one.simulation.familiarity).toBe(fresh);
+    expect(one.simulation.familiarity).toBe(fresh + SETTLING.at(-1));
+    expect(one.campaign.log.map((m) => m.played.cohesion - fresh)).toEqual(Array.from({ length: 38 }, (_, i) => SETTLING[Math.min(i, SETTLING.length - 1)]));
     let state = reducer(one, { type: "GOTO_TRANSFER" });
     state = reducer(state, { type: "CONTINUE_SEASON" });
-    const second = reducer(state, { type: "SIMULATE" });
+    const kickOff = (s) => reducer(reducer(reducer(s, { type: "START_SEASON" }), { type: "KICKOFF" }), { type: "PLAY_MATCH" });
+    const second = kickOff(state);
     const withoutMemory = computeFamiliarity(liveAssignments(state.assignments), state.instructions, state.formationKey);
-    expect(second.simulation.familiarity).toBe(withoutMemory + 2);
-    const changed = reducer(reducer(state, { type: "SET_STYLE", key: "parkbus" }), { type: "SIMULATE" });
+    expect(second.campaign.log[0].played.cohesion).toBe(withoutMemory + 2 + SETTLING[0]);
+    const changed = kickOff(reducer(state, { type: "SET_STYLE", key: "parkbus" }));
     const parkbus = computeFamiliarity(liveAssignments(state.assignments), changed.instructions, state.formationKey);
-    expect(changed.simulation.familiarity).toBe(parkbus - 4);
-    expect(changed.cohesionMemory).toEqual({ formationKey: "4-3-3", styleKey: "Park The Bus", seasons: 1 });
+    expect(changed.campaign.log[0].played.cohesion).toBe(parkbus - 4 + SETTLING[0]);
+    const finished = reducer(changed, { type: "PLAY_TO", until: "end" });
+    expect(finished.cohesionMemory).toEqual({ ...EMPTY_MEMORY, formationKey: "4-3-3", styleKey: "Park The Bus", seasons: 1 });
+  });
+});
+
+describe("match day", () => {
+  const dataset = makeMiniDataset();
+  const reducer = createReducer(dataset);
+  const tactics = () => playCareer({ reducer, initialState: makeInitialState(dataset, 4242), seasons: 0 });
+
+  it("START_SEASON takes one draw for the order and the seed and plays nothing; KICKOFF opens match day", () => {
+    const state = tactics();
+    expect(state.phase).toBe("tactics");
+    const started = reducer(state, { type: "START_SEASON" });
+    expect(started.phase).toBe("reveal");
+    expect(started.rngCounter).toBe(state.rngCounter + 1);
+    expect(started.simulation).toBeNull();
+    expect(started.campaign).toMatchObject({ week: 1, log: [] });
+    expect([...started.campaign.order].sort()).toEqual(state.opponents.map((o) => o.name).sort());
+    expect(reducer(started, { type: "START_SEASON" })).toBe(started);
+    expect(reducer(started, { type: "PLAY_MATCH" })).toBe(started);
+    const day = reducer(started, { type: "KICKOFF" });
+    expect(day.phase).toBe("matchday");
+    expect(reducer(state, { type: "KICKOFF" })).toBe(state);
+  });
+
+  it("plays one fixture per PLAY_MATCH, with a report, and never takes a draw from the career", () => {
+    let state = reducer(reducer(tactics(), { type: "START_SEASON" }), { type: "KICKOFF" });
+    const counter = state.rngCounter;
+    const fixtures = buildUserFixtureList(state.campaign.order);
+    for (let week = 1; week <= 38; week++) {
+      state = reducer(state, { type: "PLAY_MATCH" });
+      const entry = state.campaign.log.at(-1);
+      expect(entry).toMatchObject({ week, opponent: fixtures[week - 1].name, home: fixtures[week - 1].home });
+      expect(entry.goals).toHaveLength(entry.gf + entry.ga);
+      expect(entry.played).toMatchObject({ identity: "Gegenpress", changed: false });
+      expect(state.rngCounter).toBe(counter);
+    }
+    expect(state.phase).toBe("result");
+    expect(state.campaign.week).toBe(39);
+    expect(state.simulation.matches).toBe(state.campaign.log);
+    expect(state.simulation.table).toEqual(selectTable(state, 38).map(({ gd, ...row }) => { void gd; return row; }));
+    expect(reducer(state, { type: "PLAY_MATCH" })).toBe(state);
+  });
+
+  it("reads the board before every fixture: a change at week 10 costs settling and shows in the log", () => {
+    let state = reducer(reducer(tactics(), { type: "START_SEASON" }), { type: "KICKOFF" });
+    state = reducer(state, { type: "PLAY_TO", until: "next" });
+    for (let i = 1; i < 9; i++) state = reducer(state, { type: "PLAY_MATCH" });
+    expect(state.campaign.week).toBe(10);
+    expect(selectSettling(state)).toMatchObject({ matches: 9, modifier: SETTLING.at(-1), changed: false });
+    state = reducer(state, { type: "SET_INSTRUCTION", key: "mentality", value: 20 });
+    expect(selectSettling(state)).toMatchObject({ matches: 0, modifier: SETTLING[0], changed: true });
+    const live = liveAssignments(state.assignments);
+    const expected = computeFamiliarity(live, state.instructions, state.formationKey, state.cohesionMemory);
+    state = reducer(state, { type: "PLAY_MATCH" });
+    expect(state.campaign.log[9].played).toMatchObject({ changed: true, settle: SETTLING[0], cohesion: expected, mentality: 20 });
+    state = reducer(state, { type: "PLAY_MATCH" });
+    expect(state.campaign.log[10].played).toMatchObject({ changed: false, settle: SETTLING[1] });
+    expect(state.campaign.log.slice(0, 9).every((m) => m.played.mentality !== 20)).toBe(true);
+  });
+
+  it("PLAY_TO stops at the half, the end, or after a defeat", () => {
+    const day = reducer(reducer(tactics(), { type: "START_SEASON" }), { type: "KICKOFF" });
+    expect(playToTarget(1, "half")).toBe(19);
+    expect(playToTarget(20, "half")).toBe(38);
+    const half = reducer(day, { type: "PLAY_TO", until: "half" });
+    expect(half.campaign.week).toBe(20);
+    expect(reducer(half, { type: "PLAY_TO", until: "half" }).phase).toBe("result");
+    const end = reducer(day, { type: "PLAY_TO", until: "end" });
+    expect(end.phase).toBe("result");
+    expect(reducer(end, { type: "PLAY_TO", until: "end" })).toBe(end);
+    const defeat = reducer(day, { type: "PLAY_TO", until: "defeat" });
+    const log = defeat.campaign.log;
+    const firstLoss = end.campaign.log.findIndex((m) => m.outcome === "L");
+    expect(log).toHaveLength(firstLoss >= 0 && firstLoss < 19 ? firstLoss + 1 : 19);
+    expect(reducer(tactics(), { type: "PLAY_TO", until: "end" }).phase).toBe("tactics");
+  });
+
+  it("names the next fixture and plays it from the Next pill", () => {
+    const day = reducer(reducer(tactics(), { type: "START_SEASON" }), { type: "KICKOFF" });
+    const fixture = buildUserFixtureList(day.campaign.order)[0];
+    expect(selectNextAction(day)).toEqual({ key: "playMatch", label: `Play week 1: ${fixture.name} (${fixture.home ? "H" : "A"})`, tab: "season", week: 1, opponent: fixture.name, home: fixture.home });
+    expect(selectNextFixture(day)).toMatchObject({ week: 1, name: fixture.name, row: { pts: 0 } });
+    const later = reducer(day, { type: "PLAY_TO", until: "half" });
+    expect(selectNextAction(later, (n) => n.toUpperCase()).label).toMatch(/^Play week 20: [A-Z0-9 ]+ \([HA]\)$/);
+    expect(selectTable(later)).toHaveLength(20);
+    expect(selectTable(later).every((r) => r.w + r.d + r.l === 19)).toBe(true);
+    expect(selectTable(later, 5).every((r) => r.w + r.d + r.l === 5)).toBe(true);
   });
 });
 
@@ -292,8 +383,13 @@ describe("the record", () => {
       season: 1, position: state.simulation.position, pts: state.simulation.pts,
       w: state.simulation.w, d: state.simulation.d, l: state.simulation.l, gf: state.simulation.gf, ga: state.simulation.ga,
       tier: state.simulation.tier.name, identity: state.simulation.profile.synergyLabel, familiarity: state.simulation.familiarity, seed: 4242,
+      matches: state.campaign.log, topScorer: expect.objectContaining({ goals: expect.any(Number) }),
     });
+    const [top] = selectTopScorers(state.campaign.log, 1);
+    expect(expected.topScorer).toEqual({ name: top.name, goals: top.goals });
+    expect(top.goals).toBe(state.campaign.log.flatMap((m) => m.goals).filter((g) => g.us && g.id === top.id).length);
     state = reducer(state, { type: "GOTO_TRANSFER" });
+    expect(state.campaign).toBeNull();
     expect(state.seasonHistory).toEqual([expected]);
     state = reducer(state, { type: "CONTINUE_SEASON" });
     expect(state.seasonHistory).toEqual([expected]);

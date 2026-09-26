@@ -22,5 +22,17 @@
   "board.memory.change": "A new system: cohesion −{penalty} this season while it beds in.",
   "season.retired":"{names} {count, plural, one {has} other {have}} hung up the boots.",
   "season.emptySlots": "{count, plural, one {One place in the XI is empty} other {# places in the XI are empty}}: fill it from the Squad tab before kick-off.",
-  "club.titles": "{count, plural, =0 {No titles} one {# title} other {# titles}}"
+  "club.titles": "{count, plural, =0 {No titles} one {# title} other {# titles}}",
+  "season.play": "Play week {week}: {opponent} ({venue})",
+  "season.playTo": "Play to…",
+  "season.next": "Next · Week {week} · {venue}",
+  "season.after": "After week {week} · {position} · {pts, plural, one {# pt} other {# pts}}",
+  "season.settled": "Settled in: {count, plural, one {# match} other {# matches}} in this system ({modifier})",
+  "season.changed": "Just changed: cohesion {modifier} this match",
+  "season.fresh": "First match in this system: cohesion {modifier}",
+  "season.topScorer": "Top scorer: {name}, {count, plural, one {# goal} other {# goals}}",
+  "season.suspended": "Replace {name} (suspended)",
+  "season.misses": "{name} misses the next match",
+  "season.noLog": "No match log for this season.",
+  "season.form": "Won {w}, drawn {d}, lost {l}; last five: {last}"
 }

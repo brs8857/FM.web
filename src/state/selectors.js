@@ -1,9 +1,10 @@
 import { ROLES } from "../engine/roles.js";
 import { DEFAULT_INSTRUCTIONS } from "../engine/instructions.js";
-import { computeFamiliarity, eraSpread, eraSpreadPenalty, memoryBonus, EMPTY_MEMORY, SIDE_MISMATCH_PENALTY } from "../engine/familiarity.js";
+import { computeFamiliarity, eraSpread, eraSpreadPenalty, memoryBonus, settling, EMPTY_MEMORY, SIDE_MISMATCH_PENALTY } from "../engine/familiarity.js";
 import { computeTeamProfile, identityKey } from "../engine/tactics.js";
-import { CAREER_SEASONS } from "../engine/season.js";
+import { CAREER_SEASONS, SEASON_WEEKS, buildUserFixtureList, leagueTable } from "../engine/season.js";
 import { nextEmptySlotIndex } from "../engine/squad.js";
+import { t } from "../content/t.js";
 
 const DECADE_LABEL = { 1990: "'90s", 2000: "2000s", 2010: "2010s", 2020: "2020s" };
 
@@ -75,6 +76,53 @@ export function selectProfile(live, instructions, familiarity) {
   return computeTeamProfile(live, instructions, familiarity);
 }
 
+// What the next fixture's cohesion gains or loses from matches already played
+// in this system (spec 07 §4.3).
+export function selectSettling(state) {
+  return settling(state.cohesionMemory ?? EMPTY_MEMORY, state.formationKey, state.instructions);
+}
+
+// The league after `week` rounds of the season in progress (by default, every
+// round played so far). Rebuilt from the season seed, so it is cached per
+// campaign: a campaign object never changes once made.
+const tables = new WeakMap();
+export function selectTable(state, week) {
+  const campaign = state.campaign;
+  if (!campaign) return null;
+  const upTo = Math.min(week ?? campaign.log.length, campaign.log.length);
+  if (!tables.has(campaign)) tables.set(campaign, new Map());
+  const cache = tables.get(campaign);
+  if (!cache.has(upTo)) {
+    cache.set(upTo, leagueTable(state.opponents, campaign.order, campaign.log.slice(0, upTo), campaign.seed).map((row) => ({ ...row, gd: row.gf - row.ga })));
+  }
+  return cache.get(upTo);
+}
+
+export function selectNextFixture(state) {
+  const campaign = state.campaign;
+  if (!campaign || campaign.week > SEASON_WEEKS) return null;
+  const fixture = buildUserFixtureList(campaign.order)[campaign.week - 1];
+  const opponent = state.opponents.find((o) => o.name === fixture.name);
+  const row = selectTable(state).find((r) => r.name === fixture.name);
+  return { ...fixture, opponent, row, promoted: opponent?.lastSeason === "promoted" };
+}
+
+// Our scorers in a match log, most goals first. A player is counted by id, so
+// the same man across seasons of a career is one line.
+export function selectTopScorers(log, n = 3) {
+  const tally = new Map();
+  for (const match of log ?? []) {
+    for (const goal of match.goals ?? []) {
+      if (!goal.us) continue;
+      const key = goal.id ?? goal.name;
+      const entry = tally.get(key) ?? { id: goal.id ?? null, name: goal.name, goals: 0 };
+      entry.goals += 1;
+      tally.set(key, entry);
+    }
+  }
+  return [...tally.values()].sort((a, b) => b.goals - a.goals || a.name.localeCompare(b.name)).slice(0, n);
+}
+
 // The v1 draft screen still speaks wheel/pool; the first cutting stands in
 // for the landed club-season until B11 retires it.
 export function selectLegacyWheel(state) {
@@ -103,7 +151,7 @@ export function tacticUntouched(state) {
 
 // The one action that moves the career on (spec 04 §4.2). `tab` is the Club
 // tab that holds it; null while the career is still being set up.
-export function selectNextAction(state) {
+export function selectNextAction(state, clubName = (name) => name) {
   const { phase, season } = state;
   switch (phase) {
     case "formation":
@@ -120,6 +168,12 @@ export function selectNextAction(state) {
       return { key: "kickOff", label: `Kick off season ${season}`, tab: "season" };
     case "reveal":
       return { key: "startSeason", label: `Start season ${season}`, tab: "season" };
+    case "matchday": {
+      const fixture = selectNextFixture(state);
+      if (!fixture) return { key: "unknown", label: "Continue", tab: "season" };
+      const label = t("season.play", { week: fixture.week, opponent: clubName(fixture.name), venue: fixture.home ? "H" : "A" });
+      return { key: "playMatch", label, tab: "season", week: fixture.week, opponent: fixture.name, home: fixture.home };
+    }
     case "result":
       if (season >= CAREER_SEASONS) return { key: "careerComplete", label: "Career complete", tab: "club" };
       return { key: "openWindow", label: "Open the window", tab: "season" };

@@ -1,4 +1,5 @@
 import CoachNote from "../../app/CoachNote.jsx";
+import Button from "../../ui/Button.jsx";
 import Preseason from "./Preseason.jsx";
 import TeamSheetReveal from "./TeamSheetReveal.jsx";
 import Vidiprinter from "./Vidiprinter.jsx";
@@ -18,8 +19,11 @@ export default function SeasonTab({ state, dispatch, identity, familiarity, tact
       {state.phase === "tactics" && (
         <Preseason state={state} identity={identity} familiarity={familiarity} tacticUntouched={tacticUntouched} clubName={clubName} onGoBoard={onGoBoard} />
       )}
-      {state.phase === "reveal" && state.simulation && (
+      {state.phase === "reveal" && state.campaign && (
         <TeamSheetReveal state={state} instant={instant} onKickoff={() => dispatch({ type: "KICKOFF" })} />
+      )}
+      {state.phase === "matchday" && (
+        <Button block onClick={() => dispatch({ type: "PLAY_TO", until: "end" })}>Play the season</Button>
       )}
       {state.phase === "result" && state.simulation && !feedDone && (
         <Vidiprinter simulation={state.simulation} season={state.season} instant={instant} clubName={clubName} onDone={onFeedDone} />

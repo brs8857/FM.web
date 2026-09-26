@@ -10,7 +10,7 @@ import LiveRegion from "../../ui/LiveRegion.jsx";
 import { TermsProvider } from "../../ui/Term.jsx";
 import terms from "../../content/terms.json";
 import { makeMiniDataset } from "../../../tests/fixtures/miniDataset.js";
-import { makeSeason3TacticsState } from "../../../tests/fixtures/saves.js";
+import { makeSeason3TacticsState, makeSeason3State, makeSeason3ResultState } from "../../../tests/fixtures/saves.js";
 import { createReducer } from "../../state/reducer.js";
 import { tacticUntouched } from "../../state/selectors.js";
 import { clubSeasonLabel } from "../../content/clubs.js";
@@ -39,7 +39,7 @@ function Harness({ initial, instant = true, spy = {} }) {
   );
 }
 
-const resultState = () => reducer(reducer(makeSeason3TacticsState(), { type: "SIMULATE" }), { type: "KICKOFF" });
+const resultState = () => makeSeason3ResultState();
 
 // Each timer schedules the next from an effect, so advance one tick per act.
 function ticks(n, ms) {
@@ -103,7 +103,7 @@ describe("SeasonTab", () => {
   it("stamps the ratings in one at a time, then the average and Start season", () => {
     vi.useFakeTimers();
     const spy = {};
-    const state = reducer(makeSeason3TacticsState(), { type: "SIMULATE" });
+    const state = makeSeason3State();
     render(<Harness initial={state} instant={false} spy={spy} />);
     expect(screen.getAllByLabelText("not yet revealed")).toHaveLength(11);
     ticks(3, REVEAL_MS + 1);
@@ -112,7 +112,7 @@ describe("SeasonTab", () => {
     expect(screen.queryByLabelText("not yet revealed")).toBeNull();
     expect(screen.getByText("Squad average")).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "Start season 3" }));
-    expect(spy.state.phase).toBe("result");
+    expect(spy.state.phase).toBe("matchday");
   });
 
   it("types the results in, pauses at the half-season slip, announces only then, and ends on the back page", () => {

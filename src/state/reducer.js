@@ -3,16 +3,16 @@ import { FORMATIONS, makeInitialAssignments } from "../engine/formations.js";
 import { ROLES, defaultRoleFor, defaultDutyFor } from "../engine/roles.js";
 import { STYLE_PRESETS } from "../engine/instructions.js";
 import { createSquadLookup, buildPool } from "../engine/players.js";
-import { computeTeamProfile } from "../engine/tactics.js";
-import { computeFamiliarity, nextMemory } from "../engine/familiarity.js";
-import { identityKey } from "../engine/tactics.js";
-import { simulateSeason } from "../engine/season.js";
+import { computeTeamProfile, identityKey } from "../engine/tactics.js";
+import { computeFamiliarity, nextMemory, settling, afterMatch, EMPTY_MEMORY } from "../engine/familiarity.js";
+import { buildUserFixtureList, simulateFixture, eventRng, seasonResult, SEASON_WEEKS, HALF_SEASON } from "../engine/season.js";
+import { matchEvents } from "../engine/match.js";
 import { applyPromotionRelegation } from "../engine/league.js";
 import { nextEmptySlotIndex, autoFillBench, generateShortlist, signToSlot, signToBench, progressSquad, wageCost, windowBudget, budgetLeft } from "../engine/squad.js";
 import { playerIdentity } from "../engine/identity.js";
 import { makeInitialState, DRAW_OPTIONS } from "./initialState.js";
 import { takeRng } from "./rngState.js";
-import { selectEraIndex } from "./selectors.js";
+import { selectEraIndex, liveAssignments, selectTopScorers } from "./selectors.js";
 
 const idleDraw = (draw) => ({ ...draw, spinning: false, options: [] });
 
@@ -36,12 +36,82 @@ function affordableSigning(state, index) {
   };
 }
 
+// A season played before the match log existed (a migrated save) has
+// results without events; it is recorded without a log.
+export function hasMatchLog(matches) {
+  return Array.isArray(matches) && matches.length > 0 && matches.every((m) => Array.isArray(m.goals) && m.played);
+}
+
 export function summarizeSeason(state) {
   const { simulation: s, season, careerSeed } = state;
+  const matches = hasMatchLog(s.matches) ? s.matches : [];
+  const [top] = selectTopScorers(matches, 1);
   return {
     season, position: s.position, pts: s.pts, w: s.w, d: s.d, l: s.l, gf: s.gf, ga: s.ga,
     tier: s.tier.name, identity: s.profile.synergyLabel, familiarity: s.familiarity, seed: careerSeed,
+    matches, topScorer: top ? { name: top.name, goals: top.goals } : null,
   };
+}
+
+// What the board is for the next fixture: cohesion with the seasons in this
+// system and the settling, and the profile it plays to.
+export function lineupFor(state) {
+  const live = liveAssignments(state.assignments);
+  const memory = state.cohesionMemory ?? EMPTY_MEMORY;
+  const settle = settling(memory, state.formationKey, state.instructions);
+  const familiarity = computeFamiliarity(live, state.instructions, state.formationKey, memory);
+  const profile = computeTeamProfile(live, state.instructions, familiarity);
+  return { live, settle, familiarity, profile };
+}
+
+// The identity the season was mostly played in, for the seasons memory; a
+// tie goes to the later one.
+function seasonStyle(log) {
+  const counts = new Map();
+  for (const m of log) counts.set(m.played.identity, (counts.get(m.played.identity) ?? 0) + 1);
+  return [...counts.entries()].reduce((best, entry) => (entry[1] >= best[1] ? entry : best))[0];
+}
+
+// One fixture, read from the board as it stands. Everything random derives
+// from the campaign's seed and the week, so no draw is taken from the career
+// and nothing done between matches shifts a result.
+function playMatch(state) {
+  const { campaign } = state;
+  if (state.phase !== "matchday" || !campaign || campaign.week > SEASON_WEEKS) return state;
+  const fixture = buildUserFixtureList(campaign.order)[campaign.week - 1];
+  const opponent = state.opponents.find((o) => o.name === fixture.name);
+  const { live, settle, familiarity, profile } = lineupFor(state);
+  const result = simulateFixture(profile, familiarity, opponent, fixture, campaign.seed);
+  const { goals } = matchEvents(result, live, eventRng(campaign.seed, fixture.week));
+  const played = { identity: identityKey(state.instructions), cohesion: familiarity, settle: settle.modifier, mentality: state.instructions.mentality, changed: settle.changed };
+  const log = [...campaign.log, { ...result, goals, played }];
+  const next = { ...state, campaign: { ...campaign, week: campaign.week + 1, log }, cohesionMemory: afterMatch(state.cohesionMemory ?? EMPTY_MEMORY, settle) };
+  if (fixture.week < SEASON_WEEKS) return next;
+  const cohesionMemory = nextMemory(state.cohesionMemory, state.formationKey, seasonStyle(log));
+  const simulation = { ...seasonResult(state.opponents, campaign.order, log, campaign.seed), profile, familiarity, instructions: state.instructions, season: state.season };
+  return { ...next, phase: "result", cohesionMemory, simulation };
+}
+
+// Fast-forward with the board frozen: to the half (or, past it, the end),
+// to the end, or until a defeat or the half/end, whichever comes first. Stops
+// early wherever a single match would be refused.
+export function playToTarget(week, until) {
+  if (until === "end") return SEASON_WEEKS;
+  if (until === "next") return week;
+  return week <= HALF_SEASON ? HALF_SEASON : SEASON_WEEKS;
+}
+
+function playTo(state, until) {
+  if (state.phase !== "matchday" || !state.campaign) return state;
+  const target = playToTarget(state.campaign.week, until);
+  let current = state;
+  while (current.phase === "matchday" && current.campaign.week <= target) {
+    const next = playMatch(current);
+    if (next === current) break;
+    current = next;
+    if (until === "defeat" && current.campaign.log.at(-1).outcome === "L") break;
+  }
+  return current;
 }
 
 export function createReducer(dataset) {
@@ -213,23 +283,29 @@ export function createReducer(dataset) {
         }
         return state;
       }
-      case "SIMULATE": {
+      case "START_SEASON": {
+        if (state.phase !== "tactics") return state;
+        // The one draw a season takes: the fixture order and the seed every
+        // fixture, event and rival round derives from. Ratings stay hidden
+        // through the draft and tactics phases; the reveal comes next.
         const [rng, next] = takeRng(state);
-        const assignmentsWithRole = state.assignments.map((a) => ({
-          ...a,
-          roleObj: ROLES[a.type].find((r) => r.key === a.role),
-        })).map((a) => ({ ...a, role: a.roleObj }));
-        const memory = state.cohesionMemory;
-        const familiarity = computeFamiliarity(assignmentsWithRole, state.instructions, state.formationKey, memory);
-        const profile = computeTeamProfile(assignmentsWithRole, state.instructions, familiarity);
-        const simulation = simulateSeason(profile, familiarity, state.opponents, rng);
-        const cohesionMemory = nextMemory(memory, state.formationKey, identityKey(state.instructions));
-        // Ratings stay hidden through the draft and tactics phases — this is
-        // the moment they're finally revealed, right before a ball is kicked.
-        return { ...next, phase: "reveal", cohesionMemory, simulation: { ...simulation, profile, familiarity, instructions: state.instructions, season: state.season } };
+        const order = rng.shuffle(state.opponents).map((o) => o.name);
+        const seed = rng.int(2 ** 32);
+        return {
+          ...next, phase: "reveal", simulation: null,
+          campaign: { seed, order, week: 1, log: [] },
+          cohesionMemory: { ...state.cohesionMemory, signature: null, matches: 0 },
+        };
       }
       case "KICKOFF": {
-        return { ...state, phase: "result" };
+        if (state.phase !== "reveal" || !state.campaign) return state;
+        return { ...state, phase: "matchday" };
+      }
+      case "PLAY_MATCH": {
+        return playMatch(state);
+      }
+      case "PLAY_TO": {
+        return playTo(state, action.until);
       }
       case "GOTO_TRANSFER": {
         const [rng, next] = takeRng(state);
@@ -238,7 +314,7 @@ export function createReducer(dataset) {
         const { opponents, relegated, promoted } = applyPromotionRelegation(state.opponents, state.simulation?.table, dataset.championship, rng);
         const seasonHistory = state.simulation ? [...state.seasonHistory, summarizeSeason(state)] : state.seasonHistory;
         const transferBudget = { points: windowBudget(state.simulation?.position ?? 20), spent: 0 };
-        return { ...next, phase: "transfer", shortlist, transferBudget, opponents, lastTransition: { relegated, promoted }, seasonHistory };
+        return { ...next, phase: "transfer", shortlist, transferBudget, opponents, lastTransition: { relegated, promoted }, seasonHistory, campaign: null };
       }
       case "SIGN_SHORTLIST_TO_BENCH": {
         const signing = affordableSigning(state, action.index);

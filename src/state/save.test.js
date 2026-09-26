@@ -10,6 +10,7 @@ import {
   validateSave, parseSaveText, hydrateState, describeSave, rekeySeasonKey, rekeyState, rememberedSystem,
 } from "./save.js";
 import { APP_VERSION } from "../version.js";
+import { EMPTY_MEMORY } from "../engine/familiarity.js";
 
 const NOW = new Date("2026-09-11T20:00:00.000Z");
 
@@ -44,8 +45,8 @@ function asV1(state, { landed = false } = {}) {
 }
 
 describe("save format", () => {
-  it("is version 3", () => {
-    expect(SAVE_VERSION).toBe(3);
+  it("is version 4", () => {
+    expect(SAVE_VERSION).toBe(4);
   });
 
   it("round-trips a mid-career state exactly", () => {
@@ -53,7 +54,7 @@ describe("save format", () => {
     const text = toSaveText(makeSaveEnvelope(state, { gameVersion: "2.0.0", now: NOW }));
     const parsed = parseSaveText(text);
     expect(parsed.ok).toBe(true);
-    expect(parsed.save).toMatchObject({ app: "fm-web", saveVersion: 3, gameVersion: "2.0.0", savedAt: "2026-09-11T20:00:00.000Z" });
+    expect(parsed.save).toMatchObject({ app: "fm-web", saveVersion: 4, gameVersion: "2.0.0", savedAt: "2026-09-11T20:00:00.000Z" });
     const restored = hydrateState(parsed.save.state);
     expect(restored.draftedIds).toBeInstanceOf(Set);
     expect(restored.seasonHistory).toHaveLength(2);
@@ -82,7 +83,7 @@ describe("save format", () => {
 
     const parsed = parseSaveText(text);
     expect(parsed.ok).toBe(true);
-    expect(parsed.save.saveVersion).toBe(3);
+    expect(parsed.save.saveVersion).toBe(4);
     expect(parsed.save.gameVersion).toBe("1.1.0");
     const { state } = parsed.save;
     expect(state).not.toHaveProperty("wheel");
@@ -90,7 +91,7 @@ describe("save format", () => {
     expect(state).not.toHaveProperty("poolRelaxed");
     expect(state.draw).toEqual({ spinning: false, options: [], redrawsLeft: REDRAWS });
     expect(state.seasonHistory).toEqual([]);
-    expect(state.cohesionMemory).toEqual({ formationKey: null, styleKey: null, seasons: 0 });
+    expect(state.cohesionMemory).toEqual({ formationKey: null, styleKey: null, seasons: 0, signature: null, matches: 0 });
     expect(state.transferBudget).toEqual({ points: 7, spent: 1 }); // fifth last season; one 70-rated signing
     expect(state.shortlist.map((e) => e.cost)).toEqual([3, 5, 1, 4, 3]);
     expect(describeSave(parsed.save)).toEqual({ season: 2, seasonLabel: "2027-28", phaseLabel: "Transfer window" });
@@ -118,11 +119,12 @@ describe("save format", () => {
     // The migrated career carries on: the next season plays from the saved seed and counter.
     const reducer = createReducer(dataset);
     let next = reducer(restored, { type: "CONTINUE_SEASON" });
-    next = reducer(next, { type: "SIMULATE" });
+    next = reducer(next, { type: "START_SEASON" });
     expect(next.phase).toBe("reveal");
-    expect(next.simulation.matches).toHaveLength(38);
     expect(next.rngCounter).toBe(envelope.state.rngCounter + 2); // the summer and the season each take a draw
-    next = reducer(next, { type: "KICKOFF" });
+    next = reducer(reducer(next, { type: "KICKOFF" }), { type: "PLAY_TO", until: "end" });
+    expect(next.simulation.matches).toHaveLength(38);
+    expect(next.rngCounter).toBe(envelope.state.rngCounter + 2);
     next = reducer(next, { type: "GOTO_TRANSFER" });
     expect(next.shortlist.every((e) => /^\d{4}_[a-z-]+$/.test(e.player.seasonKey))).toBe(true);
   });
@@ -193,11 +195,11 @@ describe("save format", () => {
 
     const parsed = parseSaveText(text);
     expect(parsed.ok).toBe(true);
-    expect(parsed.save.saveVersion).toBe(3);
+    expect(parsed.save.saveVersion).toBe(4);
     const { state } = parsed.save;
     // Three seasons of Gegenpress in the 4-3-3, all champions, the window open.
     expect(state.seasonHistory.map((h) => h.identity)).toEqual(["Gegenpress", "Gegenpress", "Gegenpress"]);
-    expect(state.cohesionMemory).toEqual({ formationKey: "4-3-3", styleKey: "Gegenpress", seasons: 3 });
+    expect(state.cohesionMemory).toEqual({ formationKey: "4-3-3", styleKey: "Gegenpress", seasons: 3, signature: null, matches: 0 });
     expect(state.shortlist.every((e) => Number.isInteger(e.cost) && e.cost >= 1 && e.cost <= 5)).toBe(true);
     const signedCost = state.shortlist.filter((e) => e.signed).reduce((sum, e) => sum + e.cost, 0);
     expect(state.transferBudget).toEqual({ points: 9, spent: Math.min(9, signedCost) });
@@ -211,19 +213,107 @@ describe("save format", () => {
     const aged = next.assignments.filter((a, i) => a.player && state.assignments[i].player?.id === a.player.id && typeof a.player.age === "number");
     expect(aged.length).toBeGreaterThan(0);
     for (const a of aged) expect(a.player.age).toBe(state.assignments.find((b) => b.player?.id === a.player.id).player.age + 1);
-    next = reducer(next, { type: "SIMULATE" });
-    expect(next.cohesionMemory).toEqual({ formationKey: "4-3-3", styleKey: "Gegenpress", seasons: 4 });
+    next = reducer(reducer(reducer(next, { type: "START_SEASON" }), { type: "KICKOFF" }), { type: "PLAY_TO", until: "end" });
+    expect(next.cohesionMemory).toEqual({ ...EMPTY_MEMORY, formationKey: "4-3-3", styleKey: "Gegenpress", seasons: 4 });
     expect(next.simulation.matches).toHaveLength(38);
+  });
+
+  it("migrates a real 2.5.0 save paused at the ratings reveal by restarting that season from kick-off", () => {
+    const text = readFileSync("tests/fixtures/save-v3.json", "utf8");
+    const envelope = JSON.parse(text);
+    expect(envelope).toMatchObject({ app: "fm-web", saveVersion: 3, gameVersion: "2.5.0", state: { phase: "reveal", season: 2 } });
+    expect(envelope.state.cohesionMemory).toEqual({ formationKey: "4-3-3", styleKey: "Gegenpress", seasons: 2 });
+
+    const parsed = parseSaveText(text);
+    expect(parsed.ok).toBe(true);
+    const { state } = parsed.save;
+    expect(parsed.save.saveVersion).toBe(4);
+    expect(state).toMatchObject({ phase: "tactics", season: 2, simulation: null, campaign: null, rngCounter: envelope.state.rngCounter });
+    expect(state.cohesionMemory).toEqual({ ...EMPTY_MEMORY, formationKey: "4-3-3", styleKey: "Gegenpress", seasons: 1 });
+    expect(state.seasonHistory).toHaveLength(1);
+    expect(state.seasonHistory[0]).toMatchObject({ season: 1, matches: [], topScorer: null });
+    expect(describeSave(parsed.save)).toEqual({ season: 2, seasonLabel: "2027-28", phaseLabel: "Tactics" });
+
+    const dataset = { ...JSON.parse(readFileSync("src/data/players.json", "utf8")), championship: JSON.parse(readFileSync("src/data/championship.json", "utf8")) };
+    const reducer = createReducer(dataset);
+    let next = reducer(hydrateState(state), { type: "START_SEASON" });
+    next = reducer(reducer(next, { type: "KICKOFF" }), { type: "PLAY_TO", until: "end" });
+    expect(next).toMatchObject({ phase: "result", season: 2 });
+    expect(next.cohesionMemory.seasons).toBe(2);
+    expect(parseSaveText(toSaveText(makeSaveEnvelope(next, { gameVersion: "2.7.0", now: NOW }))).ok).toBe(true);
+  });
+
+  it("keeps a 2.5.0 season on its back page, without a match log, and records it without one", () => {
+    const envelope = JSON.parse(readFileSync("tests/fixtures/save-v3.json", "utf8"));
+    const result = { ...envelope, state: { ...envelope.state, phase: "result" } };
+    const parsed = validateSave(result);
+    expect(parsed.ok).toBe(true);
+    const { state } = parsed.save;
+    expect(state.phase).toBe("result");
+    expect(state.simulation).toEqual(envelope.state.simulation);
+    expect(state.cohesionMemory).toEqual({ ...EMPTY_MEMORY, ...envelope.state.cohesionMemory });
+    expect(describeSave(parsed.save).phaseLabel).toBe("Season result");
+
+    const dataset = { ...JSON.parse(readFileSync("src/data/players.json", "utf8")), championship: JSON.parse(readFileSync("src/data/championship.json", "utf8")) };
+    const reducer = createReducer(dataset);
+    const window = reducer(hydrateState(state), { type: "GOTO_TRANSFER" });
+    expect(window.phase).toBe("transfer");
+    expect(window.seasonHistory.at(-1)).toMatchObject({ season: 2, pts: envelope.state.simulation.pts, matches: [], topScorer: null });
+    expect(parseSaveText(toSaveText(makeSaveEnvelope(window, { gameVersion: "2.7.0", now: NOW }))).ok).toBe(true);
+  });
+
+  it("migrates a 2.0.0 save paused at the reveal the same way", () => {
+    const envelope = JSON.parse(readFileSync("tests/fixtures/save-v3.json", "utf8"));
+    const { cohesionMemory, transferBudget, ...v2state } = envelope.state;
+    void cohesionMemory; void transferBudget;
+    const strip = (e) => ({ ...e, player: e.player && (({ age, ...p }) => { void age; return p; })(e.player) });
+    const v2 = { ...envelope, saveVersion: 2, gameVersion: "2.0.0", state: { ...v2state, assignments: v2state.assignments.map(strip), bench: v2state.bench.map(strip) } };
+    const parsed = validateSave(v2);
+    expect(parsed.ok).toBe(true);
+    expect(parsed.save.state).toMatchObject({ phase: "tactics", simulation: null, campaign: null });
+    expect(parsed.save.state.cohesionMemory).toEqual({ ...EMPTY_MEMORY, formationKey: "4-3-3", styleKey: "Gegenpress", seasons: 1 });
+  });
+
+  it("round-trips a season in progress and resumes it on the same fixture", () => {
+    const dataset = makeMiniDataset();
+    const reducer = createReducer(dataset);
+    let state = reducer(reducer(midCareerState(), { type: "START_SEASON" }), { type: "KICKOFF" });
+    for (let i = 0; i < 11; i++) state = reducer(state, { type: "PLAY_MATCH" });
+    const text = toSaveText(makeSaveEnvelope(state, { gameVersion: "2.7.0", now: NOW }));
+    const parsed = parseSaveText(text);
+    expect(parsed.ok).toBe(true);
+    expect(describeSave(parsed.save)).toEqual({ season: 3, seasonLabel: "2028-29", phaseLabel: "Match day" });
+    const restored = hydrateState(parsed.save.state);
+    expect(restored.campaign).toEqual(state.campaign);
+    expect(reducer(restored, { type: "PLAY_MATCH" })).toEqual(reducer(state, { type: "PLAY_MATCH" }));
+
+    const damaged = (mutate) => {
+      const copy = JSON.parse(text);
+      mutate(copy.state);
+      return validateSave(copy).ok;
+    };
+    expect(damaged(() => {})).toBe(true);
+    expect(damaged((s) => { s.campaign.seed = -1; })).toBe(false);
+    expect(damaged((s) => { s.campaign.week = 13; })).toBe(false);
+    expect(damaged((s) => { s.campaign.order[0] = "Nobody FC"; })).toBe(false);
+    expect(damaged((s) => { s.campaign.order[1] = s.campaign.order[0]; })).toBe(false);
+    expect(damaged((s) => { s.campaign.log[3].gf += 1; })).toBe(false);
+    expect(damaged((s) => { s.campaign.log[3].goals.push({ minute: 50, us: false }); s.campaign.log[3].ga += 1; s.campaign.log[3].outcome = s.campaign.log[3].gf > s.campaign.log[3].ga ? "W" : s.campaign.log[3].gf === s.campaign.log[3].ga ? "D" : "L"; })).toBe(true);
+    expect(damaged((s) => { s.campaign.log[3].goals.push({ minute: 96, us: false }); s.campaign.log[3].ga += 1; s.campaign.log[3].outcome = s.campaign.log[3].gf > s.campaign.log[3].ga ? "W" : s.campaign.log[3].gf === s.campaign.log[3].ga ? "D" : "L"; })).toBe(false);
+    expect(damaged((s) => { s.campaign.log[2].home = !s.campaign.log[2].home; })).toBe(false);
+    expect(damaged((s) => { delete s.campaign.log[0].played; })).toBe(false);
+    expect(damaged((s) => { s.campaign = null; })).toBe(false);
+    expect(damaged((s) => { s.cohesionMemory.matches = -1; })).toBe(false);
   });
 
   it("rebuilds the memory from the seasons played so far", () => {
     const base = { formationKey: "4-2-3-1", phase: "tactics", simulation: null };
     const history = (...identities) => identities.map((identity) => ({ identity }));
-    expect(rememberedSystem({ ...base, seasonHistory: [] })).toEqual({ formationKey: null, styleKey: null, seasons: 0 });
-    expect(rememberedSystem({ ...base, seasonHistory: history("Wing Play", "Gegenpress", "Gegenpress") })).toEqual({ formationKey: "4-2-3-1", styleKey: "Gegenpress", seasons: 2 });
-    expect(rememberedSystem({ ...base, seasonHistory: history("Gegenpress", null) })).toEqual({ formationKey: null, styleKey: null, seasons: 0 });
+    expect(rememberedSystem({ ...base, seasonHistory: [] })).toEqual(EMPTY_MEMORY);
+    expect(rememberedSystem({ ...base, seasonHistory: history("Wing Play", "Gegenpress", "Gegenpress") })).toMatchObject({ formationKey: "4-2-3-1", styleKey: "Gegenpress", seasons: 2 });
+    expect(rememberedSystem({ ...base, seasonHistory: history("Gegenpress", null) })).toEqual(EMPTY_MEMORY);
     const playedNotFiled = { ...base, phase: "result", seasonHistory: history("Park The Bus"), simulation: { profile: { synergyLabel: "Park The Bus" } } };
-    expect(rememberedSystem(playedNotFiled)).toEqual({ formationKey: "4-2-3-1", styleKey: "Park The Bus", seasons: 2 });
+    expect(rememberedSystem(playedNotFiled)).toMatchObject({ formationKey: "4-2-3-1", styleKey: "Park The Bus", seasons: 2 });
   });
 
   it("resets a draw that was saved mid-spin", () => {

@@ -3,7 +3,7 @@ import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import axe from "axe-core";
 import App from "../../src/app/App.jsx";
 import { makeMiniDataset } from "../fixtures/miniDataset.js";
-import { fakeStorage, makeSaveText, makeSeason3TacticsState } from "../fixtures/saves.js";
+import { fakeStorage, makeSaveText, makeSeason3TacticsState, makeSeason3State, makeSeason3ResultState } from "../fixtures/saves.js";
 import { createReducer } from "../../src/state/reducer.js";
 import { makeInitialState } from "../../src/state/initialState.js";
 import { SAVE_KEY } from "../../src/state/storage.js";
@@ -32,7 +32,7 @@ function draftState(seed = 11) {
   return reducer(reducer(s, { type: "DRAW" }), { type: "LAND" });
 }
 
-const resultState = () => reducer(reducer(makeSeason3TacticsState(), { type: "SIMULATE" }), { type: "KICKOFF" });
+const resultState = () => makeSeason3ResultState();
 
 function mount(state, extra = {}) {
   const storage = fakeStorage(state ? { [SAVE_KEY]: makeSaveText(state) } : {});
@@ -111,7 +111,7 @@ describe("axe: every screen", () => {
     fireEvent.click(screen.getByRole("button", { name: "Kick off season 3" }));
     await check("pre-season");
     cleanup();
-    mount(reducer(makeSeason3TacticsState(), { type: "SIMULATE" }), { reduceMotion: "on" });
+    mount(makeSeason3State(), { reduceMotion: "on" });
     fireEvent.click(screen.getByRole("button", { name: "Start season 3" }));
     await check("reveal");
     cleanup();

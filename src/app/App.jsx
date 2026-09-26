@@ -55,7 +55,7 @@ const SETUP_STEPS = {
 
 // Next actions that are a single reducer action.
 const NEXT_ACTIONS = {
-  kickOff: { type: "SIMULATE" },
+  kickOff: { type: "START_SEASON" },
   startSeason: { type: "KICKOFF" },
   openWindow: { type: "GOTO_TRANSFER" },
   closeWindow: { type: "CONTINUE_SEASON" },
@@ -118,7 +118,7 @@ function Game({ dataset, storageProp, initialPrefs }) {
   const cohesion = cohesionLabel(familiarity);
   const clubSeason = useCallback((seasonKey) => clubSeasonLabel(dataset, seasonKey, prefs.clubNames), [dataset, prefs.clubNames]);
   const clubName = useCallback((name) => displayClubName(name, prefs.clubNames), [prefs.clubNames]);
-  const revealed = state.phase === "reveal" || state.phase === "result";
+  const revealed = state.phase === "reveal" || state.phase === "matchday" || state.phase === "result";
   const careerCode = encodeCareerCode({ seed: state.careerSeed, eraMin: state.eraMin, eraMax: state.eraMax, formationKey: state.formationKey });
   const feedDone = state.phase === "result" && (instant || feedDoneSeason === state.season);
 
@@ -192,7 +192,7 @@ function Game({ dataset, storageProp, initialPrefs }) {
   function stickyFor() {
     if (nav.mode !== "club") return null;
     if (state.phase === "tactics" && (nav.tab === "board" || nav.tab === "season")) {
-      return { label: `Kick off season ${state.season}`, run: () => { dispatch({ type: "SIMULATE" }); goTab("season"); } };
+      return { label: `Kick off season ${state.season}`, run: () => { dispatch({ type: "START_SEASON" }); goTab("season"); } };
     }
     if (nav.tab !== next.tab) return null;
     if (state.phase === "result") {

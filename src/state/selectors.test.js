@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { describe, it, expect } from "vitest";
-import { selectEraIndex, liveAssignments, selectNextAction, selectLegacyWheel, selectSeasonHistory } from "./selectors.js";
+import { selectEraIndex, liveAssignments, selectNextAction, selectLegacyWheel, selectSeasonHistory, selectTopScorers } from "./selectors.js";
 import { makeMiniDataset } from "../../tests/fixtures/miniDataset.js";
 import { makeInitialState } from "./initialState.js";
 import { CAREER_SEASONS } from "../engine/season.js";
@@ -66,5 +66,22 @@ describe("selectNextAction", () => {
     expect(selectNextAction({ ...state, phase: "result", season: 2 })).toEqual({ key: "openWindow", label: "Open the window", tab: "season" });
     expect(selectNextAction({ ...state, phase: "result", season: CAREER_SEASONS })).toEqual({ key: "careerComplete", label: "Career complete", tab: "club" });
     expect(selectNextAction({ ...state, phase: "transfer", season: 2 })).toEqual({ key: "closeWindow", label: "Close the window", tab: "season" });
+  });
+});
+
+describe("top scorers", () => {
+  const goal = (id, name) => ({ minute: 10, us: true, slotId: "ST", id, name });
+  it("counts our goals by player, most first, names breaking ties, and ignores theirs", () => {
+    const log = [
+      { goals: [goal("a", "Shearer"), goal("b", "Cole"), { minute: 20, us: false }] },
+      { goals: [goal("a", "Shearer"), goal("c", "Adams"), goal("c", "Adams")] },
+      { goals: [goal("d", "Shearer"), goal("b", "Cole")] },
+    ];
+    expect(selectTopScorers(log)).toEqual([
+      { id: "c", name: "Adams", goals: 2 }, { id: "b", name: "Cole", goals: 2 }, { id: "a", name: "Shearer", goals: 2 },
+    ]);
+    expect(selectTopScorers(log, 5)).toHaveLength(4);
+    expect(selectTopScorers([])).toEqual([]);
+    expect(selectTopScorers([{ week: 1 }])).toEqual([]);
   });
 });

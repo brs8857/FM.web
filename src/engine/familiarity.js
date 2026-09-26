@@ -7,7 +7,11 @@ export const SIDE_MISMATCH_PENALTY = 2;
 export const MEMORY_PER_SEASON = 2;
 export const MEMORY_CAP = 8;
 export const MEMORY_CHANGE_PENALTY = 4;
-export const EMPTY_MEMORY = { formationKey: null, styleKey: null, seasons: 0 };
+// Cohesion by matches already played this season in the same system: index
+// 0 is a system just changed (or the season's first match), the last entry
+// holds from there on.
+export const SETTLING = [-3, -2, -1, 0, 0, 0, 3];
+export const EMPTY_MEMORY = { formationKey: null, styleKey: null, seasons: 0, signature: null, matches: 0 };
 
 // Cohesion memory: the system (shape and identity) the club played its
 // last seasons in. Staying in it earns a little each season; changing it
@@ -20,7 +24,28 @@ export function memoryBonus(memory, formationKey, styleKey) {
 
 export function nextMemory(memory, formationKey, styleKey) {
   const same = memory && memory.formationKey === formationKey && memory.styleKey === styleKey;
-  return { formationKey, styleKey, seasons: same ? memory.seasons + 1 : 1 };
+  return { ...EMPTY_MEMORY, formationKey, styleKey, seasons: same ? memory.seasons + 1 : 1 };
+}
+
+// The system as settling sees it: the shape, the seven identity dials to the
+// nearest five, and the discipline. Personnel and the other four dials have
+// their own costs already.
+const SIGNATURE_DIALS = ["mentality", "tempo", "directness", "width", "press", "line", "tackling"];
+export function systemSignature(formationKey, instructions) {
+  return [formationKey, ...SIGNATURE_DIALS.map((k) => Math.round(instructions[k] / 5) * 5), instructions.shape].join(" ");
+}
+
+// Settling, the within-season half of the memory: how many matches in a row
+// this system has been played for, and what that is worth for the next one.
+export function settling(memory, formationKey, instructions) {
+  const signature = systemSignature(formationKey, instructions);
+  const matches = memory?.signature === signature ? memory.matches : 0;
+  const changed = Boolean(memory?.signature) && memory.signature !== signature;
+  return { signature, matches, modifier: SETTLING[Math.min(matches, SETTLING.length - 1)], changed };
+}
+
+export function afterMatch(memory, settle) {
+  return { ...memory, signature: settle.signature, matches: settle.matches + 1 };
 }
 
 export function eraSpreadPenalty(spread) {
@@ -35,7 +60,7 @@ export function eraSpread(players) {
 export function computeFamiliarity(assignments, instructions, formationKey, memory = null) {
   const list = assignments.filter((a) => a && a.player);
   if (list.length < 11) return 50;
-  let fam = 70 + memoryBonus(memory, formationKey, identityKey(instructions));
+  let fam = 70 + (memory ? memoryBonus(memory, formationKey, identityKey(instructions)) + settling(memory, formationKey, instructions).modifier : 0);
 
   list.forEach((a) => {
     const slotDef = FORMATIONS[formationKey].slots.find((s) => s.id === a.slotId);

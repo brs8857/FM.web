@@ -92,7 +92,7 @@ function soak(seed) {
     checkSquad(state, label);
 
     const memory = state.cohesionMemory;
-    state = reducer(reducer(state, { type: "SIMULATE" }), { type: "KICKOFF" });
+    state = reducer(reducer(reducer(state, { type: "START_SEASON" }), { type: "KICKOFF" }), { type: "PLAY_TO", until: "end" });
     expect(state.cohesionMemory, label).toEqual({ ...memory, seasons: memory.seasons + 1 });
     checkSeason(state, label);
     log.positions.push(state.simulation.position);

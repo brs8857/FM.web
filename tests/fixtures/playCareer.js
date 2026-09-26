@@ -1,3 +1,12 @@
+// Kick off, start the season after the reveal, then fast-forward to the half
+// and on to the end.
+export function playSeason(dispatch) {
+  dispatch({ type: "START_SEASON" });
+  dispatch({ type: "KICKOFF" });
+  dispatch({ type: "PLAY_TO", until: "half" });
+  dispatch({ type: "PLAY_TO", until: "end" });
+}
+
 // Drives the reducer through a whole career the way a player would: draw
 // three cuttings, pick from the first, and spend one redraw on the fourth pick.
 export function playCareer({ reducer, initialState, seasons = 6, check = () => {} }) {
@@ -25,8 +34,7 @@ export function playCareer({ reducer, initialState, seasons = 6, check = () => {
   dispatch({ type: "SET_STYLE", key: "gegenpress" });
 
   for (let season = 1; season <= seasons; season++) {
-    dispatch({ type: "SIMULATE" });
-    dispatch({ type: "KICKOFF" });
+    playSeason(dispatch);
     if (season === seasons) break;
     dispatch({ type: "GOTO_TRANSFER" });
     dispatch({ type: "SIGN_SHORTLIST_TO_BENCH", index: 0 });

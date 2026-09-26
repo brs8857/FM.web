@@ -4,6 +4,8 @@ import { simulateMatch, simulateRivalMatch } from "./match.js";
 
 export const USER_TEAM = "__USER__";
 export const USER_TEAM_NAME = "Your XI";
+export const SEASON_WEEKS = 38;
+export const HALF_SEASON = 19;
 
 // Standard "circle method" round-robin scheduler. Produces 2*(n-1) rounds for
 // n teams, each round a full set of pairings, second half mirrored home/away —
