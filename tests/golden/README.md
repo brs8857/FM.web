@@ -46,4 +46,9 @@ Re-recorded 2026-09-27 (Milestone H) by `npm run golden:engine`: the rivals
   `seasons.json` changed with the rivals; `league.json` with the rivals and
   the new result shape. `profiles.json` and `xis.json` did not change.
 
+Re-recorded 2026-09-27 (Championship rebalance): the Championship's
+  seasons share one rating level and the division sits CHAMPIONSHIP_SHIFT
+  lower, so the clubs promoted from it in `league.json` changed.
+  `profiles.json`, `seasons.json` and `xis.json` are identical.
+
 Compare through `JSON.parse(JSON.stringify(value))` — `toEqual` distinguishes `-0` from `0`.
