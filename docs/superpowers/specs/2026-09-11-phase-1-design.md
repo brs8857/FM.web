@@ -285,7 +285,7 @@ main.jsx → <ErrorBoundary> → <DatasetGate> (loading / error + Retry)
 
 - **Icons:** `public/icons/` holds 192 and 512 px versions, a 512 px maskable version, and a 180 px `apple-touch-icon.png`, all generated from the existing SVG mark. `index.html` adds `<link rel="apple-touch-icon">`.
 - **Service worker:** `registerType: "prompt"`. Workbox pre-caches `**/*.{js,css,html,json,png,svg,webmanifest}` and ignores `standalone/**`. The largest file, the data chunk (~0.95 MB), is under Workbox's 2 MiB default limit.
-- **`UpdatePrompt`:** when a new service worker is waiting, a toast shows "Update available · Reload". It never reloads on its own.
+- **`UpdatePrompt`:** when a new service worker is waiting, a toast shows "Update available · Reload". It never reloads on its own once play has begun. _(Amended 2026-09-27: a version that is ready while the app is still opening, within 10 s, is applied then, and the app looks for a new version each time it returns to the foreground. An installed iPhone app is resumed far more often than opened, so the toast alone left players on an old version after a release.)_
 - **Installing:**
   - `beforeinstallprompt` is captured, and the menu shows **Install app**.
   - On iOS Safari outside standalone mode, the menu instead shows "Tap Share → Add to Home Screen to install. Installed apps keep saves safe from Safari's 7-day storage limit."
