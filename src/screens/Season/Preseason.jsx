@@ -1,7 +1,8 @@
 import Button from "../../ui/Button.jsx";
 import Callout from "../../ui/Callout.jsx";
 import IdentityLine from "../Board/IdentityLine.jsx";
-import { careerSeasonLabel } from "../../engine/season.js";
+import { careerSeasonLabel, seasonWeeks } from "../../engine/season.js";
+import { divisionLabel } from "../../content/labels.js";
 import { selectMemory, selectSettling } from "../../state/selectors.js";
 import { t } from "../../content/t.js";
 import styles from "./Season.module.css";
@@ -10,11 +11,15 @@ export default function Preseason({ state, identity, familiarity, tacticUntouche
   const promoted = new Set(state.lastTransition?.promoted ?? []);
   const retired = state.lastTransition?.retired ?? [];
   const empty = state.assignments.filter((a) => !a.player).length;
+  const rivals = state.opponents.length;
+  const move = state.lastTransition?.userMove;
   return (
     <div className={styles.stack}>
       <div>
-        <h2 className={styles.heading}>Season {state.season} · {careerSeasonLabel(state.season)}</h2>
-        <p className={styles.lede}>Thirty-eight matches, home and away against nineteen rivals. The fixture list is drawn and the ratings revealed at kick-off.</p>
+        <h2 className={styles.heading}>Season {state.season} · {careerSeasonLabel(state.season)} · {divisionLabel(state.division)}</h2>
+        <p className={styles.lede}>{seasonWeeks(rivals)} matches, home and away against {rivals} rivals. The fixture list is drawn and the ratings revealed at kick-off.</p>
+        {move === "up" && <p className={styles.lede}>Promoted: the first season back in the top flight.</p>}
+        {move === "down" && <p className={styles.lede}>Relegated: a season in the Championship to get back up.</p>}
       </div>
       {retired.length > 0 && (
         <Callout title="Retired">

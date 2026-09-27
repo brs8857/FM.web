@@ -31,17 +31,18 @@ export function positionText(week, row) {
 
 // The results are already decided and saved when this runs; it only tells
 // them. Announcements wait for a pause, never one per tick.
-export default function Vidiprinter({ log, from = 1, season, instant, clubName, standingAt, onDone }) {
+// `half` is the half-season week: 19, or 23 in the Championship.
+export default function Vidiprinter({ log, from = 1, season, instant, clubName, standingAt, onDone, half: halfWeek = HALF_SEASON }) {
   const announce = useAnnounce();
   const matches = log.slice(from - 1);
   const total = matches.length;
   const [shown, setShown] = useState(instant ? total : 0);
   const [paused, setPaused] = useState(false);
-  const crossesHalf = from <= HALF_SEASON && log.length > HALF_SEASON;
+  const crossesHalf = from <= halfWeek && log.length > halfWeek;
   const [halfSeen, setHalfSeen] = useState(instant || !crossesHalf);
   const doneFired = useRef(false);
   const week = from - 1 + shown;
-  const atHalf = week === HALF_SEASON && !halfSeen;
+  const atHalf = week === halfWeek && !halfSeen;
   const done = shown >= total;
 
   useEffect(() => {
@@ -69,9 +70,9 @@ export default function Vidiprinter({ log, from = 1, season, instant, clubName, 
 
   useEffect(() => {
     if (!atHalf) return;
-    const half = standingAt(HALF_SEASON);
-    announce(`Half-season. ${t("season.record", half)}. ${positionText(HALF_SEASON, half)}.`);
-  }, [atHalf, standingAt, announce]);
+    const half = standingAt(halfWeek);
+    announce(`Half-season. ${t("season.record", half)}. ${positionText(halfWeek, half)}.`);
+  }, [atHalf, halfWeek, standingAt, announce]);
 
   return (
     <div className={styles.stack}>

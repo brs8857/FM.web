@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { describe, it, expect } from "vitest";
 import { createRng } from "./rng.js";
-import { nextDivisions, strongest, weakest, rivalCount, TOP, CHAMPIONSHIP } from "./divisions.js";
+import { nextDivisions, strongest, weakest, rivalCount, tableRule, TOP, CHAMPIONSHIP } from "./divisions.js";
 import { playoffDraw, rivalTie, rivalFinal, rivalPlayoffs, breakTie } from "./playoffs.js";
 import { USER_TEAM, USER_TEAM_NAME, seasonTier, seasonWeeks, halfSeason } from "./season.js";
 
@@ -34,6 +34,14 @@ describe("the season's length follows the division", () => {
     ]);
     expect(at(1, 46)).toBe("Perfect Championship season");
     expect(seasonTier({ w: 10, l: 20, pts: 30, position: 18 }).name).toBe("Relegation Battle");
+  });
+});
+
+describe("tableRule", () => {
+  it("rules a line above the drop, and under the automatic and play-off places in the Championship", () => {
+    const rules = (division, n) => Array.from({ length: n }, (_, i) => tableRule(division, i + 1));
+    expect(rules(TOP, 20).map((r, i) => r && `${i + 1}:${r}`).filter(Boolean)).toEqual(["17:solid"]);
+    expect(rules(CHAMPIONSHIP, 24).map((r, i) => r && `${i + 1}:${r}`).filter(Boolean)).toEqual(["2:solid", "6:dashed", "21:solid"]);
   });
 });
 

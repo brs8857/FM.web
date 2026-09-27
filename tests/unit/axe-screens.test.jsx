@@ -5,6 +5,7 @@ import App from "../../src/app/App.jsx";
 import { makeMiniDataset } from "../fixtures/miniDataset.js";
 import { fakeStorage, makeSaveText, makeSeason3TacticsState, makeSeason3State, makeSeason3OpenState, makeSeason3ResultState } from "../fixtures/saves.js";
 import { createReducer } from "../../src/state/reducer.js";
+import { makePlayoffState } from "../fixtures/playCareer.js";
 import { makeInitialState } from "../../src/state/initialState.js";
 import { SAVE_KEY } from "../../src/state/storage.js";
 import { DEFAULT_PREFS } from "../../src/state/prefs.js";
@@ -64,9 +65,11 @@ describe("axe: every screen", { timeout: 30_000 }, () => {
     await check("home, resume card");
   });
 
-  it("era, shape and colours", async () => {
+  it("league, era, shape and colours", async () => {
     mount(null);
     fireEvent.click(screen.getByRole("button", { name: "New career" }));
+    await check("league");
+    fireEvent.click(screen.getByRole("button", { name: "Choose an era" }));
     await check("era");
     fireEvent.click(screen.getByRole("button", { name: "Choose a shape" }));
     await check("shape");
@@ -84,6 +87,17 @@ describe("axe: every screen", { timeout: 30_000 }, () => {
     await check("cutting sheet");
     fireEvent.click(screen.getByRole("dialog").querySelector("li button"));
     await check("confirm pick");
+  });
+
+  it("a Championship back page with the play-offs, before and after a leg", async () => {
+    mount(makePlayoffState(reducer, dataset), { reduceMotion: "on" });
+    fireEvent.click(screen.getByRole("button", { name: /^Play-off semi-final, first leg/ }));
+    expect(screen.getByRole("heading", { name: "The play-offs" })).toBeTruthy();
+    await check("play-offs drawn");
+    fireEvent.click(screen.getAllByRole("button", { name: /^Play-off semi-final, first leg/ })[0]);
+    expect(screen.getAllByText(/^First leg:/)).toHaveLength(2);
+    expect(screen.queryByText(/^Second leg:/)).toBeNull();
+    await check("play-offs, first leg played");
   });
 
   it("squad tab and the player sheet", async () => {

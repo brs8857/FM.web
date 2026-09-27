@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { createReducer } from "../state/reducer.js";
 import { makeInitialState } from "../state/initialState.js";
 import { newCareerSeed } from "../state/rngState.js";
@@ -10,7 +10,7 @@ import { readPrefs } from "../state/prefs.js";
 import { hydrateState, makeSaveEnvelope, toSaveText, describeSave } from "../state/save.js";
 import { saveFileName, exportSaveText, readImportFile } from "../state/exportImport.js";
 import { summarizeSeason } from "../state/reducer.js";
-import { selectSeasonHistory } from "../state/selectors.js";
+import { selectSeasonHistory, selectArchive } from "../state/selectors.js";
 import { APP_VERSION } from "../version.js";
 import { careerSeasonLabel } from "../engine/season.js";
 import { BENCH_SIZE } from "../engine/squad.js";
@@ -25,8 +25,8 @@ import { useShortcuts } from "./useShortcuts.js";
 import Shell from "./Shell.jsx";
 import ConfirmSheet from "./ConfirmSheet.jsx";
 import FirstRun, { FIRST_RUN_NOTE } from "./FirstRun.jsx";
-import Gallery from "../screens/_gallery/Gallery.jsx";
 import Home from "../screens/Home/Home.jsx";
+import League from "../screens/NewCareer/League.jsx";
 import Era from "../screens/NewCareer/Era.jsx";
 import Formation from "../screens/NewCareer/Formation.jsx";
 import Colours from "../screens/NewCareer/Colours.jsx";
@@ -50,12 +50,17 @@ import Sheet from "../ui/Sheet.jsx";
 import { MarkIcon } from "../ui/icons.jsx";
 import styles from "./App.module.css";
 
+// The component gallery is a review page, not part of the game: it loads on
+// its own so players never download it.
+const Gallery = lazy(() => import("../screens/_gallery/Gallery.jsx"));
+
 const TITLES = { squad: "Squad", board: "Board", season: "Season", club: "Club" };
 
 const SETUP_STEPS = {
-  era: { subtitle: "1 of 3 · Era", next: "Choose a shape" },
-  formation: { subtitle: "2 of 3 · Shape", next: "Choose your colours" },
-  club: { subtitle: "3 of 3 · Colours", next: "Start the draft" },
+  league: { subtitle: "1 of 4 · League", next: "Choose an era" },
+  era: { subtitle: "2 of 4 · Era", next: "Choose a shape" },
+  formation: { subtitle: "3 of 4 · Shape", next: "Choose your colours" },
+  club: { subtitle: "4 of 4 · Colours", next: "Start the draft" },
 };
 
 const NEXT_ACTIONS = {
@@ -64,6 +69,7 @@ const NEXT_ACTIONS = {
   playMatch: { type: "PLAY_MATCH" },
   openWindow: { type: "GOTO_TRANSFER" },
   closeWindow: { type: "CONTINUE_SEASON" },
+  playPlayoff: { type: "PLAY_PLAYOFF" },
 };
 
 // `storage`, `prefs` and `search` are injected by tests; the app reads its own.
@@ -71,7 +77,7 @@ export default function App({ dataset, storage: storageProp, prefs, search }) {
   const [storage] = useState(() => (storageProp !== undefined ? storageProp : getStorage()));
   const [query] = useState(() => new URLSearchParams(search ?? (typeof window === "undefined" ? "" : window.location.search)));
   const [initialPrefs] = useState(() => prefs ?? readPrefs(storage));
-  if (query.get("gallery") === "1") return <Gallery />;
+  if (query.get("gallery") === "1") return <Suspense fallback={null}><Gallery /></Suspense>;
   return (
     <TermsProvider terms={terms}>
       <LiveRegion>
@@ -124,13 +130,14 @@ function Game({ dataset, storageProp, initialPrefs }) {
   const clubSeason = useCallback((seasonKey) => clubSeasonLabel(dataset, seasonKey, prefs.clubNames), [dataset, prefs.clubNames]);
   const suspended = useMemo(() => new Set(selectSuspended(state).map((s) => s.id)), [state]);
   const revealed = state.phase === "reveal" || state.phase === "matchday" || state.phase === "result";
-  const careerCode = encodeCareerCode({ seed: state.careerSeed, eraMin: state.eraMin, eraMax: state.eraMax, formationKey: state.formationKey });
+  const careerCode = encodeCareerCode({ seed: state.careerSeed, eraMin: state.eraMin, eraMax: state.eraMax, formationKey: state.formationKey, league: state.league });
+  const championshipClubs = useMemo(() => [...new Set(dataset.championshipIndex.map((e) => e.c))], [dataset]);
 
   const inProgress = state.phase !== "formation";
 
   const startNewCareer = useCallback((seed = newCareerSeed(), setup = null) => {
     clearAutosave(storage);
-    dispatch({ type: "NEW_GAME", seed });
+    dispatch({ type: "NEW_GAME", seed, league: setup?.league });
     if (setup) {
       dispatch({ type: "SET_ERA", min: setup.eraMin, max: setup.eraMax });
       dispatch({ type: "SET_FORMATION", key: setup.formationKey });
@@ -272,9 +279,10 @@ function Game({ dataset, storageProp, initialPrefs }) {
     return (
       <Shell mode="setup" title="New career" subtitle={step.subtitle} onBack={() => navDispatch({ type: "BACK" })}
         sticky={<Button block onClick={primary}>{step.next}</Button>}>
-        {nav.step === "era" && <Era eraMin={state.eraMin} eraMax={state.eraMax} index={dataset.index} onSetEra={(min, max) => dispatch({ type: "SET_ERA", min, max })} />}
+        {nav.step === "league" && <League league={state.league} onPick={(league) => dispatch({ type: "SET_LEAGUE", league })} />}
+        {nav.step === "era" && <Era league={state.league} eraMin={state.eraMin} eraMax={state.eraMax} index={selectArchive(dataset, state.league)} onSetEra={(min, max) => dispatch({ type: "SET_ERA", min, max })} />}
         {nav.step === "formation" && <Formation formationKey={state.formationKey} onPick={(key) => dispatch({ type: "SET_FORMATION", key })} />}
-        {nav.step === "club" && <Colours club={prefs.club} mode={prefs.clubNames} onPick={(club) => setPrefs({ club })} />}
+        {nav.step === "club" && <Colours club={prefs.club} mode={prefs.clubNames} onPick={(club) => setPrefs({ club })} only={state.league === "championship" ? championshipClubs : null} />}
       </Shell>
     );
   }
@@ -314,7 +322,7 @@ function Game({ dataset, storageProp, initialPrefs }) {
           onExport={exportCareer} onImportFile={onImportFile} onStartFromCode={onStartFromCode} onNewCareer={onNewCareer} />
       )}
       {state.phase === "matchday" && state.campaign && (
-        <PlayToSheet open={playTo} onClose={() => setPlayTo(false)} week={state.campaign.week} onPlay={runPlayTo}
+        <PlayToSheet open={playTo} onClose={() => setPlayTo(false)} week={state.campaign.week} rivals={state.campaign.order.length} onPlay={runPlayTo}
           autoCover={state.autoCover} onAutoCover={(on) => dispatch({ type: "SET_AUTO_COVER", on })} />
       )}
       <ConfirmSheet open={confirmNew} title="Start a new career?" confirmLabel="Start over" onConfirm={() => startNewCareer()} onClose={() => setConfirmNew(false)}>

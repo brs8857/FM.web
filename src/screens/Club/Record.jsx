@@ -3,7 +3,7 @@ import Sheet from "../../ui/Sheet.jsx";
 import Table from "../../ui/Table.jsx";
 import { cx } from "../../ui/cx.js";
 import { careerSeasonLabel, USER_TEAM_NAME } from "../../engine/season.js";
-import { tierLabel, IDENTITY_LABEL } from "../../content/labels.js";
+import { tierLabel, IDENTITY_LABEL, divisionLabel } from "../../content/labels.js";
 import { t } from "../../content/t.js";
 import { selectTopScorers } from "../../state/selectors.js";
 import { ordinal, RESULT_TONE } from "../../content/format.js";
@@ -24,12 +24,19 @@ export function biggestWin(history) {
   return best;
 }
 
+// A top-flight finish beats any Championship one; seasons from before the
+// Championship existed were all in the top flight.
+const standing = (s) => (s.division === "championship" ? 100 : 0) + s.position;
+const PROMOTED = ["Perfect Championship season", "Championship winners", "Automatic promotion", "Play-off winners"];
+
 export function recordSummary(history) {
   if (history.length === 0) return null;
-  const best = history.reduce((b, s) => (s.position < b.position ? s : b));
+  const best = history.reduce((b, s) => (standing(s) < standing(b) ? s : b));
   const [topScorer] = selectTopScorers(history.flatMap((s) => s.matches ?? []), 1);
   return {
-    best, titles: history.filter((s) => s.position === 1).length,
+    best, titles: history.filter((s) => s.position === 1 && s.division !== "championship").length,
+    promotions: history.filter((s) => PROMOTED.includes(s.tier)).length,
+    divisions: new Set(history.map((s) => s.division ?? "top")).size,
     unbeaten: history.filter((s) => s.l === 0).length, points: history.reduce((sum, s) => sum + s.pts, 0),
     topScorer: topScorer ?? null, biggestWin: biggestWin(history),
   };
@@ -59,7 +66,7 @@ function SeasonSheet({ season, clubName, onClose }) {
   return (
     <Sheet open onClose={onClose} title={tierLabel({ name: season.tier }).name} size="lg">
       <div className={styles.section}>
-        <p className="strap">Season {season.season} · {careerSeasonLabel(season.season)}</p>
+        <p className="strap">Season {season.season} · {careerSeasonLabel(season.season)} · {divisionLabel(season.division)}</p>
         <p className={styles.mono}>{t("season.record", season)} · {season.pts} pts · Finished {ordinal(season.position)}</p>
         {!logged && <p className={styles.empty}>{t("season.noLog")}</p>}
         {logged && (
@@ -89,6 +96,7 @@ export default function Record({ history, clubName = (name) => name, complete = 
     { key: "season", label: "Season", mono: true, render: (r) => (
       <button type="button" className={styles.seasonButton} aria-haspopup="dialog" onClick={() => setOpen(r.season)}>{careerSeasonLabel(r.season)}</button>
     ) },
+    ...(summary.divisions > 1 || history.some((s) => s.division === "championship") ? [{ key: "division", label: "League", render: (r) => divisionLabel(r.division) }] : []),
     { key: "position", label: "Finish", mono: true, align: "right", render: (r) => ordinal(r.position) },
     { key: "pts", label: "Pts", mono: true, align: "right" },
     { key: "identity", label: "Identity", render: (r) => r.identity ?? IDENTITY_LABEL.bespoke },
@@ -98,8 +106,11 @@ export default function Record({ history, clubName = (name) => name, complete = 
   return (
     <div className={styles.section}>
       <div className={styles.summary}>
-        <div className={styles.stat}><span className={styles.statLabel}>Best finish</span><span className={styles.statValue}>{ordinal(summary.best.position)} · {careerSeasonLabel(summary.best.season)}</span></div>
+        <div className={styles.stat}><span className={styles.statLabel}>Best finish</span><span className={styles.statValue}>{ordinal(summary.best.position)}{summary.best.division === "championship" ? " in the Championship" : ""} · {careerSeasonLabel(summary.best.season)}</span></div>
         <div className={styles.stat}><span className={styles.statLabel}>Titles</span><span className={styles.statValue}>{t("club.titles", { count: summary.titles })}</span></div>
+        {summary.promotions > 0 && (
+          <div className={styles.stat}><span className={styles.statLabel}>Promotions</span><span className={styles.statValue}>{summary.promotions}</span></div>
+        )}
         <div className={styles.stat}><span className={styles.statLabel}>Unbeaten seasons</span><span className={styles.statValue}>{summary.unbeaten}</span></div>
         {summary.topScorer && (
           <div className={styles.stat}><span className={styles.statLabel}>Top scorer</span><span className={styles.statValue}>{summary.topScorer.name} · {summary.topScorer.goals}</span></div>

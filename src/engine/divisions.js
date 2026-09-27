@@ -16,6 +16,17 @@ export function rivalCount(division) {
   return DIVISION_CLUBS[division] - 1;
 }
 
+// The lines a final table is ruled with: under the automatic places and the
+// play-off places in the Championship, above the bottom three in both.
+export function tableRule(division, position) {
+  const clubs = DIVISION_CLUBS[division];
+  if (position === clubs - RELEGATION_PLACES) return "solid";
+  if (division !== CHAMPIONSHIP) return null;
+  if (position === AUTOMATIC_PROMOTION) return "solid";
+  if (position === PLAYOFF_PLACES[1]) return "dashed";
+  return null;
+}
+
 const byName = (names) => (club) => names.includes(club.name);
 const notIn = (names) => (club) => !names.includes(club.name);
 

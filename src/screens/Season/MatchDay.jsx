@@ -6,7 +6,8 @@ import { useAnnounce } from "../../ui/LiveRegion.jsx";
 import Button from "../../ui/Button.jsx";
 import Callout from "../../ui/Callout.jsx";
 import { selectTable, selectNextFixture, selectMemory, selectSettling, selectSuspended } from "../../state/selectors.js";
-import { careerSeasonLabel } from "../../engine/season.js";
+import { careerSeasonLabel, seasonWeeks } from "../../engine/season.js";
+import { tableRule } from "../../engine/divisions.js";
 import { t } from "../../content/t.js";
 import FixtureCard from "./FixtureCard.jsx";
 import MatchReport from "./MatchReport.jsx";
@@ -35,7 +36,9 @@ export default function MatchDay({ state, identity, familiarity, profile, clubNa
   const last = campaign.log.at(-1);
   const fixture = selectNextFixture(state);
   const played = campaign.log.length;
-  const bar = played === 0 ? t("season.barStart") : t("season.bar", { week: campaign.week, position: ordinal(you.position), pts: you.pts });
+  const weeks = seasonWeeks(campaign.order.length);
+  const division = state.division ?? "top";
+  const bar = played === 0 ? t("season.barStart", { weeks }) : t("season.bar", { week: campaign.week, weeks, position: ordinal(you.position), pts: you.pts });
   const suspended = selectSuspended(state);
   const seen = useRef(played);
 
@@ -72,7 +75,9 @@ export default function MatchDay({ state, identity, familiarity, profile, clubNa
           <Disclosure title="Season so far" summary={played === 0 ? "Nothing played yet" : `${t("season.record", you)} · ${t("season.pts", { pts: you.pts })}`}>
             <div className={styles.stack}>
               {played > 0 && <MatchList matches={campaign.log} clubName={clubName} />}
-              <Table caption={`Table after week ${played} · ${careerSeasonLabel(state.season)}`} columns={COLUMNS} rows={rows} rowKey={(r) => r.name} isHighlighted={(r) => r.isUser} dense />
+              <Table caption={`Table after week ${played} · ${careerSeasonLabel(state.season)}`} columns={COLUMNS} rows={rows} rowKey={(r) => r.name} isHighlighted={(r) => r.isUser}
+                ruleAfter={(r) => tableRule(division, r.position)} dense />
+              <p className={styles.note}>{t(`table.rules.${division}`)}</p>
             </div>
           </Disclosure>
         </div>

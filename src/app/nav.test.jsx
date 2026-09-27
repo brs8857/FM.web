@@ -8,7 +8,7 @@ describe("nav", () => {
     expect(modeFor("draft")).toBe("draft");
     for (const phase of ["tactics", "reveal", "result", "transfer"]) expect(modeFor(phase)).toBe("club");
     expect(TABS.map((t) => t.key)).toEqual(["squad", "board", "season", "club"]);
-    expect(initialNav("tactics")).toEqual({ mode: "club", tab: "season", sheet: null, history: [], home: true, step: "era" });
+    expect(initialNav("tactics")).toEqual({ mode: "club", tab: "season", sheet: null, history: [], home: true, step: "league" });
   });
 
   it("switches tabs, remembers where it came from, and closes any sheet", () => {
@@ -33,7 +33,8 @@ describe("nav", () => {
 
   it("walks the set-up steps and BACK retraces them to Home", () => {
     let nav = navReducer(initialNav("formation"), { type: "LEAVE_HOME" });
-    expect(nav).toMatchObject({ mode: "setup", home: false, step: "era" });
+    expect(nav).toMatchObject({ mode: "setup", home: false, step: "league" });
+    nav = navReducer(nav, { type: "STEP", step: "era" });
     nav = navReducer(nav, { type: "STEP", step: "formation" });
     expect(navReducer(nav, { type: "STEP", step: "nope" })).toBe(nav);
     nav = navReducer(nav, { type: "STEP", step: "club" });
@@ -42,6 +43,8 @@ describe("nav", () => {
     expect(nav.step).toBe("formation");
     nav = navReducer(nav, { type: "BACK" });
     expect(nav.step).toBe("era");
+    nav = navReducer(nav, { type: "BACK" });
+    expect(nav.step).toBe("league");
     nav = navReducer(nav, { type: "BACK" });
     expect(nav.home).toBe(true);
     expect(navReducer(nav, { type: "HOME" })).toBe(nav);

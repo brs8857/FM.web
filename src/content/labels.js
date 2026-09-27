@@ -53,6 +53,15 @@ export const TIER_LABEL = {
   "Conference League": "Just outside Europe",
   "Mid-Table Mediocrity": "Safe",
   "Relegation Battle": "Relegated",
+  "Perfect Championship season": "Perfect season",
+  "Championship winners": "Championship winners",
+  "Automatic promotion": "Promoted",
+  "Play-offs": "Play-offs",
+  "Play-off winners": "Promoted through the play-offs",
+  "Play-off final": "Beaten in the final",
+  "Play-off semi-final": "Out in the semi-finals",
+  "Championship mid-table": "Mid-table",
+  "Championship relegation zone": "Bottom three",
 };
 export const TIER_STANDFIRST = {
   "THE PERFECT SEASON": "38 wins from 38. No side in the top flight's history has managed it.",
@@ -63,8 +72,23 @@ export const TIER_STANDFIRST = {
   "Europa League": "Europe next season, from a good year in the top half.",
   "Conference League": "Eighth: one place short of Europe, and a summer to wonder where the points went.",
   "Mid-Table Mediocrity": "Comfortable and safe, and forgotten by August.",
-  "Relegation Battle": "Bottom three. Any other club would be going down; this XI gets another go.",
+  "Relegation Battle": "Bottom three, and down to the Championship next season.",
+  "Perfect Championship season": "46 wins from 46, and up to the top flight as champions.",
+  "Championship winners": "Top of the Championship and up to the top flight as champions.",
+  "Automatic promotion": "A top-two finish and straight up, with no play-offs to sweat through.",
+  "Play-offs": "Between 3rd and 6th: two legs and a final for the last place up.",
+  "Play-off winners": "Through the semi-final and the final, and up to the top flight the hard way.",
+  "Play-off final": "One match from the top flight, and it went the other way. Another go in the Championship.",
+  "Play-off semi-final": "Into the play-offs and out over two legs. Another season in the Championship.",
+  "Championship mid-table": "Neither up nor down: another season in the Championship.",
+  "Championship relegation zone": "Bottom three. Any other club would drop to League One; this XI stays for another go.",
 };
+
+export const DIVISION_LABEL = { top: "Top flight", championship: "Championship" };
+
+export function divisionLabel(division) {
+  return DIVISION_LABEL[division ?? "top"];
+}
 
 export function tierLabel(tier) {
   return { name: TIER_LABEL[tier.name] ?? tier.name, sub: TIER_STANDFIRST[tier.name] };

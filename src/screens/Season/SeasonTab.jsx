@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import CoachNote from "../../app/CoachNote.jsx";
 import { cx } from "../../ui/cx.js";
 import { selectTable } from "../../state/selectors.js";
+import { halfSeason } from "../../engine/season.js";
 import Preseason from "./Preseason.jsx";
 import TeamSheetReveal from "./TeamSheetReveal.jsx";
 import MatchDay from "./MatchDay.jsx";
@@ -30,7 +31,7 @@ export default function SeasonTab({ state, dispatch, identity, familiarity, prof
         <TeamSheetReveal state={state} instant={revealInstant} onKickoff={() => dispatch({ type: "KICKOFF" })} />
       )}
       {feeding && (
-        <Vidiprinter log={campaign.log} from={feed} season={state.season} instant={instant} clubName={clubName} standingAt={standingAt} onDone={onFeedDone} />
+        <Vidiprinter log={campaign.log} from={feed} half={halfSeason(campaign.order.length)} season={state.season} instant={instant} clubName={clubName} standingAt={standingAt} onDone={onFeedDone} />
       )}
       {state.phase === "matchday" && !feeding && (
         <MatchDay state={state} identity={identity} familiarity={familiarity} profile={profile} clubName={clubName} onGoTab={onGoTab} />

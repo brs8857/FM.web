@@ -13,7 +13,7 @@ import { nextEmptySlotIndex, fillPick, benchFitIndex, BENCH_SIZE, generateShortl
 import { playerIdentity } from "../engine/identity.js";
 import { makeInitialState, DRAW_OPTIONS, REDRAWS, ERAS } from "./initialState.js";
 import { takeRng } from "./rngState.js";
-import { selectEraIndex, liveAssignments, selectTopScorers, selectSuspended, selectBlockingBan, selectDraftStage, isBanned } from "./selectors.js";
+import { selectArchive, selectEraIndex, liveAssignments, selectTopScorers, selectSuspended, selectBlockingBan, selectDraftStage, isBanned } from "./selectors.js";
 
 const idleDraw = (draw) => ({ ...draw, spinning: false, options: [] });
 
@@ -261,7 +261,7 @@ export function createReducer(dataset) {
   // players it can offer for the next empty slot. Squads with nobody left
   // are passed over so a draw is never a dead end.
   // The draft's archive: the division the career started in.
-  const archiveFor = (league) => (league === CHAMPIONSHIP ? dataset.championshipIndex : dataset.index);
+  const archiveFor = (league) => selectArchive(dataset, league);
 
   function land(state) {
     const eraIndex = selectEraIndex(archiveFor(state.league), state.eraMin, state.eraMax);

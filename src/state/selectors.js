@@ -76,6 +76,11 @@ export function previewPick(state, player) {
   };
 }
 
+// The draft archive a league draws from.
+export function selectArchive(dataset, league) {
+  return league === "championship" ? dataset.championshipIndex : dataset.index;
+}
+
 export function selectEraIndex(index, eraMin, eraMax) {
   return index.filter((e) => {
     const y = parseInt(e.y, 10);

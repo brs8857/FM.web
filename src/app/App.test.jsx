@@ -8,6 +8,7 @@ import { SAVE_KEY } from "../state/storage.js";
 import { DEFAULT_PREFS, PREFS_KEY } from "../state/prefs.js";
 import { encodeCareerCode } from "./careerCode.js";
 import { CLUB_THEME_ID } from "./useDocumentPrefs.js";
+import { CLUBS } from "../content/clubTheme.js";
 
 const prefs = { ...DEFAULT_PREFS, seenNotes: ["first-run"] };
 
@@ -99,13 +100,16 @@ describe("App", () => {
     expect(screen.getAllByRole("button", { name: next }).length).toBeGreaterThan(0);
   });
 
-  it("walks a new career from Home through era, shape and colours into the draft", () => {
+  it("walks a new career from Home through league, era, shape and colours into the draft", () => {
     const storage = fakeStorage();
     const { unmount } = render(<App dataset={makeMiniDataset()} storage={storage} prefs={prefs} />);
     expect(screen.queryByRole("tablist")).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: "New career" }));
     expect(screen.getByRole("heading", { level: 1, name: "New career" })).toBeTruthy();
-    expect(screen.getByText("1 of 3 · Era")).toBeTruthy();
+    expect(screen.getByText("1 of 4 · League")).toBeTruthy();
+    expect(screen.getByRole("radio", { name: /^Top flight/, checked: true })).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Choose an era" }));
+    expect(screen.getByText("2 of 4 · Era")).toBeTruthy();
     fireEvent.click(screen.getByRole("radio", { name: "The 2000s" }));
     fireEvent.click(screen.getByRole("button", { name: "Choose a shape" }));
     fireEvent.click(screen.getByRole("radio", { name: "4-4-2" }));
@@ -113,7 +117,7 @@ describe("App", () => {
     expect(screen.getByText("2000-01 to 2009-10")).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "Choose a shape" }));
     fireEvent.click(screen.getByRole("button", { name: "Choose your colours" }));
-    expect(screen.getByText("3 of 3 · Colours")).toBeTruthy();
+    expect(screen.getByText("4 of 4 · Colours")).toBeTruthy();
     expect(screen.getByRole("radio", { name: /^Pitch/, checked: true })).toBeTruthy();
     expect(document.getElementById(CLUB_THEME_ID)).toBeNull();
     fireEvent.click(screen.getByRole("radio", { name: "Arsenal" }));
@@ -153,6 +157,7 @@ describe("App", () => {
     const storage = fakeStorage();
     const { unmount } = render(<App dataset={makeMiniDataset()} storage={storage} prefs={prefs} />);
     fireEvent.click(screen.getByRole("button", { name: "New career" }));
+    fireEvent.click(screen.getByRole("button", { name: "Choose an era" }));
     fireEvent.click(screen.getByRole("button", { name: "Choose a shape" }));
     fireEvent.click(screen.getByRole("button", { name: "Choose your colours" }));
     fireEvent.click(screen.getByRole("button", { name: "Start the draft" }));
@@ -182,10 +187,25 @@ describe("App", () => {
     expect(screen.getByRole("heading", { name: "Start a career from this code?" })).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "Start over" }));
     expect(screen.getByRole("heading", { level: 1, name: "New career" })).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Choose an era" }));
     expect(screen.getByText("2005-06 to 2011-12")).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "Choose a shape" }));
     expect(screen.getByRole("radio", { name: "5-3-2", checked: true })).toBeTruthy();
     expect(storage.data.has(SAVE_KEY)).toBe(false);
+  });
+
+  it("starts a Championship career: its eras, its clubs' colours and its archive", () => {
+    const storage = fakeStorage();
+    render(<App dataset={makeMiniDataset()} storage={storage} prefs={prefs} />);
+    fireEvent.click(screen.getByRole("button", { name: "New career" }));
+    fireEvent.click(screen.getByRole("radio", { name: /^Championship/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Choose an era" }));
+    expect(screen.getByText("2016-17 to 2025-26")).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Choose a shape" }));
+    fireEvent.click(screen.getByRole("button", { name: "Choose your colours" }));
+    expect(screen.getAllByRole("radio").length).toBeLessThan(CLUBS.length);
+    fireEvent.click(screen.getByRole("button", { name: "Start the draft" }));
+    expect(JSON.parse(storage.data.get(SAVE_KEY)).state).toMatchObject({ phase: "draft", league: "championship", division: "championship", eraMin: 2016, eraMax: 2025 });
   });
 
   it("renders the gallery route and reads stored preferences by default", () => {

@@ -3,7 +3,7 @@ import Chalkboard from "../../pitch/Chalkboard.jsx";
 import CoachNote from "../../app/CoachNote.jsx";
 import { useMediaQuery } from "../../app/useMediaQuery.js";
 import { useAnnounce } from "../../ui/LiveRegion.jsx";
-import { selectDraftSummary, selectEraIndex, previewPick, selectDraftStage, selectBenchSummary } from "../../state/selectors.js";
+import { selectDraftSummary, selectArchive, selectEraIndex, previewPick, selectDraftStage, selectBenchSummary } from "../../state/selectors.js";
 import { nextEmptySlotIndex, BENCH_SIZE } from "../../engine/squad.js";
 import { POSITION_LABEL } from "../../content/labels.js";
 import SquadStrip from "./SquadStrip.jsx";
@@ -29,8 +29,8 @@ export default function Draft({ state, dataset, dispatch, instant, clubSeason, p
   const benchStage = stage === "bench";
   const bench = useMemo(() => (stage === "xi" ? null : selectBenchSummary(state)), [stage, state]);
   const benchPick = Math.min(BENCH_SIZE, state.bench.length + 1);
-  const eraIndex = useMemo(() => selectEraIndex(dataset.index, state.eraMin, state.eraMax).map((e) => ({ ...e, label: clubSeason(`${e.y}_${e.c}`) })),
-    [dataset.index, state.eraMin, state.eraMax, clubSeason]);
+  const eraIndex = useMemo(() => selectEraIndex(selectArchive(dataset, state.league), state.eraMin, state.eraMax).map((e) => ({ ...e, label: clubSeason(`${e.y}_${e.c}`) })),
+    [dataset, state.league, state.eraMin, state.eraMax, clubSeason]);
   const idx = nextEmptySlotIndex(state.assignments);
   const slot = idx >= 0 ? state.assignments[idx] : null;
   const { options, spinning } = state.draw;

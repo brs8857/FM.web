@@ -5,6 +5,7 @@ import { CONCEPT, cohesionLabel, identityName, mentalityLabel } from "../../cont
 import { RESULT_TONE, signed } from "../../content/format.js";
 import { USER_TEAM_NAME } from "../../engine/season.js";
 import { t } from "../../content/t.js";
+import { PLAYOFF_ROUND_LABEL } from "../../state/selectors.js";
 import styles from "./MatchReport.module.css";
 
 export function minuteLabel(minute) {
@@ -52,7 +53,7 @@ export default function MatchReport({ match, clubName, after, compact = false, l
   const { played } = match;
   return (
     <article className={cx(styles.report, compact && styles.compact)} aria-labelledby={id}>
-      {!compact && <p className="strap">Week {match.week} · {match.home ? "Home" : "Away"}</p>}
+      {!compact && <p className="strap">{match.round ? PLAYOFF_ROUND_LABEL[match.round] : `Week ${match.week}`} · {match.round === "final" ? "Neutral ground" : match.home ? "Home" : "Away"}</p>}
       <Heading id={id} className={cx(styles.score, styles[RESULT_TONE[match.outcome]])}>
         {home.name} {home.score}–{away.score} {away.name}
       </Heading>
