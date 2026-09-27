@@ -2,7 +2,7 @@ import { ROLES } from "../engine/roles.js";
 import { DEFAULT_INSTRUCTIONS } from "../engine/instructions.js";
 import { computeFamiliarity, eraSpread, eraSpreadPenalty, memoryBonus, settling, EMPTY_MEMORY, SIDE_MISMATCH_PENALTY } from "../engine/familiarity.js";
 import { identityKey } from "../engine/tactics.js";
-import { CAREER_SEASONS, SEASON_WEEKS, buildUserFixtureList, leagueTable } from "../engine/season.js";
+import { CAREER_SEASONS, seasonWeeks, buildUserFixtureList, leagueTable } from "../engine/season.js";
 import { nextEmptySlotIndex, benchFitIndex, BENCH_SIZE } from "../engine/squad.js";
 import { t } from "../content/t.js";
 
@@ -76,6 +76,11 @@ export function previewPick(state, player) {
   };
 }
 
+// The draft archive a league draws from.
+export function selectArchive(dataset, league) {
+  return league === "championship" ? dataset.championshipIndex : dataset.index;
+}
+
 export function selectEraIndex(index, eraMin, eraMax) {
   return index.filter((e) => {
     const y = parseInt(e.y, 10);
@@ -132,9 +137,20 @@ export function selectTable(state, week) {
   return cache.get(upTo);
 }
 
+export const PLAYOFF_ROUND_LABEL = { semi1: "Play-off semi-final, first leg", semi2: "Play-off semi-final, second leg", final: "Play-off final" };
+
+// The next play-off match, while the play-offs you are in are undecided.
+export function selectPlayoffFixture(state) {
+  const po = state.playoffs;
+  if (!po || po.stage === "done") return null;
+  if (po.stage === "final") return { round: "final", roundLabel: PLAYOFF_ROUND_LABEL.final, name: po.final.opponent, home: false, venue: "N" };
+  const home = (po.stage === "semi1") !== po.semi.higher;
+  return { round: po.stage, roundLabel: PLAYOFF_ROUND_LABEL[po.stage], name: po.semi.opponent, home, venue: home ? "H" : "A" };
+}
+
 export function selectNextFixture(state) {
   const campaign = state.campaign;
-  if (!campaign || campaign.week > SEASON_WEEKS) return null;
+  if (!campaign || campaign.week > seasonWeeks(campaign.order.length)) return null;
   const fixture = buildUserFixtureList(campaign.order)[campaign.week - 1];
   const opponent = state.opponents.find((o) => o.name === fixture.name);
   const row = selectTable(state).find((r) => r.name === fixture.name);
@@ -201,9 +217,17 @@ export function selectNextAction(state, clubName = (name) => name) {
       const label = t("season.play", { week: fixture.week, opponent: clubName(fixture.name), venue: fixture.home ? "H" : "A" });
       return { key: "playMatch", label, tab: "season", week: fixture.week, opponent: fixture.name, home: fixture.home };
     }
-    case "result":
+    case "result": {
+      const fixture = selectPlayoffFixture(state);
+      if (fixture) {
+        const suspended = selectBlockingBan(state);
+        if (suspended && !state.autoCover) return { key: "replaceSuspended", label: t("season.suspended", { name: suspended.name }), tab: "squad", slotId: suspended.slotId };
+        const label = t("season.playoff", { round: fixture.roundLabel, opponent: clubName(fixture.name), venue: fixture.venue });
+        return { key: "playPlayoff", label, tab: "season", round: fixture.round, opponent: fixture.name };
+      }
       if (season >= CAREER_SEASONS) return { key: "careerComplete", label: "Career complete", tab: "club" };
       return { key: "openWindow", label: "Open the window", tab: "season" };
+    }
     case "transfer":
       return { key: "closeWindow", label: "Close the window", tab: "season" };
     default:

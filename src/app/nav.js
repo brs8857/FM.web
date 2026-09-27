@@ -10,7 +10,7 @@ export const TABS = [
 ];
 
 export const TAB_KEYS = TABS.map((t) => t.key);
-export const STEPS = ["era", "formation", "club"];
+export const STEPS = ["league", "era", "formation", "club"];
 
 export function modeFor(phase) {
   if (phase === "formation") return "setup";
@@ -19,7 +19,7 @@ export function modeFor(phase) {
 }
 
 export function initialNav(phase, tab = "season") {
-  return { mode: modeFor(phase), tab, sheet: null, history: [], home: true, step: "era" };
+  return { mode: modeFor(phase), tab, sheet: null, history: [], home: true, step: "league" };
 }
 
 export function navReducer(nav, action) {
@@ -27,12 +27,12 @@ export function navReducer(nav, action) {
     case "PHASE": {
       const mode = modeFor(action.phase);
       if (mode === nav.mode) return nav;
-      return { ...nav, mode, sheet: null, history: [], tab: action.tab ?? nav.tab, home: false, step: "era" };
+      return { ...nav, mode, sheet: null, history: [], tab: action.tab ?? nav.tab, home: false, step: "league" };
     }
     case "HOME":
       return nav.home ? nav : { ...nav, home: true, sheet: null };
     case "LEAVE_HOME":
-      return nav.home ? { ...nav, home: false, sheet: null, step: "era" } : nav;
+      return nav.home ? { ...nav, home: false, sheet: null, step: "league" } : nav;
     case "STEP": {
       if (!STEPS.includes(action.step) || action.step === nav.step) return nav;
       return { ...nav, step: action.step, sheet: null };

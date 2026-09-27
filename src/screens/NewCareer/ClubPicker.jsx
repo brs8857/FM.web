@@ -8,11 +8,13 @@ import styles from "./ClubPicker.module.css";
 const PITCH = { key: null, label: "Pitch", sub: "the default green" };
 
 // The swatches are the clubs' own colours from the data, not design tokens.
-export default function ClubPicker({ value = null, mode = "real", onChange, label = "Colours" }) {
+// `only` narrows the list to those club keys (a Championship career offers
+// the Championship's clubs); the stored club stays on it either way.
+export default function ClubPicker({ value = null, mode = "real", onChange, label = "Colours", only = null }) {
   const options = useMemo(() => [
     PITCH,
-    ...CLUBS.map((c) => ({ key: c.key, label: clubName(c.name, mode), colours: c.colours })).sort((a, b) => a.label.localeCompare(b.label)),
-  ], [mode]);
+    ...CLUBS.filter((c) => !only || only.includes(c.key) || c.key === value).map((c) => ({ key: c.key, label: clubName(c.name, mode), colours: c.colours })).sort((a, b) => a.label.localeCompare(b.label)),
+  ], [mode, only, value]);
   const index = Math.max(0, options.findIndex((o) => o.key === value));
   const onKeyDown = useRovingKeys({ count: options.length, index, onMove: (i) => onChange(options[i].key), selector: '[role="radio"]' });
   return (

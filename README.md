@@ -1,13 +1,15 @@
 # Era XI
 
-Draft an XI from 33 years of the English top flight, one club-season at a
-time, with the ratings hidden until kick-off. Then build a tactic on the
-chalkboard and play a six-season career, with a transfer window between
-seasons and real promotion and relegation.
+Draft an XI from 34 years of the English top flight or ten of the
+Championship, one club-season at a time, with the ratings hidden until
+kick-off. Then build a tactic on the chalkboard and play a six-season
+career, with a transfer window between seasons and real promotion and
+relegation: the top flight's bottom three go down, and the Championship's
+top two go up with the winner of a play-off between 3rd and 6th.
 
 Everything runs in the browser. There is no backend, no account and no
 tracking: the whole archive (every top-flight club-season from 1992-93 to
-2024-25) ships with the app, and your career saves itself on your device.
+2025-26, and every Championship club-season from 2016-17) ships with the app, and your career saves itself on your device.
 
 ## Playing it
 
@@ -22,7 +24,8 @@ build, and `npm run build:standalone` writes a fresh one to
 it through a link in Safari rather than from the Files app, whose preview
 does not run the game.
 
-**How a career goes.** Choose an era and a shape. Each pick draws three
+**How a career goes.** Choose a league (the top flight or the
+Championship), an era and a shape. Each pick draws three
 club-seasons from that era; open a cutting to see its team sheet in shirt
 order and pick one player. Two redraws for the eleven; then ten more picks
 for the bench, from anyone in the squad (or fill it in one step), with two

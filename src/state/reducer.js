@@ -5,14 +5,15 @@ import { STYLE_PRESETS } from "../engine/instructions.js";
 import { createSquadLookup, buildPool, buildBenchPool } from "../engine/players.js";
 import { computeTeamProfile, identityKey } from "../engine/tactics.js";
 import { computeFamiliarity, nextMemory, settling, afterMatch, EMPTY_MEMORY } from "../engine/familiarity.js";
-import { buildUserFixtureList, simulateFixture, eventRng, seasonResult, SEASON_WEEKS, HALF_SEASON } from "../engine/season.js";
-import { matchEvents, nextDiscipline } from "../engine/match.js";
-import { applyPromotionRelegation } from "../engine/league.js";
+import { buildUserFixtureList, simulateFixture, eventRng, seasonResult, seasonWeeks, halfSeason, USER_TEAM } from "../engine/season.js";
+import { matchEvents, nextDiscipline, rivalStrength } from "../engine/match.js";
+import { nextDivisions, TOP, CHAMPIONSHIP, DIVISION_CLUBS, PLAYOFF_PLACES } from "../engine/divisions.js";
+import { playoffDraw, playoffRng, rivalTie, rivalFinal, rivalPlayoffs, breakTie, userStrength } from "../engine/playoffs.js";
 import { nextEmptySlotIndex, fillPick, benchFitIndex, BENCH_SIZE, generateShortlist, signToSlot, signToBench, progressSquad, wageCost, windowBudget, budgetLeft } from "../engine/squad.js";
 import { playerIdentity } from "../engine/identity.js";
-import { makeInitialState, DRAW_OPTIONS, REDRAWS } from "./initialState.js";
+import { makeInitialState, DRAW_OPTIONS, REDRAWS, ERAS } from "./initialState.js";
 import { takeRng } from "./rngState.js";
-import { selectEraIndex, liveAssignments, selectTopScorers, selectSuspended, selectBlockingBan, selectDraftStage, isBanned } from "./selectors.js";
+import { selectArchive, selectEraIndex, liveAssignments, selectTopScorers, selectSuspended, selectBlockingBan, selectDraftStage, isBanned } from "./selectors.js";
 
 const idleDraw = (draw) => ({ ...draw, spinning: false, options: [] });
 
@@ -106,7 +107,15 @@ export function summarizeSeason(state) {
     season, position: s.position, pts: s.pts, w: s.w, d: s.d, l: s.l, gf: s.gf, ga: s.ga,
     tier: s.tier.name, identity: s.profile.synergyLabel, familiarity: s.familiarity, seed: careerSeed,
     matches, topScorer: top ? { name: top.name, goals: top.goals } : null,
+    division: state.division ?? TOP, playoff: playoffOutcome(state.playoffs),
   };
+}
+
+// How far the play-offs took you: "won", "final", "semi", or null.
+export function playoffOutcome(playoffs) {
+  if (!playoffs || playoffs.stage !== "done") return null;
+  if (playoffs.winner === USER_TEAM) return "won";
+  return playoffs.final ? "final" : "semi";
 }
 
 // What the board is for the next fixture: cohesion with the seasons in this
@@ -135,31 +144,92 @@ function seasonStyle(log) {
 // and nothing done between matches shifts a result.
 function playMatch(state) {
   const { campaign } = state;
-  if (state.phase !== "matchday" || !campaign || campaign.week > SEASON_WEEKS) return state;
+  const weeks = seasonWeeks(campaign?.order.length ?? 0);
+  if (state.phase !== "matchday" || !campaign || campaign.week > weeks) return state;
   if (selectBlockingBan(state)) return state;
   const fixture = buildUserFixtureList(campaign.order)[campaign.week - 1];
   const opponent = state.opponents.find((o) => o.name === fixture.name);
   const { live, settle, familiarity, profile } = lineupFor(state);
   const result = simulateFixture(profile, familiarity, opponent, fixture, campaign.seed);
   const { goals, cards } = matchEvents(result, live, eventRng(campaign.seed, fixture.week), { tackling: state.instructions.tackling });
-  const { discipline, bans } = nextDiscipline(state.discipline ?? {}, cards, fixture.week);
+  const { discipline, bans } = nextDiscipline(state.discipline ?? {}, cards, fixture.week, weeks);
   const played = { identity: identityKey(state.instructions), cohesion: familiarity, settle: settle.modifier, mentality: state.instructions.mentality, changed: settle.changed };
   const covered = coveredNames(state);
   const log = [...campaign.log, { ...result, goals, cards, bans: bans.map((b) => ({ name: b.name, matches: b.matches })), ...(covered.length ? { covered } : {}), played }];
   const next = { ...state, discipline, campaign: { ...campaign, week: campaign.week + 1, log }, cohesionMemory: afterMatch(state.cohesionMemory ?? EMPTY_MEMORY, settle) };
-  if (fixture.week < SEASON_WEEKS) return next;
+  if (fixture.week < weeks) return next;
   const cohesionMemory = nextMemory(state.cohesionMemory, state.formationKey, seasonStyle(log));
-  const simulation = { ...seasonResult(state.opponents, campaign.order, log, campaign.seed), profile, familiarity, instructions: state.instructions, season: state.season };
-  return { ...next, phase: "result", cohesionMemory, simulation };
+  const simulation = { ...seasonResult(state.opponents, campaign.order, log, campaign.seed, state.division), profile, familiarity, instructions: state.instructions, season: state.season };
+  return { ...next, phase: "result", cohesionMemory, simulation, playoffs: startPlayoffs(state, simulation.table, campaign.seed) };
+}
+
+// A Championship finish from 3rd to 6th starts the play-offs: your semi-final
+// against the side the draw gives you, and the other semi-final played out
+// now (it is shown once yours is decided).
+export function startPlayoffs(state, table, seasonSeed) {
+  if (state.division !== CHAMPIONSHIP) return null;
+  const position = table.find((r) => r.isUser).position;
+  if (position < PLAYOFF_PLACES[0] || position > PLAYOFF_PLACES[1]) return null;
+  const draw = playoffDraw(table);
+  const mine = draw.find((pair) => pair.includes(USER_TEAM));
+  const theirs = draw.find((pair) => !pair.includes(USER_TEAM));
+  const club = (name) => state.opponents.find((o) => o.name === name);
+  const other = rivalTie(club(theirs[0]), club(theirs[1]), playoffRng(seasonSeed, "semi1"));
+  return {
+    seed: seasonSeed, draw,
+    semi: { opponent: mine.find((n) => n !== USER_TEAM), higher: mine[0] === USER_TEAM, legs: [] },
+    other, final: null, stage: "semi1", winner: null, weeks: seasonWeeks(state.campaign.order.length),
+  };
+}
+
+// The next play-off match, played from the board as it stands, as a league
+// fixture is: the lower-placed side hosts the first leg; the final is on
+// neutral ground, which in this engine is the same as away.
+function playPlayoff(state) {
+  const po = state.playoffs;
+  if (!po || po.stage === "done" || state.phase !== "result") return state;
+  const ready = state.autoCover ? coverAll(state) : state;
+  if (selectBlockingBan(ready)) return state;
+  const inFinal = po.stage === "final";
+  const opponentName = inFinal ? po.final.opponent : po.semi.opponent;
+  const opponent = ready.opponents.find((o) => o.name === opponentName);
+  const week = po.weeks + 1 + (po.stage === "semi1" ? 0 : po.stage === "semi2" ? 1 : 2);
+  const home = inFinal ? false : (po.stage === "semi1") !== po.semi.higher;
+  const { live, settle, familiarity, profile } = lineupFor(ready);
+  const result = simulateFixture(profile, familiarity, opponent, { week, name: opponentName, home }, po.seed);
+  const { goals, cards } = matchEvents(result, live, eventRng(po.seed, week), { tackling: ready.instructions.tackling });
+  const { discipline, bans } = nextDiscipline(ready.discipline ?? {}, cards, week, po.weeks);
+  const played = { identity: identityKey(ready.instructions), cohesion: familiarity, settle: settle.modifier, mentality: ready.instructions.mentality, changed: settle.changed };
+  const covered = coveredNames(ready);
+  const match = { ...result, round: po.stage, goals, cards, bans: bans.map((b) => ({ name: b.name, matches: b.matches })), ...(covered.length ? { covered } : {}), played };
+  const after = { ...ready, discipline, cohesionMemory: afterMatch(ready.cohesionMemory ?? EMPTY_MEMORY, settle) };
+  const tieBreak = (strengthOpp) => breakTie(userStrength(profile), strengthOpp, playoffRng(po.seed, po.stage)) === "a";
+  if (po.stage === "semi1") return restoreCovers({ ...after, playoffs: { ...po, semi: { ...po.semi, legs: [match] }, stage: "semi2" } });
+  if (po.stage === "semi2") {
+    const legs = [...po.semi.legs, match];
+    const us = legs.reduce((n, m) => n + m.gf, 0), them = legs.reduce((n, m) => n + m.ga, 0);
+    const through = us > them || (us === them && tieBreak(rivalStrength(opponent)));
+    const semi = { ...po.semi, legs, aggregate: [us, them], ...(us === them ? { extraTime: through ? "won" : "lost" } : {}) };
+    if (!through) {
+      const final = rivalFinal(opponent, ready.opponents.find((o) => o.name === po.other.winner), playoffRng(po.seed, "final"));
+      return restoreCovers({ ...after, playoffs: { ...po, semi, stage: "done", winner: final.winner, rivalFinal: final }, simulation: { ...after.simulation, tier: { name: "Play-off semi-final" } } });
+    }
+    return restoreCovers({ ...after, playoffs: { ...po, semi, stage: "final", final: { opponent: po.other.winner, match: null } } });
+  }
+  const won = match.gf > match.ga || (match.gf === match.ga && tieBreak(rivalStrength(opponent)));
+  const final = { ...po.final, match: { ...match, ...(match.gf === match.ga ? { extraTime: won ? "won" : "lost" } : {}) } };
+  const tier = { name: won ? "Play-off winners" : "Play-off final" };
+  return restoreCovers({ ...after, playoffs: { ...po, final, stage: "done", winner: won ? USER_TEAM : opponent.name }, simulation: { ...after.simulation, tier } });
 }
 
 // Fast-forward with the board frozen: to the half (or, past it, the end),
 // to the end, or until a defeat or the half/end, whichever comes first. Stops
 // early wherever a single match would be refused.
-export function playToTarget(week, until) {
-  if (until === "end") return SEASON_WEEKS;
+export function playToTarget(week, until, rivals = 19) {
+  const end = seasonWeeks(rivals), half = halfSeason(rivals);
+  if (until === "end") return end;
   if (until === "next") return week;
-  return week <= HALF_SEASON ? HALF_SEASON : SEASON_WEEKS;
+  return week <= half ? half : end;
 }
 
 // One match, then any covered starter whose ban is now served goes back.
@@ -172,7 +242,7 @@ function playOne(state) {
 // match instead of the run stopping (spec 08 §6).
 function playTo(state, until) {
   if (state.phase !== "matchday" || !state.campaign) return state;
-  const target = playToTarget(state.campaign.week, until);
+  const target = playToTarget(state.campaign.week, until, state.campaign.order.length);
   let current = state;
   while (current.phase === "matchday" && current.campaign.week <= target) {
     const ready = current.autoCover ? coverAll(current) : current;
@@ -190,8 +260,11 @@ export function createReducer(dataset) {
   // Draws up to three distinct club-seasons from the era, each with the
   // players it can offer for the next empty slot. Squads with nobody left
   // are passed over so a draw is never a dead end.
+  // The draft's archive: the division the career started in.
+  const archiveFor = (league) => selectArchive(dataset, league);
+
   function land(state) {
-    const eraIndex = selectEraIndex(dataset.index, state.eraMin, state.eraMax);
+    const eraIndex = selectEraIndex(archiveFor(state.league), state.eraMin, state.eraMax);
     if (eraIndex.length === 0) return state;
     const [rng, next] = takeRng(state);
     return { ...next, draw: { ...state.draw, spinning: false, options: deal(state, eraIndex, rng) } };
@@ -224,7 +297,7 @@ export function createReducer(dataset) {
   // stream, then a deal per remaining pick from it.
   function fillBench(state) {
     if (selectDraftStage(state) !== "bench") return state;
-    const eraIndex = selectEraIndex(dataset.index, state.eraMin, state.eraMax);
+    const eraIndex = selectEraIndex(archiveFor(state.league), state.eraMin, state.eraMax);
     const [rng, next] = takeRng(state);
     let current = { ...next, draw: idleDraw(state.draw) };
     for (let tries = 0; current.bench.length < BENCH_SIZE && tries < BENCH_SIZE * 20; tries++) {
@@ -234,11 +307,42 @@ export function createReducer(dataset) {
     return { ...current, draftDone: true };
   }
 
+  // Window candidates come from the archive of the division you will play
+  // in: the career's own era where that archive covers it, otherwise the
+  // whole of it (a 1990s top-flight career relegated to the Championship
+  // signs from the Championship's seasons).
+  function windowArchive(division) {
+    return archiveFor(division);
+  }
+  function windowEra(division, state) {
+    const idx = archiveFor(division);
+    if (selectEraIndex(idx, state.eraMin, state.eraMax).length > 0) return { eraMin: state.eraMin, eraMax: state.eraMax };
+    return { eraMin: ERAS[division].min, eraMax: ERAS[division].max };
+  }
+
+  // A save from before the Championship (v5 and earlier) has no second
+  // division yet: it gets the dataset's, less any club already in its own.
+  function withDivisions(state) {
+    if (state.other && state.reserve) return state;
+    const taken = new Set(state.opponents.map((o) => o.name));
+    const pool = [...dataset.championship.table, ...dataset.championship.reserve].filter((c) => !taken.has(c.name));
+    return { ...state, other: pool.slice(0, DIVISION_CLUBS[CHAMPIONSHIP]), reserve: pool.slice(DIVISION_CLUBS[CHAMPIONSHIP]) };
+  }
+
   return function reducer(state, action) {
     switch (action.type) {
+      case "SET_LEAGUE": {
+        if (state.phase !== "formation" || ![TOP, CHAMPIONSHIP].includes(action.league)) return state;
+        return {
+          ...makeInitialState(dataset, state.careerSeed, action.league),
+          rngCounter: state.rngCounter,
+          formationKey: state.formationKey,
+          assignments: makeInitialAssignments(state.formationKey),
+        };
+      }
       case "SET_FORMATION": {
         return {
-          ...makeInitialState(dataset, state.careerSeed),
+          ...makeInitialState(dataset, state.careerSeed, state.league ?? TOP),
           rngCounter: state.rngCounter,
           formationKey: action.key,
           assignments: makeInitialAssignments(action.key),
@@ -385,7 +489,11 @@ export function createReducer(dataset) {
         return playOne(state);
       }
       case "COVER_BAN": {
-        return state.phase === "matchday" ? coverBan(state, action.slotId) : state;
+        const live = state.phase === "matchday" || (state.phase === "result" && state.playoffs && state.playoffs.stage !== "done");
+        return live ? coverBan(state, action.slotId) : state;
+      }
+      case "PLAY_PLAYOFF": {
+        return playPlayoff(state);
       }
       case "SET_AUTO_COVER": {
         return { ...state, autoCover: Boolean(action.on) };
@@ -394,13 +502,26 @@ export function createReducer(dataset) {
         return playTo(state, action.until);
       }
       case "GOTO_TRANSFER": {
-        const [rng, next] = takeRng(restoreCovers(state, true));
-        const shortlist = generateShortlist(getSquad, dataset.index, { eraMin: state.eraMin, eraMax: state.eraMax }, state.draftedIds, rng, { ownedIdentities: state.draftedIdentities })
+        if (state.playoffs && state.playoffs.stage !== "done") return state;
+        const [rng, next] = takeRng(restoreCovers(withDivisions(state), true));
+        const division = state.division ?? TOP;
+        const table = state.simulation?.table;
+        const playoffWinner = division !== CHAMPIONSHIP || !table ? null
+          : state.playoffs ? state.playoffs.winner : rivalPlayoffs(table, state.opponents, state.campaign?.seed ?? 0).winner;
+        const moved = table
+          ? nextDivisions({ division, opponents: next.opponents, other: next.other, reserve: next.reserve, table, playoffWinner, rng })
+          : { division, opponents: next.opponents, other: next.other, reserve: next.reserve, relegated: [], promoted: [], userMove: null };
+        const shortlist = generateShortlist(getSquad, windowArchive(moved.division, state), windowEra(moved.division, state), state.draftedIds, rng, { ownedIdentities: state.draftedIdentities })
           .map((player) => ({ player, signed: false, cost: wageCost(player) }));
-        const { opponents, relegated, promoted } = applyPromotionRelegation(state.opponents, state.simulation?.table, dataset.championship, rng);
         const seasonHistory = state.simulation ? [...state.seasonHistory, summarizeSeason(state)] : state.seasonHistory;
-        const transferBudget = { points: windowBudget(state.simulation?.position ?? 20), spent: 0 };
-        return { ...next, phase: "transfer", shortlist, transferBudget, opponents, lastTransition: { relegated, promoted }, seasonHistory, campaign: null, discipline: {}, covers: [] };
+        const transferBudget = { points: windowBudget(state.simulation?.position ?? DIVISION_CLUBS[division], DIVISION_CLUBS[division]), spent: 0 };
+        const { relegated, promoted, wentUp, cameDown, userMove } = moved;
+        return {
+          ...next, phase: "transfer", shortlist, transferBudget,
+          division: moved.division, opponents: moved.opponents, other: moved.other, reserve: moved.reserve,
+          lastTransition: { relegated, promoted, ...(wentUp ? { wentUp, cameDown } : {}), userMove, division: moved.division },
+          seasonHistory, campaign: null, discipline: {}, covers: [], playoffs: null,
+        };
       }
       case "SIGN_SHORTLIST_TO_BENCH": {
         const signing = affordableSigning(state, action.index);
@@ -421,10 +542,10 @@ export function createReducer(dataset) {
         return { ...next, phase: "tactics", season: state.season + 1, shortlist: [], simulation: null, assignments, bench, lastTransition };
       }
       case "NEW_GAME": {
-        return makeInitialState(dataset, action.seed);
+        return makeInitialState(dataset, action.seed, action.league === CHAMPIONSHIP ? CHAMPIONSHIP : TOP);
       }
       case "LOAD_SAVE": {
-        return action.state;
+        return withDivisions(action.state);
       }
       default: return state;
     }

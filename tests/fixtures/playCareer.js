@@ -1,4 +1,6 @@
-import { selectBlockingBan } from "../../src/state/selectors.js";
+import { selectBlockingBan, selectPlayoffFixture } from "../../src/state/selectors.js";
+import { startPlayoffs } from "../../src/state/reducer.js";
+import { makeInitialState } from "../../src/state/initialState.js";
 
 // Answers "Replace X (suspended)" with the suggested cover, as Play to…
 // does on its own with auto-cover on; where nobody of his kind is free, swaps
@@ -20,6 +22,15 @@ export function playSeason(dispatch) {
   for (let guard = 0; dispatch.last().phase === "matchday" && guard < 40; guard++) {
     coverBans(dispatch.last(), dispatch);
     dispatch({ type: "PLAY_TO", until: "end" });
+  }
+  playPlayoffs(dispatch);
+}
+
+// Plays any play-off matches the season ended with, covering bans first.
+export function playPlayoffs(dispatch) {
+  for (let guard = 0; selectPlayoffFixture(dispatch.last()) && guard < 6; guard++) {
+    coverBans(dispatch.last(), dispatch);
+    dispatch({ type: "PLAY_PLAYOFF" });
   }
 }
 
@@ -56,11 +67,11 @@ export function playWholeSeason(reducer, state) {
 
 // Drives the reducer through a whole career the way a player would: draw
 // three cuttings, pick from the first, and spend one redraw on the fourth pick.
-export function playCareer({ reducer, initialState, seasons = 6, check = () => {} }) {
+export function playCareer({ reducer, initialState, seasons = 6, check = () => {}, era = initialState.league === "championship" ? [2017, 2018] : [2000, 2011] }) {
   const dispatch = driver(reducer, initialState, check);
   const state = () => dispatch.last();
 
-  dispatch({ type: "SET_ERA", min: 2000, max: 2011 });
+  dispatch({ type: "SET_ERA", min: era[0], max: era[1] });
   dispatch({ type: "START_DRAFT" });
   let pick = 0;
   while (!state().draftDone) {
@@ -83,4 +94,15 @@ export function playCareer({ reducer, initialState, seasons = 6, check = () => {
     dispatch({ type: "CONTINUE_SEASON" });
   }
   return state();
+}
+
+// A Championship season finished at `position` (3rd to 6th), the play-offs
+// drawn and nothing played yet.
+export function makePlayoffState(reducer, dataset, { seed = 11, position = 4 } = {}) {
+  const played = playCareer({ reducer, initialState: makeInitialState(dataset, seed, "championship"), seasons: 1 });
+  const rows = played.simulation.table.filter((r) => !r.isUser);
+  rows.splice(position - 1, 0, played.simulation.table.find((r) => r.isUser));
+  const table = rows.map((r, i) => ({ ...r, position: i + 1 }));
+  const s = { ...played, simulation: { ...played.simulation, table, position }, discipline: {} };
+  return { ...s, playoffs: startPlayoffs(s, table, s.campaign.seed) };
 }

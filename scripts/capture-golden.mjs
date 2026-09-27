@@ -106,7 +106,7 @@ async function recordFromEngine(outDir) {
   const { computeTeamProfile } = await import("../src/engine/tactics.js");
   const { tacticalReadout } = await import("../src/engine/readout.js");
   const { simulateSeason } = await import("../src/engine/season.js");
-  const { applyPromotionRelegation } = await import("../src/engine/league.js");
+  const { nextDivisions } = await import("../src/engine/divisions.js");
   const { createRng } = await import("../src/engine/rng.js");
   const E = { STYLE_PRESETS, computeFamiliarity, computeTeamProfile, tacticalReadout };
   const players = JSON.parse(readFileSync("src/data/players.json", "utf8"));
@@ -120,7 +120,7 @@ async function recordFromEngine(outDir) {
   const league = seasons.map((s) => ({
     seed: 1000 + s.seed,
     table: s.result.table,
-    result: applyPromotionRelegation(players.opponents, s.result.table, championship, createRng(1000 + s.seed)),
+    result: nextDivisions({ division: "top", opponents: players.opponents, other: championship.table, reserve: championship.reserve, table: s.result.table, rng: createRng(1000 + s.seed) }),
   }));
   writeGolden(outDir, { "profiles.json": profiles, "seasons.json": seasons, "league.json": league });
 }

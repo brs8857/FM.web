@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, afterEach } from "vitest";
 import { render, screen, fireEvent, cleanup, within } from "@testing-library/react";
 import ClubTab from "./ClubTab.jsx";
-import { recordSummary, biggestWin } from "./Record.jsx";
+import Record, { recordSummary, biggestWin } from "./Record.jsx";
 import { makeMiniDataset } from "../../../tests/fixtures/miniDataset.js";
 import { playCareer } from "../../../tests/fixtures/playCareer.js";
 import { createReducer, summarizeSeason } from "../../state/reducer.js";
@@ -42,6 +42,20 @@ describe("Record", () => {
     expect(s.titles).toBe(1);
     expect(s.unbeaten).toBe(1);
     expect(s.points).toBe(242);
+  });
+
+  it("ranks any top-flight finish above a Championship one and counts promotions, not Championship titles", () => {
+    const career = [
+      { season: 1, division: "championship", position: 1, pts: 95, w: 29, d: 8, l: 9, gf: 80, ga: 40, tier: "Championship winners", identity: null, familiarity: 60, seed: 1 },
+      { season: 2, division: "top", position: 17, pts: 38, w: 9, d: 11, l: 18, gf: 40, ga: 60, tier: "Mid-Table Mediocrity", identity: null, familiarity: 70, seed: 1 },
+    ];
+    const s = recordSummary(career);
+    expect(s.best.season).toBe(2);
+    expect(s.titles).toBe(0);
+    expect(s.promotions).toBe(1);
+    render(<Record history={career} />);
+    expect(screen.getByRole("columnheader", { name: "League" })).toBeTruthy();
+    expect(screen.getByText("Championship")).toBeTruthy();
   });
 });
 
@@ -90,7 +104,7 @@ describe("the record's season sheets", () => {
     const third = six[2];
     fireEvent.click(screen.getByRole("button", { name: "2028-29" }));
     dialog = screen.getByRole("dialog");
-    expect(within(dialog).getByText("Season 3 · 2028-29")).toBeTruthy();
+    expect(within(dialog).getByText("Season 3 · 2028-29 · Top flight")).toBeTruthy();
     const count = (o) => third.matches.filter((m) => m.outcome === o).length;
     const last = third.matches.slice(-5).map((m) => m.outcome).join(" ");
     expect(within(dialog).getByText(`Won ${count("W")}, drawn ${count("D")}, lost ${count("L")}; last five: ${last}`)).toBeTruthy();
@@ -128,7 +142,7 @@ describe("ClubTab", () => {
     expect(onStartFromCode).not.toHaveBeenCalled();
     fireEvent.change(input, { target: { value: code.toLowerCase() } });
     fireEvent.click(screen.getByRole("button", { name: "Start from code" }));
-    expect(onStartFromCode).toHaveBeenCalledWith({ seed: 4242, eraMin: 2000, eraMax: 2011, formationKey: "4-3-3" });
+    expect(onStartFromCode).toHaveBeenCalledWith({ seed: 4242, eraMin: 2000, eraMax: 2011, formationKey: "4-3-3", league: "top" });
   });
 
   it("exports and imports from the Saves section and shows the import message", async () => {

@@ -3,24 +3,25 @@ import Button from "../../ui/Button.jsx";
 import ChipRow from "../../ui/ChipRow.jsx";
 import Toggle from "../../ui/Toggle.jsx";
 import Sheet from "../../ui/Sheet.jsx";
-import { HALF_SEASON, SEASON_WEEKS } from "../../engine/season.js";
+import { halfSeason, seasonWeeks } from "../../engine/season.js";
 import { t } from "../../content/t.js";
 import styles from "./Season.module.css";
 
-export function playToOptions(week) {
-  const beforeHalf = week <= HALF_SEASON;
-  const stop = beforeHalf ? HALF_SEASON : SEASON_WEEKS;
+export function playToOptions(week, rivals = 19) {
+  const half = halfSeason(rivals), end = seasonWeeks(rivals);
+  const beforeHalf = week <= half;
+  const stop = beforeHalf ? half : end;
   const options = [{ key: "next", label: "Next match", sub: `Week ${week}` }];
-  if (beforeHalf) options.push({ key: "half", label: "The half", sub: week === HALF_SEASON ? `Week ${HALF_SEASON}` : `Weeks ${week}–${HALF_SEASON}` });
+  if (beforeHalf) options.push({ key: "half", label: "The half", sub: week === half ? `Week ${half}` : `Weeks ${week}–${half}` });
   options.push({ key: "defeat", label: "The next defeat", sub: `Or week ${stop}` });
-  options.push({ key: "end", label: "The end of the season", sub: week === SEASON_WEEKS ? `Week ${SEASON_WEEKS}` : `Weeks ${week}–${SEASON_WEEKS}` });
+  options.push({ key: "end", label: "The end of the season", sub: week === end ? `Week ${end}` : `Weeks ${week}–${end}` });
   return options;
 }
 
 // `autoCover` and `onAutoCover` drive the career setting of spec 08 §6.1.
-export default function PlayToSheet({ open, onClose, week, onPlay, autoCover = true, onAutoCover }) {
+export default function PlayToSheet({ open, onClose, week, rivals = 19, onPlay, autoCover = true, onAutoCover }) {
   const [until, setUntil] = useState("next");
-  const options = playToOptions(week);
+  const options = playToOptions(week, rivals);
   const choice = options.some((o) => o.key === until) ? until : "next";
   const play = () => { onPlay(choice); onClose(); };
   return (

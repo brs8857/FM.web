@@ -1,6 +1,6 @@
 # FM.WEB Roadmap
 
-_Created 2026-09-11. Updated 2026-09-26 (career depth, part 1 built). Living document: update it when a phase starts, ships, or changes scope._
+_Created 2026-09-11. Updated 2026-09-27 (Championship mode built as milestone H, v3.0.0). Living document: update it when a phase starts, ships, or changes scope._
 
 **A phase isn't finished until it's shipped and tested** (see [Definition of done](#definition-of-done)).
 Each phase gets its own design cycle before any code is written:
@@ -12,7 +12,8 @@ Each phase gets its own design cycle before any code is written:
 | 1A | Foundation | v1.1 | Shipped 2026-09-13 |
 | 1B | ~~Reach & Polish~~ → **Redesign** ("Back page and chalkboard") | v2.0 | Built 2026-09-25 (milestones A and B; tagged v2.0.0); device checklist and owner sign-off outstanding |
 | 1C | Career depth, part 1 (moved forward from Phase 2) | v2.5 | Built 2026-09-26 (milestone C; tagged v2.5.0); owner review of the balance table outstanding |
-| 1D | App Store release (free + one-time unlock) | v3.0 | Specced in 05; next |
+| 1D | App Store release (free + one-time unlock) | after v3.0 | Specced in 05; next |
+| 1E | Championship mode (milestone H, spec 09) | v3.0 | Built 2026-09-27 (tagged v3.0.0 on release); owner review of the data rights and the bundle budget outstanding |
 | 2 | Deeper Career + Sharper Draft & Tactics (remainder) | v4.0 | Waiting on 1D |
 | 3 | Match-Day Experience | v5.0 | First slice shipped in v2.7 (milestone F, spec 07; tagged v2.7.0): the season match by match, reports with scorers, cards and bans. Live view, in-match changes and injuries remain |
 
@@ -138,6 +139,10 @@ window, so any engine change is likely to need a re-tune.
 - **A real league**: all 20 clubs play every fixture, so the table matches the results.
   This fixes rival points that ignore your results and a points total inflated by about 12%. _(moved to 1C)_
 - **Relegation for you too**: your club can go down and play in the Championship, and win promotion back.
+  _Scoped 2026-09-26 as milestone H, with a Championship start and play-offs added to the original ask: see
+  [09 Championship mode and cross-division careers](superpowers/specs/2026-09-26-09-championship-mode.md).
+  Built as v3.0.0 with real Championship squads (2016-17 to 2025-26) and the real 2025-26 top flight, from a
+  new import (docs/data.md), so the lost pipeline no longer blocks it._
 - **Players change over time**: ageing, development, decline and retirement. _(moved to 1C)_
 - **Familiarity grows** the longer you keep a system, and drops when you change it. _(moved to 1C, as "cohesion")_
 - **Transfer market**: budget and valuations replace five random free signings.

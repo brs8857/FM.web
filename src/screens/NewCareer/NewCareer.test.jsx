@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import Era from "./Era.jsx";
+import League from "./League.jsx";
 import Formation from "./Formation.jsx";
 import Colours from "./Colours.jsx";
 import ClubPicker from "./ClubPicker.jsx";
@@ -51,6 +52,31 @@ describe("Era", () => {
   });
 });
 
+describe("Era in the Championship", () => {
+  it("offers the Championship's own presets from 2016-17", () => {
+    const onSetEra = vi.fn();
+    render(<Era league="championship" eraMin={2016} eraMax={2025} index={makeMiniDataset().championshipIndex} onSetEra={onSetEra} />);
+    expect(screen.getByText("2016-17 to 2025-26")).toBeTruthy();
+    expect(screen.getByRole("radio", { name: "Since 2016" }).getAttribute("aria-checked")).toBe("true");
+    fireEvent.click(screen.getByRole("radio", { name: "The 2020s" }));
+    expect(onSetEra).toHaveBeenCalledWith(2020, 2025);
+    expect(screen.getByRole("slider", { name: "From era" }).getAttribute("aria-valuemin")).toBe("2016");
+  });
+});
+
+describe("League", () => {
+  it("is a radiogroup of the two leagues with arrow-key movement", () => {
+    const onPick = vi.fn();
+    render(<League league="top" onPick={onPick} />);
+    expect(screen.getByRole("heading", { name: "Choose your league" })).toBeTruthy();
+    const radios = screen.getAllByRole("radio");
+    expect(radios.map((r) => r.getAttribute("aria-checked"))).toEqual(["true", "false"]);
+    expect(radios[1].textContent).toMatch(/Championship.*2016-17 to 2025-26/);
+    fireEvent.keyDown(screen.getByRole("radiogroup", { name: "League" }), { key: "ArrowDown" });
+    expect(onPick).toHaveBeenLastCalledWith("championship");
+  });
+});
+
 describe("Formation", () => {
   it("is a radiogroup of shapes with arrow-key movement", () => {
     const onPick = vi.fn();
@@ -84,7 +110,16 @@ describe("Colours", () => {
     expect(names[0]).toBe("Arsenal");
     expect(onPick).toHaveBeenLastCalledWith("arsenal");
     fireEvent.keyDown(group, { key: "End" });
-    expect(onPick).toHaveBeenLastCalledWith("wrexham");
+    expect(onPick).toHaveBeenLastCalledWith("wycombe-wanderers");
+  });
+
+  it("offers a Championship career only the clubs that played in it, keeping the stored club", () => {
+    const only = ["coventry-city", "leeds-united", "wycombe-wanderers"];
+    render(<Colours club="arsenal" mode="real" onPick={() => {}} only={only} />);
+    const names = screen.getAllByRole("radio").map((r) => r.textContent);
+    expect(names).toHaveLength(5);
+    expect(names.join(" ")).toMatch(/Arsenal/);
+    expect(screen.getByText(/played in the Championship since 2016-17/)).toBeTruthy();
   });
 
   it("selects the stored club, moves back to the pitch theme, and shows edited names on request", () => {

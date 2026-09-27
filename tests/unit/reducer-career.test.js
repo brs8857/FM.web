@@ -529,6 +529,7 @@ describe("the record", () => {
       w: state.simulation.w, d: state.simulation.d, l: state.simulation.l, gf: state.simulation.gf, ga: state.simulation.ga,
       tier: state.simulation.tier.name, identity: state.simulation.profile.synergyLabel, familiarity: state.simulation.familiarity, seed: 4242,
       matches: state.campaign.log, topScorer: expect.objectContaining({ goals: expect.any(Number) }),
+      division: "top", playoff: null,
     });
     const [top] = selectTopScorers(state.campaign.log, 1);
     expect(expected.topScorer).toEqual({ name: top.name, goals: top.goals });

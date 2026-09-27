@@ -8,7 +8,7 @@ import CoachNote from "../../app/CoachNote.jsx";
 import PlayerSheet from "../Squad/PlayerSheet.jsx";
 import { POSITION_LABEL } from "../../content/labels.js";
 import { t } from "../../content/t.js";
-import { careerSeasonLabel } from "../../engine/season.js";
+import { careerSeasonLabel, USER_TEAM_NAME } from "../../engine/season.js";
 import { budgetLeft } from "../../engine/squad.js";
 import { playerMeta } from "../../content/format.js";
 import layout from "../TabLayout.module.css";
@@ -19,6 +19,23 @@ export function eligibleSlots(assignments, player) {
   return (matching.length > 0 ? matching : assignments).map((a) => a.slotId);
 }
 
+// What moved between the divisions, the user's own move first.
+export function transitionLines(changes, clubName) {
+  if (!changes) return [];
+  const list = (names) => names.filter((n) => n !== USER_TEAM_NAME).map(clubName).join(", ");
+  const lines = [];
+  if (changes.userMove === "up") lines.push(t("window.up", { wentUp: list(changes.wentUp ?? []) }));
+  if (changes.userMove === "down") lines.push(t("window.down"));
+  if (changes.wentUp && changes.userMove !== "up") lines.push(t("window.wentUp", { wentUp: list(changes.wentUp), cameDown: list(changes.cameDown ?? []) }));
+  if (changes.relegated.length > 0) {
+    const key = changes.wentUp ? "window.leagueOne" : "window.changes";
+    lines.push(t(key, { relegated: list(changes.relegated), promoted: list(changes.promoted) }));
+  }
+  return lines;
+}
+
+const MOVE_TITLE = { up: "Promoted", down: "Relegated" };
+
 export default function Window({ state, dispatch, clubSeason, clubName, prefs, onDismissNote }) {
   const announce = useAnnounce();
   const [target, setTarget] = useState(null);
@@ -26,6 +43,7 @@ export default function Window({ state, dispatch, clubSeason, clubName, prefs, o
   const candidate = replacing !== null ? state.shortlist[replacing] : null;
   const highlight = candidate ? eligibleSlots(state.assignments, candidate.player) : [];
   const changes = state.lastTransition;
+  const lines = transitionLines(changes, clubName);
   const budget = state.transferBudget ?? { points: 0, spent: 0 };
   const left = budgetLeft(budget);
   const affordable = (entry) => (entry.cost ?? 0) <= left;
@@ -68,9 +86,9 @@ export default function Window({ state, dispatch, clubSeason, clubName, prefs, o
           <p className={styles.budget} role="status">{t("window.budget", { left, total: budget.points })}</p>
         </div>
         <CoachNote id="window" prefs={prefs} onDismiss={onDismissNote} />
-        {changes && changes.relegated.length > 0 && (
-          <Callout title="League changes">
-            {t("window.changes", { relegated: changes.relegated.map(clubName).join(", "), promoted: changes.promoted.map(clubName).join(", ") })}
+        {lines.length > 0 && (
+          <Callout title={MOVE_TITLE[changes.userMove] ?? "League changes"}>
+            {lines.join(" ")}
           </Callout>
         )}
         <ul className={styles.candidates}>

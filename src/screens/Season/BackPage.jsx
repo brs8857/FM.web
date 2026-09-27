@@ -6,13 +6,15 @@ import Toast from "../../ui/Toast.jsx";
 import { ShareIcon } from "../../ui/icons.jsx";
 import Strengths from "../Board/Strengths.jsx";
 import { careerSeasonLabel, CAREER_SEASONS } from "../../engine/season.js";
-import { tierLabel } from "../../content/labels.js";
+import { tierLabel, divisionLabel } from "../../content/labels.js";
 import { t } from "../../content/t.js";
 import { useMediaQuery } from "../../app/useMediaQuery.js";
 import { RAIL_QUERY } from "../../app/Shell.jsx";
 import { shareSlip } from "../../app/share.js";
 import { goalDifference, ordinal } from "../../content/format.js";
 import MatchList from "./MatchList.jsx";
+import Playoffs from "./Playoffs.jsx";
+import { tableRule } from "../../engine/divisions.js";
 import { selectTopScorers } from "../../state/selectors.js";
 import styles from "./Season.module.css";
 
@@ -32,7 +34,7 @@ export function slipFor(state, code) {
   const tier = tierLabel(s.tier);
   return {
     topScorer: topScorerLine(s.matches),
-    kicker: `Season ${s.season} · ${careerSeasonLabel(s.season)}`,
+    kicker: `Season ${s.season} · ${careerSeasonLabel(s.season)} · ${divisionLabel(state.division)}`,
     headline: tier.name,
     standfirst: tier.sub,
     record: `${t("season.record", s)} · ${s.pts} pts · ${ordinal(s.position)}`,
@@ -51,6 +53,7 @@ export default function BackPage({ state, careerCode, clubName, opponents }) {
   const rows = s.table.map((r) => ({ ...r, name: r.isUser ? "Your XI" : clubName(r.name) }));
   const finalSeason = s.season >= CAREER_SEASONS;
   const topScorer = topScorerLine(s.matches);
+  const division = state.division ?? "top";
 
   const share = async () => {
     try {
@@ -64,7 +67,7 @@ export default function BackPage({ state, careerCode, clubName, opponents }) {
   return (
     <article className={styles.stack} aria-labelledby="backpage-headline">
       <div className={styles.backPage}>
-        <p className="strap">Season {s.season} · {careerSeasonLabel(s.season)}{finalSeason ? " · The last season" : ""}</p>
+        <p className="strap">Season {s.season} · {careerSeasonLabel(s.season)} · {divisionLabel(division)}{finalSeason ? " · The last season" : ""}</p>
         <h2 id="backpage-headline" className={styles.headline}>{tier.name}</h2>
         <p className={styles.standfirst}>{tier.sub}</p>
         <p className={styles.mono}>{t("season.record", s)} · {s.pts} pts · Finished {ordinal(s.position)}</p>
@@ -72,10 +75,13 @@ export default function BackPage({ state, careerCode, clubName, opponents }) {
         {topScorer && <p className={styles.topScorer}>{topScorer}</p>}
         <Button variant="secondary" onClick={share}><ShareIcon /> Share</Button>
       </div>
-      <Disclosure title="Final table" summary={`${ordinal(s.position)} of 20`} defaultOpen={rail}>
-        <Table caption={`Final table · ${careerSeasonLabel(s.season)}`} captionHidden columns={COLUMNS} rows={rows} rowKey={(r) => r.name} isHighlighted={(r) => r.isUser} dense />
+      <Playoffs state={state} clubName={clubName} />
+      <Disclosure title="Final table" summary={`${ordinal(s.position)} of ${s.table.length}`} defaultOpen={rail}>
+        <Table caption={`Final table · ${careerSeasonLabel(s.season)}`} captionHidden columns={COLUMNS} rows={rows} rowKey={(r) => r.name} isHighlighted={(r) => r.isUser}
+          ruleAfter={(r) => tableRule(division, r.position)} dense />
+        <p className={styles.note}>{t(`table.rules.${division}`)}</p>
       </Disclosure>
-      <Disclosure title="Matches" summary={topScorer ? "All 38, in order, with the reports" : "All 38, in order"}>
+      <Disclosure title="Matches" summary={topScorer ? `All ${s.matches.length}, in order, with the reports` : `All ${s.matches.length}, in order`}>
         <MatchList matches={s.matches} clubName={clubName} />
       </Disclosure>
       <Strengths profile={s.profile} familiarity={s.familiarity} instructions={s.instructions} opponents={opponents} />

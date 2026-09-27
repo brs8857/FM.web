@@ -45,8 +45,8 @@ function asV1(state, { landed = false } = {}) {
 }
 
 describe("save format", () => {
-  it("is version 5", () => {
-    expect(SAVE_VERSION).toBe(5);
+  it("is version 6", () => {
+    expect(SAVE_VERSION).toBe(6);
   });
 
   it("round-trips a mid-career state exactly", () => {
@@ -54,7 +54,7 @@ describe("save format", () => {
     const text = toSaveText(makeSaveEnvelope(state, { gameVersion: "2.0.0", now: NOW }));
     const parsed = parseSaveText(text);
     expect(parsed.ok).toBe(true);
-    expect(parsed.save).toMatchObject({ app: "fm-web", saveVersion: 5, gameVersion: "2.0.0", savedAt: "2026-09-11T20:00:00.000Z" });
+    expect(parsed.save).toMatchObject({ app: "fm-web", saveVersion: 6, gameVersion: "2.0.0", savedAt: "2026-09-11T20:00:00.000Z" });
     const restored = hydrateState(parsed.save.state);
     expect(restored.draftedIds).toBeInstanceOf(Set);
     expect(restored.seasonHistory).toHaveLength(2);
@@ -83,7 +83,7 @@ describe("save format", () => {
 
     const parsed = parseSaveText(text);
     expect(parsed.ok).toBe(true);
-    expect(parsed.save.saveVersion).toBe(5);
+    expect(parsed.save.saveVersion).toBe(6);
     expect(parsed.save.gameVersion).toBe("1.1.0");
     const { state } = parsed.save;
     expect(state).not.toHaveProperty("wheel");
@@ -195,7 +195,7 @@ describe("save format", () => {
 
     const parsed = parseSaveText(text);
     expect(parsed.ok).toBe(true);
-    expect(parsed.save.saveVersion).toBe(5);
+    expect(parsed.save.saveVersion).toBe(6);
     const { state } = parsed.save;
     // Three seasons of Gegenpress in the 4-3-3, all champions, the window open.
     expect(state.seasonHistory.map((h) => h.identity)).toEqual(["Gegenpress", "Gegenpress", "Gegenpress"]);
@@ -228,7 +228,7 @@ describe("save format", () => {
     const parsed = parseSaveText(text);
     expect(parsed.ok).toBe(true);
     const { state } = parsed.save;
-    expect(parsed.save.saveVersion).toBe(5);
+    expect(parsed.save.saveVersion).toBe(6);
     expect(state).toMatchObject({ autoCover: true, covers: [], draftDone: true, discipline: envelope.state.discipline });
     expect(state.bench).toHaveLength(6);
 
@@ -251,7 +251,7 @@ describe("save format", () => {
     const parsed = parseSaveText(text);
     expect(parsed.ok).toBe(true);
     const { state } = parsed.save;
-    expect(parsed.save.saveVersion).toBe(5);
+    expect(parsed.save.saveVersion).toBe(6);
     expect(state).toMatchObject({ phase: "tactics", season: 2, simulation: null, campaign: null, discipline: {}, rngCounter: envelope.state.rngCounter });
     expect(state.cohesionMemory).toEqual({ ...EMPTY_MEMORY, formationKey: "4-3-3", styleKey: "Gegenpress", seasons: 1 });
     expect(state.seasonHistory).toHaveLength(1);

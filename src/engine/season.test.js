@@ -2,7 +2,7 @@
 import { describe, it, expect } from "vitest";
 import { roundRobinSchedule, buildUserFixtureList, seasonTier, careerSeasonLabel, CAREER_SEASONS, simulateSeason, playSeason, leagueTable, simulateFixture, fixtureRng, eventRng, roundRng } from "./season.js";
 import { simulateRivalMatch, rivalStrength, rivalNoise } from "./match.js";
-import { applyPromotionRelegation } from "./league.js";
+import { nextDivisions } from "./divisions.js";
 import { createRng } from "./rng.js";
 
 describe("fixtures", () => {
@@ -61,34 +61,43 @@ describe("season tiers", () => {
   });
 });
 
-describe("promotion and relegation", () => {
-  const opponents = Array.from({ length: 19 }, (_, i) => ({ name: `Rival ${i + 1}` }));
-  const pool = Array.from({ length: 24 }, (_, i) => ({ name: `Challenger ${i + 1}` }));
+describe("promotion and relegation (engine/divisions.js)", () => {
+  const club = (name, ov) => ({ name, ov, histMean: ov, weight: 1, vol: 8 });
+  const opponents = Array.from({ length: 19 }, (_, i) => club(`Rival ${i + 1}`, 80 - i));
+  const championship = Array.from({ length: 24 }, (_, i) => club(`Challenger ${i + 1}`, 65 - i));
+  const reserve = Array.from({ length: 6 }, (_, i) => club(`Minnow ${i + 1}`, 45 - i));
 
-  it("changes nothing without a table", () => {
-    expect(applyPromotionRelegation(opponents, null, pool, createRng(1))).toEqual({ opponents, relegated: [], promoted: [] });
-  });
-
-  it("relegates rivals finishing 18th-20th (never the user) and keeps 19 rivals", () => {
+  it("relegates rivals finishing 18th-20th and keeps 19 rivals when you stay up", () => {
     const table = [...opponents.map((o, i) => ({ name: o.name, isUser: false, position: i + 2 })), { name: "Your XI", isUser: true, position: 1 }];
-    const result = applyPromotionRelegation(opponents, table, pool, createRng(1));
+    const result = nextDivisions({ division: "top", opponents, other: championship, reserve, table, rng: createRng(1) });
     expect(result.relegated).toEqual(["Rival 17", "Rival 18", "Rival 19"]);
     expect(result.promoted).toHaveLength(3);
     expect(result.opponents).toHaveLength(19);
   });
 });
 
-describe("bug #1: promotion never brings back a club relegated in the same summer", () => {
-  it("holds across 200 seeded transitions", () => {
-    const pool = Array.from({ length: 24 }, (_, i) => ({ name: `Club ${i + 1}` }));
-    const opponents = pool.slice(0, 19); // rivals share names with the Championship pool, as West Ham and Wolves do
+describe("bug #1 and task #6: no club comes straight back, and none is ever in two places", () => {
+  it("holds across 200 seeded transitions each way", () => {
+    const club = (name, ov) => ({ name, ov, histMean: ov, weight: 1, vol: 8 });
+    const tops = Array.from({ length: 19 }, (_, i) => club(`Top ${i + 1}`, 80 - i));
+    const champs = Array.from({ length: 24 }, (_, i) => club(`Champ ${i + 1}`, 66 - (i % 10)));
+    const reserve = Array.from({ length: 8 }, (_, i) => club(`Low ${i + 1}`, 50 - i));
     for (let seed = 1; seed <= 200; seed++) {
       const rng = createRng(seed);
-      const order = rng.shuffle(opponents);
-      const table = [...order.map((o, i) => ({ name: o.name, isUser: false, position: i + 2 })), { name: "Your XI", isUser: true, position: 1 }];
-      const { relegated, promoted, opponents: next } = applyPromotionRelegation(opponents, table, pool, rng);
-      expect(promoted.filter((name) => relegated.includes(name)), `seed ${seed}`).toEqual([]);
-      expect(next).toHaveLength(19);
+      for (const [division, opponents, other] of [["top", tops, champs], ["championship", champs.slice(0, 23), [...tops, club("Top 20", 60)]]]) {
+        const order = rng.shuffle(opponents);
+        const userPos = 1 + rng.int(opponents.length + 1);
+        const rows = order.map((o) => ({ name: o.name, isUser: false }));
+        rows.splice(userPos - 1, 0, { name: "Your XI", isUser: true });
+        const table = rows.map((r, i) => ({ ...r, position: i + 1 }));
+        const playoffWinner = division === "championship" ? table.find((r) => r.position === 4 && !r.isUser)?.name ?? "__USER__" : null;
+        const out = nextDivisions({ division, opponents, other, reserve, table, playoffWinner, rng });
+        expect(out.promoted.filter((name) => out.relegated.includes(name)), `seed ${seed}`).toEqual([]);
+        const everyone = [...out.opponents, ...out.other, ...out.reserve].map((c) => c.name);
+        expect(new Set(everyone).size, `seed ${seed} ${division}`).toBe(everyone.length);
+        expect(everyone.length).toBe(opponents.length + other.length + reserve.length);
+        expect(out.opponents.length).toBe(out.division === "top" ? 19 : 23);
+      }
     }
   });
 });

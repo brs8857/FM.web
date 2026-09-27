@@ -23,7 +23,8 @@ describe("tooling", () => {
 
   it("keeps the bundle budget script honest", async () => {
     const { BUDGET_KB } = await import("../../scripts/check-bundle-size.mjs");
-    expect(BUDGET_KB).toBe(120);
+    // 120 through v2.8; 125 from v3.0 (two divisions), see the script.
+    expect(BUDGET_KB).toBe(125);
   });
 
   it("holds the balance report to the plan's C5 thresholds", async () => {

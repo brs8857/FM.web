@@ -4,19 +4,22 @@ import { FORMATIONS } from "../engine/formations.js";
 // one start the same draft: 32 bits of seed, 6 + 6 of era offsets from 1992,
 // 3 of formation, 3 of version, then a 10-bit check, in Crockford base 32 as
 // six groups of two ("7Q-K2-…"). O reads as 0 and I/L as 1 when typed.
+// The version bits name the league: 0 the top flight (every code made before
+// the Championship existed), 1 the Championship.
 const ALPHABET = "0123456789ABCDEFGHJKMNPQRSTVWXYZ";
 const FORMATION_KEYS = Object.keys(FORMATIONS);
 const ERA_BASE = 1992;
-const VERSION = 0n;
+const LEAGUE_VERSIONS = ["top", "championship"];
 const DATA_CHARS = 10;
 
 function checksum(values) {
   return values.reduce((sum, v, i) => (sum + v * (i + 1)) % 1024, 0);
 }
 
-export function encodeCareerCode({ seed, eraMin, eraMax, formationKey }) {
+export function encodeCareerCode({ seed, eraMin, eraMax, formationKey, league = "top" }) {
   const f = Math.max(0, FORMATION_KEYS.indexOf(formationKey));
-  let bits = (BigInt(seed >>> 0) << 18n) | (BigInt(eraMin - ERA_BASE) << 12n) | (BigInt(eraMax - ERA_BASE) << 6n) | (BigInt(f) << 3n) | VERSION;
+  const version = BigInt(Math.max(0, LEAGUE_VERSIONS.indexOf(league)));
+  let bits = (BigInt(seed >>> 0) << 18n) | (BigInt(eraMin - ERA_BASE) << 12n) | (BigInt(eraMax - ERA_BASE) << 6n) | (BigInt(f) << 3n) | version;
   const values = [];
   for (let i = 0; i < DATA_CHARS; i++) { values.unshift(Number(bits & 31n)); bits >>= 5n; }
   const check = checksum(values);
@@ -38,11 +41,12 @@ export function decodeCareerCode(text) {
   if (checksum(data) !== (values[10] << 5 | values[11])) return null;
   let bits = 0n;
   for (const v of data) bits = (bits << 5n) | BigInt(v);
-  if ((bits & 7n) !== VERSION) return null;
+  const league = LEAGUE_VERSIONS[Number(bits & 7n)];
+  if (!league) return null;
   const formationKey = FORMATION_KEYS[Number((bits >> 3n) & 7n)];
   const eraMax = ERA_BASE + Number((bits >> 6n) & 63n);
   const eraMin = ERA_BASE + Number((bits >> 12n) & 63n);
   const seed = Number(bits >> 18n);
   if (!formationKey || eraMin > eraMax) return null;
-  return { seed, eraMin, eraMax, formationKey };
+  return { seed, eraMin, eraMax, formationKey, league };
 }

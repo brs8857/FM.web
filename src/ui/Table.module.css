@@ -45,3 +45,9 @@
 .dense td {
   padding: var(--space-1) var(--space-2);
 }
+.table tr.solid td {
+  border-bottom: 2px solid var(--ink);
+}
+.table tr.dashed td {
+  border-bottom: 2px dashed var(--ink-2);
+}

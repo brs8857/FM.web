@@ -8,12 +8,14 @@ to be unrecoverable._
 
 | File | Contents | Size |
 |---|---|---|
-| `src/data/players.json` | `clubs` (slug → name), `squads` (`year_slug` → player rows), `index` (one entry per club-season with its label) and `opponents` (the nineteen rivals for season 1) | 0.93 MB |
-| `src/data/championship.json` | The 24-club promotion pool with the same strength fields as `opponents` | 3 KB |
+| `src/data/players.json` | `clubs` (slug → name), `squads` (`year_slug` → player rows), `index` (one entry per club-season with its label), `premier` (the 2025-26 top flight's twenty clubs), `opponents` (the nineteen of them a top-flight career plays; `place` names the one it replaces) | 0.97 MB |
+| `src/data/championship.json` | The Championship archive in the same shape (`clubs`, `squads`, `index`), `table` (the 2025-26 Championship's 24 clubs; `place` names the one a Championship career replaces) and `reserve` (13 clubs with Championship squads on file, standing in for League One) | 0.34 MB |
 | `src/data/legacyClubIds.json` | The map from the numeric club ids used until 1.1.0 to today's slugs; only the save migration reads it | 1 KB |
 
-There are 666 club-seasons from 1992-93 to 2024-25 and 14,493 player rows,
-roughly 22 per club-season.
+The top flight has 686 club-seasons from 1992-93 to 2025-26: the 666 to
+2024-25 as they shipped before 3.0, and 2025-26's twenty added by milestone
+H. The Championship has 240, 2016-17 to 2025-26. Squads hold roughly 22
+players each (2025-26 top-flight squads about 18; see below).
 
 ## Player rows
 
@@ -106,6 +108,79 @@ For the nineteen rivals (`players.json` `opponents`) and the promotion pool
 
 Rounding is half-to-even, as Python's `round` does.
 
+## The 2025-26 season and the Championship (milestone H)
+
+`scripts/import-transfermarkt.mjs` adds the newest top-flight season and
+the whole Championship archive. It leaves every earlier top-flight squad
+byte for byte as shipped.
+
+### Source
+
+The Transfermarkt datalake published in the GitHub repository
+`salimt/football-datasets` (`datalake/transfermarkt`): player profiles,
+market-value histories, per-season appearances and minutes, and team
+competition seasons. Five CSVs are read from a directory outside the
+repository. **Provenance and rights are open:** that repository has no
+LICENSE file, and the figures are scraped from Transfermarkt. The owner
+decides, with the spec 03 §5 rights review, whether this data can ship in
+the App Store build. The 1992-2024 archive's own source is unchanged and
+equally unreviewed.
+
+### Method
+
+- **Squads.** For each club-season (league code `GB1` or `GB2`), the 22
+  players with the most league minutes, at least two of them goalkeepers.
+  Positions map onto the game's eight slots and sides; age is taken on
+  1 September; the value is the last one recorded before 1 February of the
+  season's second year. Names come from the profile (the slug when it is
+  blank), with an archive player's spelling kept where the slugs match, so
+  the same man is recognised across both archives.
+- **Ratings on the archive's scale.** Each season, everyone who played in
+  the top flight is ranked on the archive's curve (the method above), and
+  that is mapped onto the shipped ratings by the straight line fitted to
+  the players both have, matched by club and name: r² 0.76 to 0.91 from
+  2016-17 to 2024-25. A Championship player is placed on the same season's
+  top-flight scale: below the top flight's cheapest player the line carries
+  on down, with a floor of 30. That places the division below the top
+  flight, but how steeply the line falls depends on each season's fit:
+  2024-25's put its Championship ten points below every other season's.
+  So, as the archive does for the top flight, every full Championship
+  season then takes one shared distribution by rank within the season
+  (all the full seasons' ratings pooled, mean 61.5), and no season a career
+  drafts from is rated on a different level from the clubs it plays.
+- **2025-26.** The snapshot caught the season early, when each club had
+  used only its regulars, so ranking the season alone would lift the big
+  clubs' players and sink the small clubs'. The top flight's 2025-26 is
+  quantile-mapped onto what 2024-25's regulars were rated, the
+  Championship's onto the pooled Championship regulars, the same number
+  per club.
+- **Colours and names.** The reserve brought six clubs new to the game
+  (Burton, Oxford United, Peterborough, Plymouth, Rotherham, Wycombe); each
+  has kit colours in `clubColours.json` and an edited name in `clubs.json`.
+
+### Club strength across two divisions
+
+`derive-ratings.mjs` `buildDivisions` rebuilds the clubs' fields for both
+divisions from the squads, and `npm run data:check` checks all 57 (the top
+flight's 20, the Championship's 24, the reserve's 13):
+
+- The **top flight** is rated from top-flight squads with the rival
+  yardstick above, then **held to the tuned field**: the balance thresholds
+  (plan C5) were tuned against nineteen rival strengths, and the real
+  2025-26 field is wider (Arsenal 88.6 down to Burnley 59.5 raw), which on
+  its own puts nine balance cells outside the thresholds. So the rivals keep
+  their real order but take the tuned strengths by rank
+  (`TUNED_FIELD`, 87.2 down to 56.7), and the club a career replaces is
+  placed between its neighbours. `histMean` and everything else stay as
+  rated.
+- The **Championship** and the **reserve** are rated from Championship
+  squads only (`ov` from the latest season, the gap penalty for seasons
+  since), scaled as one pool, then set `CHAMPIONSHIP_SHIFT` (−3.4) lower,
+  keeping every club's strength relative to the others. Unshifted, an XI of
+  the best on offer won the Championship 30-50% of the time; the shift is
+  tuned with `npm run sim`, which holds the Championship to the same
+  thresholds as the top flight.
+
 ## Rebuilding the data
 
 `node scripts/derive-ratings.mjs raw.json [--out src/data]` writes
@@ -148,10 +223,11 @@ review in spec 03 §5, which the owner completes before milestone E.
 
 ## Club colours
 
-`src/content/clubColours.json` gives every club in the dataset, the
-opposition and the promotion pool a primary and secondary hex colour, keyed
+`src/content/clubColours.json` gives every club in both archives and the
+reserve a primary and secondary hex colour, keyed
 by slug, from its well-known kit and badge identity. The **Colours**
-setting (and the third New career step) picks a favourite club and
+setting (and the last New career step, which a Championship career
+narrows to the clubs that have played in it) picks a favourite club and
 `content/clubTheme.js` derives the whole token set from those two colours
 (see the comment there). Like the names, the colours describe real clubs;
 the rights review in spec 03 §5 should cover them too.

@@ -8,7 +8,10 @@ import { ordinal, signed } from "../../content/format.js";
 import { HALF_SEASON } from "../../engine/season.js";
 import { settleNote } from "../Board/IdentityLine.jsx";
 import PlayToSheet, { playToOptions } from "./PlayToSheet.jsx";
-import { eligibleSlots } from "./Window.jsx";
+import { eligibleSlots, transitionLines } from "./Window.jsx";
+import Playoffs from "./Playoffs.jsx";
+import { makePlayoffState, playPlayoffs, driver } from "../../../tests/fixtures/playCareer.js";
+import { USER_TEAM_NAME } from "../../engine/season.js";
 import { slipFor } from "./BackPage.jsx";
 import { REVEAL_MS } from "./TeamSheetReveal.jsx";
 import LiveRegion from "../../ui/LiveRegion.jsx";
@@ -96,7 +99,7 @@ describe("SeasonTab", () => {
     const untouched = { ...makeSeason3TacticsState(), selectedStyle: null, instructions: { ...DEFAULT_INSTRUCTIONS } };
     const spy = { onGoBoard: vi.fn() };
     render(<Harness initial={untouched} spy={spy} />);
-    expect(screen.getByRole("heading", { name: "Season 3 · 2028-29" })).toBeTruthy();
+    expect(screen.getByRole("heading", { name: "Season 3 · 2028-29 · Top flight" })).toBeTruthy();
     expect(screen.getByRole("list").querySelectorAll("li")).toHaveLength(19);
     fireEvent.click(screen.getByRole("button", { name: "Go to the board" }));
     expect(spy.onGoBoard).toHaveBeenCalledOnce();
@@ -356,5 +359,31 @@ describe("SeasonTab", () => {
     const cheap = state.shortlist.filter((e) => e.cost <= 1).length;
     expect(screen.queryAllByRole("button", { name: "Sign to bench" })).toHaveLength(cheap);
     expect(screen.getAllByText("Out of reach")).toHaveLength(8 - cheap);
+  });
+});
+
+describe("the play-offs and the move between divisions", () => {
+  it("tells a finished play-off: both semi-finals, the final and who goes up", () => {
+    const dispatch = driver(reducer, makePlayoffState(reducer, dataset, { seed: 13, position: 3 }));
+    playPlayoffs(dispatch);
+    const done = dispatch.last();
+    render(<Playoffs state={done} clubName={clubName} />);
+    expect(screen.getByRole("heading", { name: "The play-offs" })).toBeTruthy();
+    expect(screen.getAllByText(/^Second leg:/)).toHaveLength(2);
+    expect(screen.getByText(/ goe?s up$/)).toBeTruthy();
+    expect(screen.getByText(/^Final/)).toBeTruthy();
+  });
+
+  it("puts the user's own move first in the window's callout", () => {
+    const up = { userMove: "up", relegated: ["C"], promoted: ["D"], wentUp: [USER_TEAM_NAME, "A", "B"], cameDown: ["X", "Y", "Z"] };
+    expect(transitionLines(up, clubName)).toEqual([
+      "Promoted: next season is in the top flight, with A, B alongside you.",
+      "C went down to League One; D came up from it.",
+    ]);
+    const down = { userMove: "down", relegated: ["P", "Q"], promoted: ["R", "S", "T"] };
+    expect(transitionLines(down, clubName)).toEqual(["Relegated: next season is in the Championship.", "P, Q went down; R, S, T came up."]);
+    const stay = { userMove: null, relegated: ["C"], promoted: ["D"], wentUp: ["A", "B"], cameDown: ["X"] };
+    expect(transitionLines(stay, clubName)[0]).toBe("A, B went up to the top flight; X came down.");
+    expect(transitionLines(null, clubName)).toEqual([]);
   });
 });

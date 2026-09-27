@@ -4,4 +4,4 @@
 export const PRODUCT_NAME = "Era XI";
 export const SHARE_TAG = "#EraXI";
 export const EXPORT_PREFIX = "era-xi";
-export const TAGLINE = "Draft an XI from 33 years of the English top flight, one club-season at a time. Ratings hidden until kick-off.";
+export const TAGLINE = "Draft an XI from 34 years of the English top flight or ten of the Championship, one club-season at a time. Ratings hidden until kick-off.";
