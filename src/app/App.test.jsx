@@ -208,9 +208,9 @@ describe("App", () => {
     expect(JSON.parse(storage.data.get(SAVE_KEY)).state).toMatchObject({ phase: "draft", league: "championship", division: "championship", eraMin: 2016, eraMax: 2025 });
   });
 
-  it("renders the gallery route and reads stored preferences by default", () => {
+  it("renders the gallery route and reads stored preferences by default", async () => {
     render(<App dataset={makeMiniDataset()} storage={fakeStorage()} search="?gallery=1" />);
-    expect(screen.getByRole("heading", { level: 1, name: "Pitch" })).toBeTruthy();
+    expect(await screen.findByRole("heading", { level: 1, name: "Pitch" })).toBeTruthy();
     cleanup();
     const storage = fakeStorage({ [PREFS_KEY]: JSON.stringify({ theme: "dark", seenNotes: ["first-run"] }) });
     render(<App dataset={makeMiniDataset()} storage={storage} search="" />);

@@ -2,12 +2,12 @@
 
 | | |
 |---|---|
-| **Status** | Draft for owner sign-off. Nothing is built. §2 is a decision the owner has to make before any of the rest can start |
+| **Status** | Built as milestone H, v3.0.0 (2026-09-27), with real Championship data (§2 Option A). See §13 for what was built where it differs from the text |
 | **Date** | 2026-09-26 |
 | **Series** | 9 of the redesign series (01–08 plus the plan) |
 | **Baseline** | v2.8.0 (`6e86c8e`) |
 | **Inputs** | Owner request of 2026-09-26 (below); [roadmap](../../roadmap.md#phase-2-deeper-career--sharper-draft--tactics-v40) Phase 2, "Relegation for you too: your club can go down and play in the Championship, and win promotion back," gated on "recover or rebuild the data pipeline… needed to… add Championship squads" |
-| **Plan** | Proposed **Milestone H** in [2026-09-25-redesign-and-app-store.md](../plans/2026-09-25-redesign-and-app-store.md); not yet added to the milestone table pending §2 |
+| **Plan** | **Milestone H** in [2026-09-25-redesign-and-app-store.md](../plans/2026-09-25-redesign-and-app-store.md) |
 
 The owner's request, as given: a new career starts by choosing a league,
 Premier League or Championship. Championship careers pick an era since the
@@ -304,3 +304,43 @@ sequence it that way.
 - **H-f Measure and release:** a `sim.mjs` balance pass for the 24-team
   competition, end-to-end tests for a full Championship promotion and a
   Premier League relegation in one career, changelog, version.
+
+## 13. As built (v3.0.0)
+
+The owner's go-ahead ("make sure real championship clubs and players are
+included") answered H1 with Option A, and asked for the newest top-flight
+season, 2025-26, to be added too. The decisions as taken:
+
+- **H1, data: Option A.** Real Championship squads for 2016-17 to 2025-26
+  and the real 2025-26 top flight, from the Transfermarkt datalake in
+  `salimt/football-datasets` (`scripts/import-transfermarkt.mjs`). The
+  ratings are calibrated onto the shipped archive's scale; the method and
+  the open rights question (the source has no licence) are in
+  [docs/data.md](../../data.md).
+- **H2:** six seasons, however they split between divisions.
+- **H3:** rivals stay real clubs: the division you are not in is kept whole
+  (`state.other`), so the clubs relegated past you are the ones you meet in
+  the Championship, and a promoted career meets the real top flight.
+- **H4:** you never go below the Championship, but its rivals do: a
+  reserve of 13 real clubs with Championship squads on file stands in for
+  League One, sending up as many as go down.
+- **H5:** built before milestone D, as a web release.
+
+Where the build differs from §§4-8:
+
+- State uses `league` (where the career started, which sets the draft
+  archive) and `division` (where it is now) rather than one `tier`; the
+  play-offs are played in the `result` phase from `state.playoffs` rather
+  than a phase of their own. Save format v6.
+- A level play-off tie goes to extra time and penalties as one weighted
+  toss toward the stronger side (never more than 70%); the final is at a
+  neutral ground, which the engine plays as away.
+- Card cut-offs and the window budget scale with the 46-week season.
+- **Balance.** The thresholds were tuned on a field the real 2025-26 top
+  flight is wider than; the rivals keep their real order but take the
+  tuned strengths by rank (docs/data.md). The CI gate now runs 4000
+  seasons a cell. The Championship has no balance gate of its own.
+- **Bundle.** App code is 121.0 KB gzipped against the 120 KB budget; the
+  budget is raised to 125 KB for this release, an owner decision to
+  confirm.
+

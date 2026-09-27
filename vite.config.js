@@ -11,7 +11,7 @@ const pkg = JSON.parse(readFileSync(new URL("./package.json", import.meta.url), 
 export const manifest = {
   name: "Era XI",
   short_name: "Era XI",
-  description: "Draft an XI from 33 years of the English top flight, one club-season at a time. Ratings hidden until kick-off.",
+  description: "Draft an XI from 34 years of the English top flight or ten of the Championship, one club-season at a time. Ratings hidden until kick-off.",
   start_url: "./",
   scope: "./",
   display: "standalone",

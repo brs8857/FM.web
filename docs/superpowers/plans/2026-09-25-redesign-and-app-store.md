@@ -30,7 +30,7 @@
 | D. Native shell | **v3.0 beta** (TestFlight) | platform adapter, Capacitor project, native storage, IAP + free-tier gate, privacy manifest, policy | B (native-feel), C (career worth buying) |
 | E. App Store release | **v3.0** | listing, age rating, rights sign-off, submission; then iCloud sync, dailies (Android: out of scope, see owner sign-off above) | D |
 | G. Bench draft and league bans | **v2.8** (web) | ten-pick bench draft from any position, top-flight ban thresholds, auto-cover in Play to… | F; spec [08](../specs/2026-09-26-08-bench-draft-and-bans.md), built as v2.8.0 |
-| H. Championship mode | proposed, no release yet | choose a league at new-career setup; own-club promotion and relegation both ways; Championship play-offs | G; spec [09](../specs/2026-09-26-09-championship-mode.md), **draft only — awaiting the owner's decision in spec 09 §2 before any task starts** |
+| H. Championship mode | **v3.0** (web) | choose a league at new-career setup; real Championship squads 2016-17 to 2025-26 and the real 2025-26 top flight; own-club promotion and relegation both ways; Championship play-offs | G; spec [09](../specs/2026-09-26-09-championship-mode.md), built as v3.0.0. D and E keep their contents; their version numbers follow on from it |
 
 The roadmap's Phase 2 remainder (matchups, difficulty, open-ended
 careers) and Phase 3 (match day) follow as v4.0 and v5.0; see the

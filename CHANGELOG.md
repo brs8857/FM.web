@@ -1,5 +1,27 @@
 # Changelog
 
+## 3.0.0 — 2026-09-27
+
+Championship mode: a second division with real clubs and players, promotion and relegation both ways, and the play-offs. And the 2025-26 season.
+
+### Added
+- **Choose your league.** A new career starts by choosing the top flight or the **Championship**. A Championship career drafts from real Championship squads from 2016-17 to 2025-26 (240 club-seasons), picks its colours from the clubs that have played in it, and plays 46 matches against the 23 real 2025-26 Championship clubs.
+- **Promotion and relegation for you.** Finish in the top flight's bottom three and the career carries on in the Championship; finish 1st or 2nd in the Championship and you go up. The clubs move with you: the ones relegated alongside you are in the Championship you play, and a promoted career meets the real top flight.
+- **The play-offs.** 3rd to 6th play off for the last place up: 3rd v 6th and 4th v 5th over two legs, the lower-placed side at home first, then a final at a neutral ground. Level ties go to extra time and penalties. Your legs are played from the sticky bar like a league match, with a report each; the back page follows both semi-finals and the final.
+- **2025-26.** The draft archive gains the real 2025-26 top-flight squads, and the rivals are the real 2025-26 top flight.
+- Tables are ruled under the promotion and play-off places and above the drop. The window says who went up and down, your own move first; the record names each season's league and counts promotions.
+- Career codes carry the league. Every earlier code still starts a top-flight career.
+
+### Changed
+- **The top flight's bottom three now go down.** A "Relegated" verdict used to mean another go at the top flight; now next season is in the Championship.
+- The rivals keep their real 2025-26 order but take the strengths the balance was tuned on, so the thresholds hold with the new clubs (docs/data.md). The balance gate in CI runs 4000 seasons a cell instead of 1000, since one cell sat within sampling noise of a threshold.
+- Match day, Play to…, the vidiprinter's half-season stop, card cut-offs and the window budget follow the season's length and the league's size.
+- The save format is version 6. Saves from 2.8.0 and earlier migrate and carry on in the top flight.
+- The app-code budget is 125 KB gzipped, up from 120: this release is 121.0 KB. The component gallery now loads on its own. **For the owner to confirm.**
+
+### Data
+- New import from the Transfermarkt datalake in `salimt/football-datasets`, calibrated onto the shipped ratings' scale (docs/data.md). That repository has no licence: **its rights and provenance are for the owner's review before any store release.**
+
 ## 2.8.0 — 2026-09-26
 
 The bench is drafted, bans follow the league's rules, and Play to… covers them.
