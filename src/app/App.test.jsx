@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import App from "./App.jsx";
 import { makeMiniDataset } from "../../tests/fixtures/miniDataset.js";
-import { fakeStorage, makeSaveText, makeSeason3OpenState } from "../../tests/fixtures/saves.js";
+import { fakeStorage, makeSaveText, makeSeason3OpenState, makeSeason1ResultAt } from "../../tests/fixtures/saves.js";
 import { selectNextAction } from "../state/selectors.js";
 import { SAVE_KEY } from "../state/storage.js";
 import { DEFAULT_PREFS, PREFS_KEY } from "../state/prefs.js";
@@ -206,6 +206,18 @@ describe("App", () => {
     expect(screen.getAllByRole("radio").length).toBeLessThan(CLUBS.length);
     fireEvent.click(screen.getByRole("button", { name: "Start the draft" }));
     expect(JSON.parse(storage.data.get(SAVE_KEY)).state).toMatchObject({ phase: "draft", league: "championship", division: "championship", eraMin: 2016, eraMax: 2025 });
+  });
+
+  it("relegates a top-flight career from the bottom three into a Championship season 2", () => {
+    const storage = fakeStorage({ [SAVE_KEY]: makeSaveText(makeSeason1ResultAt(19)) });
+    render(<App dataset={makeMiniDataset()} storage={storage} prefs={prefs} />);
+    fireEvent.click(screen.getByRole("button", { name: "Open the window" }));
+    fireEvent.click(screen.getAllByRole("button", { name: "Open the window" }).at(-1));
+    expect(screen.getByText("Relegated: next season is in the Championship.", { exact: false })).toBeTruthy();
+    fireEvent.click(screen.getAllByRole("button", { name: "Close the window" }).at(-1));
+    expect(screen.getByRole("heading", { name: "Season 2 · 2027-28 · Championship" })).toBeTruthy();
+    expect(screen.getByText(/46 matches, home and away against 23 rivals/)).toBeTruthy();
+    expect(JSON.parse(storage.data.get(SAVE_KEY)).state).toMatchObject({ league: "top", division: "championship" });
   });
 
   it("renders the gallery route and reads stored preferences by default", async () => {

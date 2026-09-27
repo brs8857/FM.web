@@ -32,6 +32,15 @@ export function makeSeason3ResultState(seed = 4242) {
   return makeSeason3State(38, seed);
 }
 
+// Season 1 of a top-flight career on its back page, finished at `position`.
+export function makeSeason1ResultAt(position, seed = 9) {
+  const dataset = makeMiniDataset();
+  const played = playCareer({ reducer: createReducer(dataset), initialState: makeInitialState(dataset, seed), seasons: 1 });
+  const rows = played.simulation.table.filter((r) => !r.isUser);
+  rows.splice(position - 1, 0, played.simulation.table.find((r) => r.isUser));
+  return { ...played, simulation: { ...played.simulation, table: rows.map((r, i) => ({ ...r, position: i + 1 })), position } };
+}
+
 export function makeSaveText(state = makeSeason3TacticsState()) {
   return toSaveText(makeSaveEnvelope(state, { gameVersion: "1.1.0", now: new Date("2026-09-11T20:00:00.000Z") }));
 }
