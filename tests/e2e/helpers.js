@@ -14,8 +14,10 @@ export async function openHome(page, path = "./") {
   await expect(page.getByRole("heading", { level: 1, name: "Era XI" })).toBeVisible();
 }
 
-export async function startNewCareer(page) {
+export async function startNewCareer(page, { league = "Top flight" } = {}) {
   await page.getByRole("button", { name: "New career" }).click();
+  await page.getByRole("radio", { name: new RegExp(`^${league}`) }).click();
+  await page.getByRole("button", { name: "Choose an era" }).click();
   await page.getByRole("button", { name: "Choose a shape" }).click();
   await page.getByRole("button", { name: "Choose your colours" }).click();
   await page.getByRole("button", { name: "Start the draft" }).click();
@@ -117,6 +119,24 @@ export async function finishSeason(page) {
   await expect(page.getByRole("button", { name: "Share" })).toBeVisible({ timeout: 20_000 });
 }
 
+// Plays any play-off matches the season ended in, from the sticky button,
+// covering bans first; returns how many were played.
+export async function finishPlayoffs(page) {
+  let played = 0;
+  for (let i = 0; i < 6; i++) {
+    const next = page.getByRole("button", { name: /^Play-off (semi-final|final)/ }).last();
+    const open = page.getByRole("button", { name: "Open the window" }).first();
+    await next.or(open).or(page.getByRole("button", { name: /^Replace .+ \(suspended\)$/ })).first().waitFor({ timeout: 20_000 });
+    if (await open.isVisible().catch(() => false)) return played;
+    await coverBans(page);
+    if (!(await next.isVisible().catch(() => false))) continue;
+    await next.click();
+    played++;
+    await expect(page.getByRole("heading", { name: "Last match" })).toBeVisible();
+  }
+  return played;
+}
+
 // Kick off from the sticky bar (the Next pill only changes tab), start the
 // season after the reveal, fast-forward to the half and
 // then the end, and open the window from the back page.
@@ -127,6 +147,7 @@ export async function playSeasonToWindow(page, season = 1) {
   await playTo(page, "The half");
   await expect(page.getByRole("button", { name: /^(Play week \d+|Replace .+ \(suspended\))/ }).first()).toBeVisible({ timeout: 20_000 });
   await finishSeason(page);
+  await finishPlayoffs(page);
   await page.getByRole("button", { name: "Open the window" }).first().click({ timeout: 20_000 });
   await expect(page.getByRole("heading", { name: /The window/ })).toBeVisible();
 }

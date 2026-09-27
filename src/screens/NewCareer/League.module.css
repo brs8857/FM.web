@@ -17,10 +17,12 @@
   gap: var(--space-3);
 }
 .option {
-  display: grid;
-  grid-template-columns: 1fr auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
   align-items: baseline;
   gap: var(--space-1) var(--space-3);
+  min-width: 0;
   padding: var(--space-3);
   border: 1px solid var(--rule);
   border-radius: var(--radius-paper);
@@ -31,6 +33,10 @@
 .selected {
   border-color: var(--signal);
   box-shadow: inset 0 0 0 2px var(--signal);
+}
+.label,
+.years {
+  overflow-wrap: anywhere;
 }
 .label {
   font-family: var(--font-headline);
@@ -43,7 +49,7 @@
   color: var(--ink-2);
 }
 .line {
-  grid-column: 1 / -1;
+  flex-basis: 100%;
   color: var(--ink-2);
   overflow-wrap: anywhere;
 }

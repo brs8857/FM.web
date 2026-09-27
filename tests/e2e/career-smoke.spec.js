@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { openHome, startNewCareer, draftFullXI, setStyle, playSeasonToWindow, coverBans, finishSeason, expectNoHorizontalScroll, expectInViewport, expectAxeClean } from "./helpers.js";
+import { openHome, startNewCareer, draftFullXI, setStyle, playSeasonToWindow, coverBans, finishSeason, finishPlayoffs, playTo, expectNoHorizontalScroll, expectInViewport, expectAxeClean } from "./helpers.js";
 
 test("draft, set a style, play season 1, pass the window into season 2", async ({ page, isMobile }) => {
   await openHome(page);
@@ -137,4 +137,41 @@ test("the draft is playable with the keyboard alone", async ({ page, isMobile })
   await page.keyboard.press("Enter");
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await expect(page.getByText("1 picked")).toBeVisible();
+});
+
+// Spec 09: a Championship career drafts from Championship seasons, plays 46
+// weeks against 23 real rivals, and goes up, stays or plays off.
+test("a Championship career: the league step, 46 weeks, the play-offs if they come, the window", async ({ page, isMobile }) => {
+  await openHome(page);
+  await page.getByRole("button", { name: "New career" }).click();
+  await expect(page.getByText("1 of 4 · League")).toBeVisible();
+  await expectAxeClean(page, "league step");
+  await page.getByRole("radio", { name: /^Championship/ }).click();
+  await page.getByRole("button", { name: "Choose an era" }).click();
+  await expect(page.getByText("2016-17 to 2025-26")).toBeVisible();
+  await page.getByRole("button", { name: "Choose a shape" }).click();
+  await page.getByRole("button", { name: "Choose your colours" }).click();
+  await expect(page.getByText(/played in the Championship since 2016-17/)).toBeVisible();
+  await page.getByRole("button", { name: "Start the draft" }).click();
+  await expectNoHorizontalScroll(page);
+  await draftFullXI(page);
+  await setStyle(page, "Gegenpress");
+  await page.getByRole("tab", { name: "Season" }).click();
+  await expect(page.getByRole("heading", { name: /Season 1 · 2026-27 · Championship/ })).toBeVisible();
+  await expect(page.getByText("46 matches, home and away against 23 rivals.", { exact: false })).toBeVisible();
+  await page.getByRole("button", { name: "Kick off season 1" }).last().click();
+  await page.getByRole("button", { name: "Start season 1" }).last().click({ timeout: 15_000 });
+  await expect(page.getByText("Week 1 of 46 · kick-off")).toBeVisible();
+  await playTo(page, "The half");
+  await finishSeason(page);
+  await expect(page.getByRole("button", { name: /Final table/ })).toContainText("of 24");
+  if (!isMobile) await expectAxeClean(page, "Championship back page");
+  const playoffs = await finishPlayoffs(page);
+  if (playoffs > 0) {
+    await expect(page.getByRole("heading", { name: "The play-offs" })).toBeVisible();
+    await expectAxeClean(page, "play-offs");
+  }
+  await page.getByRole("button", { name: "Open the window" }).first().click();
+  await expect(page.getByRole("heading", { name: /The window/ })).toBeVisible();
+  await expectNoHorizontalScroll(page);
 });
