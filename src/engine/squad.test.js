@@ -53,7 +53,7 @@ describe("squad", () => {
 
   it("costs a candidate by rating band and sets the budget by last season's finish", () => {
     expect([95, 90, 89, 84, 83, 78, 77, 72, 71, 40].map((ov) => wageCost({ ov }))).toEqual([5, 5, 4, 4, 3, 3, 2, 2, 1, 1]);
-    expect([1, 2, 4, 5, 7, 8, 17, 18, 20].map(windowBudget)).toEqual([9, 8, 8, 7, 7, 6, 6, 5, 5]);
+    expect([1, 2, 4, 5, 7, 8, 17, 18, 20].map((p) => windowBudget(p))).toEqual([9, 8, 8, 7, 7, 6, 6, 5, 5]);
     expect(budgetLeft({ points: 7, spent: 4 })).toBe(3);
     expect(budgetLeft(null)).toBe(0);
   });

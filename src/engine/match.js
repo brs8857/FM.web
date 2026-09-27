@@ -126,23 +126,27 @@ export const YELLOW_BANS = [{ yellows: 5, byWeek: 19, matches: 1 }, { yellows: 1
 export const RED_BAN = { red: 3, "second-yellow": 1 };
 export const MAX_BAN = 3;
 
-export function yellowBan(yellows, week) {
-  return YELLOW_BANS.find((b) => b.yellows === yellows && week <= b.byWeek)?.matches ?? 0;
+// The cut-offs are set for a 38-week season and move with a longer one: the
+// Championship's 46 put them at weeks 23 and 39, near where the real ones fall.
+const cutoff = (byWeek, weeks) => (byWeek === Infinity ? Infinity : Math.round((byWeek * weeks) / 38));
+
+export function yellowBan(yellows, week, weeks = 38) {
+  return YELLOW_BANS.find((b) => b.yellows === yellows && week <= cutoff(b.byWeek, weeks))?.matches ?? 0;
 }
 
 // The next threshold still live at `week`, for the player sheet.
-export function nextYellowBan(yellows, week) {
-  return YELLOW_BANS.find((b) => b.yellows > yellows && week <= b.byWeek) ?? null;
+export function nextYellowBan(yellows, week, weeks = 38) {
+  return YELLOW_BANS.find((b) => b.yellows > yellows && week <= cutoff(b.byWeek, weeks)) ?? null;
 }
 
-export function nextDiscipline(discipline, cards, week) {
+export function nextDiscipline(discipline, cards, week, weeks = 38) {
   const next = {};
   for (const [id, d] of Object.entries(discipline)) next[id] = { yellows: d.yellows, banned: Math.max(0, d.banned - 1) };
   const bans = [];
   for (const card of cards) {
     const d = next[card.id] ?? { yellows: 0, banned: 0 };
     const yellows = card.kind === "yellow" ? d.yellows + 1 : d.yellows;
-    const ban = card.kind === "yellow" ? yellowBan(yellows, week) : RED_BAN[card.kind];
+    const ban = card.kind === "yellow" ? yellowBan(yellows, week, weeks) : RED_BAN[card.kind];
     next[card.id] = { yellows, banned: Math.max(d.banned, ban) };
     if (ban > 0) bans.push({ id: card.id, name: card.name, matches: ban });
   }

@@ -32,10 +32,26 @@ export function makeMiniDataset() {
   const opponents = Array.from({ length: 19 }, (_, i) => ({
     name: `Rival ${i + 1}`, ov: 70 + i, lastSeason: "2024", histMean: 72, histStd: 3, weight: 1, vol: 8,
   }));
-  const championship = Array.from({ length: 24 }, (_, i) => ({
-    name: `Challenger ${i + 1}`, ov: 65 + (i % 8), histMean: 66, histStd: 3, weight: 0.95, vol: 9,
+  const place = { name: "Placeholder FC", ov: 71, lastSeason: "2024", histMean: 72, histStd: 3, weight: 1, vol: 8 };
+  const table = Array.from({ length: 24 }, (_, i) => ({
+    name: `Challenger ${i + 1}`, ov: 58 + (i % 8), lastSeason: "2025", histMean: 58, histStd: 3, weight: 0.95, vol: 9,
   }));
-  return { clubs, squads, index, opponents, championship };
+  const reserve = Array.from({ length: 8 }, (_, i) => ({
+    name: `Minnow ${i + 1}`, ov: 45 + i, lastSeason: "2022", histMean: 48, histStd: 3, weight: 0.85, vol: 10,
+  }));
+  // A small Championship archive: two clubs, two seasons each.
+  const champClubs = { 5: "Epsilon Rovers", 6: "Zeta Athletic" };
+  const championshipIndex = [];
+  for (const [y, c] of [["2017", "5"], ["2018", "5"], ["2017", "6"], ["2018", "6"]]) {
+    const key = `${y}_${c}`;
+    squads[key] = SLOT_PLAN.map(([slot, side], i) => row(`${champClubs[c]} ${slot}${i} ${y}`, slot, side, 20 + (i % 12), "England", 50 + ((i * 5 + Number(y)) % 20)));
+    championshipIndex.push({ y, c, label: `${champClubs[c]} ${seasonText(y)}` });
+  }
+  return {
+    clubs: { ...clubs, ...champClubs }, squads, index, championshipIndex, opponents,
+    premier: [...opponents, place], place: place.name,
+    championship: { table, reserve, place: "Challenger 24" },
+  };
 }
 
 function seasonText(y) {

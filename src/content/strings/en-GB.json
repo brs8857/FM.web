@@ -23,6 +23,7 @@
   "season.emptySlots": "{count, plural, one {One place in the XI is empty} other {# places in the XI are empty}}: fill it from the Squad tab before kick-off.",
   "club.titles": "{count, plural, =0 {No titles} one {# title} other {# titles}}",
   "season.play": "Play week {week}: {opponent} ({venue})",
+  "season.playoff": "{round}: {opponent} ({venue})",
   "season.playTo": "Play to…",
   "season.pts": "{pts, plural, one {# pt} other {# pts}}",
   "season.kickoff": "Season {season} · kick-off",

@@ -2,13 +2,25 @@
 import { describe, it, expect } from "vitest";
 import players from "../../src/data/players.json";
 import championship from "../../src/data/championship.json";
-import { checkShipped, buildDataset, overallsForSeason, roundTo } from "../../scripts/derive-ratings.mjs";
+import { checkShipped, buildDataset, overallsForSeason, roundTo, holdToField, TUNED_FIELD } from "../../scripts/derive-ratings.mjs";
 import { ARCHETYPES, STAT_KEYS, statsFromOv, ovFromStats } from "../../src/engine/players.js";
 import { createRng } from "../../src/engine/rng.js";
 
 describe("derive-ratings", () => {
   it("rebuilds every club-strength field of the shipped rivals and pool from the squads", () => {
     expect(checkShipped(players, championship)).toEqual([]);
+  });
+
+  it("holds the top flight to the tuned field in its real order, placing the replaced club between its neighbours", () => {
+    const clubs = [...Array.from({ length: 19 }, (_, i) => ({ name: `R${i}`, ov: 90 - 2 * i })), { name: "Place", ov: 71 }];
+    const held = holdToField(clubs, clubs.slice(0, 19).map((c) => c.name));
+    expect(held.filter((c) => c.name !== "Place").map((c) => c.ov)).toEqual(TUNED_FIELD);
+    const at = held.findIndex((c) => c.name === "Place");
+    expect(held[at].ov).toBeLessThan(held[at - 1].ov);
+    expect(held[at].ov).toBeGreaterThan(held[at + 1].ov);
+    expect(() => holdToField(clubs, ["R0"])).toThrow();
+    const rivals = [...players.opponents].sort((a, b) => b.ov - a.ov).map((c) => c.ov);
+    expect(rivals).toEqual(TUNED_FIELD);
   });
 
   it("rounds half to even like the original pipeline", () => {

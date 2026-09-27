@@ -4,8 +4,19 @@ import { simulateMatch, simulateRivalMatch } from "./match.js";
 
 export const USER_TEAM = "__USER__";
 export const USER_TEAM_NAME = "Your XI";
+// The top flight's shape; the Championship's twenty-four clubs play 46.
 export const SEASON_WEEKS = 38;
 export const HALF_SEASON = 19;
+
+// A season is every rival home and away, so its length follows from how many
+// rivals the division has: 19 give 38 weeks, 23 give 46.
+export function seasonWeeks(rivalCount) {
+  return 2 * rivalCount;
+}
+
+export function halfSeason(rivalCount) {
+  return rivalCount;
+}
 
 // The circle method: 2(n-1) rounds, the second half the first with venues swapped.
 export function roundRobinSchedule(teamIds) {
@@ -92,40 +103,51 @@ export function leagueTable(oppList, order, matches, seasonSeed) {
   return table;
 }
 
-// A finished season from the user's 38 results: the league around them and
+// A finished season from the user's results: the league around them and
 // the verdict. The batch and the match-by-match reducer both end here.
-export function seasonResult(oppList, order, matches, seasonSeed) {
+export function seasonResult(oppList, order, matches, seasonSeed, division = "top") {
   const table = leagueTable(oppList, order, matches, seasonSeed);
   const { w, d, l, gf, ga, pts, position } = table.find((row) => row.isUser);
-  const tier = seasonTier({ w, l, pts, position });
+  const tier = seasonTier({ w, l, pts, position, division, weeks: seasonWeeks(order.length) });
   return { matches, w, d, l, gf, ga, pts, tier, position, table };
 }
 
-// Plays the 38 fixtures in order. `lineupFor(fixture)` gives the profile and
+// Plays every fixture in order. `lineupFor(fixture)` gives the profile and
 // cohesion each is played with, so a season whose board changes week to week
 // plays the same here as through the reducer.
-export function playSeason(lineupFor, oppList, order, seasonSeed) {
+export function playSeason(lineupFor, oppList, order, seasonSeed, division = "top") {
   const nameToOpp = Object.fromEntries(oppList.map((o) => [o.name, o]));
   const matches = buildUserFixtureList(order).map((fixture) => {
     const { profile, familiarity } = lineupFor(fixture);
     return simulateFixture(profile, familiarity, nameToOpp[fixture.name], fixture, seasonSeed);
   });
-  return seasonResult(oppList, order, matches, seasonSeed);
+  return seasonResult(oppList, order, matches, seasonSeed, division);
 }
 
 // The batch season, kept for sim.mjs and the golden test: draws the order and
 // the season seed from the caller's rng as START_SEASON does, then plays every
 // fixture with the same board.
-export function simulateSeason(profile, familiarity, oppList, rng) {
+export function simulateSeason(profile, familiarity, oppList, rng, division = "top") {
   const order = rng.shuffle(oppList).map((o) => o.name);
   const seasonSeed = rng.int(2 ** 32);
-  return playSeason(() => ({ profile, familiarity }), oppList, order, seasonSeed);
+  return playSeason(() => ({ profile, familiarity }), oppList, order, seasonSeed, division);
 }
 
 // The key a season's verdict is filed under. Saves keep it, and
-// content/labels.js turns it into the headline and standfirst.
-export function seasonTier({ w, l, pts, position }) {
-  if (w === 38) return { name: "THE PERFECT SEASON" };
+// content/labels.js turns it into the headline and standfirst. The top
+// flight's bottom three now go down (spec 09 §6); the Championship's top
+// two go up, 3rd to 6th play off, and its bottom three have nowhere lower
+// to go in this game.
+export function seasonTier({ w, l, pts, position, division = "top", weeks = SEASON_WEEKS }) {
+  if (division === "championship") {
+    if (w === weeks) return { name: "Perfect Championship season" };
+    if (position === 1) return { name: "Championship winners" };
+    if (position === 2) return { name: "Automatic promotion" };
+    if (position <= 6) return { name: "Play-offs" };
+    if (position <= 21) return { name: "Championship mid-table" };
+    return { name: "Championship relegation zone" };
+  }
+  if (w === weeks) return { name: "THE PERFECT SEASON" };
   if (l === 0 && position === 1) return { name: "Invincibles" };
   if (pts >= 100) return { name: "Centurions" };
   if (position === 1) return { name: "Champions" };

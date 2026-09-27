@@ -13,6 +13,12 @@ export const OV_CURVE = 0.45;
 // The two pools were built with different yardsticks; both are kept as shipped.
 export const RIVALS = { referenceYear: 2024, gapPenalty: 2.5, gapCap: 14, weight: [0.8, 1.22], vol: [5, 15] };
 export const POOL = { referenceYear: 2025, gapPenalty: 2.2, gapCap: 16, weight: [0.78, 1.18], vol: [6, 17] };
+// The nineteen rival strengths the balance thresholds were tuned on (plan
+// C5; the v2.8 field, strongest first). A newer season keeps its clubs' real
+// order but takes these strengths, so refreshing the data can't move the
+// balance: the real 2025-26 field is wider (Arsenal 88.6 to Burnley 59.5)
+// and on its own puts nine sim cells outside the thresholds.
+export const TUNED_FIELD = [87.2, 86.2, 84.8, 84, 83.2, 81, 79.7, 78, 77.2, 76.2, 75.7, 74.1, 73.4, 73.3, 73.1, 72.8, 72, 71.7, 56.7];
 
 // Python's round(): half to even, which the shipped numbers were made with.
 export function roundTo(v, places) {
@@ -48,7 +54,7 @@ export function overallsForSeason(rows) {
   return out;
 }
 
-function hashSeed(text) {
+export function hashSeed(text) {
   let h = 2166136261;
   for (const ch of text) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); }
   return h >>> 0;
@@ -142,6 +148,48 @@ export function buildPool(squads, clubs, entries) {
   return scalePool(pool, POOL);
 }
 
+// The rivals take the tuned field's strengths by rank; any other club in the
+// division (the one a career replaces) is placed between its neighbours.
+export function holdToField(clubs, rivalNames, field = TUNED_FIELD) {
+  const byStrength = (a, b) => b.ov - a.ov || a.name.localeCompare(b.name);
+  const rivals = clubs.filter((c) => rivalNames.includes(c.name)).sort(byStrength);
+  if (rivals.length !== field.length) throw new Error(`holdToField: ${rivals.length} rivals for a field of ${field.length}`);
+  const held = new Map(rivals.map((c, i) => [c.name, field[i]]));
+  const place = (ov) => {
+    if (ov >= rivals[0].ov) return field[0] + ov - rivals[0].ov;
+    if (ov <= rivals.at(-1).ov) return field.at(-1) + ov - rivals.at(-1).ov;
+    const i = rivals.findIndex((c) => c.ov < ov);
+    const [hi, lo] = [rivals[i - 1], rivals[i]];
+    return field[i] + ((ov - lo.ov) / (hi.ov - lo.ov)) * (field[i - 1] - field[i]);
+  };
+  return clubs.map((c) => ({ ...c, ov: round1(held.get(c.name) ?? place(c.ov)) })).sort(byStrength);
+}
+
+// The two divisions a career plays in, rated from the squads: the top
+// flight's clubs of `year`, the Championship's of the same season, and the
+// reserve of every other club with a Championship squad on file (the clubs
+// League One sends up). Championship strengths come from Championship
+// squads only, top-flight ones from top-flight squads. The top flight is
+// held to the tuned field, `place` being the club a career replaces there.
+export function buildDivisions(topSquads, champSquads, clubs, topSlugs, year, place) {
+  const byStrength = (a, b) => b.ov - a.ov || a.name.localeCompare(b.name);
+  const built = buildRivals(topSquads, clubs, topSlugs);
+  const premier = holdToField(built, built.map((c) => c.name).filter((n) => n !== place));
+  const slugsOf = (prefix) => [...new Set(Object.keys(champSquads).filter((k) => !prefix || k.startsWith(prefix)).map((k) => k.slice(5)))];
+  const current = slugsOf(`${year}_`);
+  const others = slugsOf().filter((s) => !current.includes(s) && !topSlugs.includes(s));
+  const strength = (slug, p) => ({ name: clubs[slug], ...clubStrength(clubHistory(champSquads, slug), p) });
+  const pool = scalePool([
+    ...current.map((s) => strength(s, { ...RIVALS, referenceYear: year })),
+    ...others.map((s) => strength(s, { ...POOL, referenceYear: year })),
+  ], RIVALS);
+  return {
+    premier,
+    championship: pool.slice(0, current.length).sort(byStrength),
+    reserve: pool.slice(current.length).sort(byStrength),
+  };
+}
+
 export function buildDataset(raw) {
   const squads = buildSquads(raw);
   const index = buildIndex(squads, raw.clubs);
@@ -151,23 +199,30 @@ export function buildDataset(raw) {
 }
 
 // Recomputes the club fields from the shipped squads and reports every
-// field that differs from the shipped opponents and pool.
+// field that differs from what shipped: the top flight's twenty (and the
+// nineteen rivals, the same clubs less the one a career replaces), the
+// Championship's twenty-four and the reserve.
 export function checkShipped(players, championship) {
+  const year = Math.max(...players.index.map((e) => Number(e.y)));
   const slugByName = Object.fromEntries(Object.entries(players.clubs).map(([slug, name]) => [name, slug]));
-  const slugFor = (name) => slugByName[name] ?? Object.entries(players.clubs).find(([, n]) => n.startsWith(name))?.[0];
-  const rivals = buildRivals(players.squads, players.clubs, players.opponents.map((o) => slugFor(o.name)));
-  const pool = buildPool(players.squads, players.clubs, championship.map((c) => {
-    const slug = slugFor(c.name);
-    return slug && clubHistory(players.squads, slug).seasons.length ? slug : { name: c.name, ov: c.ov, histStd: c.histStd };
-  }));
+  const topSlugs = players.premier.map((c) => slugByName[c.name]);
+  const built = buildDivisions(players.squads, championship.squads, { ...championship.clubs, ...players.clubs }, topSlugs, year, players.place);
   const diffs = [];
   const compare = (label, shipped, rebuilt) => {
-    for (const key of ["ov", "histMean", "histStd", "weight", "vol"]) {
-      if (Math.abs(shipped[key] - rebuilt[key]) > 0.011) diffs.push(`${label} ${shipped.name}.${key}: shipped ${shipped[key]}, rebuilt ${rebuilt[key]}`);
+    const byName = Object.fromEntries(rebuilt.map((c) => [c.name, c]));
+    for (const c of shipped) {
+      const r = byName[c.name];
+      if (!r) { diffs.push(`${label} ${c.name}: not rebuilt`); continue; }
+      for (const key of ["ov", "histMean", "histStd", "weight", "vol"]) {
+        if (Math.abs(c[key] - r[key]) > 0.011) diffs.push(`${label} ${c.name}.${key}: shipped ${c[key]}, rebuilt ${r[key]}`);
+      }
     }
+    if (shipped.length !== rebuilt.length) diffs.push(`${label}: shipped ${shipped.length} clubs, rebuilt ${rebuilt.length}`);
   };
-  players.opponents.forEach((o, i) => compare("rival", o, { ...rivals[i], name: o.name }));
-  championship.forEach((c, i) => compare("pool", c, { ...pool[i], name: c.name }));
+  compare("top flight", players.premier, built.premier);
+  compare("rival", players.opponents, built.premier.filter((c) => c.name !== players.place));
+  compare("championship", championship.table, built.championship);
+  compare("reserve", championship.reserve, built.reserve);
   return diffs;
 }
 
@@ -177,7 +232,7 @@ function main() {
     const players = JSON.parse(readFileSync("src/data/players.json", "utf8"));
     const championship = JSON.parse(readFileSync("src/data/championship.json", "utf8"));
     const diffs = checkShipped(players, championship);
-    console.log(diffs.length ? diffs.join("\n") : `club fields match for ${players.opponents.length} rivals and ${championship.length} pool clubs`);
+    console.log(diffs.length ? diffs.join("\n") : `club fields match for ${players.premier.length} top-flight clubs, ${championship.table.length} in the Championship and ${championship.reserve.length} in reserve`);
     process.exit(diffs.length ? 1 : 0);
   }
   const input = args.find((a) => !a.startsWith("--"));

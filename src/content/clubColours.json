@@ -25,7 +25,6 @@
   "ipswich-town": { "name": "Ipswich Town", "colours": ["#0044A9", "#FFFFFF"] },
   "leeds-united": { "name": "Leeds United", "colours": ["#FFFFFF", "#1D428A"] },
   "leicester-city": { "name": "Leicester City", "colours": ["#003090", "#FFFFFF"] },
-  "lincoln-city": { "name": "Lincoln City", "colours": ["#D71920", "#FFFFFF"] },
   "liverpool": { "name": "Liverpool FC", "colours": ["#C8102E", "#FFFFFF"] },
   "luton-town": { "name": "Luton Town", "colours": ["#F78F1E", "#002D62"] },
   "manchester-city": { "name": "Manchester City", "colours": ["#6CABDD", "#FFFFFF"] },
@@ -54,5 +53,11 @@
   "wigan-athletic": { "name": "Wigan Athletic", "colours": ["#1D59AF", "#FFFFFF"] },
   "wimbledon": { "name": "Wimbledon FC (- 2004)", "colours": ["#1B4599", "#FFD200"] },
   "wolverhampton-wanderers": { "name": "Wolverhampton Wanderers", "colours": ["#FDB913", "#231F20"] },
-  "wrexham": { "name": "Wrexham", "colours": ["#CE1126", "#FFFFFF"] }
+  "wrexham": { "name": "Wrexham", "colours": ["#CE1126", "#FFFFFF"] },
+  "burton-albion": { "name": "Burton Albion", "colours": ["#FDD80E", "#1A1A1A"] },
+  "oxford-united": { "name": "Oxford United", "colours": ["#FFE100", "#0B1F4A"] },
+  "peterborough-united": { "name": "Peterborough United", "colours": ["#0054A6", "#FFFFFF"] },
+  "plymouth-argyle": { "name": "Plymouth Argyle", "colours": ["#00563F", "#FFFFFF"] },
+  "rotherham-united": { "name": "Rotherham United", "colours": ["#D71A21", "#FFFFFF"] },
+  "wycombe-wanderers": { "name": "Wycombe Wanderers", "colours": ["#0C2340", "#8FC9EE"] }
 }

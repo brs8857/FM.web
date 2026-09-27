@@ -1,5 +1,6 @@
 import { FORMATIONS } from "../engine/formations.js";
-import { careerSeasonLabel, CAREER_SEASONS, SEASON_WEEKS, buildUserFixtureList } from "../engine/season.js";
+import { careerSeasonLabel, CAREER_SEASONS, seasonWeeks, buildUserFixtureList } from "../engine/season.js";
+import { TOP, CHAMPIONSHIP, DIVISION_CLUBS, rivalCount } from "../engine/divisions.js";
 import { STAT_KEYS } from "../engine/players.js";
 import { EMPTY_MEMORY } from "../engine/familiarity.js";
 import { wageCost, windowBudget, BENCH_SIZE } from "../engine/squad.js";
@@ -9,7 +10,7 @@ import { REDRAWS } from "./initialState.js";
 import legacyClubIds from "../data/legacyClubIds.json";
 import { PRODUCT_NAME } from "../content/product.js";
 
-export const SAVE_VERSION = 5;
+export const SAVE_VERSION = 6;
 export const APP_ID = "fm-web"; // the envelope id from 1.1.0, kept so old saves load
 export const SAVE_ERRORS = {
   notFmWeb: `This isn't an ${PRODUCT_NAME} save.`,
@@ -119,6 +120,12 @@ const migrations = {
   // and now mean the season's total; the difference is left to stand.
   4(save) {
     return { ...save, saveVersion: 5, state: { ...save.state, autoCover: true, covers: [] } };
+  },
+  // v5 (2.8.0): every career was in the top flight and stayed there. The
+  // Championship it can now drop into is filled from the dataset when the
+  // save is next loaded (reducer LOAD_SAVE), since a migration has no data.
+  5(save) {
+    return { ...save, saveVersion: 6, state: { ...save.state, league: TOP, division: TOP, other: null, reserve: null, playoffs: null } };
   },
 };
 
@@ -254,7 +261,7 @@ function isSeasonSummary(s) {
   return isObject(s) && Number.isInteger(s.season) && s.season >= 1 && s.season <= CAREER_SEASONS
     && Number.isInteger(s.position) && ["pts", "w", "d", "l", "gf", "ga", "familiarity"].every((k) => Number.isInteger(s[k]))
     && typeof s.tier === "string" && (s.identity === null || typeof s.identity === "string") && isUint32(s.seed)
-    && isMatchLog(s.matches) && (s.matches.length === 0 || s.matches.length === SEASON_WEEKS)
+    && isMatchLog(s.matches) && [0, seasonWeeks(rivalCount(TOP)), seasonWeeks(rivalCount(CHAMPIONSHIP))].includes(s.matches.length)
     && (s.topScorer === null || (isObject(s.topScorer) && typeof s.topScorer.name === "string" && Number.isInteger(s.topScorer.goals)));
 }
 
@@ -268,8 +275,8 @@ function isMemory(m) {
 // nineteen the league holds), the next week, and a log of every fixture
 // played so far, in the order the fixture list has them.
 function isCampaign(c, opponents) {
-  if (!isObject(c) || !isUint32(c.seed) || !Number.isInteger(c.week) || c.week < 1 || c.week > SEASON_WEEKS + 1) return false;
-  if (!isStringArray(c.order) || c.order.length !== 19 || new Set(c.order).size !== 19) return false;
+  if (!isObject(c) || !isStringArray(c.order) || c.order.length !== opponents.length || new Set(c.order).size !== opponents.length) return false;
+  if (!isUint32(c.seed) || !Number.isInteger(c.week) || c.week < 1 || c.week > seasonWeeks(c.order.length) + 1) return false;
   const names = new Set(opponents.map((o) => o.name));
   if (!c.order.every((name) => names.has(name))) return false;
   if (!isMatchLog(c.log) || c.log.length !== c.week - 1) return false;
@@ -296,7 +303,13 @@ function isValidState(s) {
   if (!Array.isArray(s.assignments) || s.assignments.length !== 11) return false;
   if (!s.assignments.every((a, i) => isObject(a) && a.slotId === formation.slots[i].id && isPlayerOrNull(a.player) && isObject(a.pos))) return false;
   if (!Array.isArray(s.bench) || s.bench.length > BENCH_SIZE || !s.bench.every((b) => isObject(b) && isPlayerOrNull(b.player))) return false;
-  if (!Array.isArray(s.opponents) || s.opponents.length !== 19 || !s.opponents.every((o) => isObject(o) && typeof o.name === "string")) return false;
+  if (![TOP, CHAMPIONSHIP].includes(s.league) || ![TOP, CHAMPIONSHIP].includes(s.division)) return false;
+  const isClubs = (list) => Array.isArray(list) && list.every((o) => isObject(o) && typeof o.name === "string" && typeof o.ov === "number");
+  if (!isClubs(s.opponents) || s.opponents.length !== rivalCount(s.division)) return false;
+  const otherDivision = s.division === TOP ? CHAMPIONSHIP : TOP;
+  if (s.other !== null && !(isClubs(s.other) && s.other.length === DIVISION_CLUBS[otherDivision])) return false;
+  if (s.reserve !== null && !isClubs(s.reserve)) return false;
+  if (s.playoffs !== null && !(isObject(s.playoffs) && typeof s.playoffs.stage === "string" && isObject(s.playoffs.semi))) return false;
   if (!Array.isArray(s.draftedIds) || !s.draftedIds.every((id) => typeof id === "string")) return false;
   if (!Array.isArray(s.draftedIdentities)) return false;
   if (!isDraw(s.draw)) return false;
@@ -313,7 +326,7 @@ function isValidState(s) {
   if (!isDiscipline(s.discipline)) return false;
   if (typeof s.autoCover !== "boolean" || !isCovers(s.covers, s)) return false;
   if ((s.phase === "reveal" || s.phase === "matchday") && s.campaign === null) return false;
-  if (s.phase === "matchday" && s.campaign.week > SEASON_WEEKS) return false;
+  if (s.phase === "matchday" && s.campaign.week > seasonWeeks(s.campaign.order.length)) return false;
   if (s.phase === "result" && s.simulation === null) return false;
   return true;
 }

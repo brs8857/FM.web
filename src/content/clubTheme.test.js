@@ -15,8 +15,8 @@ function failures(theme) {
 }
 
 describe("club colours", () => {
-  it("has a primary and secondary for every club in the dataset, the opposition and the promotion pool", () => {
-    const names = new Set([...Object.values(players.clubs), ...players.opponents.map((o) => o.name), ...championship.map((c) => c.name)]);
+  it("has a primary and secondary for every club in the dataset, both divisions and the reserve", () => {
+    const names = new Set([...Object.values(players.clubs), ...Object.values(championship.clubs), ...players.premier.map((o) => o.name), ...championship.table.map((c) => c.name), ...championship.reserve.map((c) => c.name)]);
     const keys = new Set(CLUBS.map((c) => c.key));
     for (const name of names) expect(keys.has(slugFor(name)), name).toBe(true);
     for (const club of CLUBS) {

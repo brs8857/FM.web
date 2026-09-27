@@ -1,7 +1,9 @@
 // Balance report: how often each style wins the title or finishes bottom three.
 // Usage: npm run sim                   (400 seasons per cell)
 //        npm run sim -- 50             (quicker)
-//        npm run sim -- 1000 --assert  (exit 1 unless every cell is inside the thresholds; CI)
+//        npm run sim -- 4000 --assert  (exit 1 unless every cell is inside the thresholds; CI. 4000
+//                                       seasons put a cell's sampling error near half a point, where
+//                                       1000 left it near one, and cells sit that close to a threshold)
 //        npm run sim -- --markdown     (the table as Markdown, for a commit message)
 //        npm run sim -- --profiles     (also print the mean team profile per cell)
 //        npm run sim -- --settling     (only the settling table)

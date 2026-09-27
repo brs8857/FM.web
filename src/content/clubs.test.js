@@ -20,8 +20,8 @@ describe("club names", () => {
     expect(clubSeasonLabel(players, "2000_leeds-united", "edited")).toBe("Leeds Whites 2000-01");
   });
 
-  it("has an edited name for every club in the dataset, the opposition and the promotion pool", () => {
-    const names = new Set([...Object.values(players.clubs), ...players.opponents.map((o) => o.name), ...championship.map((c) => c.name)]);
+  it("has an edited name for every club in the dataset, both divisions and the reserve", () => {
+    const names = new Set([...Object.values(players.clubs), ...Object.values(championship.clubs), ...players.premier.map((o) => o.name), ...championship.table.map((c) => c.name), ...championship.reserve.map((c) => c.name)]);
     for (const name of names) expect(edited[name], name).toBeTruthy();
     const editedNames = Object.values(edited);
     expect(editedNames.every((n) => /^[A-Z]/.test(n))).toBe(true);
