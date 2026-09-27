@@ -18,6 +18,14 @@ export const POOL = { referenceYear: 2025, gapPenalty: 2.2, gapCap: 16, weight: 
 // order but takes these strengths, so refreshing the data can't move the
 // balance: the real 2025-26 field is wider (Arsenal 88.6 to Burnley 59.5)
 // and on its own puts nine sim cells outside the thresholds.
+// The Championship is held to the same thresholds a simpler way: its real
+// 2025-26 clubs keep their strengths relative to each other, and the whole
+// division, with the reserve below it, sits CHAMPIONSHIP_SHIFT lower. Its
+// ratings share one distribution with every season a Championship career
+// drafts from, and against that an XI of the best on offer won the title
+// about half the time; the shift is tuned with `npm run sim`, which asserts
+// the Championship's cells too.
+export const CHAMPIONSHIP_SHIFT = -3.4;
 export const TUNED_FIELD = [87.2, 86.2, 84.8, 84, 83.2, 81, 79.7, 78, 77.2, 76.2, 75.7, 74.1, 73.4, 73.3, 73.1, 72.8, 72, 71.7, 56.7];
 
 // Python's round(): half to even, which the shipped numbers were made with.
@@ -183,10 +191,11 @@ export function buildDivisions(topSquads, champSquads, clubs, topSlugs, year, pl
     ...current.map((s) => strength(s, { ...RIVALS, referenceYear: year })),
     ...others.map((s) => strength(s, { ...POOL, referenceYear: year })),
   ], RIVALS);
+  const held = pool.map((c) => ({ ...c, ov: round1(c.ov + CHAMPIONSHIP_SHIFT) }));
   return {
     premier,
-    championship: pool.slice(0, current.length).sort(byStrength),
-    reserve: pool.slice(current.length).sort(byStrength),
+    championship: held.slice(0, current.length).sort(byStrength),
+    reserve: held.slice(current.length).sort(byStrength),
   };
 }
 

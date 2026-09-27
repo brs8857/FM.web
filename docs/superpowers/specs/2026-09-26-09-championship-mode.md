@@ -339,7 +339,10 @@ Where the build differs from §§4-8:
 - **Balance.** The thresholds were tuned on a field the real 2025-26 top
   flight is wider than; the rivals keep their real order but take the
   tuned strengths by rank (docs/data.md). The CI gate now runs 4000
-  seasons a cell. The Championship has no balance gate of its own.
+  seasons a cell. The Championship is held to the same thresholds: its
+  seasons share one rating distribution, and the division sits a tuned
+  3.4 below its squads (`CHAMPIONSHIP_SHIFT`); `npm run sim -- --assert`
+  checks both divisions.
 - **Bundle.** App code is 121.0 KB gzipped against the 120 KB budget; the
   budget is raised to 125 KB for this release, an owner decision to
   confirm.

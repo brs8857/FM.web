@@ -141,13 +141,19 @@ equally unreviewed.
   the players both have, matched by club and name: r² 0.76 to 0.91 from
   2016-17 to 2024-25. A Championship player is placed on the same season's
   top-flight scale: below the top flight's cheapest player the line carries
-  on down, with a floor of 30. Across 2016-2024 a Championship squad
-  averages 8 to 30 points below the same season's top flight.
+  on down, with a floor of 30. That places the division below the top
+  flight, but how steeply the line falls depends on each season's fit:
+  2024-25's put its Championship ten points below every other season's.
+  So, as the archive does for the top flight, every full Championship
+  season then takes one shared distribution by rank within the season
+  (all the full seasons' ratings pooled, mean 61.5), and no season a career
+  drafts from is rated on a different level from the clubs it plays.
 - **2025-26.** The snapshot caught the season early, when each club had
   used only its regulars, so ranking the season alone would lift the big
-  clubs' players and sink the small clubs'. 2025-26's regulars (both
-  divisions) are instead quantile-mapped onto what 2024-25's regulars were
-  rated, the same number per club.
+  clubs' players and sink the small clubs'. The top flight's 2025-26 is
+  quantile-mapped onto what 2024-25's regulars were rated, the
+  Championship's onto the pooled Championship regulars, the same number
+  per club.
 - **Colours and names.** The reserve brought six clubs new to the game
   (Burton, Oxford United, Peterborough, Plymouth, Rotherham, Wycombe); each
   has kit colours in `clubColours.json` and an edited name in `clubs.json`.
@@ -169,7 +175,11 @@ flight's 20, the Championship's 24, the reserve's 13):
   rated.
 - The **Championship** and the **reserve** are rated from Championship
   squads only (`ov` from the latest season, the gap penalty for seasons
-  since), scaled as one pool.
+  since), scaled as one pool, then set `CHAMPIONSHIP_SHIFT` (−3.4) lower,
+  keeping every club's strength relative to the others. Unshifted, an XI of
+  the best on offer won the Championship 30-50% of the time; the shift is
+  tuned with `npm run sim`, which holds the Championship to the same
+  thresholds as the top flight.
 
 ## Rebuilding the data
 

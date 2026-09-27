@@ -49,7 +49,7 @@ describe("import-transfermarkt", () => {
     expect(quantileMap([3, 1, 2], [40, 50, 60])).toEqual([60, 40, 50]);
   });
 
-  it("shipped a Championship on the top flight's scale: a clear step below it, every season", () => {
+  it("shipped a Championship a clear step below the top flight, at one level across its seasons", () => {
     const mean = (rows) => rows.reduce((s, r) => s + r[5], 0) / rows.length;
     for (let y = 2016; y <= 2024; y++) {
       const top = Object.entries(players.squads).filter(([k]) => k.startsWith(`${y}_`)).flatMap(([, v]) => v);
@@ -58,9 +58,12 @@ describe("import-transfermarkt", () => {
       expect(mean(top) - mean(champ), y).toBeGreaterThan(8);
       expect(mean(top) - mean(champ), y).toBeLessThan(30);
     }
-    const table = championship.table.map((c) => c.ov);
-    const premier = players.premier.map((c) => c.ov);
-    expect(Math.max(...table)).toBeLessThan(Math.min(...premier) + 10);
+    const avg = (xs) => xs.reduce((t, x) => t + x, 0) / xs.length;
+    expect(avg(championship.table.map((c) => c.ov))).toBeLessThan(avg(players.premier.map((c) => c.ov)) - 10);
+    // Every season a Championship career drafts from sits at one level, so
+    // the 2025-26 clubs it plays are not rated on a lower scale than its picks.
+    const levels = Array.from({ length: 10 }, (_, i) => 2016 + i).map((y) => mean(Object.entries(championship.squads).filter(([k]) => k.startsWith(`${y}_`)).flatMap(([, v]) => v)));
+    for (const level of levels) expect(Math.abs(level - levels[0])).toBeLessThan(1);
     expect(championship.index).toHaveLength(240);
     for (const [key, rows] of Object.entries(championship.squads)) {
       expect(rows.filter((r) => r[1] === "GK").length, key).toBeGreaterThanOrEqual(1);

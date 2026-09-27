@@ -299,23 +299,31 @@ export function buildFromLake(lake, players, colours) {
     topSlugs.push(slug);
   }
 
-  // The Championship, one season at a time, on that season's top-flight scale.
+  // The Championship. Each full season is first placed on its own
+  // top-flight scale, which sets where the division sits below the top
+  // flight; but that line is extrapolated below the top flight's cheapest
+  // player, and how steeply depends on the season's fit (2024-25's put its
+  // Championship ten points below every other season's, and 2025-26, ranked
+  // onto it, with it). So, as the archive does for the top flight, every
+  // season then takes one shared distribution by rank within the season:
+  // all the full seasons' ratings pooled. 2025-26, a snapshot of regulars,
+  // is ranked onto the pooled regulars, the same number per club.
+  const champ = new Map(CHAMPIONSHIP_YEARS.map((year) => [year, squadsFor(lake, SECOND, year)]));
+  const full = CHAMPIONSHIP_YEARS.filter((year) => year !== NEW_TOP_SEASON);
+  const placed = new Map(full.map((year) => {
+    const { rate } = seasonScale(lake, players, year);
+    return [year, [...champ.get(year).values()].flat().map((r) => rate(r.score))];
+  }));
+  const pooled = full.flatMap((year) => placed.get(year));
+  const newest = champ.get(NEW_TOP_SEASON);
+  const pooledRegulars = full.flatMap((year) => regulars(champ.get(year), placed.get(year), medianSize(newest)));
   const champSquads = {};
   const champIndex = [];
-  let lastFull = null;
   for (const year of CHAMPIONSHIP_YEARS) {
-    const champ = squadsFor(lake, SECOND, year);
-    const rows = [...champ.values()].flat();
-    let ovs;
-    if (year === NEW_TOP_SEASON) {
-      // 2025-26 again: ranked onto 2024-25's Championship regulars.
-      ovs = quantileMap(rows.map((r) => r.score), regulars(lastFull.squads, lastFull.ovs, medianSize(champ)));
-    } else {
-      const { rate } = seasonScale(lake, players, year);
-      ovs = rows.map((r) => rate(r.score));
-      lastFull = { squads: champ, ovs };
-    }
-    for (const [team, squad] of [...champ].sort((a, b) => a[0].localeCompare(b[0]))) {
+    const season = champ.get(year);
+    const rows = [...season.values()].flat();
+    const ovs = quantileMap(rows.map((r) => r.score), year === NEW_TOP_SEASON ? pooledRegulars : pooled);
+    for (const [team, squad] of [...season].sort((a, b) => a[0].localeCompare(b[0]))) {
       const [slug, name] = clubKey(team, clubs, colours);
       clubs[slug] = name;
       const key = `${year}_${slug}`;

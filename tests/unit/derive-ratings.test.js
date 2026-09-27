@@ -2,7 +2,7 @@
 import { describe, it, expect } from "vitest";
 import players from "../../src/data/players.json";
 import championship from "../../src/data/championship.json";
-import { checkShipped, buildDataset, overallsForSeason, roundTo, holdToField, TUNED_FIELD } from "../../scripts/derive-ratings.mjs";
+import { checkShipped, buildDataset, overallsForSeason, roundTo, holdToField, TUNED_FIELD, CHAMPIONSHIP_SHIFT } from "../../scripts/derive-ratings.mjs";
 import { ARCHETYPES, STAT_KEYS, statsFromOv, ovFromStats } from "../../src/engine/players.js";
 import { createRng } from "../../src/engine/rng.js";
 
@@ -21,6 +21,13 @@ describe("derive-ratings", () => {
     expect(() => holdToField(clubs, ["R0"])).toThrow();
     const rivals = [...players.opponents].sort((a, b) => b.ov - a.ov).map((c) => c.ov);
     expect(rivals).toEqual(TUNED_FIELD);
+  });
+
+  it("sets the Championship and its reserve below their squads by the tuned shift", () => {
+    expect(CHAMPIONSHIP_SHIFT).toBeLessThan(0);
+    const leicester = championship.table.find((c) => c.name === "Leicester City");
+    const squad = championship.squads["2025_leicester-city"].map((r) => r[5]);
+    expect(leicester.ov).toBeCloseTo(squad.reduce((t, x) => t + x, 0) / squad.length + CHAMPIONSHIP_SHIFT, 0);
   });
 
   it("rounds half to even like the original pipeline", () => {

@@ -14,6 +14,7 @@ Championship mode: a second division with real clubs and players, promotion and 
 
 ### Changed
 - **The top flight's bottom three now go down.** A "Relegated" verdict used to mean another go at the top flight; now next season is in the Championship.
+- **The Championship is held to the same balance as the top flight.** Every Championship season is rated at one level (2024-25 and 2025-26 had come out ten points low, which made the 2025-26 rivals easy for an XI drafted from earlier seasons), and the division is set a tuned 3.4 lower: an XI of the best on offer now wins it 16-41% of the time, where it had been about half, and an ordinary XI can finish in the bottom three. `npm run sim -- --assert` checks both divisions.
 - The rivals keep their real 2025-26 order but take the strengths the balance was tuned on, so the thresholds hold with the new clubs (docs/data.md). The balance gate in CI runs 4000 seasons a cell instead of 1000, since one cell sat within sampling noise of a threshold.
 - Match day, Play to…, the vidiprinter's half-season stop, card cut-offs and the window budget follow the season's length and the league's size.
 - The save format is version 6. Saves from 2.8.0 and earlier migrate and carry on in the top flight.

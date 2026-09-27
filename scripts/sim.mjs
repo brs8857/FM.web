@@ -9,6 +9,7 @@
 //        npm run sim -- --settling     (only the settling table)
 //        npm run sim -- --bans         (only the bans table)
 import { readFileSync } from "node:fs";
+import { mergeDataset } from "../src/data/loadDataset.js";
 import { createRng } from "../src/engine/rng.js";
 import { createSquadLookup, buildPool } from "../src/engine/players.js";
 import { makeInitialAssignments } from "../src/engine/formations.js";
@@ -43,6 +44,7 @@ export function draft(dataset, getSquad, formationKey, strategy, rng) {
 
 export function runBalance(dataset, runs, { profiles = false } = {}) {
   const getSquad = createSquadLookup(dataset);
+  const division = dataset.opponents.length === 23 ? "championship" : "top";
   const rows = [];
   let seed = 1;
   for (const formation of FORMATIONS) {
@@ -55,10 +57,10 @@ export function runBalance(dataset, runs, { profiles = false } = {}) {
           const xi = draft(dataset, getSquad, formation, strategy, rng);
           const familiarity = computeFamiliarity(xi, style.instructions, formation);
           const profile = computeTeamProfile(xi, style.instructions, familiarity);
-          const season = simulateSeason(profile, familiarity, dataset.opponents, rng);
+          const season = simulateSeason(profile, familiarity, dataset.opponents, rng, division);
           points += season.pts;
           if (season.position === 1) titles++;
-          if (season.position >= 18) bottomThree++;
+          if (season.position > dataset.opponents.length - 2) bottomThree++;
           if (profiles) {
             mean.attack += profile.attack; mean.defSolidity += profile.defSolidity; mean.creativity += profile.creativity;
             mean.familiarity += familiarity; mean.avgOv += profile.avgOv;
@@ -204,6 +206,13 @@ export function banViolations(rows) {
   return row.bansPerSeason >= BAN_RANGE[0] && row.bansPerSeason <= BAN_RANGE[1] ? [] : [`bans a season at default Tackling: ${row.bansPerSeason}, outside ${BAN_RANGE.join("-")}`];
 }
 
+// The Championship as a Championship career meets it: drafted from its own
+// archive, against the 23 real clubs of 2025-26 (spec 09).
+export function championshipView(dataset) {
+  const { championship } = dataset;
+  return { ...dataset, index: dataset.championshipIndex, opponents: championship.table.filter((c) => c.name !== championship.place) };
+}
+
 export function markdownTable(rows) {
   const header = "| Formation | Draft | Style | Avg pts | Title % | Bottom 3 % |\n|---|---|---|---|---|---|";
   return [header, ...rows.map((r) => `| ${r.formation} | ${r.strategy} | ${r.style} | ${r.avgPts} | ${r.titlePct} | ${r.bottom3Pct} |`)].join("\n");
@@ -212,7 +221,8 @@ export function markdownTable(rows) {
 if (process.argv[1]?.endsWith("sim.mjs")) {
   const args = process.argv.slice(2);
   const runs = Number(args.find((a) => /^\d+$/.test(a)) ?? 400);
-  const dataset = JSON.parse(readFileSync("src/data/players.json", "utf8"));
+  const read = (file) => JSON.parse(readFileSync(`src/data/${file}`, "utf8"));
+  const dataset = mergeDataset(read("players.json"), read("championship.json"));
   const settlingOnly = args.includes("--settling");
   const bansOnly = args.includes("--bans");
   const banRows = runBans(dataset, runs);
@@ -223,9 +233,10 @@ if (process.argv[1]?.endsWith("sim.mjs")) {
     process.exit(0);
   }
   const rows = settlingOnly ? [] : runBalance(dataset, runs, { profiles: args.includes("--profiles") });
+  const champRows = settlingOnly ? [] : runBalance(championshipView(dataset), runs).map((r) => ({ ...r, league: "championship" }));
   if (!settlingOnly) {
-    if (args.includes("--markdown")) console.log(markdownTable(rows));
-    else console.table(rows);
+    if (args.includes("--markdown")) console.log(`${markdownTable(rows)}\n\nChampionship\n\n${markdownTable(champRows)}`);
+    else { console.table(rows); console.log("Championship"); console.table(champRows); }
   }
   const settlingRows = runSettling(dataset, Math.max(1, Math.round(runs / 2)));
   if (args.includes("--markdown")) {
@@ -234,11 +245,11 @@ if (process.argv[1]?.endsWith("sim.mjs")) {
   } else console.table(settlingRows);
   console.table(banRows);
   if (args.includes("--assert")) {
-    const bad = [...violations(rows), ...settlingViolations(settlingRows), ...banViolations(banRows)];
+    const bad = [...violations(rows), ...violations(champRows).map((v) => `Championship ${v}`), ...settlingViolations(settlingRows), ...banViolations(banRows)];
     if (bad.length) {
       console.error(`Balance thresholds failed (${runs} seasons per cell):\n${bad.join("\n")}`);
       process.exit(1);
     }
-    console.log(`Balance thresholds met: best-pick title ${THRESHOLDS.title.join("-")}%, random-pick bottom three ${THRESHOLDS.bottomThree.join("-")}%; no weekly change out-points keeping the system; bans a season at default Tackling ${BAN_RANGE.join("-")}.`);
+    console.log(`Balance thresholds met in both divisions: best-pick title ${THRESHOLDS.title.join("-")}%, random-pick bottom three ${THRESHOLDS.bottomThree.join("-")}%; no weekly change out-points keeping the system; bans a season at default Tackling ${BAN_RANGE.join("-")}.`);
   }
 }
