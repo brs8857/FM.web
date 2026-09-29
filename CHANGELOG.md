@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.0.1 — 2026-09-27
+
+### Fixed
+- **Releases now reach an installed app.** A new version that is ready while the app is opening is applied straight away, before anything is played, and the app looks for a new version each time it comes back to the front. Until now only a small "Update available · Reload" toast offered it, and an iPhone home-screen app is rarely closed, so it could keep running the previous version (after 3.0.0, the one where your club stays up from the bottom three). Once play has begun it still never reloads on its own; every step is saved either way.
+- A test now plays a top-flight relegation through the app's screens into a Championship season 2.
+
 ## 3.0.0 — 2026-09-27
 
 Championship mode: a second division with real clubs and players, promotion and relegation both ways, and the play-offs. And the 2025-26 season.
