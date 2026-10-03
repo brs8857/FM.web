@@ -1,7 +1,5 @@
 import { createContext, useContext, useState } from "react";
 import Sheet from "./Sheet.jsx";
-import IconButton from "./IconButton.jsx";
-import { InfoIcon } from "./icons.jsx";
 import { cx } from "./cx.js";
 import styles from "./Term.module.css";
 
@@ -35,7 +33,7 @@ export function Definition({ text }) {
   });
 }
 
-export function Term({ term, icon = false, label, className, children }) {
+export function Term({ term, label, className, children }) {
   const terms = useTerms();
   const [open, setOpen] = useState(false);
   const entry = terms[term];
@@ -43,15 +41,9 @@ export function Term({ term, icon = false, label, className, children }) {
   if (!entry) return <span className={className}>{children ?? label ?? term}</span>;
   return (
     <>
-      {icon ? (
-        <IconButton label={`About ${label ?? title}`} size="sm" aria-haspopup="dialog" onClick={() => setOpen(true)} className={className}>
-          <InfoIcon />
-        </IconButton>
-      ) : (
-        <button type="button" className={cx(styles.term, className)} aria-haspopup="dialog" onClick={() => setOpen(true)}>
-          {children ?? title}
-        </button>
-      )}
+      <button type="button" className={cx(styles.term, className)} aria-haspopup="dialog" onClick={() => setOpen(true)}>
+        {children ?? title}
+      </button>
       <Sheet open={open} onClose={() => setOpen(false)} title={title}>
         <Definition text={entry.body} />
       </Sheet>

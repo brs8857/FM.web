@@ -48,8 +48,6 @@ describe("axe: every screen", { timeout: 30_000 }, () => {
   it("first run", async () => {
     mount(null, firstRunPrefs);
     await check("first run");
-    fireEvent.click(screen.getByRole("button", { name: "Next" }));
-    await check("first run, slip 2");
   });
 
   it("home, with and without a career", async () => {
@@ -118,7 +116,7 @@ describe("axe: every screen", { timeout: 30_000 }, () => {
     fireEvent.click(screen.getByRole("button", { name: /In possession/ }));
     fireEvent.click(screen.getByRole("button", { name: /Out of possession/ }));
     await check("board");
-    fireEvent.click(screen.getByRole("button", { name: "About Tempo" }));
+    fireEvent.click(screen.getByRole("button", { name: "Tempo" }));
     await check("term sheet");
   });
 

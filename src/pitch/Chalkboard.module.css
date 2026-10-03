@@ -47,7 +47,7 @@
   align-items: center;
   justify-content: center;
   font-family: var(--font-display);
-  font-weight: 800;
+  font-weight: 700;
   font-size: var(--text-xs);
   pointer-events: none;
   z-index: 30;

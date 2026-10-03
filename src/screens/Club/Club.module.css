@@ -55,7 +55,7 @@
   border: 1px solid var(--ink);
   border-radius: var(--radius-paper);
   background: var(--paper);
-  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
   font-size: var(--text-md);
   text-transform: uppercase;
   width: 100%;
@@ -116,13 +116,13 @@
   min-height: var(--hit);
   padding: 0;
 }
-.mono {
-  font-family: var(--font-mono);
+.figures {
+  font-variant-numeric: tabular-nums;
   font-size: var(--text-sm);
   font-variant-numeric: tabular-nums;
 }
 .form {
-  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
   font-weight: 600;
   letter-spacing: 0.15em;
   overflow-wrap: anywhere;
@@ -138,6 +138,6 @@
 }
 .scorers {
   padding-left: 1.4em;
-  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
   font-size: var(--text-sm);
 }

@@ -29,8 +29,10 @@
   height: 32px;
   border-radius: 50%;
   border: 2px solid var(--chalk);
-  font-weight: 800;
-  font-size: var(--text-xs);
+  font-weight: 700;
+  font-size: 0.625rem;
+  font-stretch: condensed;
+  letter-spacing: -0.02em;
   line-height: 1;
   transition: transform var(--motion-slip) var(--ease), box-shadow var(--motion-slip) var(--ease);
 }
@@ -54,8 +56,6 @@
 }
 .empty .name {
   opacity: 0.7;
-  font-family: var(--font-mono);
-  text-transform: uppercase;
 }
 .draggable {
   cursor: grab;

@@ -2,7 +2,6 @@ import { useState } from "react";
 import Chalkboard from "../../pitch/Chalkboard.jsx";
 import Button from "../../ui/Button.jsx";
 import { useAnnounce } from "../../ui/LiveRegion.jsx";
-import CoachNote from "../../app/CoachNote.jsx";
 import PlayerSheet from "../Squad/PlayerSheet.jsx";
 import IdentityLine from "./IdentityLine.jsx";
 import StyleRow from "./StyleRow.jsx";
@@ -10,13 +9,13 @@ import Approach from "./Approach.jsx";
 import InstructionGroups from "./InstructionGroups.jsx";
 import Strengths from "./Strengths.jsx";
 import { STYLE_PRESETS } from "../../engine/instructions.js";
-import { identityLabel } from "../../content/labels.js";
+import { identityLabel, identityName } from "../../content/labels.js";
 import { selectMemory, selectSettling } from "../../state/selectors.js";
 import { cx } from "../../ui/cx.js";
 import layout from "../TabLayout.module.css";
 import styles from "./Board.module.css";
 
-export default function BoardTab({ state, dispatch, profile, familiarity, clubSeason, revealed, suspended, prefs, onDismissNote }) {
+export default function BoardTab({ state, dispatch, profile, familiarity, clubSeason, revealed, suspended }) {
   const announce = useAnnounce();
   const [target, setTarget] = useState(null);
   const [pulse, setPulse] = useState({ keys: [], n: 0 });
@@ -28,7 +27,7 @@ export default function BoardTab({ state, dispatch, profile, familiarity, clubSe
     const keys = Object.keys(preset.instructions).filter((k) => preset.instructions[k] !== state.instructions[k]);
     setPulse((p) => ({ keys, n: p.n + 1 }));
     dispatch({ type: "SET_STYLE", key });
-    announce(`${preset.label} set. ${keys.length === 0 ? "Nothing changed." : `${keys.length} dials moved.`}`);
+    announce(`${identityName(preset.label)} set. ${keys.length === 0 ? "Nothing changed." : `${keys.length} dials moved.`}`);
   };
   const identity = identityLabel(state.instructions);
 
@@ -42,7 +41,6 @@ export default function BoardTab({ state, dispatch, profile, familiarity, clubSe
         </div>
       </div>
       <div className={layout.content}>
-        <CoachNote id="board" prefs={prefs} onDismiss={onDismissNote} />
         <IdentityLine identity={identity} familiarity={familiarity} memory={selectMemory(state)} settle={selectSettling(state)} />
         <section className={styles.section} aria-labelledby="board-style">
           <h2 id="board-style" className={styles.subheading}>Style</h2>

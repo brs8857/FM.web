@@ -4,16 +4,15 @@
   align-items: flex-start;
   justify-content: center;
   min-height: var(--hit);
-  padding: var(--space-1) var(--space-4);
-  border: 1px solid var(--rule);
-  border-radius: var(--radius-chip);
-  background: var(--paper-2);
-  color: var(--ink);
+  padding: var(--space-1) 0;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--ink-2);
   font-weight: 600;
-  font-size: var(--text-sm);
+  font-size: var(--text-md);
   line-height: 1.2;
   white-space: nowrap;
-  transition: background 120ms var(--ease), border-color 120ms var(--ease);
 }
 .label {
   display: block;
@@ -25,20 +24,18 @@
   color: var(--ink-2);
 }
 .selected {
-  background: var(--action);
-  border-color: var(--action);
-  color: var(--paper);
+  color: var(--ink);
+  border-bottom-color: var(--ink);
 }
 .selected .sub {
-  color: var(--paper);
+  color: var(--ink-2);
 }
 .signal.selected {
-  background: var(--signal);
-  border-color: var(--signal);
-  color: var(--signal-ink);
+  color: var(--ink);
+  border-bottom-color: var(--signal);
 }
 .signal.selected .sub {
-  color: var(--signal-ink);
+  color: var(--ink-2);
 }
 .chip:disabled {
   opacity: 0.45;

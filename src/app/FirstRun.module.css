@@ -1,60 +1,28 @@
 .firstRun {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
-  max-width: 28rem;
+  gap: var(--space-4);
+  max-width: var(--measure);
   margin: 0 auto;
-  padding-top: var(--space-6);
-  min-height: calc(100dvh - var(--space-8));
-  justify-content: center;
+  padding-top: var(--space-5);
 }
-.kicker {
+.nameplate {
   font-family: var(--font-headline);
-  font-weight: 800;
-  font-size: var(--text-xl);
-  text-align: center;
+  font-weight: 700;
+  font-size: var(--text-3xl);
+  line-height: 1;
+  padding-bottom: var(--space-2);
+  border-bottom: 4px double var(--ink);
 }
-.slip {
+.strap {
+  font-weight: 700;
+  color: var(--ink-2);
+}
+.rules {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-}
-.visual {
-  display: flex;
-  justify-content: center;
-}
-.visual > * {
-  width: 100%;
-}
-.board {
-  position: relative;
-  width: 100%;
-  height: 120px;
-  background: var(--slate);
-  border-radius: var(--radius-paper);
-}
-.text {
-  font-size: var(--text-lg);
-  text-align: center;
-  max-width: 34ch;
-  margin: 0 auto;
-}
-.dots {
-  display: flex;
-  justify-content: center;
-  gap: var(--space-2);
-}
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  border: 1px solid var(--ink);
-}
-.current {
-  background: var(--ink);
-}
-.actions {
-  display: flex;
-  justify-content: center;
   gap: var(--space-3);
+  padding-left: 1.4em;
+  font-size: var(--text-lg);
+  line-height: 1.4;
 }

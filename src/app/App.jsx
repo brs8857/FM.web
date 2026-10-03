@@ -43,7 +43,6 @@ import terms from "../content/terms.json";
 import { t } from "../content/t.js";
 import { TermsProvider } from "../ui/Term.jsx";
 import LiveRegion from "../ui/LiveRegion.jsx";
-import NextPill from "../ui/NextPill.jsx";
 import Button from "../ui/Button.jsx";
 import IconButton from "../ui/IconButton.jsx";
 import Sheet from "../ui/Sheet.jsx";
@@ -224,10 +223,12 @@ function Game({ dataset, storageProp, initialPrefs }) {
     if (next.key === "playMatch" && nav.tab !== "club") {
       return { label: next.label, run: () => { dispatch(NEXT_ACTIONS.playMatch); goTab("season"); }, playTo: true };
     }
-    if (nav.tab !== next.tab) return null;
-    if (next.key === "careerComplete") return { label: next.label, run: () => goTab("club") };
+    // One main action, always in the same place: from any tab it does the
+    // next thing, opening the tab that thing happens on.
+    if (next.key === "careerComplete") return nav.tab === "club" ? null : { label: next.label, run: () => goTab("club") };
     const action = NEXT_ACTIONS[next.key];
-    return action ? { label: next.label, run: () => dispatch(action) } : null;
+    if (!action) return next.tab && nav.tab !== next.tab ? { label: next.label, run: () => goTab(next.tab) } : null;
+    return { label: next.label, run: () => { dispatch(action); if (next.tab && nav.tab !== next.tab) goTab(next.tab); } };
   }
 
   const primary = () => {
@@ -255,7 +256,7 @@ function Game({ dataset, storageProp, initialPrefs }) {
   if (nav.home) {
     return (
       <Shell mode="home">
-        <Home state={state} next={next} identity={identity} cohesion={cohesion} notice={notice} prefs={prefs} onDismissNote={markSeen}
+        <Home state={state} next={next} identity={identity} cohesion={cohesion} notice={notice}
           onContinue={() => { navDispatch({ type: "LEAVE_HOME" }); if (next.tab) goTab(next.tab); }}
           onNewCareer={onNewCareer} onClub={() => { navDispatch({ type: "LEAVE_HOME" }); goTab("club"); }}
           onSaves={() => setHomeSheet("saves")} onSettings={() => setHomeSheet("settings")} onAbout={() => setHomeSheet("about")} />
@@ -292,7 +293,7 @@ function Game({ dataset, storageProp, initialPrefs }) {
       <Shell mode="draft" title="Draft" subtitle={state.draftDone ? "Squad complete" : next.key === "draftBench" ? `Bench pick ${next.pick} of ${BENCH_SIZE}` : `Pick ${next.pick} of 11`}
         end={<Button variant="ghost" size="sm" onClick={() => navDispatch({ type: "HOME" })}>Pause</Button>}
         sticky={state.draftDone ? <Button block onClick={() => dispatch({ type: "SKIP_TO_TACTICS" })}>Go to the board</Button> : undefined}>
-        <Draft state={state} dataset={dataset} dispatch={dispatch} instant={reducedMotion} clubSeason={clubSeason} prefs={prefs} onDismissNote={markSeen} />
+        <Draft state={state} dataset={dataset} dispatch={dispatch} instant={reducedMotion} clubSeason={clubSeason} prefs={prefs} />
       </Shell>
     );
   }
@@ -302,23 +303,22 @@ function Game({ dataset, storageProp, initialPrefs }) {
       title={TITLES[nav.tab]} subtitle={t("shell.season", { season: state.season, label: careerSeasonLabel(state.season) })}
       start={<IconButton label="Home" onClick={() => navDispatch({ type: "HOME" })}><MarkIcon /></IconButton>}
       onBack={nav.history.length > 0 ? () => navDispatch({ type: "BACK" }) : undefined}
-      next={feed == null ? <NextPill label={next.label} onClick={goNext} /> : undefined}
       sticky={sticky ? (
         <div className={styles.stickyRow}>
           <Button block onClick={sticky.run}>{sticky.label}</Button>
           {sticky.playTo && <Button variant="ghost" onClick={() => setPlayTo(true)}>{t("season.playTo")}</Button>}
         </div>
       ) : undefined}>
-      {nav.tab === "squad" && <SquadTab state={state} dispatch={dispatch} clubSeason={clubSeason} revealed={revealed} suspended={suspended} prefs={prefs} onDismissNote={markSeen} />}
-      {nav.tab === "board" && <BoardTab state={state} dispatch={dispatch} profile={profile} suspended={suspended} familiarity={familiarity} clubSeason={clubSeason} revealed={revealed} prefs={prefs} onDismissNote={markSeen} />}
+      {nav.tab === "squad" && <SquadTab state={state} dispatch={dispatch} clubSeason={clubSeason} revealed={revealed} suspended={suspended} prefs={prefs} />}
+      {nav.tab === "board" && <BoardTab state={state} dispatch={dispatch} profile={profile} suspended={suspended} familiarity={familiarity} clubSeason={clubSeason} revealed={revealed} prefs={prefs} />}
       {nav.tab === "season" && (
         <SeasonTab state={state} dispatch={dispatch} identity={identity} familiarity={familiarity} profile={profile} tacticUntouched={tacticUntouched(state)}
           instant={reducedMotion} revealInstant={instant} feed={feed} onFeedDone={onFeedDone} careerCode={careerCode}
-          clubSeason={clubSeason} clubName={clubName} prefs={prefs} onDismissNote={markSeen} onGoBoard={() => goTab("board")} onGoTab={goTab} />
+          clubSeason={clubSeason} clubName={clubName} prefs={prefs} onGoBoard={() => goTab("board")} onGoTab={goTab} />
       )}
       {nav.tab === "club" && (
         <ClubTab history={selectSeasonHistory(state, summarizeSeason)} careerComplete={next.key === "careerComplete"} careerCode={careerCode}
-          prefs={prefs} setPrefs={setPrefs} onDismissNote={markSeen} canExport={inProgress} storageAvailable={Boolean(storage)}
+          prefs={prefs} setPrefs={setPrefs} canExport={inProgress} storageAvailable={Boolean(storage)}
           onExport={exportCareer} onImportFile={onImportFile} onStartFromCode={onStartFromCode} onNewCareer={onNewCareer} />
       )}
       {state.phase === "matchday" && state.campaign && (

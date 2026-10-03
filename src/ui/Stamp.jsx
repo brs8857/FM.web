@@ -5,7 +5,7 @@ import styles from "./Stamp.module.css";
 export default function Stamp({ value, label, size = "lg", tone }) {
   return (
     <span key={String(value)} className={cx(styles.stamp, styles[size], tone && styles[tone], "stamp")}>
-      <span className={cx(styles.value, "mono")}>{value}</span>
+      <span className={cx(styles.value, "figures")}>{value}</span>
       {label && <span className={styles.label}>{label}</span>}
     </span>
   );

@@ -50,9 +50,7 @@ export default function RangeSlider({ label, min, max, valueMin, valueMax, onCha
       aria-valuemin={min} aria-valuemax={max} aria-valuenow={value} aria-valuetext={format(value)}
       className={cx(styles.handle, dragging === which && styles.dragging)} style={{ left: `${pct(value)}%` }}
       onKeyDown={onKeyDown(which)}
-      onPointerDown={(e) => { if (e.button > 0) return; e.preventDefault(); setDragging(which); }}>
-      <span className={styles.value} aria-hidden="true">{format(value)}</span>
-    </div>
+      onPointerDown={(e) => { if (e.button > 0) return; e.preventDefault(); setDragging(which); }} />
   );
 
   return (

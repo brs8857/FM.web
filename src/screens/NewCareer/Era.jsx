@@ -35,7 +35,7 @@ export default function Era({ league = "top", eraMin, eraMax, index, onSetEra })
   const count = useMemo(() => selectEraIndex(index, eraMin, eraMax).length, [index, eraMin, eraMax]);
   return (
     <div className={styles.era}>
-      <h2 className={styles.heading}>Choose your <Term term="era">era</Term></h2>
+      <h2 className={styles.heading}>Which <Term term="era">years</Term>?</h2>
       <p className={styles.lede}>{LEDE[league]}</p>
       <ChipRow label="Era presets" options={presets} value={preset} onChange={(key) => {
         const p = presets.find((o) => o.key === key);

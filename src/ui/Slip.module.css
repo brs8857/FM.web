@@ -1,8 +1,6 @@
 .slip {
-  background: var(--paper);
-  border: 1px solid var(--rule);
-  border-radius: var(--radius-paper);
-  padding: var(--space-4);
+  border-top: 1px solid var(--ink);
+  padding-top: var(--space-3);
   max-width: 100%;
 }
 .header {

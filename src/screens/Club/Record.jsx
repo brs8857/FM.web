@@ -3,7 +3,7 @@ import Sheet from "../../ui/Sheet.jsx";
 import Table from "../../ui/Table.jsx";
 import { cx } from "../../ui/cx.js";
 import { careerSeasonLabel, USER_TEAM_NAME } from "../../engine/season.js";
-import { tierLabel, IDENTITY_LABEL, divisionLabel } from "../../content/labels.js";
+import { tierLabel, IDENTITY_LABEL, identityName, divisionLabel } from "../../content/labels.js";
 import { t } from "../../content/t.js";
 import { selectTopScorers } from "../../state/selectors.js";
 import { ordinal, RESULT_TONE } from "../../content/format.js";
@@ -67,7 +67,7 @@ function SeasonSheet({ season, clubName, onClose }) {
     <Sheet open onClose={onClose} title={tierLabel({ name: season.tier }).name} size="lg">
       <div className={styles.section}>
         <p className="strap">Season {season.season} · {careerSeasonLabel(season.season)} · {divisionLabel(season.division)}</p>
-        <p className={styles.mono}>{t("season.record", season)} · {season.pts} pts · Finished {ordinal(season.position)}</p>
+        <p className={styles.figures}>{t("season.record", season)} · {season.pts} pts · Finished {ordinal(season.position)}</p>
         {!logged && <p className={styles.empty}>{t("season.noLog")}</p>}
         {logged && (
           <>
@@ -99,7 +99,7 @@ export default function Record({ history, clubName = (name) => name, complete = 
     ...(summary.divisions > 1 || history.some((s) => s.division === "championship") ? [{ key: "division", label: "League", render: (r) => divisionLabel(r.division) }] : []),
     { key: "position", label: "Finish", mono: true, align: "right", render: (r) => ordinal(r.position) },
     { key: "pts", label: "Pts", mono: true, align: "right" },
-    { key: "identity", label: "Identity", render: (r) => r.identity ?? IDENTITY_LABEL.bespoke },
+    { key: "identity", label: "Identity", render: (r) => (r.identity ? identityName(r.identity) : IDENTITY_LABEL.bespoke) },
     { key: "tier", label: "Verdict", render: (r) => tierLabel({ name: r.tier }).name },
   ];
   const season = history.find((s) => s.season === open);

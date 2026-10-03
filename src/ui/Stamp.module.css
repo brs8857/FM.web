@@ -6,7 +6,7 @@
 }
 .value {
   font-family: var(--font-headline);
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }

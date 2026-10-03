@@ -4,7 +4,7 @@ import styles from "./TeamSheetRow.module.css";
 export default function TeamSheetRow({ code, name, meta, job, mark, selected = false, onClick, trailing, dragHandle }) {
   const content = (
     <>
-      <span className={cx(styles.code, "mono")}>{code}</span>
+      <span className={cx(styles.code, "figures")}>{code}</span>
       <span className={styles.main}>
         <span className={styles.name}>{name}</span>
         {meta && <span className={styles.meta}>{meta}</span>}

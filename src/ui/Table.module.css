@@ -27,9 +27,6 @@
   color: var(--ink-2);
   border-bottom: 1px solid var(--ink);
 }
-.table tbody tr:nth-child(even) {
-  background: var(--paper-2);
-}
 .right {
   text-align: right;
 }

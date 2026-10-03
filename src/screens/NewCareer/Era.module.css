@@ -22,11 +22,11 @@
 }
 .years {
   font-family: var(--font-headline);
-  font-weight: 800;
+  font-weight: 700;
   font-size: var(--text-xl);
 }
 .count {
-  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
   font-size: var(--text-sm);
   color: var(--ink-2);
 }

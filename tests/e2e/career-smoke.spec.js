@@ -40,7 +40,7 @@ test("draft, set a style, play season 1, pass the window into season 2", async (
     await expect(page.getByRole("heading", { name: "Last match" })).toBeVisible();
   }
   await coverBans(page);
-  await setStyle(page, "Park The Bus");
+  await setStyle(page, "Park the bus");
   await expect(page.getByText(/^Just changed: cohesion −\d this match/).first()).toBeVisible();
   await page.getByRole("button", { name: /^Play week 3: / }).last().click();
   await expect(page.getByRole("tab", { name: "Season", selected: true })).toBeVisible();

@@ -1,6 +1,5 @@
 import Button from "../../ui/Button.jsx";
 import Slip from "../../ui/Slip.jsx";
-import CoachNote from "../../app/CoachNote.jsx";
 import { PRODUCT_NAME, TAGLINE } from "../../content/product.js";
 import { careerSeasonLabel } from "../../engine/season.js";
 import { t } from "../../content/t.js";
@@ -11,14 +10,14 @@ const NOTICES = {
   corrupt: "Your saved career couldn't be loaded, so a new one can start. The damaged save was kept aside.",
 };
 
-export default function Home({ state, next, identity, cohesion, notice, prefs, onDismissNote, onContinue, onNewCareer, onClub, onSaves, onSettings, onAbout }) {
+export default function Home({ state, next, identity, cohesion, notice, onContinue, onNewCareer, onClub, onSaves, onSettings, onAbout }) {
   const inProgress = state.phase !== "formation";
   const drafting = state.phase === "draft";
   return (
     <div className={styles.home}>
       <header className={styles.masthead}>
-        <span className={styles.mark} aria-hidden="true">XI</span>
         <h1 className={styles.title}>{PRODUCT_NAME}</h1>
+        <p className={styles.dateline}>Top flight 1992-93 to 2025-26 · Championship 2016-17 to 2025-26</p>
         <p className={styles.tagline}>{TAGLINE}</p>
       </header>
 
@@ -26,7 +25,7 @@ export default function Home({ state, next, identity, cohesion, notice, prefs, o
 
       {inProgress && (
         <Slip kicker={drafting ? "Draft in progress" : t("shell.season", { season: state.season, label: careerSeasonLabel(state.season) })}
-          title={drafting ? `Pick ${next.pick} of 11` : next.label} className={styles.resume}>
+          title={drafting ? `Pick ${next.pick} of 11` : next.label}>
           {!drafting && (
             <p className={styles.line}>
               <span className={styles.chip}>{identity}</span>
@@ -41,8 +40,6 @@ export default function Home({ state, next, identity, cohesion, notice, prefs, o
       )}
 
       <Button variant={inProgress ? "secondary" : "primary"} block onClick={onNewCareer}>New career</Button>
-
-      <CoachNote id="home" prefs={prefs} onDismiss={onDismissNote} />
 
       <footer className={styles.footer}>
         <Button variant="ghost" onClick={onSaves}>Saves</Button>

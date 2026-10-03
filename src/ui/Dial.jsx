@@ -12,16 +12,15 @@ export default function Dial({ label, value, onChange, min = 0, max = 100, step 
   return (
     <div className={cx(styles.dial, disabled && styles.disabled)}>
       <div className={styles.head}>
-        <label htmlFor={id} className={styles.label}>{label}</label>
-        {term && <Term term={term} icon label={label} />}
+        <span className={styles.label}>{term ? <Term term={term}>{label}</Term> : label}</span>
         <span className={styles.value} aria-hidden="true">
-          <span className="mono">{value}</span>
+          <span className="figures">{value}</span>
           {valueLabel && <span className={styles.valueLabel}>{valueLabel}</span>}
         </span>
       </div>
       <div className={styles.row}>
         <IconButton label={`Lower ${label}`} onClick={() => set(value - step)} disabled={disabled || value <= min}><MinusIcon /></IconButton>
-        <input id={id} type="range" min={min} max={max} step={1} value={value} disabled={disabled}
+        <input id={id} aria-label={label} type="range" min={min} max={max} step={1} value={value} disabled={disabled}
           aria-valuetext={valueText} onChange={(e) => set(Number(e.target.value))} className={styles.range}
           style={{ "--fill": `${((value - min) / (max - min)) * 100}%` }} />
         <IconButton label={`Raise ${label}`} onClick={() => set(value + step)} disabled={disabled || value >= max}><PlusIcon /></IconButton>

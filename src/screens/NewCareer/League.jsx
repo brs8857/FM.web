@@ -14,7 +14,7 @@ export default function League({ league, onPick }) {
   const onKeyDown = useRovingKeys({ count: LEAGUES.length, index, onMove: (i) => onPick(LEAGUES[i].key), selector: '[role="radio"]' });
   return (
     <div className={styles.league}>
-      <h2 className={styles.heading}>Choose your league</h2>
+      <h2 className={styles.heading}>Which league?</h2>
       <p className={styles.lede}>Your XI is drafted from the real squads of the league you start in, and takes a place in it. Promotion and relegation carry the career between the two.</p>
       <div role="radiogroup" aria-label="League" className={styles.list} onKeyDown={onKeyDown}>
         {LEAGUES.map((l, i) => {
@@ -22,7 +22,7 @@ export default function League({ league, onPick }) {
           return (
             <button key={l.key} type="button" role="radio" aria-checked={selected} tabIndex={i === index ? 0 : -1}
               className={cx(styles.option, selected && styles.selected)} onClick={() => onPick(l.key)}>
-              <span className={styles.label}>{l.label}</span>
+              <span className={styles.label}>{selected && <span className={styles.tick} aria-hidden="true">✓ </span>}{l.label}</span>
               <span className={styles.years}>{seasonLabel(ERAS[l.key].min)} to {seasonLabel(ERAS[l.key].max)}</span>
               <span className={styles.line}>{l.line}</span>
             </button>

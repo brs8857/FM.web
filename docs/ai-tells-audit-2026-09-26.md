@@ -502,3 +502,47 @@ Found reviewing the after-screenshots, and fixed:
 Still for the owner: items 2 (one club, two names), 3 (Record identity),
 4 (small buttons), 6 (haptics), 7 (Pitch swatch) and 8 (WebKit) above.
 None of them is generated-sounding copy or a stock visual pattern.
+
+## 6. Second pass (2026-10-03, v3.1.0)
+
+The owner's verdict after 3.0: the game still looked vibe-coded, the
+fonts most of all. The first pass had swapped the stock faces and colours
+for subject-specific ones but kept the screens' structure, which is where
+the template showed. Every screen was captured again at 390 × 844 in
+light, dark and a club theme and checked against the list in §1 plus the
+recurring "vibe-coded UI" patterns (same boilerplate onboarding flow,
+pills and badges, rounded buttons, generic copy:
+[The Fountain Institute](https://www.thefountaininstitute.com/blog/signs-vibe-coded-ui),
+[you.com](https://for.you.com/posts/there-are-3-telltale-signs-that-you-used-ai-to-make-your-app-b701b71e);
+only search summaries could be read, the pages are blocked here).
+
+Found and changed:
+- **Type.** Newsreader headlines over Barlow is the editorial-serif plus
+  grotesk pairing AI tools reach for now, and Barlow Condensed the stock
+  sports face. Everything is now set in the device's own face (San
+  Francisco on iPhone, as Apple's apps are), Courier only for the
+  vidiprinter, its results lines and week strip. No web fonts ship;
+  `tokens.test.js` fails if any of the usual AI faces come back.
+- **Coach's notes**, a dismissible tip panel on seven screens: removed.
+- **Info icons** (ⓘ) beside every label: removed; the word itself opens
+  its definition.
+- **The same action twice**: a green "Next →" pill in the header and the
+  bottom bar. The bottom bar is now the only main action, on every tab.
+- **Card soup**: cuttings, slips and the league, shape and colour choices
+  were grey filled, bordered tiles; they are now set off by rules.
+- **Pills**: chips are words on a wrapped line, the chosen one underlined;
+  corners are square throughout.
+- **Dashboard furniture**: the cohesion progress bar is a word and a
+  figure; Strengths is a table of figures, not a bar chart.
+- **Zebra stripes** on rows that already had rules: gone.
+- **Onboarding carousel** with dots, Skip and Next: one page of three
+  numbered rules.
+- **Landing-page Home** (logo tile, tagline, big button, centred links): a
+  nameplate over a double rule with a dateline.
+- **Wizard headings** ("Choose your league/era/shape/colours"): plain
+  questions.
+- **Title Case** style names (Park The Bus): sentence case on screen; the
+  engine keeps its keys.
+- **Courier on everything numeric**: kept for the vidiprinter only.
+- Bugs found on the way: the era slider printed each year three times;
+  long back-page headlines and play-off button labels overflowed a phone.

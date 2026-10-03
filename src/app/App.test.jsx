@@ -13,27 +13,16 @@ import { CLUBS } from "../content/clubTheme.js";
 const prefs = { ...DEFAULT_PREFS, seenNotes: ["first-run"] };
 
 describe("App", () => {
-  it("shows the three first-run slips once, then goes straight into New career", () => {
+  it("shows how it works on one page once, then goes straight into New career", () => {
     const storage = fakeStorage();
     render(<App dataset={makeMiniDataset()} storage={storage} prefs={{ ...DEFAULT_PREFS }} />);
-    expect(screen.getByRole("region", { name: "1 of 3" })).toBeTruthy();
-    expect(screen.queryByRole("heading", { level: 1, name: "Era XI" })).toBeNull();
-    fireEvent.click(screen.getByRole("button", { name: "Next" }));
-    fireEvent.click(screen.getByRole("button", { name: "Next" }));
-    expect(screen.getByRole("region", { name: "3 of 3" })).toBeTruthy();
+    expect(screen.getByRole("article", { name: "Era XI" }).querySelector("ol").children).toHaveLength(3);
+    expect(screen.queryByRole("button", { name: "Next" })).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: "Start a career" }));
     expect(screen.getByRole("heading", { level: 1, name: "New career" })).toBeTruthy();
     expect(JSON.parse(storage.data.get(PREFS_KEY)).seenNotes).toContain("first-run");
     fireEvent.click(screen.getByRole("button", { name: "Back" }));
     expect(screen.getByRole("heading", { level: 1, name: "Era XI" })).toBeTruthy();
-  });
-
-  it("dismisses a coach's note for good", () => {
-    const storage = fakeStorage({ [SAVE_KEY]: makeSaveText() });
-    render(<App dataset={makeMiniDataset()} storage={storage} prefs={prefs} />);
-    fireEvent.click(screen.getByRole("button", { name: "Dismiss note" }));
-    expect(screen.queryByRole("note")).toBeNull();
-    expect(JSON.parse(storage.data.get(PREFS_KEY)).seenNotes).toEqual(["first-run", "home"]);
   });
 
   it("boots on Home, resumes a save into Club mode on the tab the next action needs", () => {
@@ -43,12 +32,13 @@ describe("App", () => {
     expect(screen.getByText("Season 3 · 2028-29")).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "Kick off season 3" }));
     expect(screen.getByRole("tab", { name: "Season", selected: true })).toBeTruthy();
-    expect(screen.getAllByRole("button", { name: "Kick off season 3" })).toHaveLength(2);
+    // One main action on screen, not a header copy of it as well.
+    expect(screen.getAllByRole("button", { name: "Kick off season 3" })).toHaveLength(1);
     fireEvent.click(screen.getByRole("tab", { name: "Club" }));
     expect(screen.getByRole("tabpanel", { name: "Club" })).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "Back" }));
     expect(screen.getByRole("tab", { name: "Season", selected: true })).toBeTruthy();
-    fireEvent.click(screen.getAllByRole("button", { name: "Kick off season 3" })[1]);
+    fireEvent.click(screen.getByRole("button", { name: "Kick off season 3" }));
     expect(screen.getAllByRole("button", { name: "Start season 3" }).length).toBeGreaterThan(0);
     expect(JSON.parse(storage.data.get(SAVE_KEY)).state.phase).toBe("reveal");
     fireEvent.click(screen.getByRole("button", { name: "Home" }));

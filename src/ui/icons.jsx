@@ -9,17 +9,11 @@ export function CloseIcon() {
 export function ChevronIcon({ open }) {
   return <svg {...base} style={{ transform: open ? "rotate(180deg)" : undefined }}><path d="M5 8l5 5 5-5" /></svg>;
 }
-export function InfoIcon() {
-  return <svg {...base}><circle cx="10" cy="10" r="7.5" /><path d="M10 9v5M10 6.5v.5" /></svg>;
-}
 export function MinusIcon() {
   return <svg {...base}><path d="M5 10h10" /></svg>;
 }
 export function PlusIcon() {
   return <svg {...base}><path d="M10 5v10M5 10h10" /></svg>;
-}
-export function ArrowIcon() {
-  return <svg {...base}><path d="M4 10h12M11 5l5 5-5 5" /></svg>;
 }
 export function MarkIcon() {
   return <svg {...base}><path d="M4 3.5l7 9M11 3.5l-7 9M15.5 3.5v9" /><path d="M3.5 16.5h13" strokeWidth="1.5" /></svg>;
