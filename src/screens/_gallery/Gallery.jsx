@@ -1,8 +1,8 @@
 import { useState } from "react";
 import {
   Button, IconButton, Chip, ChipRow, Segmented, Toggle, Dial, Disclosure, Sheet, TabBar, TopBar, NextPill,
-  Term, TermsProvider, Callout, Toast, Meter, StrengthBars, Stamp, Ticker, Cutting, TeamSheetRow, Slip, Table,
-  LiveRegion, useAnnounce, CloseIcon, InfoIcon,
+  Term, TermsProvider, Callout, Toast, StrengthTable, Stamp, Ticker, Cutting, TeamSheetRow, Slip, Table,
+  LiveRegion, useAnnounce, CloseIcon,
 } from "../../ui/index.js";
 import { CLUBS, clubTheme, clubThemeVars } from "../../content/clubTheme.js";
 import styles from "./Gallery.module.css";
@@ -70,7 +70,6 @@ function Samples() {
           <Button disabled>Draw</Button>
           <Button size="sm">Redraw</Button>
           <IconButton label="Close"><CloseIcon /></IconButton>
-          <IconButton label="Info" size="sm"><InfoIcon /></IconButton>
         </div>
       </Section>
 
@@ -112,9 +111,8 @@ function Samples() {
         <div className={styles.rail}><TabBar tabs={TABS} value={tab} onChange={setTab} orientation="vertical" /></div>
       </Section>
 
-      <Section title="Meter, StrengthBars, Stamp">
-        <Meter label="Cohesion" value={63} valueLabel="Settled" />
-        <StrengthBars bars={[
+      <Section title="StrengthTable, Stamp">
+        <StrengthTable rows={[
           { key: "attack", label: "Attack", value: 72, reference: 65 }, { key: "creativity", label: "Creativity", value: 58, reference: 62 },
           { key: "buildup", label: "Build-up", value: 66, reference: 60 }, { key: "press", label: "Press", value: 81, reference: 64 },
           { key: "defence", label: "Defence", value: 55, reference: 63 }, { key: "physical", label: "Physical", value: 70, reference: 66 },

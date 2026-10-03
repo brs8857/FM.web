@@ -42,17 +42,8 @@
   align-items: center;
   gap: var(--space-1);
   font-family: var(--font-display);
-  font-weight: 800;
+  font-weight: 700;
   font-size: var(--text-lg);
-}
-.tick {
-  color: var(--ink);
-  transition: opacity var(--motion-slip) var(--ease);
-}
-.spent {
-  opacity: 0.3;
-  text-decoration: line-through;
-  text-decoration-thickness: 2px;
 }
 .drawEmpty {
   display: flex;

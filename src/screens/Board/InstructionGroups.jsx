@@ -27,7 +27,6 @@ export default function InstructionGroups({ instructions, pulse, onSet }) {
         </div>
         <div className={styles.switch}>
           <Toggle label="Offside trap" sub="Needs a high line and a quick back four" checked={instructions.offsideTrap} onChange={(v) => onSet("offsideTrap", v)} />
-          <Term term="offside-trap" icon label="Offside trap" />
         </div>
       </Disclosure>
     </>

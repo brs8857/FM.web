@@ -1,0 +1,39 @@
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+.table th,
+.table td {
+  padding: var(--space-1) 0;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+}
+.table thead th {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--ink-2);
+  border-bottom: 1px solid var(--ink);
+}
+.label {
+  font-weight: 600;
+}
+.num {
+  text-align: right;
+  padding-left: var(--space-3);
+}
+.table .num {
+  text-align: right;
+}
+.reference {
+  color: var(--ink-2);
+}
+.ahead {
+  color: var(--win);
+  font-weight: 600;
+}
+.behind {
+  color: var(--loss);
+  font-weight: 600;
+}

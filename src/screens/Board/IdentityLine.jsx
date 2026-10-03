@@ -1,4 +1,3 @@
-import Meter from "../../ui/Meter.jsx";
 import { Term } from "../../ui/Term.jsx";
 import { CONCEPT, cohesionLabel } from "../../content/labels.js";
 import { t } from "../../content/t.js";
@@ -18,20 +17,18 @@ export function settleNote(settle) {
 export default function IdentityLine({ identity, familiarity, memory, settle }) {
   return (
     <section className={styles.identity} aria-label="Identity and cohesion">
-      <div className={styles.identityLine}>
-        <span className={styles.identityChip}>{identity}</span>
-        <Term term="identity" icon label={CONCEPT.style} />
-      </div>
-      <div className={styles.meterRow}>
-        <Meter label={CONCEPT.familiarity} value={familiarity} valueLabel={cohesionLabel(familiarity)} />
-        <Term term="cohesion" icon label={CONCEPT.familiarity} />
-      </div>
+      <p className={styles.identityLine}>
+        <Term term="identity">{CONCEPT.style}</Term> <span className={styles.identityChip}>{identity}</span>
+      </p>
+      <p className={styles.identityLine}>
+        <Term term="cohesion">{CONCEPT.familiarity}</Term> <strong>{cohesionLabel(familiarity)}</strong> <span className={styles.figure}>{Math.round(familiarity)} of 100</span>
+      </p>
       {memory && memory.bonus !== 0 && (
         <p className={styles.memory}>{memory.bonus > 0 ? t("board.memory.same", { count: memory.seasons, bonus: memory.bonus }) : t("board.memory.change", { penalty: -memory.bonus })}</p>
       )}
       {settle && (
         <p className={styles.memory}>
-          {settleNote(settle)} <Term term="settling" icon label="Settling" />
+          <Term term="settling">{settleNote(settle)}</Term>
         </p>
       )}
     </section>

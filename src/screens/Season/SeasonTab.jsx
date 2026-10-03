@@ -1,5 +1,4 @@
 import { useCallback } from "react";
-import CoachNote from "../../app/CoachNote.jsx";
 import { cx } from "../../ui/cx.js";
 import { selectTable } from "../../state/selectors.js";
 import { halfSeason } from "../../engine/season.js";
@@ -14,16 +13,15 @@ import styles from "./Season.module.css";
 // `feed` is the first week of a fast-forward still typing in on the vidiprinter.
 // `revealInstant` also covers a reveal the player resumed into; a feed is
 // never saved, so the vidiprinter follows reduced motion alone.
-export default function SeasonTab({ state, dispatch, identity, familiarity, profile, tacticUntouched, instant, revealInstant = instant, feed, onFeedDone, careerCode, clubSeason, clubName, prefs, onDismissNote, onGoBoard, onGoTab }) {
+export default function SeasonTab({ state, dispatch, identity, familiarity, profile, tacticUntouched, instant, revealInstant = instant, feed, onFeedDone, careerCode, clubSeason, clubName, prefs, onGoBoard, onGoTab }) {
   const { campaign, opponents } = state;
   const standingAt = useCallback((week) => selectTable({ campaign, opponents }, week).find((r) => r.isUser), [campaign, opponents]);
   if (state.phase === "transfer") {
-    return <Window state={state} dispatch={dispatch} clubSeason={clubSeason} clubName={clubName} prefs={prefs} onDismissNote={onDismissNote} />;
+    return <Window state={state} dispatch={dispatch} clubSeason={clubSeason} clubName={clubName} prefs={prefs} />;
   }
   const feeding = feed != null && campaign && (state.phase === "matchday" || state.phase === "result");
   return (
     <div className={cx(styles.season, state.phase === "matchday" && !feeding && styles.wide)}>
-      <CoachNote id="season" prefs={prefs} onDismiss={onDismissNote} />
       {state.phase === "tactics" && (
         <Preseason state={state} identity={identity} familiarity={familiarity} tacticUntouched={tacticUntouched} clubName={clubName} onGoBoard={onGoBoard} />
       )}

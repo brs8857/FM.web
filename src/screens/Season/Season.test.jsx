@@ -147,10 +147,11 @@ describe("SeasonTab", () => {
     expect(screen.getByText("Week 1 of 38 · kick-off")).toBeTruthy();
     expect(screen.queryByText("Last match")).toBeNull();
     const card = screen.getByText(`Next · Week 1 · ${fixture.home ? "Home" : "Away"}`).closest("article");
-    expect(within(card).getByText(fixture.name)).toBeTruthy();
+    expect(within(card).getAllByText(fixture.name).length).toBeGreaterThan(0);
     expect(within(card).getByText(fixture.promoted ? "promoted" : "Opening day")).toBeTruthy();
     expect(screen.getByText(/^First match in this system: cohesion −3/)).toBeTruthy();
-    expect(screen.getByRole("meter", { name: "Attack" }).getAttribute("aria-valuetext")).toMatch(new RegExp(`${fixture.name} \\d+$`));
+    expect(within(card).getByRole("columnheader", { name: fixture.name })).toBeTruthy();
+    expect(within(within(card).getByRole("row", { name: /^Attack/ })).getAllByRole("cell")).toHaveLength(3);
     fireEvent.click(screen.getByRole("button", { name: "Board" }));
     fireEvent.click(screen.getByRole("button", { name: "Squad" }));
     expect(spy.onGoTab.mock.calls).toEqual([["board"], ["squad"]]);

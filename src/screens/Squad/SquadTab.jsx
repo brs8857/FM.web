@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Chalkboard from "../../pitch/Chalkboard.jsx";
 import TeamSheetRow from "../../ui/TeamSheetRow.jsx";
-import CoachNote from "../../app/CoachNote.jsx";
 import PlayerSheet, { BAN_MARK } from "./PlayerSheet.jsx";
 import { POSITION_LABEL, roleLabel, briefLabel } from "../../content/labels.js";
 import { playerMeta } from "../../content/format.js";
@@ -22,7 +21,7 @@ function benchByLine(bench) {
     .sort((x, y) => BENCH_LINES.indexOf(benchLine(x.b.player)) - BENCH_LINES.indexOf(benchLine(y.b.player)) || x.i - y.i);
 }
 
-export default function SquadTab({ state, dispatch, clubSeason, revealed, suspended, prefs, onDismissNote }) {
+export default function SquadTab({ state, dispatch, clubSeason, revealed, suspended }) {
   const [target, setTarget] = useState(null);
   const open = (kind, id) => setTarget({ kind, id });
   return (
@@ -31,7 +30,6 @@ export default function SquadTab({ state, dispatch, clubSeason, revealed, suspen
         <Chalkboard assignments={state.assignments} bench={state.bench} mode="view" compact onSelect={open} onOpenSheet={open} dispatch={dispatch} suspended={suspended} />
       </div>
       <div className={layout.content}>
-        <CoachNote id="squad" prefs={prefs} onDismiss={onDismissNote} />
         <section>
           <h2 className={layout.heading}>Team sheet</h2>
           <ul className={layout.rows}>

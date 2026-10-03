@@ -6,7 +6,7 @@
 }
 .score {
   font-family: var(--font-headline);
-  font-weight: 800;
+  font-weight: 700;
   font-size: var(--text-xl);
   line-height: 1.05;
 }
@@ -78,7 +78,7 @@
 }
 .chip {
   font-family: var(--font-display);
-  font-weight: 800;
+  font-weight: 700;
 }
 .changed {
   color: var(--signal-ink);

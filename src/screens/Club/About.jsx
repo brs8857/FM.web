@@ -12,7 +12,7 @@ export default function About() {
       <h3 className={styles.subheading}>Data</h3>
       <p>Player ratings are worked out from public records of what each player was worth, and how old he was, in every top-flight club-season from 1992-93 to 2025-26 and every Championship club-season from 2016-17. They are estimates, not anyone's official numbers.</p>
       <h3 className={styles.subheading}>Licences</h3>
-      <p>The code is released under the MIT licence; the dataset is not covered by it. Headlines are set in Newsreader, text in Barlow, the chalkboard in Barlow Condensed and the vidiprinter in Courier Prime, all under the SIL Open Font License.</p>
+      <p>The code is released under the MIT licence; the dataset is not covered by it. Text is set in your device's own typeface; the vidiprinter is in Courier.</p>
     </div>
   );
 }

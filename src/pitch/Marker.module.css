@@ -29,7 +29,7 @@
   height: 32px;
   border-radius: 50%;
   border: 2px solid var(--chalk);
-  font-weight: 800;
+  font-weight: 700;
   font-size: var(--text-xs);
   line-height: 1;
   transition: transform var(--motion-slip) var(--ease), box-shadow var(--motion-slip) var(--ease);

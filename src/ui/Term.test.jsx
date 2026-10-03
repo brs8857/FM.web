@@ -25,12 +25,6 @@ describe("Term", () => {
     expect(screen.getByRole("dialog", { name: "Brief" })).toBeTruthy();
   });
 
-  it("renders as an info icon button when asked", () => {
-    render(<TermsProvider terms={terms}><Term term="brief" icon label="Brief" /></TermsProvider>);
-    fireEvent.click(screen.getByRole("button", { name: "About Brief" }));
-    expect(screen.getByRole("dialog", { name: "Brief" })).toBeTruthy();
-  });
-
   it("falls back to plain text when the term has no definition", () => {
     render(<TermsProvider terms={terms}><Term term="unknown">mystery</Term></TermsProvider>);
     expect(screen.queryByRole("button")).toBeNull();

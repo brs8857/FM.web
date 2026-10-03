@@ -9,9 +9,6 @@ export function CloseIcon() {
 export function ChevronIcon({ open }) {
   return <svg {...base} style={{ transform: open ? "rotate(180deg)" : undefined }}><path d="M5 8l5 5 5-5" /></svg>;
 }
-export function InfoIcon() {
-  return <svg {...base}><circle cx="10" cy="10" r="7.5" /><path d="M10 9v5M10 6.5v.5" /></svg>;
-}
 export function MinusIcon() {
   return <svg {...base}><path d="M5 10h10" /></svg>;
 }

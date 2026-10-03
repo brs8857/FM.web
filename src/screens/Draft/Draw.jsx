@@ -7,7 +7,6 @@ import { createRng } from "../../engine/rng.js";
 import { BENCH_SIZE } from "../../engine/squad.js";
 import { POSITION_LABEL } from "../../content/labels.js";
 import { t } from "../../content/t.js";
-import { cx } from "../../ui/cx.js";
 import styles from "./Draft.module.css";
 
 export const SPIN_MS = 1100;
@@ -40,9 +39,8 @@ export default function Draw({ draw, slotType, benchPick = null, eraIndex, insta
     <section className={styles.draw} aria-label="The draw">
       <div className={styles.drawHead}>
         <span className={styles.drawTitle}>{title}</span>
-        <span className={styles.ticks} aria-label={t("draft.redraws", { count: draw.redrawsLeft })}>
-          {[0, 1].map((i) => <span key={i} className={cx(styles.tick, i >= draw.redrawsLeft && styles.spent)} aria-hidden="true">✓</span>)}
-          <Term term="redraw" icon label="Redraws" />
+        <span className={styles.ticks}>
+          <Term term="redraw">{t("draft.redraws", { count: draw.redrawsLeft })}</Term>
         </span>
       </div>
 

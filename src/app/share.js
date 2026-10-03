@@ -23,14 +23,15 @@ function wrap(ctx, text, maxWidth, separator = " ") {
 export function renderSlip(ctx, slip) {
   const paper = cssVar("--paper", "#F4F4F0"), ink = cssVar("--ink", "#1A1B18"), ink2 = cssVar("--ink-2", "#4D5047");
   const rule = cssVar("--rule", "#CDCFC5");
-  const display = '"Newsreader", Georgia, serif', body = '"Barlow", sans-serif', mono = '"Courier Prime", "Courier New", monospace';
+  const system = 'system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
+  const display = system, body = system, mono = '"Courier New", Courier, monospace';
   const margin = 80, width = SHARE_WIDTH - margin * 2;
   ctx.fillStyle = paper;
   ctx.fillRect(0, 0, SHARE_WIDTH, SHARE_HEIGHT);
 
   let y = margin + 50;
   ctx.fillStyle = ink;
-  ctx.font = `800 64px ${display}`;
+  ctx.font = `700 64px ${display}`;
   ctx.fillText(PRODUCT_NAME, margin, y);
   ctx.fillStyle = ink2;
   ctx.font = `600 30px ${body}`;
@@ -44,7 +45,7 @@ export function renderSlip(ctx, slip) {
 
   y += 150;
   ctx.fillStyle = ink;
-  ctx.font = `800 150px ${display}`;
+  ctx.font = `700 150px ${display}`;
   for (const line of wrap(ctx, slip.headline, width)) { ctx.fillText(line, margin, y); y += 140; }
 
   y -= 40;
@@ -95,7 +96,6 @@ function toBlob(canvas) {
 }
 
 export async function shareSlip(slip, { nav = navigator, doc = document, createCanvas = () => doc.createElement("canvas") } = {}) {
-  if (doc.fonts?.load) await Promise.allSettled([doc.fonts.load('800 150px "Newsreader"'), doc.fonts.load('700 34px "Courier Prime"'), doc.fonts.load('400 42px "Barlow"')]);
   const canvas = createCanvas();
   canvas.width = SHARE_WIDTH;
   canvas.height = SHARE_HEIGHT;

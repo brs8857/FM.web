@@ -53,7 +53,7 @@ describe("BoardTab", () => {
     const state = makeSeason3TacticsState();
     render(<Harness initial={state} />);
     expect(screen.getByRole("region", { name: "Identity and cohesion" }).textContent).toContain("Gegenpress");
-    expect(screen.getByRole("meter", { name: "Cohesion" }).getAttribute("aria-valuetext")).toMatch(/^(Clicking|Settled|Rough|Strangers), \d+ of 100$/);
+    expect(screen.getByRole("region", { name: "Identity and cohesion" }).textContent).toMatch(/Cohesion (Clicking|Settled|Rough|Strangers) \d+ of 100/);
     expect(screen.getByRole("radio", { name: "Gegenpress", checked: true })).toBeTruthy();
     expect(screen.getByRole("radio", { name: /Blank slate/ }).textContent).toContain("no identity bonus");
     for (const label of ["Mentality", "Tempo", "Directness"]) expect(screen.getByRole("slider", { name: label })).toBeTruthy();
@@ -63,8 +63,8 @@ describe("BoardTab", () => {
     fireEvent.click(group);
     expect(screen.getByRole("slider", { name: "Width" })).toBeTruthy();
     expect(screen.getByRole("radio", { name: "Loose", checked: true })).toBeTruthy();
-    expect(screen.getAllByRole("meter").length).toBe(7);
-    expect(screen.getByRole("meter", { name: "Attack" }).getAttribute("aria-valuetext")).toMatch(/average opponent \d+/);
+    expect(screen.getByRole("columnheader", { name: "Average opponent" })).toBeTruthy();
+    expect(screen.getAllByRole("rowheader").map((h) => h.textContent)).toEqual(["Attack", "Creativity", "Build-up", "Press", "Defence", "Physical"]);
   });
 
   it("rewrites the dials when a preset is chosen and slips the ones that moved", () => {

@@ -28,14 +28,6 @@ describe("App", () => {
     expect(screen.getByRole("heading", { level: 1, name: "Era XI" })).toBeTruthy();
   });
 
-  it("dismisses a coach's note for good", () => {
-    const storage = fakeStorage({ [SAVE_KEY]: makeSaveText() });
-    render(<App dataset={makeMiniDataset()} storage={storage} prefs={prefs} />);
-    fireEvent.click(screen.getByRole("button", { name: "Dismiss note" }));
-    expect(screen.queryByRole("note")).toBeNull();
-    expect(JSON.parse(storage.data.get(PREFS_KEY)).seenNotes).toEqual(["first-run", "home"]);
-  });
-
   it("boots on Home, resumes a save into Club mode on the tab the next action needs", () => {
     const storage = fakeStorage({ [SAVE_KEY]: makeSaveText() });
     const { unmount } = render(<App dataset={makeMiniDataset()} storage={storage} prefs={{ ...prefs, theme: "dark" }} />);

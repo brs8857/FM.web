@@ -1,7 +1,6 @@
 import Button from "../../ui/Button.jsx";
 import Disclosure from "../../ui/Disclosure.jsx";
 import Slip from "../../ui/Slip.jsx";
-import CoachNote from "../../app/CoachNote.jsx";
 import Record from "./Record.jsx";
 import CareerCode from "./CareerCode.jsx";
 import Saves from "./Saves.jsx";
@@ -11,11 +10,10 @@ import { careerSeasonLabel, CAREER_SEASONS } from "../../engine/season.js";
 import { clubName as displayClubName } from "../../content/clubs.js";
 import styles from "./Club.module.css";
 
-export default function ClubTab({ history, careerComplete, careerCode, prefs, setPrefs, onDismissNote, canExport, storageAvailable, onExport, onImportFile, onStartFromCode, onNewCareer }) {
+export default function ClubTab({ history, careerComplete, careerCode, prefs, setPrefs, canExport, storageAvailable, onExport, onImportFile, onStartFromCode, onNewCareer }) {
   const clubName = (name) => displayClubName(name, prefs.clubNames);
   return (
     <div className={styles.club}>
-      <CoachNote id="club" prefs={prefs} onDismiss={onDismissNote} />
       {careerComplete ? (
         <Slip kicker="Career complete" title={`${careerSeasonLabel(1)} to ${careerSeasonLabel(CAREER_SEASONS)}`}>
           <p className={styles.hint}>Six seasons with this XI. The record stands; the next one starts from a blank sheet.</p>

@@ -255,7 +255,7 @@ function Game({ dataset, storageProp, initialPrefs }) {
   if (nav.home) {
     return (
       <Shell mode="home">
-        <Home state={state} next={next} identity={identity} cohesion={cohesion} notice={notice} prefs={prefs} onDismissNote={markSeen}
+        <Home state={state} next={next} identity={identity} cohesion={cohesion} notice={notice}
           onContinue={() => { navDispatch({ type: "LEAVE_HOME" }); if (next.tab) goTab(next.tab); }}
           onNewCareer={onNewCareer} onClub={() => { navDispatch({ type: "LEAVE_HOME" }); goTab("club"); }}
           onSaves={() => setHomeSheet("saves")} onSettings={() => setHomeSheet("settings")} onAbout={() => setHomeSheet("about")} />
@@ -292,7 +292,7 @@ function Game({ dataset, storageProp, initialPrefs }) {
       <Shell mode="draft" title="Draft" subtitle={state.draftDone ? "Squad complete" : next.key === "draftBench" ? `Bench pick ${next.pick} of ${BENCH_SIZE}` : `Pick ${next.pick} of 11`}
         end={<Button variant="ghost" size="sm" onClick={() => navDispatch({ type: "HOME" })}>Pause</Button>}
         sticky={state.draftDone ? <Button block onClick={() => dispatch({ type: "SKIP_TO_TACTICS" })}>Go to the board</Button> : undefined}>
-        <Draft state={state} dataset={dataset} dispatch={dispatch} instant={reducedMotion} clubSeason={clubSeason} prefs={prefs} onDismissNote={markSeen} />
+        <Draft state={state} dataset={dataset} dispatch={dispatch} instant={reducedMotion} clubSeason={clubSeason} prefs={prefs} />
       </Shell>
     );
   }
@@ -309,16 +309,16 @@ function Game({ dataset, storageProp, initialPrefs }) {
           {sticky.playTo && <Button variant="ghost" onClick={() => setPlayTo(true)}>{t("season.playTo")}</Button>}
         </div>
       ) : undefined}>
-      {nav.tab === "squad" && <SquadTab state={state} dispatch={dispatch} clubSeason={clubSeason} revealed={revealed} suspended={suspended} prefs={prefs} onDismissNote={markSeen} />}
-      {nav.tab === "board" && <BoardTab state={state} dispatch={dispatch} profile={profile} suspended={suspended} familiarity={familiarity} clubSeason={clubSeason} revealed={revealed} prefs={prefs} onDismissNote={markSeen} />}
+      {nav.tab === "squad" && <SquadTab state={state} dispatch={dispatch} clubSeason={clubSeason} revealed={revealed} suspended={suspended} prefs={prefs} />}
+      {nav.tab === "board" && <BoardTab state={state} dispatch={dispatch} profile={profile} suspended={suspended} familiarity={familiarity} clubSeason={clubSeason} revealed={revealed} prefs={prefs} />}
       {nav.tab === "season" && (
         <SeasonTab state={state} dispatch={dispatch} identity={identity} familiarity={familiarity} profile={profile} tacticUntouched={tacticUntouched(state)}
           instant={reducedMotion} revealInstant={instant} feed={feed} onFeedDone={onFeedDone} careerCode={careerCode}
-          clubSeason={clubSeason} clubName={clubName} prefs={prefs} onDismissNote={markSeen} onGoBoard={() => goTab("board")} onGoTab={goTab} />
+          clubSeason={clubSeason} clubName={clubName} prefs={prefs} onGoBoard={() => goTab("board")} onGoTab={goTab} />
       )}
       {nav.tab === "club" && (
         <ClubTab history={selectSeasonHistory(state, summarizeSeason)} careerComplete={next.key === "careerComplete"} careerCode={careerCode}
-          prefs={prefs} setPrefs={setPrefs} onDismissNote={markSeen} canExport={inProgress} storageAvailable={Boolean(storage)}
+          prefs={prefs} setPrefs={setPrefs} canExport={inProgress} storageAvailable={Boolean(storage)}
           onExport={exportCareer} onImportFile={onImportFile} onStartFromCode={onStartFromCode} onNewCareer={onNewCareer} />
       )}
       {state.phase === "matchday" && state.campaign && (

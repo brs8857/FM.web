@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { describe, it, expect } from "vitest";
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { checkContrast, parseThemes, contrast, PAIRS } from "../../scripts/check-contrast.mjs";
 
 const tokens = readFileSync("src/styles/tokens.css", "utf8");
@@ -49,22 +49,15 @@ describe("design tokens", () => {
   });
 });
 
-describe("bundled fonts", () => {
-  const files = [...base.matchAll(/url\("\.\/fonts\/([^"]+)"\)/g)].map((m) => m[1]);
-
-  it("declares the eight faces: serif headlines, sans text, condensed chalk labels, typewriter results", () => {
-    expect(files).toEqual([
-      "barlow-latin-400-normal.woff2", "barlow-latin-600-normal.woff2",
-      "barlow-condensed-latin-600-normal.woff2", "barlow-condensed-latin-800-normal.woff2",
-      "newsreader-latin-600-normal.woff2", "newsreader-latin-800-normal.woff2",
-      "courier-prime-latin-400-normal.woff2", "courier-prime-latin-700-normal.woff2",
-    ]);
-  });
-
-  it("ships each face and its licence beside the stylesheet, so the standalone build inlines them", () => {
-    for (const f of files) expect(existsSync(`src/styles/fonts/${f}`), f).toBe(true);
-    for (const l of ["LICENSE-Barlow.txt", "LICENSE-BarlowCondensed.txt", "LICENSE-Newsreader.txt", "LICENSE-CourierPrime.txt"]) {
-      expect(readFileSync(`src/styles/fonts/${l}`, "utf8")).toContain("SIL OPEN FONT LICENSE Version 1.1");
+describe("type", () => {
+  it("sets the device's own face, with Courier only for the vidiprinter, and bundles no web fonts", () => {
+    expect(base).not.toMatch(/@font-face/);
+    expect(tokens).toMatch(/--font-system:\s*system-ui, -apple-system/);
+    for (const role of ["headline", "body", "display"]) expect(tokens).toMatch(new RegExp(`--font-${role}:\\s*var\\(--font-system\\)`));
+    expect(tokens).toMatch(/--font-mono:\s*"Courier New"/);
+    // The faces AI-built sites reach for, and the ones this game used to ship.
+    for (const face of ["Inter", "Geist", "Poppins", "Montserrat", "Space Grotesk", "DM Sans", "Plus Jakarta", "Oswald", "Bebas", "Barlow", "Newsreader", "Fraunces", "Playfair", "Instrument Serif", "JetBrains Mono", "IBM Plex", "Courier Prime"]) {
+      expect(`${base}\n${tokens}`, face).not.toContain(face);
     }
   });
 

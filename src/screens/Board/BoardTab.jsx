@@ -2,7 +2,6 @@ import { useState } from "react";
 import Chalkboard from "../../pitch/Chalkboard.jsx";
 import Button from "../../ui/Button.jsx";
 import { useAnnounce } from "../../ui/LiveRegion.jsx";
-import CoachNote from "../../app/CoachNote.jsx";
 import PlayerSheet from "../Squad/PlayerSheet.jsx";
 import IdentityLine from "./IdentityLine.jsx";
 import StyleRow from "./StyleRow.jsx";
@@ -16,7 +15,7 @@ import { cx } from "../../ui/cx.js";
 import layout from "../TabLayout.module.css";
 import styles from "./Board.module.css";
 
-export default function BoardTab({ state, dispatch, profile, familiarity, clubSeason, revealed, suspended, prefs, onDismissNote }) {
+export default function BoardTab({ state, dispatch, profile, familiarity, clubSeason, revealed, suspended }) {
   const announce = useAnnounce();
   const [target, setTarget] = useState(null);
   const [pulse, setPulse] = useState({ keys: [], n: 0 });
@@ -42,7 +41,6 @@ export default function BoardTab({ state, dispatch, profile, familiarity, clubSe
         </div>
       </div>
       <div className={layout.content}>
-        <CoachNote id="board" prefs={prefs} onDismiss={onDismissNote} />
         <IdentityLine identity={identity} familiarity={familiarity} memory={selectMemory(state)} settle={selectSettling(state)} />
         <section className={styles.section} aria-labelledby="board-style">
           <h2 id="board-style" className={styles.subheading}>Style</h2>

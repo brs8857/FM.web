@@ -4,7 +4,6 @@ import Button from "../../ui/Button.jsx";
 import Cutting from "../../ui/Cutting.jsx";
 import Callout from "../../ui/Callout.jsx";
 import { useAnnounce } from "../../ui/LiveRegion.jsx";
-import CoachNote from "../../app/CoachNote.jsx";
 import PlayerSheet from "../Squad/PlayerSheet.jsx";
 import { POSITION_LABEL } from "../../content/labels.js";
 import { t } from "../../content/t.js";
@@ -36,7 +35,7 @@ export function transitionLines(changes, clubName) {
 
 const MOVE_TITLE = { up: "Promoted", down: "Relegated" };
 
-export default function Window({ state, dispatch, clubSeason, clubName, prefs, onDismissNote }) {
+export default function Window({ state, dispatch, clubSeason, clubName }) {
   const announce = useAnnounce();
   const [target, setTarget] = useState(null);
   const [replacing, setReplacing] = useState(null);
@@ -85,7 +84,6 @@ export default function Window({ state, dispatch, clubSeason, clubName, prefs, o
           <p className={styles.lede}>Eight players have become available. Sign them to the bench, or straight into the XI in someone's place, for as long as the wage points last.</p>
           <p className={styles.budget} role="status">{t("window.budget", { left, total: budget.points })}</p>
         </div>
-        <CoachNote id="window" prefs={prefs} onDismiss={onDismissNote} />
         {lines.length > 0 && (
           <Callout title={MOVE_TITLE[changes.userMove] ?? "League changes"}>
             {lines.join(" ")}

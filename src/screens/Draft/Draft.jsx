@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Chalkboard from "../../pitch/Chalkboard.jsx";
-import CoachNote from "../../app/CoachNote.jsx";
 import { useMediaQuery } from "../../app/useMediaQuery.js";
 import { useAnnounce } from "../../ui/LiveRegion.jsx";
 import { selectDraftSummary, selectArchive, selectEraIndex, previewPick, selectDraftStage, selectBenchSummary } from "../../state/selectors.js";
@@ -17,7 +16,7 @@ const TWO_COLUMNS = "(min-width: 600px)";
 
 // On a phone the strip follows the draw, so the board and all three cuttings
 // fit one screen at every pick (spec 04 §12).
-export default function Draft({ state, dataset, dispatch, instant, clubSeason, prefs, onDismissNote }) {
+export default function Draft({ state, dataset, dispatch, instant, clubSeason }) {
   const announce = useAnnounce();
   const twoColumns = useMediaQuery(TWO_COLUMNS);
   const [openIdx, setOpenIdx] = useState(null);
@@ -86,7 +85,6 @@ export default function Draft({ state, dataset, dispatch, instant, clubSeason, p
           : <Draw draw={{ ...state.draw, lastEmpty }} slotType={slot?.type} benchPick={benchStage ? benchPick : null} eraIndex={eraIndex} instant={instant} selected={openIdx} labelFor={labelFor}
             onDraw={() => dispatch({ type: "DRAW" })} onLand={onLand} onRedraw={onRedraw} onOpen={setOpenIdx} onFill={onFill} />}
         {!twoColumns && <SquadStrip summary={summary} bench={bench} />}
-        <CoachNote id={benchStage ? "bench" : "draft"} prefs={prefs} onDismiss={onDismissNote} />
       </div>
       <CuttingSheet option={open} title={open ? labelFor(open) : ""} slotType={slot?.type} bench={benchStage} onClose={() => setOpenIdx(null)} onChoose={setCandidate} />
       <ConfirmPick player={candidate} bench={benchStage} preview={candidate && !benchStage ? previewPick(state, candidate) : null} clubSeason={open ? labelFor(open) : ""}

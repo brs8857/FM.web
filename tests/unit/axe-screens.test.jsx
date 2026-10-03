@@ -118,7 +118,7 @@ describe("axe: every screen", { timeout: 30_000 }, () => {
     fireEvent.click(screen.getByRole("button", { name: /In possession/ }));
     fireEvent.click(screen.getByRole("button", { name: /Out of possession/ }));
     await check("board");
-    fireEvent.click(screen.getByRole("button", { name: "About Tempo" }));
+    fireEvent.click(screen.getByRole("button", { name: "Tempo" }));
     await check("term sheet");
   });
 

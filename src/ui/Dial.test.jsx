@@ -28,13 +28,14 @@ describe("Dial", () => {
     expect(screen.getByRole("button", { name: "Lower Width" }).disabled).toBe(true);
   });
 
-  it("opens the term sheet from the info button", () => {
+  it("opens the term sheet from its label", () => {
     render(
       <TermsProvider terms={{ tempo: { title: "Tempo", body: "How quickly the ball moves." } }}>
         <Dial label="Tempo" value={40} onChange={() => {}} term="tempo" />
       </TermsProvider>,
     );
-    fireEvent.click(screen.getByRole("button", { name: "About Tempo" }));
+    fireEvent.click(screen.getByRole("button", { name: "Tempo" }));
+    expect(screen.getByRole("slider", { name: "Tempo" })).toBeTruthy();
     expect(screen.getByRole("dialog", { name: "Tempo" }).textContent).toContain("How quickly the ball moves.");
   });
 });
