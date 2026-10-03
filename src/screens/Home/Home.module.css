@@ -55,6 +55,7 @@
 }
 .footer {
   display: flex;
-  gap: var(--space-4);
+  flex-wrap: wrap;
+  column-gap: var(--space-4);
   border-top: 1px solid var(--rule);
 }
