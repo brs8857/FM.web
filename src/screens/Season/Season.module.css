@@ -99,8 +99,9 @@
   border-bottom: 3px double var(--ink);
 }
 .headline {
-  font-size: var(--text-3xl);
+  font-size: clamp(var(--text-2xl), 11vw, var(--text-3xl));
   line-height: 0.95;
+  overflow-wrap: anywhere;
 }
 .standfirst {
   font-size: var(--text-lg);

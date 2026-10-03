@@ -39,6 +39,8 @@
 }
 .block {
   width: 100%;
+  white-space: normal;
+  text-wrap: balance;
 }
 .button:disabled {
   opacity: 0.45;

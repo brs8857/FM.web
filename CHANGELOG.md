@@ -1,5 +1,21 @@
 # Changelog
 
+## 3.1.0 — 2026-10-03
+
+A second pass at everything that made the game look machine-made.
+
+### Changed
+- **Type**: the game is set in your device's own typeface (San Francisco on iPhone), with Courier kept for the vidiprinter. The serif headlines and the sports-app condensed face are gone, and no fonts are downloaded.
+- **One main action**: the green "Next" button in the top bar is gone; the bar at the bottom does the next thing from any tab.
+- **No tip cards and no ⓘ icons**: the coach's notes are gone, and tapping a dotted-underlined word (Mentality, Cohesion, Identity) explains it.
+- **Pages, not tiles**: cuttings, results and the league, shape and colour choices are set off by rules instead of grey boxes; style and era choices are words on a line with the chosen one underlined; square corners throughout; no striped rows.
+- **Figures, not gauges**: cohesion is a word and a number, and Strengths is a small table (you, the comparison, the gap).
+- Home is a front page with the archive's dates under the name; the welcome is one page of three rules; the setup steps ask plain questions; playing styles are in sentence case.
+
+### Fixed
+- The era slider no longer prints each year three times.
+- Long verdicts ("Championship winners") and play-off button labels no longer run off a phone screen.
+
 ## 3.0.1 — 2026-09-27
 
 ### Fixed
