@@ -5,7 +5,7 @@ import styles from "./Club.module.css";
 export default function About() {
   return (
     <div className={styles.about}>
-      <p><strong>{PRODUCT_NAME}</strong> <span className="mono">v{APP_VERSION}</span></p>
+      <p><strong>{PRODUCT_NAME}</strong> <span className="figures">v{APP_VERSION}</span></p>
       <p>{TAGLINE}</p>
       <h3 className={styles.subheading}>Privacy</h3>
       <p>Your career is stored on this device only. Nothing is sent anywhere, and there are no accounts, adverts or analytics.</p>

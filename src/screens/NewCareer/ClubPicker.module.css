@@ -1,30 +1,29 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 10rem), 1fr));
-  gap: var(--space-2);
+  column-gap: var(--space-4);
+  border-top: 1px solid var(--rule);
 }
 .option {
   display: flex;
   align-items: center;
   gap: var(--space-3);
   min-height: var(--hit);
-  padding: var(--space-2);
-  border: 1px solid var(--rule);
-  border-radius: var(--radius-paper);
-  background: var(--paper-2);
+  padding: var(--space-2) 0;
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  background: none;
   color: var(--ink);
   text-align: left;
 }
 .selected {
-  border-color: var(--signal);
-  box-shadow: inset 0 0 0 2px var(--signal);
+  font-weight: 700;
 }
 .swatch {
   flex: none;
-  width: 32px;
-  height: 32px;
-  border: 1px solid var(--rule);
-  border-radius: var(--radius-paper);
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--ink);
   background: linear-gradient(135deg, var(--swatch-a, var(--signal)) 50%, var(--swatch-b, var(--slate)) 50%);
 }
 .text {
@@ -40,4 +39,7 @@
 .sub {
   font-size: var(--text-xs);
   color: var(--ink-2);
+}
+.selected .label::after {
+  content: " ✓";
 }

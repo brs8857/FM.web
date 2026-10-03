@@ -14,7 +14,7 @@ export default function Dial({ label, value, onChange, min = 0, max = 100, step 
       <div className={styles.head}>
         <span className={styles.label}>{term ? <Term term={term}>{label}</Term> : label}</span>
         <span className={styles.value} aria-hidden="true">
-          <span className="mono">{value}</span>
+          <span className="figures">{value}</span>
           {valueLabel && <span className={styles.valueLabel}>{valueLabel}</span>}
         </span>
       </div>

@@ -35,12 +35,13 @@ describe("App", () => {
     expect(screen.getByText("Season 3 · 2028-29")).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "Kick off season 3" }));
     expect(screen.getByRole("tab", { name: "Season", selected: true })).toBeTruthy();
-    expect(screen.getAllByRole("button", { name: "Kick off season 3" })).toHaveLength(2);
+    // One main action on screen, not a header copy of it as well.
+    expect(screen.getAllByRole("button", { name: "Kick off season 3" })).toHaveLength(1);
     fireEvent.click(screen.getByRole("tab", { name: "Club" }));
     expect(screen.getByRole("tabpanel", { name: "Club" })).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "Back" }));
     expect(screen.getByRole("tab", { name: "Season", selected: true })).toBeTruthy();
-    fireEvent.click(screen.getAllByRole("button", { name: "Kick off season 3" })[1]);
+    fireEvent.click(screen.getByRole("button", { name: "Kick off season 3" }));
     expect(screen.getAllByRole("button", { name: "Start season 3" }).length).toBeGreaterThan(0);
     expect(JSON.parse(storage.data.get(SAVE_KEY)).state.phase).toBe("reveal");
     fireEvent.click(screen.getByRole("button", { name: "Home" }));

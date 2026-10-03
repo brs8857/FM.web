@@ -43,7 +43,6 @@ import terms from "../content/terms.json";
 import { t } from "../content/t.js";
 import { TermsProvider } from "../ui/Term.jsx";
 import LiveRegion from "../ui/LiveRegion.jsx";
-import NextPill from "../ui/NextPill.jsx";
 import Button from "../ui/Button.jsx";
 import IconButton from "../ui/IconButton.jsx";
 import Sheet from "../ui/Sheet.jsx";
@@ -224,10 +223,12 @@ function Game({ dataset, storageProp, initialPrefs }) {
     if (next.key === "playMatch" && nav.tab !== "club") {
       return { label: next.label, run: () => { dispatch(NEXT_ACTIONS.playMatch); goTab("season"); }, playTo: true };
     }
-    if (nav.tab !== next.tab) return null;
-    if (next.key === "careerComplete") return { label: next.label, run: () => goTab("club") };
+    // One main action, always in the same place: from any tab it does the
+    // next thing, opening the tab that thing happens on.
+    if (next.key === "careerComplete") return nav.tab === "club" ? null : { label: next.label, run: () => goTab("club") };
     const action = NEXT_ACTIONS[next.key];
-    return action ? { label: next.label, run: () => dispatch(action) } : null;
+    if (!action) return next.tab && nav.tab !== next.tab ? { label: next.label, run: () => goTab(next.tab) } : null;
+    return { label: next.label, run: () => { dispatch(action); if (next.tab && nav.tab !== next.tab) goTab(next.tab); } };
   }
 
   const primary = () => {
@@ -302,7 +303,6 @@ function Game({ dataset, storageProp, initialPrefs }) {
       title={TITLES[nav.tab]} subtitle={t("shell.season", { season: state.season, label: careerSeasonLabel(state.season) })}
       start={<IconButton label="Home" onClick={() => navDispatch({ type: "HOME" })}><MarkIcon /></IconButton>}
       onBack={nav.history.length > 0 ? () => navDispatch({ type: "BACK" }) : undefined}
-      next={feed == null ? <NextPill label={next.label} onClick={goNext} /> : undefined}
       sticky={sticky ? (
         <div className={styles.stickyRow}>
           <Button block onClick={sticky.run}>{sticky.label}</Button>

@@ -36,19 +36,19 @@ export default function Playoffs({ state, clubName }) {
       <ol className={styles.ties}>
         <li className={styles.tie}>
           <span className={styles.round}>Semi-final · {USER_TEAM_NAME} v {clubName(semi.opponent)}</span>
-          {semi.legs.map((m, i) => <span key={m.round} className={styles.mono}>{legLabel[i]}: {scoreLine(m, clubName)}</span>)}
-          {semi.aggregate && <span className={styles.mono}>Aggregate {semi.aggregate[0]}-{semi.aggregate[1]}{extraTime(semi.extraTime)}</span>}
+          {semi.legs.map((m, i) => <span key={m.round} className={styles.figures}>{legLabel[i]}: {scoreLine(m, clubName)}</span>)}
+          {semi.aggregate && <span className={styles.figures}>Aggregate {semi.aggregate[0]}-{semi.aggregate[1]}{extraTime(semi.extraTime)}</span>}
         </li>
         <li className={styles.tie}>
           <span className={styles.round}>Semi-final · {clubName(other.legs[1].home)} v {clubName(other.legs[1].away)}</span>
           {otherLegs === 0 && <span className={styles.note}>Played alongside yours, leg for leg.</span>}
-          {other.legs.slice(0, otherLegs).map((leg, i) => <span key={i} className={styles.mono}>{legLabel[i]}: {rivalLine(leg, clubName)}</span>)}
-          {otherLegs === 2 && <span className={styles.mono}>{clubName(other.winner)} go through</span>}
+          {other.legs.slice(0, otherLegs).map((leg, i) => <span key={i} className={styles.figures}>{legLabel[i]}: {rivalLine(leg, clubName)}</span>)}
+          {otherLegs === 2 && <span className={styles.figures}>{clubName(other.winner)} go through</span>}
         </li>
         <li className={styles.tie}>
           <span className={styles.round}>Final</span>
-          {po.final?.match && <span className={styles.mono}>{scoreLine(po.final.match, clubName)}{extraTime(po.final.match.extraTime)}</span>}
-          {po.rivalFinal && <span className={styles.mono}>{rivalLine(po.rivalFinal, clubName)}</span>}
+          {po.final?.match && <span className={styles.figures}>{scoreLine(po.final.match, clubName)}{extraTime(po.final.match.extraTime)}</span>}
+          {po.rivalFinal && <span className={styles.figures}>{rivalLine(po.rivalFinal, clubName)}</span>}
           {po.final && !po.final.match && <span className={styles.note}>{USER_TEAM_NAME} v {clubName(po.final.opponent)}, at a neutral ground.</span>}
           {!po.final && !po.rivalFinal && <span className={styles.note}>The two winners meet at a neutral ground.</span>}
           {po.stage === "done" && <span className={styles.round}>{name(po.winner, clubName)} {po.winner === USER_TEAM ? "go" : "goes"} up</span>}

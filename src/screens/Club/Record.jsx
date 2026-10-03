@@ -67,7 +67,7 @@ function SeasonSheet({ season, clubName, onClose }) {
     <Sheet open onClose={onClose} title={tierLabel({ name: season.tier }).name} size="lg">
       <div className={styles.section}>
         <p className="strap">Season {season.season} · {careerSeasonLabel(season.season)} · {divisionLabel(season.division)}</p>
-        <p className={styles.mono}>{t("season.record", season)} · {season.pts} pts · Finished {ordinal(season.position)}</p>
+        <p className={styles.figures}>{t("season.record", season)} · {season.pts} pts · Finished {ordinal(season.position)}</p>
         {!logged && <p className={styles.empty}>{t("season.noLog")}</p>}
         {logged && (
           <>

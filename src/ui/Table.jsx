@@ -11,7 +11,7 @@ export default function Table({ caption, captionHidden = false, columns, rows, r
         <thead>
           <tr>
             {columns.map((c) => (
-              <th key={c.key} scope="col" className={cx(c.align === "right" && styles.right, c.mono && "mono")}>{c.label}</th>
+              <th key={c.key} scope="col" className={cx(c.align === "right" && styles.right, c.mono && "figures")}>{c.label}</th>
             ))}
           </tr>
         </thead>
@@ -19,7 +19,7 @@ export default function Table({ caption, captionHidden = false, columns, rows, r
           {rows.map((row) => (
             <tr key={rowKey(row)} className={cx(isHighlighted?.(row) && styles.highlight, styles[ruleAfter?.(row) ?? ""])}>
               {columns.map((c) => (
-                <td key={c.key} className={cx(c.align === "right" && styles.right, c.mono && "mono")}>{c.render ? c.render(row) : row[c.key]}</td>
+                <td key={c.key} className={cx(c.align === "right" && styles.right, c.mono && "figures")}>{c.render ? c.render(row) : row[c.key]}</td>
               ))}
             </tr>
           ))}

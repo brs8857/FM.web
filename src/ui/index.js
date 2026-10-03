@@ -9,7 +9,6 @@ export { default as Disclosure } from "./Disclosure.jsx";
 export { default as Sheet } from "./Sheet.jsx";
 export { default as TabBar } from "./TabBar.jsx";
 export { default as TopBar } from "./TopBar.jsx";
-export { default as NextPill } from "./NextPill.jsx";
 export { Term, TermsProvider, Definition, useTerms } from "./Term.jsx";
 export { default as Callout } from "./Callout.jsx";
 export { default as Toast } from "./Toast.jsx";

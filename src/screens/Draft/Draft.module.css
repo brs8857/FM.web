@@ -15,7 +15,7 @@
   min-width: 0;
 }
 .strip {
-  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
   font-size: var(--text-xs);
   color: var(--ink-2);
   text-align: center;

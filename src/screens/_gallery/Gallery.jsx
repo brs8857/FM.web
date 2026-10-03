@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {
-  Button, IconButton, Chip, ChipRow, Segmented, Toggle, Dial, Disclosure, Sheet, TabBar, TopBar, NextPill,
+  Button, IconButton, Chip, ChipRow, Segmented, Toggle, Dial, Disclosure, Sheet, TabBar, TopBar,
   Term, TermsProvider, Callout, Toast, StrengthTable, Stamp, Ticker, Cutting, TeamSheetRow, Slip, Table,
   LiveRegion, useAnnounce, CloseIcon,
 } from "../../ui/index.js";
@@ -105,8 +105,8 @@ function Samples() {
         <Toast open={toast} message="Career code copied" action="Undo" onAction={() => setToast(false)} onClose={() => setToast(false)} />
       </Section>
 
-      <Section title="TabBar, TopBar, NextPill">
-        <TopBar title="Board" subtitle="Season 3 · 2028-29" onBack={() => {}} next={<NextPill label="Kick off season 3" onClick={() => {}} />} />
+      <Section title="TabBar, TopBar">
+        <TopBar title="Board" subtitle="Season 3 · 2028-29" onBack={() => {}} />
         <TabBar tabs={TABS} value={tab} onChange={setTab} />
         <div className={styles.rail}><TabBar tabs={TABS} value={tab} onChange={setTab} orientation="vertical" /></div>
       </Section>

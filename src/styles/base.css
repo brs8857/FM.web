@@ -92,10 +92,11 @@ svg {
   color: var(--signal-ink);
 }
 
-.mono,
+.figures {
+  font-variant-numeric: tabular-nums;
+}
 code {
   font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums;
 }
 
 .visually-hidden {

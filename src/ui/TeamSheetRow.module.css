@@ -3,9 +3,6 @@
   align-items: stretch;
   border-bottom: 1px solid var(--rule);
 }
-.row:nth-child(even) {
-  background: var(--paper-2);
-}
 .button,
 .static {
   flex: 1;
@@ -52,7 +49,7 @@
   white-space: nowrap;
 }
 .mark {
-  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
   font-size: var(--text-xs);
   padding: 0 var(--space-1);
   border: 1px solid var(--loss);

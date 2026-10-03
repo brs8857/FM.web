@@ -26,7 +26,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-3);
-  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
   font-size: var(--text-sm);
   font-variant-numeric: tabular-nums;
 }
@@ -87,14 +87,14 @@
   padding: 0 var(--space-2);
 }
 .table {
-  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
   font-size: var(--text-sm);
   font-variant-numeric: tabular-nums;
   padding-top: var(--space-2);
   border-top: 1px solid var(--rule);
 }
 .cards {
-  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
   font-size: var(--text-xs);
   color: var(--ink-2);
 }

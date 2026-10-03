@@ -70,8 +70,8 @@ export default function BackPage({ state, careerCode, clubName, opponents }) {
         <p className="strap">Season {s.season} · {careerSeasonLabel(s.season)} · {divisionLabel(division)}{finalSeason ? " · The last season" : ""}</p>
         <h2 id="backpage-headline" className={styles.headline}>{tier.name}</h2>
         <p className={styles.standfirst}>{tier.sub}</p>
-        <p className={styles.mono}>{t("season.record", s)} · {s.pts} pts · Finished {ordinal(s.position)}</p>
-        <p className={styles.mono}>Scored {s.gf} · Conceded {s.ga} · {goalDifference(gd)}</p>
+        <p className={styles.figures}>{t("season.record", s)} · {s.pts} pts · Finished {ordinal(s.position)}</p>
+        <p className={styles.figures}>Scored {s.gf} · Conceded {s.ga} · {goalDifference(gd)}</p>
         {topScorer && <p className={styles.topScorer}>{topScorer}</p>}
         <Button variant="secondary" onClick={share}><ShareIcon /> Share</Button>
       </div>

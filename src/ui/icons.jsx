@@ -15,9 +15,6 @@ export function MinusIcon() {
 export function PlusIcon() {
   return <svg {...base}><path d="M10 5v10M5 10h10" /></svg>;
 }
-export function ArrowIcon() {
-  return <svg {...base}><path d="M4 10h12M11 5l5 5-5 5" /></svg>;
-}
 export function MarkIcon() {
   return <svg {...base}><path d="M4 3.5l7 9M11 3.5l-7 9M15.5 3.5v9" /><path d="M3.5 16.5h13" strokeWidth="1.5" /></svg>;
 }
