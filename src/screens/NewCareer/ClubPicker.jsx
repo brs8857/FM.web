@@ -26,7 +26,7 @@ export default function ClubPicker({ value = null, mode = "real", onChange, labe
             className={cx(styles.option, selected && styles.selected)} onClick={() => onChange(o.key)}>
             <span className={styles.swatch} aria-hidden="true" style={o.colours ? { "--swatch-a": o.colours[0], "--swatch-b": o.colours[1] } : undefined} />
             <span className={styles.text}>
-              <span className={styles.label}>{o.label}</span>
+              <span className={styles.label}>{o.label}{selected && <span className={styles.tick} aria-hidden="true"> ✓</span>}</span>
               {o.sub && <span className={styles.sub}>{o.sub}</span>}
             </span>
           </button>

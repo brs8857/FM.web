@@ -40,6 +40,6 @@
   font-size: var(--text-xs);
   color: var(--ink-2);
 }
-.selected .label::after {
-  content: " ✓";
+.tick {
+  font-weight: 700;
 }

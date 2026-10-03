@@ -52,6 +52,6 @@
   color: var(--ink-2);
   overflow-wrap: anywhere;
 }
-.selected .label::before {
-  content: "✓ ";
+.tick {
+  font-weight: 700;
 }

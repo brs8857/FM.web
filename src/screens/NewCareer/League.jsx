@@ -22,7 +22,7 @@ export default function League({ league, onPick }) {
           return (
             <button key={l.key} type="button" role="radio" aria-checked={selected} tabIndex={i === index ? 0 : -1}
               className={cx(styles.option, selected && styles.selected)} onClick={() => onPick(l.key)}>
-              <span className={styles.label}>{l.label}</span>
+              <span className={styles.label}>{selected && <span className={styles.tick} aria-hidden="true">✓ </span>}{l.label}</span>
               <span className={styles.years}>{seasonLabel(ERAS[l.key].min)} to {seasonLabel(ERAS[l.key].max)}</span>
               <span className={styles.line}>{l.line}</span>
             </button>

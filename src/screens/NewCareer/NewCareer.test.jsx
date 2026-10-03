@@ -125,8 +125,9 @@ describe("Colours", () => {
   it("selects the stored club, moves back to the pitch theme, and shows edited names on request", () => {
     const onChange = vi.fn();
     render(<ClubPicker value="arsenal" mode="edited" onChange={onChange} />);
-    const chosen = screen.getByRole("radio", { checked: true });
-    expect(chosen.textContent).toBe("Islington Reds");
+    // Ticked on screen; the tick is not part of its name.
+    const chosen = screen.getByRole("radio", { name: "Islington Reds", checked: true });
+    expect(chosen.textContent).toBe("Islington Reds ✓");
     expect(chosen.tabIndex).toBe(0);
     expect(chosen.querySelector("[aria-hidden]").style.getPropertyValue("--swatch-a")).toBe("#EF0107");
     fireEvent.click(screen.getByRole("radio", { name: /Pitch/ }));
