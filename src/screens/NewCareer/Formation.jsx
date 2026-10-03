@@ -20,7 +20,7 @@ export default function Formation({ formationKey, onPick }) {
   const onKeyDown = useRovingKeys({ count: KEYS.length, index, onMove: (i) => onPick(KEYS[i]), selector: '[role="radio"]' });
   return (
     <div className={styles.formation}>
-      <h2 className={styles.heading}>Choose your shape</h2>
+      <h2 className={styles.heading}>Which shape?</h2>
       <p className={styles.lede}>These are the eleven slots you will fill in the draft. You can move anyone anywhere on the board afterwards.</p>
       <div role="radiogroup" aria-label="Formation" className={styles.grid} onKeyDown={onKeyDown}>
         {KEYS.map((key, i) => {

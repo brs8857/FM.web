@@ -11,23 +11,17 @@
   flex-direction: column;
   gap: var(--space-2);
 }
-.mark {
-  display: inline-block;
-  width: max-content;
-  font-family: var(--font-display);
-  font-weight: 700;
+.title {
   font-size: var(--text-3xl);
   line-height: 1;
-  color: var(--chalk);
-  background: var(--slate);
-  padding: var(--space-2) var(--space-3) var(--space-1);
-  border-radius: var(--radius-paper);
-  text-decoration: underline;
-  text-decoration-thickness: 3px;
-  text-underline-offset: 6px;
+  padding-bottom: var(--space-2);
+  border-bottom: 4px double var(--ink);
 }
-.title {
-  font-size: var(--text-2xl);
+.dateline {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
 }
 .tagline {
   color: var(--ink-2);
@@ -37,9 +31,6 @@
   font-size: var(--text-sm);
   padding: var(--space-3) var(--space-4);
   border-top: 2px solid var(--ink);
-  background: var(--paper-2);
-}
-.resume {
   background: var(--paper-2);
 }
 .line {
@@ -64,8 +55,6 @@
 }
 .footer {
   display: flex;
-  gap: var(--space-3);
-  justify-content: center;
-  padding-top: var(--space-4);
+  gap: var(--space-4);
   border-top: 1px solid var(--rule);
 }

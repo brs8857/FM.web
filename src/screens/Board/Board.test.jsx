@@ -71,13 +71,13 @@ describe("BoardTab", () => {
     const spy = {};
     render(<Harness initial={makeSeason3TacticsState()} spy={spy} />);
     expect(screen.getByTestId("dial-directness").className).not.toContain("slip");
-    fireEvent.click(screen.getByRole("radio", { name: "Possession Control" }));
+    fireEvent.click(screen.getByRole("radio", { name: "Possession control" }));
     expect(spy.state.selectedStyle).toBe("possession");
     expect(spy.state.instructions.directness).toBe(20);
     expect(screen.getByTestId("dial-directness").className).toContain("slip");
-    expect(screen.getByTestId("live-region").textContent).toMatch(/Possession Control set\. \d+ dials moved/);
-    fireEvent.click(screen.getByRole("radio", { name: "Possession Control" }));
-    expect(screen.getByTestId("live-region").textContent).toBe("Possession Control set. Nothing changed.");
+    expect(screen.getByTestId("live-region").textContent).toMatch(/Possession control set\. \d+ dials moved/);
+    fireEvent.click(screen.getByRole("radio", { name: "Possession control" }));
+    expect(screen.getByTestId("live-region").textContent).toBe("Possession control set. Nothing changed.");
     expect(screen.getByTestId("dial-directness").className).not.toContain("slip");
   });
 

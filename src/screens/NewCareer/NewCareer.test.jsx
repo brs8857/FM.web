@@ -48,7 +48,7 @@ describe("Era", () => {
     expect(screen.getByText("4 club-seasons")).toBeTruthy();
     fireEvent.click(screen.getByRole("radio", { name: "The 2010s" }));
     expect(onSetEra).toHaveBeenCalledWith(2010, 2019);
-    expect(screen.getByRole("heading", { name: "Choose your era" })).toBeTruthy();
+    expect(screen.getByRole("heading", { name: "Which years?" })).toBeTruthy();
   });
 });
 
@@ -68,7 +68,7 @@ describe("League", () => {
   it("is a radiogroup of the two leagues with arrow-key movement", () => {
     const onPick = vi.fn();
     render(<League league="top" onPick={onPick} />);
-    expect(screen.getByRole("heading", { name: "Choose your league" })).toBeTruthy();
+    expect(screen.getByRole("heading", { name: "Which league?" })).toBeTruthy();
     const radios = screen.getAllByRole("radio");
     expect(radios.map((r) => r.getAttribute("aria-checked"))).toEqual(["true", "false"]);
     expect(radios[1].textContent).toMatch(/Championship.*2016-17 to 2025-26/);
@@ -94,7 +94,7 @@ describe("Colours", () => {
   it("is a radiogroup of the pitch theme and every club, sorted by name, with arrow-key movement", () => {
     const onPick = vi.fn();
     render(<Colours club={null} mode="real" onPick={onPick} />);
-    expect(screen.getByRole("heading", { name: "Choose your colours" })).toBeTruthy();
+    expect(screen.getByRole("heading", { name: "Whose colours?" })).toBeTruthy();
     const group = screen.getByRole("radiogroup", { name: "Colours" });
     const radios = screen.getAllByRole("radio");
     expect(radios).toHaveLength(CLUBS.length + 1);

@@ -16,8 +16,8 @@ export default function Home({ state, next, identity, cohesion, notice, onContin
   return (
     <div className={styles.home}>
       <header className={styles.masthead}>
-        <span className={styles.mark} aria-hidden="true">XI</span>
         <h1 className={styles.title}>{PRODUCT_NAME}</h1>
+        <p className={styles.dateline}>Top flight 1992-93 to 2025-26 · Championship 2016-17 to 2025-26</p>
         <p className={styles.tagline}>{TAGLINE}</p>
       </header>
 
@@ -25,7 +25,7 @@ export default function Home({ state, next, identity, cohesion, notice, onContin
 
       {inProgress && (
         <Slip kicker={drafting ? "Draft in progress" : t("shell.season", { season: state.season, label: careerSeasonLabel(state.season) })}
-          title={drafting ? `Pick ${next.pick} of 11` : next.label} className={styles.resume}>
+          title={drafting ? `Pick ${next.pick} of 11` : next.label}>
           {!drafting && (
             <p className={styles.line}>
               <span className={styles.chip}>{identity}</span>

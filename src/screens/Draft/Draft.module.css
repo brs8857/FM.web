@@ -38,12 +38,10 @@
   font-size: var(--text-lg);
 }
 .ticks {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: var(--text-lg);
+  flex: none;
+  font-weight: 600;
+  font-size: var(--text-sm);
+  white-space: nowrap;
 }
 .drawEmpty {
   display: flex;

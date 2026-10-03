@@ -13,14 +13,11 @@ import { CLUBS } from "../content/clubTheme.js";
 const prefs = { ...DEFAULT_PREFS, seenNotes: ["first-run"] };
 
 describe("App", () => {
-  it("shows the three first-run slips once, then goes straight into New career", () => {
+  it("shows how it works on one page once, then goes straight into New career", () => {
     const storage = fakeStorage();
     render(<App dataset={makeMiniDataset()} storage={storage} prefs={{ ...DEFAULT_PREFS }} />);
-    expect(screen.getByRole("region", { name: "1 of 3" })).toBeTruthy();
-    expect(screen.queryByRole("heading", { level: 1, name: "Era XI" })).toBeNull();
-    fireEvent.click(screen.getByRole("button", { name: "Next" }));
-    fireEvent.click(screen.getByRole("button", { name: "Next" }));
-    expect(screen.getByRole("region", { name: "3 of 3" })).toBeTruthy();
+    expect(screen.getByRole("article", { name: "Era XI" }).querySelector("ol").children).toHaveLength(3);
+    expect(screen.queryByRole("button", { name: "Next" })).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: "Start a career" }));
     expect(screen.getByRole("heading", { level: 1, name: "New career" })).toBeTruthy();
     expect(JSON.parse(storage.data.get(PREFS_KEY)).seenNotes).toContain("first-run");

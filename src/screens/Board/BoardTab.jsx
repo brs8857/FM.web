@@ -9,7 +9,7 @@ import Approach from "./Approach.jsx";
 import InstructionGroups from "./InstructionGroups.jsx";
 import Strengths from "./Strengths.jsx";
 import { STYLE_PRESETS } from "../../engine/instructions.js";
-import { identityLabel } from "../../content/labels.js";
+import { identityLabel, identityName } from "../../content/labels.js";
 import { selectMemory, selectSettling } from "../../state/selectors.js";
 import { cx } from "../../ui/cx.js";
 import layout from "../TabLayout.module.css";
@@ -27,7 +27,7 @@ export default function BoardTab({ state, dispatch, profile, familiarity, clubSe
     const keys = Object.keys(preset.instructions).filter((k) => preset.instructions[k] !== state.instructions[k]);
     setPulse((p) => ({ keys, n: p.n + 1 }));
     dispatch({ type: "SET_STYLE", key });
-    announce(`${preset.label} set. ${keys.length === 0 ? "Nothing changed." : `${keys.length} dials moved.`}`);
+    announce(`${identityName(preset.label)} set. ${keys.length === 0 ? "Nothing changed." : `${keys.length} dials moved.`}`);
   };
   const identity = identityLabel(state.instructions);
 

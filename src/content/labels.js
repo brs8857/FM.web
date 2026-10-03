@@ -17,7 +17,13 @@ export const CONCEPT = { role: "Job", duty: "Brief", familiarity: "Cohesion", sh
 export const BRIEF_LABEL = Object.fromEntries(Object.entries(DUTY_INFO).map(([key, d]) => [key, d.label]));
 export const DISCIPLINE_LABEL = { structured: "Rigid", fluid: "Loose" };
 export const MARKING_LABEL = { zonal: "Zonal", man: "Man-to-man" };
-export const IDENTITY_LABEL = { none: "No clear plan", bespoke: "Bespoke" };
+// The engine files a style under its name as first written; the screens
+// print it in sentence case.
+export const IDENTITY_LABEL = {
+  none: "No clear plan", bespoke: "Bespoke",
+  "Possession Control": "Possession control", "Low Block Counter": "Low-block counter", "Direct & Vertical": "Direct and vertical",
+  "Park The Bus": "Park the bus", "Wing Play": "Wing play",
+};
 
 export const STRENGTH_LABEL = { attack: "Attack", creativity: "Creativity", buildup: "Build-up", press: "Press", defSolidity: "Defence", physical: "Physical" };
 export const STRENGTH_KEYS = Object.keys(STRENGTH_LABEL);
