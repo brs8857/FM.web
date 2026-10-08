@@ -21,8 +21,13 @@ function wrap(ctx, text, maxWidth, separator = " ") {
 }
 
 export function renderSlip(ctx, slip) {
-  const paper = cssVar("--paper", "#F4F4F0"), ink = cssVar("--ink", "#1A1B18"), ink2 = cssVar("--ink-2", "#4D5047");
-  const rule = cssVar("--rule", "#CDCFC5");
+  const paper = cssVar("--paper", "#FFFFFF"), ink = cssVar("--ink", "#0A0A0A"), ink2 = cssVar("--ink-2", "#4A4A4A");
+  const rule = cssVar("--rule", "#D4D4D4");
+  // The wheel under the nameplate, as on Home: the five section hues, or the
+  // club's two colours when one is chosen.
+  const club = typeof document !== "undefined" && Boolean(document.documentElement.dataset.club);
+  const band = club ? [cssVar("--action", "#F76700"), cssVar("--slate", "#007016")]
+    : [["--desk", "#F76700"], ["--squad", "#004DFF"], ["--board", "#00AD17"], ["--season", "#ED0014"], ["--club", "#A200FF"]].map(([name, hex]) => cssVar(name, hex));
   const system = 'system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
   const display = system, body = system, mono = '"Courier New", Courier, monospace';
   const margin = 80, width = SHARE_WIDTH - margin * 2;
@@ -39,9 +44,10 @@ export function renderSlip(ctx, slip) {
   ctx.fillText(slip.kicker, SHARE_WIDTH - margin, y);
   ctx.textAlign = "left";
   y += 28;
-  ctx.fillStyle = ink;
-  ctx.fillRect(margin, y, width, 4);
-  ctx.fillRect(margin, y + 10, width, 2);
+  band.forEach((colour, i) => {
+    ctx.fillStyle = colour;
+    ctx.fillRect(margin + (width / band.length) * i, y, Math.ceil(width / band.length), 14);
+  });
 
   y += 150;
   ctx.fillStyle = ink;

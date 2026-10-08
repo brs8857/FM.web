@@ -1,5 +1,5 @@
 .slip {
-  border-top: 1px solid var(--ink);
+  border-top: 3px solid var(--accent);
   padding-top: var(--space-3);
   max-width: 100%;
 }

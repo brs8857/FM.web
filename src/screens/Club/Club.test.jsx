@@ -160,7 +160,7 @@ describe("ClubTab", () => {
     const { setPrefs } = renderClub();
     fireEvent.click(screen.getByRole("button", { name: "Settings" }));
     const fold = screen.getByRole("button", { name: /Colours/ });
-    expect(fold.textContent).toContain("Pitch green");
+    expect(fold.textContent).toContain("Colour wheel");
     fireEvent.click(fold);
     fireEvent.click(screen.getByRole("radio", { name: "Aston Villa" }));
     expect(setPrefs).toHaveBeenCalledWith({ club: "aston-villa" });

@@ -14,7 +14,7 @@
   font-size: var(--text-xs);
   font-weight: 600;
   color: var(--ink-2);
-  border-bottom: 1px solid var(--ink);
+  border-bottom: 3px solid var(--accent);
 }
 .label {
   font-weight: 600;

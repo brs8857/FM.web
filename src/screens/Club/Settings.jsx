@@ -26,7 +26,7 @@ export default function Settings({ prefs, setPrefs }) {
         <span className={styles.settingLabel}>Theme</span>
         <Segmented label="Theme" options={THEMES} value={prefs.theme} onChange={(theme) => setPrefs({ theme })} />
       </div>
-      <Disclosure title="Colours" summary={clubDisplayName(prefs.club, prefs.clubNames) ?? "Pitch green"}>
+      <Disclosure title="Colours" summary={clubDisplayName(prefs.club, prefs.clubNames) ?? "Colour wheel"}>
         <div className={styles.setting}>
           <ClubPicker value={prefs.club} mode={prefs.clubNames} onChange={(club) => setPrefs({ club })} />
           <p className={styles.hint}>Your club's two colours become the paper, the ink and the chalkboard, in light and dark.</p>

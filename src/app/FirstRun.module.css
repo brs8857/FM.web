@@ -11,8 +11,8 @@
   font-weight: 700;
   font-size: var(--text-3xl);
   line-height: 1;
-  padding-bottom: var(--space-2);
-  border-bottom: 4px double var(--ink);
+  padding-bottom: var(--space-3);
+  background: var(--band) left bottom / 100% 8px no-repeat;
 }
 .strap {
   font-weight: 700;

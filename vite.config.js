@@ -6,8 +6,8 @@ import { viteSingleFile } from "vite-plugin-singlefile";
 
 const pkg = JSON.parse(readFileSync(new URL("./package.json", import.meta.url), "utf8"));
 
-// Manifest colours are the light "Pitch" paper and the slate of the mark
-// (spec 04 §3.2, §3.5). start_url and scope stay relative for the Pages path.
+// Manifest colours are the white paper and the pitch green of the mark.
+// start_url and scope stay relative for the Pages path.
 export const manifest = {
   name: "Era XI",
   short_name: "Era XI",
@@ -15,8 +15,8 @@ export const manifest = {
   start_url: "./",
   scope: "./",
   display: "standalone",
-  background_color: "#F4F4F0",
-  theme_color: "#1D3A2C",
+  background_color: "#FFFFFF",
+  theme_color: "#007016",
   icons: [
     { src: "icons/icon-192.png", sizes: "192x192", type: "image/png" },
     { src: "icons/icon-512.png", sizes: "512x512", type: "image/png" },

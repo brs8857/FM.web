@@ -13,7 +13,9 @@ export const PAIRS = [
   ["ink", "paper-2", 4.5],
   ["ink-2", "paper", 6],
   ["ink-2", "paper-2", 4.5],
-  ["paper", "action", 4.5],
+  ["action-ink", "action", 4.5],
+  ["action", "paper", 3],
+  ["accent", "paper", 3],
   ["chalk", "slate", 4.5],
   ["signal-ink", "signal", 4.5],
   ["signal", "slate", 3],
@@ -24,6 +26,11 @@ export const PAIRS = [
   ["draw", "paper-2", 4.5],
   ["loss", "paper-2", 4.5],
 ];
+
+// The default theme's hue for each part of the game: its text on it, and its
+// edge (rules, focus rings, the main button) against the page. A club theme
+// replaces all five with its own colours, so only tokens.css carries these.
+export const SECTION_PAIRS = ["desk", "squad", "board", "season", "club"].flatMap((s) => [[`${s}-ink`, s, 4.5], [s, "paper", 3]]);
 
 export function parseThemes(css) {
   const blocks = {
@@ -41,11 +48,11 @@ export function parseThemes(css) {
   return themes;
 }
 
-export function checkContrast(css) {
+export function checkContrast(css, pairs = PAIRS) {
   const themes = parseThemes(css);
   const results = [];
   for (const theme of ["light", "dark"]) {
-    for (const [fg, bg, min] of PAIRS) {
+    for (const [fg, bg, min] of pairs) {
       const colours = themes[theme];
       if (!colours[fg] || !colours[bg]) {
         results.push({ theme, fg, bg, min, ratio: 0, ok: false });
@@ -61,7 +68,7 @@ export function checkContrast(css) {
 
 function main() {
   const css = readFileSync(new URL("../src/styles/tokens.css", import.meta.url), "utf8");
-  const { results, mismatched } = checkContrast(css);
+  const { results, mismatched } = checkContrast(css, [...PAIRS, ...SECTION_PAIRS]);
   for (const r of results) {
     console.log(`${r.ok ? "ok  " : "FAIL"} ${r.theme.padEnd(5)} --${r.fg} on --${r.bg}: ${r.ratio.toFixed(2)} (min ${r.min})`);
   }

@@ -16,7 +16,7 @@
 }
 .primary {
   background: var(--action);
-  color: var(--paper);
+  color: var(--action-ink);
   border-color: var(--action);
 }
 .secondary {

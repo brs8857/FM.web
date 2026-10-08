@@ -229,7 +229,8 @@ by slug, from its well-known kit and badge identity. The **Colours**
 setting (and the last New career step, which a Championship career
 narrows to the clubs that have played in it) picks a favourite club and
 `content/clubTheme.js` derives the whole token set from those two colours
-(see the comment there). Like the names, the colours describe real clubs;
+at full saturation (see the comment there). With no club chosen, the
+default "Colour wheel" theme gives each tab its own hue. Like the names, the colours describe real clubs;
 the rights review in spec 03 §5 should cover them too.
 
 ## What the game never does with the data

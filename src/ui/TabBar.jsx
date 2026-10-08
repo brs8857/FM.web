@@ -12,7 +12,7 @@ export default function TabBar({ tabs, value, onChange, orientation = "horizonta
           const selected = t.key === value;
           return (
             <button key={t.key} type="button" role="tab" id={`tab-${t.key}`} aria-selected={selected} aria-controls={`panel-${t.key}`}
-              tabIndex={i === index ? 0 : -1} className={cx(styles.tab, selected && styles.active)} onClick={() => onChange(t.key)}>
+              tabIndex={i === index ? 0 : -1} className={cx(styles.tab, selected && styles.active)} data-section={t.key} onClick={() => onChange(t.key)}>
               {t.icon && <span className={styles.icon} aria-hidden="true">{t.icon}</span>}
               <span className={styles.label}>{t.label}</span>
               {t.badge && <span className={styles.badge} aria-hidden="true" />}

@@ -16,18 +16,17 @@ import colours from "./clubColours.json";
 // carry the meaning where a red club's loss red or a green club's win green
 // would otherwise read as a club colour.
 //
-// Surfaces (paper, rules, ink, chalk) take at most a whisper of the club's
-// colour: printed paper in club colours reads as a novelty shop, not a
-// newspaper. Only the board, the buttons and the signal carry it fully, and
-// even those are held below full saturation so a red club's signal is a
-// brick red rather than a neon one.
+// Every colour is at the kit's full strength (the colour-wheel redesign,
+// 3.2): the board, the buttons, every rule and the highlight carry the club
+// colour fully saturated, the paper takes a clear tint of it, and win, draw
+// and loss are pure green, amber and red. Only lightness is ever traded, and
+// only as far as each pair needs to stay legible.
 
-export const COLOUR_TOKENS = ["paper", "paper-2", "rule", "ink", "ink-2", "signal", "signal-ink", "slate", "chalk", "win", "draw", "loss", "action"];
+export const COLOUR_TOKENS = ["paper", "paper-2", "rule", "ink", "ink-2", "signal", "signal-ink", "slate", "chalk", "win", "draw", "loss", "action", "action-ink", "accent"];
 
 const CHROMA_MIN = 0.12;
 const YELLOW = [35, 75];
-const RESULT_HUES = { win: { h: 114, s: 0.45 }, draw: { h: 0, s: 0.03 }, loss: { h: 2, s: 0.5 } };
-const MAX_SAT = 0.62;
+const RESULT_HUES = { win: { h: 125, s: 1 }, draw: { h: 34, s: 1 }, loss: { h: 355, s: 1 } };
 
 export const CLUBS = Object.entries(colours).map(([key, c]) => ({ key, name: c.name, colours: c.colours }));
 
@@ -87,9 +86,9 @@ function solve(base, constraints, direction) {
   }
 }
 
-// `withSat` gives the colour at least `s` (the board, buttons); `faint` at
-// most `s` (the surfaces). Neither goes past MAX_SAT.
-const withSat = (c, s, l) => ({ h: c.h, s: chromatic(c) ? Math.min(MAX_SAT, Math.max(s, c.s * 0.5)) : 0, l });
+// `withSat` gives the colour at least `s` and at most full saturation (the
+// board, the buttons); `faint` at most `s` (the surfaces and the ink).
+const withSat = (c, s, l) => ({ h: c.h, s: chromatic(c) ? Math.min(1, Math.max(s, c.s)) : 0, l });
 const faint = (c, s, l) => ({ h: c.h, s: chromatic(c) ? Math.min(s, c.s) : 0, l });
 const tone = (c, s, l) => hslToHex(faint(c, s, l));
 
@@ -106,29 +105,33 @@ function roles(primaryHex, secondaryHex) {
 
 export function deriveClubTheme(primaryHex, secondaryHex) {
   const { tint, accent, board, action } = roles(primaryHex, secondaryHex);
-  const signalBase = chromatic(accent) ? { h: accent.h, s: Math.min(0.6, Math.max(accent.s * 0.7, 0.4)), l: accent.l } : { h: 0, s: 0, l: 0.75 };
-  const chalk = tone(accent, 0.25, 0.955);
+  const signalBase = chromatic(accent) ? { h: accent.h, s: 1, l: accent.l } : { h: 0, s: 0, l: 0.75 };
+  const chalk = tone(accent, 0.5, 0.96);
 
   const light = {};
-  light.paper = tone(tint, 0.2, 0.955);
-  light["paper-2"] = tone(tint, 0.17, 0.915);
-  light.rule = tone(tint, 0.14, 0.8);
-  light.ink = solve(faint(tint, 0.3, 0.09), [[light["paper-2"], 4.5]], -1);
-  light["ink-2"] = solve(faint(tint, 0.2, 0.32), [[light.paper, 6], [light["paper-2"], 4.5]], -1);
-  light.slate = solve(withSat(board, 0.45, 0.2), [[chalk, 4.5]], -1);
+  light.paper = tone(tint, 0.55, 0.965);
+  light["paper-2"] = tone(tint, 0.5, 0.925);
+  light.rule = tone(tint, 0.45, 0.8);
+  light.ink = solve(faint(tint, 0.5, 0.09), [[light["paper-2"], 4.5]], -1);
+  light["ink-2"] = solve(faint(tint, 0.4, 0.32), [[light.paper, 6], [light["paper-2"], 4.5]], -1);
+  light.slate = solve(withSat(board, 0.85, 0.24), [[chalk, 4.5]], -1);
   light.chalk = chalk;
-  light.action = solve(withSat(action, 0.7, 0.42), [[light.paper, 4.5]], -1);
+  light.action = solve(withSat(action, 1, 0.47), [[light.paper, 4.5]], -1);
+  light["action-ink"] = light.paper;
+  light.accent = light.action;
   light["signal-ink"] = light.ink;
 
   const darkT = {};
-  darkT.paper = tone(tint, 0.16, 0.09);
-  darkT["paper-2"] = tone(tint, 0.15, 0.135);
-  darkT.rule = tone(tint, 0.13, 0.25);
-  darkT.ink = solve(faint(tint, 0.15, 0.93), [[darkT["paper-2"], 4.5]], 1);
-  darkT["ink-2"] = solve(faint(tint, 0.12, 0.68), [[darkT.paper, 6], [darkT["paper-2"], 4.5]], 1);
-  darkT.slate = solve(withSat(board, 0.45, 0.17), [[chalk, 4.5]], -1);
+  darkT.paper = tone(tint, 0.45, 0.08);
+  darkT["paper-2"] = tone(tint, 0.4, 0.13);
+  darkT.rule = tone(tint, 0.35, 0.26);
+  darkT.ink = solve(faint(tint, 0.3, 0.94), [[darkT["paper-2"], 4.5]], 1);
+  darkT["ink-2"] = solve(faint(tint, 0.25, 0.7), [[darkT.paper, 6], [darkT["paper-2"], 4.5]], 1);
+  darkT.slate = solve(withSat(board, 0.85, 0.2), [[chalk, 4.5]], -1);
   darkT.chalk = chalk;
-  darkT.action = solve(withSat(action, 0.6, 0.5), [[darkT.paper, 4.5]], 1);
+  darkT.action = solve(withSat(action, 1, 0.5), [[darkT.paper, 4.5]], 1);
+  darkT["action-ink"] = darkT.paper;
+  darkT.accent = darkT.action;
   darkT["signal-ink"] = light.ink;
 
   const signal = solve(signalBase, [[light.ink, 4.5], [light.slate, 3], [darkT.slate, 3]], 1);
@@ -136,9 +139,9 @@ export function deriveClubTheme(primaryHex, secondaryHex) {
   darkT.signal = signal;
 
   for (const [name, hue] of Object.entries(RESULT_HUES)) {
-    const start = { win: 0.32, draw: 0.38, loss: 0.42 }[name];
+    const start = { win: 0.3, draw: 0.34, loss: 0.44 }[name];
     light[name] = solve({ ...hue, l: start }, [[light.paper, 4.5], [light["paper-2"], 4.5]], -1);
-    darkT[name] = solve({ ...hue, l: start + 0.3 }, [[darkT.paper, 4.5], [darkT["paper-2"], 4.5]], 1);
+    darkT[name] = solve({ ...hue, l: 0.5 }, [[darkT.paper, 4.5], [darkT["paper-2"], 4.5]], 1);
   }
 
   return { light, dark: darkT };

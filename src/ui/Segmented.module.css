@@ -22,7 +22,7 @@
 }
 .selected {
   background: var(--action);
-  color: var(--paper);
+  color: var(--action-ink);
 }
 .sm .segment {
   min-height: 36px;
