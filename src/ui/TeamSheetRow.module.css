@@ -20,7 +20,7 @@
   border-radius: var(--radius-paper);
 }
 .selected {
-  box-shadow: inset 3px 0 0 var(--signal);
+  box-shadow: inset 3px 0 0 var(--action);
 }
 .code {
   font-size: var(--text-xs);

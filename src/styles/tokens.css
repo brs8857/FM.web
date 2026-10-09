@@ -1,7 +1,9 @@
-/* Newsprint and chalkboard: off-white paper and printer's black, a green-black
-   slate for the board, and the greens of a pitch, mown grass for --signal and
-   the darker turf for --action and --win. Loss is brick, draw is newsprint grey.
-   Components use these names only, never raw hex. */
+/* Newsprint and chalkboard: off-white paper and printer's black, a green
+   board, and the greens of a pitch for --signal, --action and --win, with
+   loss in red and draw in newsprint grey. Every hue is at full saturation,
+   as on a colour wheel: only its lightness is set, as far as each pair in
+   scripts/check-contrast.mjs needs. Components use these names only, never
+   raw hex. */
 
 :root {
   --paper: #F4F4F0;
@@ -9,14 +11,14 @@
   --rule: #CDCFC5;
   --ink: #1A1B18;
   --ink-2: #4D5047;
-  --signal: #67A03E;
+  --signal: #55FF00;
   --signal-ink: #1A1B18;
-  --slate: #1D3A2C;
+  --slate: #006923;
   --chalk: #F3F2EA;
-  --win: #2F6B2A;
+  --win: #047A00;
   --draw: #5E605A;
-  --loss: #A83C33;
-  --action: #265A32;
+  --loss: #D10E00;
+  --action: #008221;
 
   /* The iPhone's own face (San Francisco), as Apple's apps set it; other
      systems fall back to theirs. Courier only for the vidiprinter and its
@@ -66,14 +68,14 @@
     --rule: #343930;
     --ink: #EDEEE7;
     --ink-2: #A8AC9F;
-    --signal: #93BA69;
+    --signal: #55FF00;
     --signal-ink: #10150E;
-    --slate: #172A20;
+    --slate: #005E1F;
     --chalk: #F3F2EA;
-    --win: #8CC77F;
+    --win: #09FF00;
     --draw: #9EA296;
-    --loss: #E08A7E;
-    --action: #6E9A55;
+    --loss: #FF2B1C;
+    --action: #15FF00;
     color-scheme: dark;
   }
 }
@@ -84,14 +86,14 @@
   --rule: #343930;
   --ink: #EDEEE7;
   --ink-2: #A8AC9F;
-  --signal: #93BA69;
+  --signal: #55FF00;
   --signal-ink: #10150E;
-  --slate: #172A20;
+  --slate: #005E1F;
   --chalk: #F3F2EA;
-  --win: #8CC77F;
+  --win: #09FF00;
   --draw: #9EA296;
-  --loss: #E08A7E;
-  --action: #6E9A55;
+  --loss: #FF2B1C;
+  --action: #15FF00;
   color-scheme: dark;
 }
 

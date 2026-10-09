@@ -546,3 +546,14 @@ Found and changed:
 - **Courier on everything numeric**: kept for the vidiprinter only.
 - Bugs found on the way: the era slider printed each year three times;
   long back-page headlines and play-off button labels overflowed a phone.
+
+## 7. Colour (2026-10-09, v3.2.0)
+
+At the owner's direction, every hue is at full saturation, after a colour
+wheel; this reverses §2.4's cap on purpose. The palette's roles and layout
+are unchanged (green pitch, green action and highlight, red for losses,
+grey for draws); only each hue's lightness is solved for contrast. Club
+themes lose their 62% cap the same way. Marks drawn on the page (focus
+rings, selected rows, underlines) moved from the bright highlight to the
+deep action green, which passes 3:1 on paper; `scripts/check-contrast.mjs`
+now checks that pair too (30 pairs).

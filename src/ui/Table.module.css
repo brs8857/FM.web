@@ -36,7 +36,7 @@
 }
 .highlight {
   font-weight: 600;
-  box-shadow: inset 3px 0 0 var(--signal);
+  box-shadow: inset 3px 0 0 var(--action);
 }
 .dense th,
 .dense td {

@@ -32,7 +32,7 @@
 }
 .signal.selected {
   color: var(--ink);
-  border-bottom-color: var(--signal);
+  border-bottom-color: var(--action);
 }
 .signal.selected .sub {
   color: var(--ink-2);
