@@ -18,7 +18,7 @@
   transform: translateY(1px);
 }
 .selected {
-  border-top-color: var(--signal);
+  border-top-color: var(--action);
 }
 .title {
   font-family: var(--font-headline);

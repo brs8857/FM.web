@@ -14,6 +14,8 @@ export const PAIRS = [
   ["ink-2", "paper", 6],
   ["ink-2", "paper-2", 4.5],
   ["paper", "action", 4.5],
+  // The action green also marks the page: focus rings, the selected row.
+  ["action", "paper", 3],
   ["chalk", "slate", 4.5],
   ["signal-ink", "signal", 4.5],
   ["signal", "slate", 3],

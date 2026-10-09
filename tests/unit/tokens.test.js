@@ -2,6 +2,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { checkContrast, parseThemes, contrast, PAIRS } from "../../scripts/check-contrast.mjs";
+import { hexToHsl } from "../../src/content/clubTheme.js";
 
 const tokens = readFileSync("src/styles/tokens.css", "utf8");
 const base = readFileSync("src/styles/base.css", "utf8");
@@ -18,10 +19,13 @@ describe("design tokens", () => {
     }
   });
 
-  it("uses the newsprint-and-turf values, not the stock greens they replaced", () => {
+  it("sets every hue at full saturation, not the stock greens of generated apps", () => {
     const themes = parseThemes(tokens);
-    expect(themes.light).toMatchObject({ paper: "#F4F4F0", ink: "#1A1B18", signal: "#67A03E", slate: "#1D3A2C", chalk: "#F3F2EA", action: "#265A32" });
-    expect(themes.dark).toMatchObject({ paper: "#121411", ink: "#EDEEE7", signal: "#93BA69", slate: "#172A20", action: "#6E9A55" });
+    expect(themes.light).toMatchObject({ paper: "#F4F4F0", ink: "#1A1B18", signal: "#55FF00", slate: "#006923", chalk: "#F3F2EA", action: "#008221", win: "#047A00", loss: "#D10E00" });
+    expect(themes.dark).toMatchObject({ paper: "#121411", ink: "#EDEEE7", signal: "#55FF00", slate: "#005E1F", action: "#15FF00", win: "#09FF00", loss: "#FF2B1C" });
+    for (const [mode, theme] of Object.entries({ light: themes.light, dark: themes.dark })) {
+      for (const hue of ["signal", "slate", "action", "win", "loss"]) expect(hexToHsl(theme[hue]).s, `${mode} --${hue}`).toBeGreaterThan(0.97);
+    }
     const stock = ["#2ECC71", "#27AE60", "#34C759", "#30D158", "#22C55E", "#16A34A", "#10B981", "#059669"];
     for (const theme of [themes.light, themes.dark]) expect(Object.values(theme).filter((hex) => stock.includes(hex))).toEqual([]);
   });

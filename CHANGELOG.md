@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.2.0 — 2026-10-09
+
+### Changed
+- **Full-strength colour.** Every colour in the game is now at full saturation, like the hues on a colour wheel: a vivid green pitch and buttons, a bright green highlight, pure green and red for wins and losses. Nothing else about the look changes; only lightness is adjusted, as far as each colour needs to stay readable.
+- **Club colours at full strength.** A club's theme now carries its kit colour fully on the board, the buttons and the highlight, with a clear tint on the paper, instead of a muted version of it.
+- Focus rings, selected rows and underlines on the page use the deep button green, which stands out from the paper; the bright green stays for fills and the board.
+- The app icon and the browser's theme colour use the new board green.
+
 ## 3.1.0 — 2026-10-03
 
 A second pass at everything that made the game look machine-made.

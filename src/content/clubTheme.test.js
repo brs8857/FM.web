@@ -83,12 +83,25 @@ describe("club theme derivation", () => {
     expect(hexToHsl(clubTheme("newcastle-united").light.paper).s).toBe(0);
   });
 
+  it("carries a club's colour at full strength on the board, the buttons and the highlight", () => {
+    for (const key of ["arsenal", "chelsea", "liverpool", "everton", "norwich-city", "aston-villa"]) {
+      const t = clubTheme(key);
+      for (const mode of ["light", "dark"]) {
+        for (const token of ["action", "slate"]) expect(hexToHsl(t[mode][token]).s, `${key} ${mode} ${token}`).toBeGreaterThan(0.84);
+      }
+      expect(hexToHsl(t.light.signal).s, `${key} signal`).toBeGreaterThan(0.97);
+    }
+  });
+
   it("keeps the result colours on their fixed hues and apart from each other", () => {
     for (const club of CLUBS) {
       for (const mode of ["light", "dark"]) {
         const t = clubTheme(club.key)[mode];
-        expect(Math.abs(hexToHsl(t.win).h - 114), `${club.key} ${mode} win`).toBeLessThanOrEqual(2);
-        expect(hexToHsl(t.loss).h, `${club.key} ${mode} loss`).toBeLessThanOrEqual(4);
+        expect(Math.abs(hexToHsl(t.win).h - 118), `${club.key} ${mode} win`).toBeLessThanOrEqual(2);
+        expect(Math.abs(hexToHsl(t.loss).h - 4), `${club.key} ${mode} loss`).toBeLessThanOrEqual(2);
+        // Full strength, as on a colour wheel: only lightness is traded.
+        expect(hexToHsl(t.win).s, `${club.key} ${mode} win`).toBeGreaterThan(0.97);
+        expect(hexToHsl(t.loss).s, `${club.key} ${mode} loss`).toBeGreaterThan(0.97);
         expect(contrast(t.win, t.loss), `${club.key} ${mode} win vs loss`).toBeGreaterThan(1);
         expect(new Set([t.win, t.draw, t.loss]).size).toBe(3);
       }
