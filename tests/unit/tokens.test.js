@@ -3,6 +3,7 @@ import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { checkContrast, parseThemes, contrast, PAIRS } from "../../scripts/check-contrast.mjs";
 import { hexToHsl } from "../../src/content/clubTheme.js";
+import { springTokens, stepResponse, SPRINGS } from "../../scripts/springs.mjs";
 
 const tokens = readFileSync("src/styles/tokens.css", "utf8");
 const base = readFileSync("src/styles/base.css", "utf8");
@@ -68,5 +69,28 @@ describe("type", () => {
   it("never fetches fonts from the network", () => {
     expect(base).not.toMatch(/https?:\/\//);
     expect(tokens).not.toMatch(/https?:\/\//);
+  });
+});
+
+describe("springs", () => {
+  it("pins the CSS spring tokens to the generator, so they cannot drift from their damping and response", () => {
+    for (const { name, duration, easing } of springTokens()) {
+      expect(tokens, name).toContain(`--spring-${name}: ${easing};`);
+      expect(tokens, name).toContain(`--spring-${name}-time: ${duration}ms;`);
+    }
+  });
+
+  it("settles without overshoot when critically damped and overshoots a little when under-damped", () => {
+    const peak = (spec) => Math.max(...Array.from({ length: 400 }, (_, i) => stepResponse(i / 400, spec.damping, spec.response)));
+    expect(peak(SPRINGS.settle)).toBeLessThanOrEqual(1);
+    expect(peak(SPRINGS.flick)).toBeGreaterThan(1.005);
+    expect(peak(SPRINGS.flick)).toBeLessThan(1.03);
+    expect(stepResponse(0, 1, 0.34)).toBe(0);
+  });
+
+  it("presses on touch-down and springs back, for every control but the board's markers", () => {
+    expect(base).toMatch(/:active\s*\{[^}]*transform:\s*scale\(0\.97\)/);
+    expect(base).toContain(":not(:disabled, [data-slot-id], [data-bench-idx])");
+    expect(readFileSync("src/main.jsx", "utf8")).toMatch(/touchstart/);
   });
 });

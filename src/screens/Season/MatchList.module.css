@@ -45,3 +45,8 @@
   border-bottom: 1px solid var(--rule);
   white-space: normal;
 }
+/* A full-width row lights up under the finger rather than shrinking. */
+.toggle:not(:disabled):active {
+  transform: none;
+  background: var(--paper-2);
+}

@@ -9,6 +9,10 @@ import ErrorBoundary from "./app/ErrorBoundary.jsx";
 import UpdatePrompt from "./app/UpdatePrompt.jsx";
 import { loadDataset } from "./data/loadDataset.js";
 
+// iOS Safari only applies :active (the press feedback in base.css) to pages
+// that have a touch listener, so one that does nothing is added.
+document.addEventListener("touchstart", () => {}, { passive: true });
+
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ErrorBoundary>

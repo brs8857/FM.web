@@ -36,3 +36,8 @@
 .panel {
   padding: 0 0 var(--space-4);
 }
+/* A full-width row lights up under the finger rather than shrinking. */
+.trigger:not(:disabled):active {
+  transform: none;
+  background: var(--paper-2);
+}

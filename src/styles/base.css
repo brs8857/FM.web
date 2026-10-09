@@ -1,4 +1,5 @@
 html {
+  font-optical-sizing: auto;
   font-size: 100%;
   -webkit-text-size-adjust: 100%;
   font: -apple-system-body;
@@ -99,6 +100,29 @@ code {
   font-family: var(--font-mono);
 }
 
+/* Press feedback (Apple's WWDC fluid-UI talk: respond on touch-down, not on
+   release). A control shrinks the instant it is touched and springs
+   back when let go. The selectors cost no specificity, so a row can swap the
+   scale for a highlight and a board marker, which is positioned by its own
+   transform, opts out. iOS only shows :active if a touch listener exists
+   (main.jsx adds one). */
+:where(button, [role="tab"], [role="radio"], [role="switch"]):where(:not(:disabled, [data-slot-id], [data-bench-idx])) {
+  transition: transform var(--spring-settle-time) var(--spring-settle);
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+:where(button, [role="tab"], [role="radio"], [role="switch"]):where(:not(:disabled, [data-slot-id], [data-bench-idx])):active {
+  transform: scale(0.97);
+  transition-duration: 80ms;
+  transition-timing-function: ease-out;
+}
+
+h1, h2, h3 {
+  text-wrap: balance;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;
@@ -138,9 +162,9 @@ code {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *:not([data-fade]),
+  *:not([data-fade])::before,
+  *:not([data-fade])::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -148,7 +172,7 @@ code {
   }
 }
 
-[data-reduce-motion="true"] * {
+[data-reduce-motion="true"] *:not([data-fade]) {
   animation-duration: 0.01ms !important;
   animation-iteration-count: 1 !important;
   transition-duration: 0.01ms !important;

@@ -47,7 +47,16 @@ export default function Marker({
     if (!p || p.dragged || !draggable || !player) return;
     if (Math.hypot(event.clientX - p.x, event.clientY - p.y) >= DRAG_THRESHOLD_PX) {
       p.dragged = true;
-      onDragStart?.(kind, id);
+      // Where the finger is on the marker, so it stays put under the finger: from
+      // the disc's centre (what is drawn and hit-tested) and from the whole
+      // marker's centre (what a slot's position names).
+      const disc = event.currentTarget.firstElementChild?.getBoundingClientRect();
+      const whole = event.currentTarget.getBoundingClientRect();
+      const grab = disc ? {
+        dx: p.x - (disc.left + disc.width / 2), dy: p.y - (disc.top + disc.height / 2),
+        bx: p.x - (whole.left + whole.width / 2), by: p.y - (whole.top + whole.height / 2),
+      } : undefined;
+      onDragStart?.(kind, id, grab);
     }
   };
   const onPointerUp = () => {

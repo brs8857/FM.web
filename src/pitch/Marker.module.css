@@ -34,7 +34,7 @@
   font-stretch: condensed;
   letter-spacing: -0.02em;
   line-height: 1;
-  transition: transform var(--motion-slip) var(--ease), box-shadow var(--motion-slip) var(--ease);
+  transition: transform var(--spring-settle-time) var(--spring-settle), box-shadow var(--motion-slip) var(--ease);
 }
 .filled .disc {
   background: var(--chalk);

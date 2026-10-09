@@ -12,10 +12,7 @@
   width: 100%;
 }
 .button {
-  transition: border-color 120ms var(--ease), transform 80ms var(--ease);
-}
-.button:not(:disabled):active {
-  transform: translateY(1px);
+  transition: border-color 120ms var(--ease), transform var(--spring-settle-time) var(--spring-settle);
 }
 .selected {
   border-top-color: var(--action);

@@ -5,13 +5,21 @@ import { useCallback, useEffect, useRef, useState } from "react";
 // both ran every touch drop twice — bug #7). On release we hit-test whatever
 // DOM element is under the pointer: land on another player -> swap; land on
 // open pitch space -> move there; land on the bench -> swap on/off the pitch.
+//
+// The marker stays where it was grabbed. `grab` is how far the finger was from
+// the disc's centre (dx, dy) and from the whole marker's centre (bx, by, the
+// disc and its name; defaults to the disc's) when the drag began. A drop is
+// hit-tested at the disc's centre, which is where it is drawn, and a free move
+// puts the marker's centre where it was held.
+const NO_GRAB = { dx: 0, dy: 0 };
+
 export function usePitchDrag({ assignments, dispatch }) {
-  const [dragInfo, setDragInfo] = useState(null); // { kind: 'slot'|'bench', id }
+  const [dragInfo, setDragInfo] = useState(null); // { kind: 'slot'|'bench', id, grab }
   const handled = useRef(false);
 
-  const startDrag = useCallback((kind, id) => {
+  const startDrag = useCallback((kind, id, grab = NO_GRAB) => {
     handled.current = false;
-    setDragInfo({ kind, id });
+    setDragInfo({ kind, id, grab });
   }, []);
 
   useEffect(() => {
@@ -20,7 +28,8 @@ export function usePitchDrag({ assignments, dispatch }) {
     function onUp(e) {
       if (handled.current) return;
       handled.current = true;
-      const el = document.elementFromPoint(e.clientX, e.clientY);
+      const { dx, dy, bx = dx, by = dy } = dragInfo.grab;
+      const el = document.elementFromPoint(e.clientX - dx, e.clientY - dy);
       if (el) {
         const slotEl = el.closest("[data-slot-id]");
         const benchEl = el.closest("[data-bench-idx]");
@@ -35,8 +44,8 @@ export function usePitchDrag({ assignments, dispatch }) {
           dispatch({ type: "SWAP_PLAYERS", fromKind: dragInfo.kind, fromId: dragInfo.id, toKind: "bench", toId });
         } else if (pitchZone) {
           const rect = pitchZone.getBoundingClientRect();
-          const x = ((e.clientX - rect.left) / rect.width) * 100;
-          const y = ((e.clientY - rect.top) / rect.height) * 100;
+          const x = ((e.clientX - bx - rect.left) / rect.width) * 100;
+          const y = ((e.clientY - by - rect.top) / rect.height) * 100;
           if (dragInfo.kind === "slot") {
             dispatch({ type: "MOVE_PLAYER", slotId: dragInfo.id, x, y });
           } else {

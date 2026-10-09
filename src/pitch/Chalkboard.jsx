@@ -28,10 +28,11 @@ export default function Chalkboard({
 
   useEffect(() => {
     if (!dragInfo) { setPointer(null); return undefined; }
+    const { dx, dy } = dragInfo.grab;
     const onMove = (event) => {
       const rect = pitchRef.current?.getBoundingClientRect();
       if (!rect || !rect.width) return;
-      setPointer({ x: ((event.clientX - rect.left) / rect.width) * 100, y: ((event.clientY - rect.top) / rect.height) * 100 });
+      setPointer({ x: ((event.clientX - dx - rect.left) / rect.width) * 100, y: ((event.clientY - dy - rect.top) / rect.height) * 100 });
     };
     window.addEventListener("pointermove", onMove);
     return () => window.removeEventListener("pointermove", onMove);
@@ -61,7 +62,7 @@ export default function Chalkboard({
             emptyLabel={mode === "draft" ? "empty" : a.slotId} />
         ))}
         {dragInfo && pointer && (
-          <span className={styles.ghost} style={{ left: `${pointer.x}%`, top: `${pointer.y}%` }} aria-hidden="true">{draggedCode}</span>
+          <span className={styles.ghost} data-drag-ghost="" style={{ left: `${pointer.x}%`, top: `${pointer.y}%` }} aria-hidden="true">{draggedCode}</span>
         )}
       </div>
       {bench.length > 0 && (

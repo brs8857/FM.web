@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { useState } from "react";
 import { render, screen, fireEvent, act } from "@testing-library/react";
+import { beforeEach, afterEach } from "vitest";
 import Sheet from "./Sheet.jsx";
 
 function Host({ onClose = () => {}, children }) {
@@ -22,8 +23,32 @@ function openSheet() {
   return opener;
 }
 
+// A sheet leaves by sliding out, so it stays in the page, inert, for EXIT_MS.
+const EXIT_MS = 200;
+let clock = 0;
+const advance = (ms) => act(() => { vi.advanceTimersByTime(ms); });
+const panelHeight = 500;
+
+beforeEach(() => {
+  vi.useFakeTimers();
+  clock = 0;
+  vi.spyOn(performance, "now").mockImplementation(() => clock);
+  vi.spyOn(Element.prototype, "getBoundingClientRect").mockImplementation(() => ({ height: panelHeight, width: 400, top: 0, left: 0, right: 400, bottom: panelHeight }));
+});
+afterEach(() => {
+  vi.useRealTimers();
+  vi.restoreAllMocks();
+});
+
+// A drag on the handle: [clientY, ms since the press] for each move, then let go.
+function drag(grip, moves) {
+  fireEvent.pointerDown(grip, { clientY: 100, pointerId: 1 });
+  for (const [y, t] of moves) { clock = t; fireEvent.pointerMove(grip, { clientY: 100 + y, pointerId: 1 }); }
+  fireEvent.pointerUp(grip, { clientY: 100 + moves.at(-1)[0], pointerId: 1 });
+}
+
 describe("Sheet", () => {
-  it("is a labelled modal dialog that takes focus and returns it on close", () => {
+  it("is a labelled modal dialog that takes focus, returns it on close, and slides out before it goes", () => {
     render(<Host />);
     expect(screen.queryByRole("dialog")).toBeNull();
     const opener = openSheet();
@@ -31,8 +56,13 @@ describe("Sheet", () => {
     expect(dialog.getAttribute("aria-modal")).toBe("true");
     expect(document.activeElement).toBe(dialog);
     fireEvent.click(screen.getByRole("button", { name: "Close" }));
-    expect(screen.queryByRole("dialog")).toBeNull();
     expect(document.activeElement).toBe(opener);
+    expect(dialog.hasAttribute("inert")).toBe(true);
+    expect(dialog.className).toMatch(/leaving/);
+    advance(EXIT_MS - 1);
+    expect(screen.queryByRole("dialog")).not.toBeNull();
+    advance(1);
+    expect(screen.queryByRole("dialog")).toBeNull();
   });
 
   it("closes on Escape and on a backdrop tap, but not on a tap inside", () => {
@@ -60,17 +90,89 @@ describe("Sheet", () => {
     expect(document.activeElement).toBe(last);
   });
 
-  it("closes after a downward swipe of more than 80 px on the handle", () => {
+  it("follows the finger one for one, picking up from where the sheet is", () => {
+    render(<Host />);
+    openSheet();
+    const panel = screen.getByRole("dialog");
+    const grip = panel.firstChild;
+    fireEvent.pointerDown(grip, { clientY: 100, pointerId: 1 });
+    clock = 50;
+    fireEvent.pointerMove(grip, { clientY: 160, pointerId: 1 });
+    expect(panel.style.transform).toBe("translateY(60px)");
+    expect(panel.style.transition).toBe("none");
+    expect(screen.getByTestId("sheet-backdrop").style.opacity).toBe(String(1 - (60 / panelHeight) * 0.8));
+  });
+
+  it("resists being pulled up past its resting place instead of following", () => {
+    render(<Host />);
+    openSheet();
+    const panel = screen.getByRole("dialog");
+    drag(panel.firstChild, [[-100, 100]]);
+    const y = Number(/translateY\(([-\d.]+)px\)/.exec(panel.style.transform)?.[1] ?? "0");
+    expect(y).toBe(0);
+    const grip = panel.firstChild;
+    fireEvent.pointerDown(grip, { clientY: 100, pointerId: 1 });
+    clock = 600;
+    fireEvent.pointerMove(grip, { clientY: 0, pointerId: 1 });
+    const pulled = Number(/translateY\(([-\d.]+)px\)/.exec(panel.style.transform)[1]);
+    expect(pulled).toBeLessThan(0);
+    expect(pulled).toBeGreaterThan(-100);
+  });
+
+  it("springs back, with a little bounce, from a short slow drag", () => {
     const onClose = vi.fn();
     render(<Host onClose={onClose} />);
     openSheet();
-    const grip = screen.getByRole("dialog").firstChild;
-    fireEvent.pointerDown(grip, { clientY: 100, pointerId: 1 });
-    fireEvent.pointerMove(grip, { clientY: 150, pointerId: 1 });
-    fireEvent.pointerUp(grip, { clientY: 150, pointerId: 1 });
+    const panel = screen.getByRole("dialog");
+    drag(panel.firstChild, [[20, 300], [50, 700]]);
+    expect(panel.style.transition).toContain("--spring-flick");
+    expect(panel.style.transform).toBe("translateY(0)");
+    advance(1000);
     expect(onClose).not.toHaveBeenCalled();
+  });
+
+  it("goes by where a flick is heading: a short, fast pull down dismisses it", () => {
+    const onClose = vi.fn();
+    render(<Host onClose={onClose} />);
+    openSheet();
+    const panel = screen.getByRole("dialog");
+    drag(panel.firstChild, [[20, 20], [50, 40]]);
+    expect(panel.style.transform).toBe(`translateY(${panelHeight}px)`);
+    expect(screen.getByTestId("sheet-backdrop").style.opacity).toBe("0");
+    expect(onClose).not.toHaveBeenCalled();
+    advance(400);
+    expect(onClose).toHaveBeenCalledTimes(1);
+    expect(screen.queryByRole("dialog")).toBeNull();
+  });
+
+  it("treats a fast pull followed by a held finger as no flick at all", () => {
+    const onClose = vi.fn();
+    render(<Host onClose={onClose} />);
+    openSheet();
+    const panel = screen.getByRole("dialog");
+    const grip = panel.firstChild;
     fireEvent.pointerDown(grip, { clientY: 100, pointerId: 1 });
-    fireEvent.pointerUp(grip, { clientY: 200, pointerId: 1 });
+    clock = 60;
+    fireEvent.pointerMove(grip, { clientY: 160, pointerId: 1 });
+    clock = 700; // the finger rests; no more moves arrive
+    fireEvent.pointerUp(grip, { clientY: 160, pointerId: 1 });
+    expect(panel.style.transform).toBe("translateY(0)");
+    advance(1000);
+    expect(onClose).not.toHaveBeenCalled();
+  });
+
+  it("dismisses a slow drag past the threshold, and not one that ends on the way back up", () => {
+    const onClose = vi.fn();
+    render(<Host onClose={onClose} />);
+    openSheet();
+    drag(screen.getByRole("dialog").firstChild, [[60, 400], [150, 900]]);
+    advance(400);
+    expect(onClose).toHaveBeenCalledTimes(1);
+    openSheet();
+    const panel = screen.getByRole("dialog");
+    drag(panel.firstChild, [[100, 300], [160, 340], [130, 380], [60, 420]]);
+    expect(panel.style.transform).toBe("translateY(0)");
+    advance(1000);
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
@@ -90,7 +192,11 @@ describe("Sheet", () => {
     deeper.focus();
     act(() => { fireEvent.click(deeper); });
     expect(screen.getAllByRole("dialog")).toHaveLength(2);
-    fireEvent.keyDown(screen.getByRole("dialog", { name: "Brief" }), { key: "Escape" });
+    const inner = screen.getByRole("dialog", { name: "Brief" });
+    fireEvent.keyDown(inner, { key: "Escape" });
+    expect(inner.hasAttribute("inert")).toBe(true);
+    expect(screen.getByRole("dialog", { name: "Cohesion" }).hasAttribute("inert")).toBe(false);
+    advance(EXIT_MS);
     expect(screen.getAllByRole("dialog")).toHaveLength(1);
     expect(screen.getByRole("dialog", { name: "Cohesion" })).toBeTruthy();
     expect(document.activeElement).toBe(deeper);
