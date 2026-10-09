@@ -14,8 +14,8 @@
 .title {
   font-size: var(--text-3xl);
   line-height: 1;
-  padding-bottom: var(--space-3);
-  background: var(--band) left bottom / 100% 8px no-repeat;
+  padding-bottom: var(--space-2);
+  border-bottom: 4px double var(--ink);
 }
 .dateline {
   font-size: var(--text-xs);
@@ -30,7 +30,7 @@
 .notice {
   font-size: var(--text-sm);
   padding: var(--space-3) var(--space-4);
-  border-top: 4px solid var(--accent);
+  border-top: 2px solid var(--ink);
   background: var(--paper-2);
 }
 .line {

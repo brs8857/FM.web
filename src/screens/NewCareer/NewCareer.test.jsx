@@ -99,7 +99,7 @@ describe("Colours", () => {
     const radios = screen.getAllByRole("radio");
     expect(radios).toHaveLength(CLUBS.length + 1);
     expect(radios[0].getAttribute("aria-checked")).toBe("true");
-    expect(radios[0].textContent).toContain("Colour wheel");
+    expect(radios[0].textContent).toContain("Pitch");
     expect(radios[0].tabIndex).toBe(0);
     expect(radios[1].tabIndex).toBe(-1);
     const names = radios.slice(1).map((r) => r.textContent);
@@ -130,7 +130,7 @@ describe("Colours", () => {
     expect(chosen.textContent).toBe("Islington Reds ✓");
     expect(chosen.tabIndex).toBe(0);
     expect(chosen.querySelector("[aria-hidden]").style.getPropertyValue("--swatch-a")).toBe("#EF0107");
-    fireEvent.click(screen.getByRole("radio", { name: /Colour wheel/ }));
+    fireEvent.click(screen.getByRole("radio", { name: /Pitch/ }));
     expect(onChange).toHaveBeenCalledWith(null);
     fireEvent.keyDown(screen.getByRole("radiogroup"), { key: "Home" });
     expect(onChange).toHaveBeenLastCalledWith(null);

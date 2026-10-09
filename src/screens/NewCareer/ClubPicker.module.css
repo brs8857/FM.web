@@ -43,9 +43,3 @@
 .tick {
   font-weight: 700;
 }
-/* The default theme previews itself as the wheel its section hues come
-   from; a club theme never sets these, so it always shows the default. */
-.wheel {
-  border-radius: 50%;
-  background: conic-gradient(var(--season), var(--desk), var(--signal), var(--board), var(--squad), var(--club), var(--season));
-}

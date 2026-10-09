@@ -18,7 +18,7 @@
   min-height: var(--hit);
   padding: var(--space-2) var(--space-4);
   background: var(--action);
-  color: var(--action-ink);
+  color: var(--paper);
   border-radius: var(--radius-paper);
   font-size: var(--text-sm);
 }
@@ -26,7 +26,7 @@
   flex: 1;
 }
 .action {
-  color: var(--action-ink);
+  color: var(--paper);
   font-weight: 600;
   text-decoration: underline;
   text-underline-offset: 3px;

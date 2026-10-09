@@ -1,39 +1,22 @@
-/* The colour wheel: white paper and black ink so the hues read at full
-   strength, a grass-green pitch, a yellow highlight, and one hue per part of
-   the game (Squad blue, Board green, Season red, Club violet; Home, setup
-   and the draft orange). Every hue is at full saturation, with only its
-   lightness solved so its text and its edge pass WCAG AA
-   (scripts/check-contrast.mjs). Components use these names only, never raw
-   hex: --action and --accent follow the section, --signal is the yellow for
-   fills and the pitch. */
+/* Newsprint and chalkboard: off-white paper and printer's black, a green-black
+   slate for the board, and the greens of a pitch, mown grass for --signal and
+   the darker turf for --action and --win. Loss is brick, draw is newsprint grey.
+   Components use these names only, never raw hex. */
 
 :root {
-  --paper: #FFFFFF;
-  --paper-2: #F2F2F2;
-  --rule: #D4D4D4;
-  --ink: #0A0A0A;
-  --ink-2: #4A4A4A;
-  --signal: #FFEA00;
-  --signal-ink: #0A0A0A;
-  --slate: #007016;
-  --chalk: #FFFFFF;
-  --win: #007F0B;
-  --draw: #A35C00;
-  --loss: #DE0012;
-  --action: #F76700;
-  --action-ink: #0A0A0A;
-  --accent: #F76700;
-
-  --desk: #F76700;
-  --desk-ink: #0A0A0A;
-  --squad: #004DFF;
-  --squad-ink: #FFFFFF;
-  --board: #00AD17;
-  --board-ink: #0A0A0A;
-  --season: #ED0014;
-  --season-ink: #FFFFFF;
-  --club: #A200FF;
-  --club-ink: #FFFFFF;
+  --paper: #F4F4F0;
+  --paper-2: #E8E9E2;
+  --rule: #CDCFC5;
+  --ink: #1A1B18;
+  --ink-2: #4D5047;
+  --signal: #67A03E;
+  --signal-ink: #1A1B18;
+  --slate: #1D3A2C;
+  --chalk: #F3F2EA;
+  --win: #2F6B2A;
+  --draw: #5E605A;
+  --loss: #A83C33;
+  --action: #265A32;
 
   /* The iPhone's own face (San Francisco), as Apple's apps set it; other
      systems fall back to theirs. Courier only for the vidiprinter and its
@@ -78,80 +61,39 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #0B0B0B;
-    --paper-2: #181818;
-    --rule: #383838;
-    --ink: #F5F5F5;
-    --ink-2: #B0B0B0;
-    --signal: #FFEA00;
-    --signal-ink: #0A0A0A;
-    --slate: #006614;
-    --chalk: #FFFFFF;
-    --win: #00FF15;
-    --draw: #FF9100;
-    --loss: #FF0D21;
-    --action: #FF6A00;
-    --action-ink: #0A0A0A;
-    --accent: #FF6A00;
-    --desk: #FF6A00;
-    --desk-ink: #0A0A0A;
-    --squad: #004DFF;
-    --squad-ink: #FFFFFF;
-    --board: #00FF22;
-    --board-ink: #0A0A0A;
-    --season: #ED0014;
-    --season-ink: #FFFFFF;
-    --club: #A200FF;
-    --club-ink: #FFFFFF;
+    --paper: #121411;
+    --paper-2: #1B1E1A;
+    --rule: #343930;
+    --ink: #EDEEE7;
+    --ink-2: #A8AC9F;
+    --signal: #93BA69;
+    --signal-ink: #10150E;
+    --slate: #172A20;
+    --chalk: #F3F2EA;
+    --win: #8CC77F;
+    --draw: #9EA296;
+    --loss: #E08A7E;
+    --action: #6E9A55;
     color-scheme: dark;
   }
 }
 
 [data-theme="dark"] {
-  --paper: #0B0B0B;
-  --paper-2: #181818;
-  --rule: #383838;
-  --ink: #F5F5F5;
-  --ink-2: #B0B0B0;
-  --signal: #FFEA00;
-  --signal-ink: #0A0A0A;
-  --slate: #006614;
-  --chalk: #FFFFFF;
-  --win: #00FF15;
-  --draw: #FF9100;
-  --loss: #FF0D21;
-  --action: #FF6A00;
-  --action-ink: #0A0A0A;
-  --accent: #FF6A00;
-  --desk: #FF6A00;
-  --desk-ink: #0A0A0A;
-  --squad: #004DFF;
-  --squad-ink: #FFFFFF;
-  --board: #00FF22;
-  --board-ink: #0A0A0A;
-  --season: #ED0014;
-  --season-ink: #FFFFFF;
-  --club: #A200FF;
-  --club-ink: #FFFFFF;
+  --paper: #121411;
+  --paper-2: #1B1E1A;
+  --rule: #343930;
+  --ink: #EDEEE7;
+  --ink-2: #A8AC9F;
+  --signal: #93BA69;
+  --signal-ink: #10150E;
+  --slate: #172A20;
+  --chalk: #F3F2EA;
+  --win: #8CC77F;
+  --draw: #9EA296;
+  --loss: #E08A7E;
+  --action: #6E9A55;
   color-scheme: dark;
 }
-
-/* The wheel as a band of the five section hues, under the nameplate; a
-   club's own two colours when one is chosen. */
-:root {
-  --band: linear-gradient(90deg, var(--desk) 0 20%, var(--squad) 20% 40%, var(--board) 40% 60%, var(--season) 60% 80%, var(--club) 80%);
-}
-:root[data-club] {
-  --band: linear-gradient(90deg, var(--action) 0 50%, var(--slate) 50%);
-}
-
-/* Each part of the game takes its own hue for its main button, its rules
-   and its highlights. A club's colours, once chosen, replace them all
-   (useDocumentPrefs sets data-club). */
-:root:not([data-club]) [data-section="squad"] { --action: var(--squad); --action-ink: var(--squad-ink); --accent: var(--squad); }
-:root:not([data-club]) [data-section="board"] { --action: var(--board); --action-ink: var(--board-ink); --accent: var(--board); }
-:root:not([data-club]) [data-section="season"] { --action: var(--season); --action-ink: var(--season-ink); --accent: var(--season); }
-:root:not([data-club]) [data-section="club"] { --action: var(--club); --action-ink: var(--club-ink); --accent: var(--club); }
 
 @media (prefers-reduced-motion: reduce) {
   :root {

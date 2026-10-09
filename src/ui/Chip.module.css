@@ -25,14 +25,14 @@
 }
 .selected {
   color: var(--ink);
-  border-bottom: 3px solid var(--accent);
+  border-bottom-color: var(--ink);
 }
 .selected .sub {
   color: var(--ink-2);
 }
 .signal.selected {
   color: var(--ink);
-  border-bottom-color: var(--accent);
+  border-bottom-color: var(--signal);
 }
 .signal.selected .sub {
   color: var(--ink-2);

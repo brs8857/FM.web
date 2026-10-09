@@ -23,11 +23,6 @@ export function useDocumentPrefs(prefs) {
     style.id = CLUB_THEME_ID;
     style.textContent = clubThemeCss(derived);
     document.head.append(style);
-    // A club's colours replace the per-section hues (tokens.css).
-    document.documentElement.dataset.club = club;
-    return () => {
-      style.remove();
-      delete document.documentElement.dataset.club;
-    };
+    return () => style.remove();
   }, [club]);
 }

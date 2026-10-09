@@ -34,7 +34,7 @@
 }
 .cursor {
   display: inline-block;
-  color: var(--accent);
+  color: var(--signal);
   animation: blink 1s steps(2, end) infinite;
 }
 @keyframes blink {

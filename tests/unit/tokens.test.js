@@ -1,13 +1,12 @@
 // @vitest-environment node
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
-import { checkContrast, parseThemes, contrast, PAIRS, SECTION_PAIRS } from "../../scripts/check-contrast.mjs";
-import { hexToHsl } from "../../src/content/clubTheme.js";
+import { checkContrast, parseThemes, contrast, PAIRS } from "../../scripts/check-contrast.mjs";
 
 const tokens = readFileSync("src/styles/tokens.css", "utf8");
 const base = readFileSync("src/styles/base.css", "utf8");
 
-const COLOUR_TOKENS = ["paper", "paper-2", "rule", "ink", "ink-2", "signal", "signal-ink", "slate", "chalk", "win", "draw", "loss", "action", "action-ink", "accent", "desk", "squad", "board", "season", "club"];
+const COLOUR_TOKENS = ["paper", "paper-2", "rule", "ink", "ink-2", "signal", "signal-ink", "slate", "chalk", "win", "draw", "loss", "action"];
 
 describe("design tokens", () => {
   it("defines every colour token in the light, dark and system-dark blocks", () => {
@@ -19,23 +18,12 @@ describe("design tokens", () => {
     }
   });
 
-  it("uses the colour wheel at full strength, not the stock greens of AI-built apps", () => {
+  it("uses the newsprint-and-turf values, not the stock greens they replaced", () => {
     const themes = parseThemes(tokens);
-    expect(themes.light).toMatchObject({ paper: "#FFFFFF", ink: "#0A0A0A", signal: "#FFEA00", slate: "#007016", desk: "#F76700", squad: "#004DFF", board: "#00AD17", season: "#ED0014", club: "#A200FF" });
-    expect(themes.dark).toMatchObject({ paper: "#0B0B0B", ink: "#F5F5F5", signal: "#FFEA00", slate: "#006614", desk: "#FF6A00", board: "#00FF22" });
-    for (const [mode, theme] of Object.entries({ light: themes.light, dark: themes.dark })) {
-      for (const hue of ["signal", "slate", "win", "draw", "loss", "action", "accent", "desk", "squad", "board", "season", "club"]) {
-        expect(hexToHsl(theme[hue]).s, `${mode} --${hue}`).toBeGreaterThan(0.97);
-      }
-    }
+    expect(themes.light).toMatchObject({ paper: "#F4F4F0", ink: "#1A1B18", signal: "#67A03E", slate: "#1D3A2C", chalk: "#F3F2EA", action: "#265A32" });
+    expect(themes.dark).toMatchObject({ paper: "#121411", ink: "#EDEEE7", signal: "#93BA69", slate: "#172A20", action: "#6E9A55" });
     const stock = ["#2ECC71", "#27AE60", "#34C759", "#30D158", "#22C55E", "#16A34A", "#10B981", "#059669"];
     for (const theme of [themes.light, themes.dark]) expect(Object.values(theme).filter((hex) => stock.includes(hex))).toEqual([]);
-  });
-
-  it("gives each tab its own hue unless a club's colours are chosen", () => {
-    for (const section of ["squad", "board", "season", "club"]) {
-      expect(tokens).toContain(`:root:not([data-club]) [data-section="${section}"] { --action: var(--${section}); --action-ink: var(--${section}-ink); --accent: var(--${section}); }`);
-    }
   });
 
   it("guards system dark behind an explicit light theme", () => {
@@ -43,9 +31,9 @@ describe("design tokens", () => {
   });
 
   it("passes every AA pair in both themes", () => {
-    const { results, mismatched } = checkContrast(tokens, [...PAIRS, ...SECTION_PAIRS]);
+    const { results, mismatched } = checkContrast(tokens);
     expect(mismatched).toEqual([]);
-    expect(results).toHaveLength((PAIRS.length + SECTION_PAIRS.length) * 2);
+    expect(results).toHaveLength(PAIRS.length * 2);
     expect(results.filter((r) => !r.ok)).toEqual([]);
   });
 

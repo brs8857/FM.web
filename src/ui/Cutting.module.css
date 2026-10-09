@@ -6,7 +6,7 @@
   padding: var(--space-2) 0 var(--space-3);
   background: none;
   border: 0;
-  border-top: 4px solid var(--accent);
+  border-top: 3px solid var(--ink);
   color: var(--ink);
   text-align: left;
   width: 100%;
@@ -18,7 +18,7 @@
   transform: translateY(1px);
 }
 .selected {
-  border-top-color: var(--ink);
+  border-top-color: var(--signal);
 }
 .title {
   font-family: var(--font-headline);

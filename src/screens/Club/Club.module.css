@@ -73,7 +73,7 @@
 .summary {
   display: flex;
   flex-direction: column;
-  border-top: 4px solid var(--accent);
+  border-top: 2px solid var(--ink);
 }
 .stat {
   display: flex;

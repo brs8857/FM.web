@@ -546,18 +546,3 @@ Found and changed:
 - **Courier on everything numeric**: kept for the vidiprinter only.
 - Bugs found on the way: the era slider printed each year three times;
   long back-page headlines and play-off button labels overflowed a phone.
-
-## 7. Colour (2026-10-08, v3.2.0)
-
-The owner asked for every colour to be far more saturated, after a hue
-wheel at full strength. That reverses §2.4 on purpose: the first pass held
-everything below 62% saturation to avoid the neon of generated apps, and
-the owner's direction wins over the checklist. What keeps it from reading
-as generated neon is structure rather than restraint: hues at full strength
-on white or black paper, one hue to each part of the game (Squad blue,
-Board green, Season red, Club violet; Home, setup and the draft orange),
-yellow only for highlights and the pitch, and pure green, amber and red
-for results. Every value is the wheel hue at 100% saturation with only its
-lightness solved for contrast; `scripts/check-contrast.mjs` checks 52
-pairs, including each section's text and edge, and every club theme passes
-every pair in both modes.

@@ -70,7 +70,7 @@
   background: var(--ink);
 }
 .range:focus-visible {
-  outline: 3px solid var(--accent);
+  outline: 2px solid var(--signal);
   outline-offset: 2px;
 }
 .ends {

@@ -14,7 +14,7 @@ export default function Shell({ mode, tab, onTab, title, subtitle, onBack, start
   const club = mode === "club";
   const tabs = club && <TabBar tabs={TABS} value={tab} onChange={onTab} orientation={rail ? "vertical" : "horizontal"} />;
   return (
-    <div className={cx(styles.shell, club && rail && styles.withRail)} data-mode={mode} data-section={club ? tab : "desk"}>
+    <div className={cx(styles.shell, club && rail && styles.withRail)} data-mode={mode}>
       {club && rail && <div className={styles.rail}>{tabs}</div>}
       <div className={styles.column}>
         {title !== undefined && (

@@ -1,16 +1,5 @@
 # Changelog
 
-## 3.2.0 — 2026-10-08
-
-The colour wheel: every colour in the game at full saturation.
-
-### Changed
-- **A hue for every tab.** Squad is blue, Board green, Season red and Club violet; Home, setup and the draft are orange. Each section's main button, its rules and its highlights take its hue, and the tab bar carries all of them.
-- **Full-strength colour.** White paper and black ink with every hue at 100% saturation: a grass-green pitch, a yellow highlight, and pure green, amber and red for wins, draws and losses. Only lightness changes, and only as far as each pair of colours needs to stay readable.
-- **Club colours at full strength.** A club's theme now carries its kit colour fully on the board, the buttons and every rule, with a clear tint on the paper, instead of a muted version of it.
-- The default theme is now called **Colour wheel** and shows a small wheel in the colour list. Home, the welcome page and the share image carry a band of the five hues under the name.
-- The app icon and the browser's theme colour are the new pitch green.
-
 ## 3.1.0 — 2026-10-03
 
 A second pass at everything that made the game look machine-made.
