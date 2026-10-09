@@ -306,7 +306,7 @@ function Game({ dataset, storageProp, initialPrefs }) {
       sticky={sticky ? (
         <div className={styles.stickyRow}>
           <Button block onClick={sticky.run}>{sticky.label}</Button>
-          {sticky.playTo && <Button variant="ghost" onClick={() => setPlayTo(true)}>{t("season.playTo")}</Button>}
+          {sticky.playTo && <Button variant="secondary" onClick={() => setPlayTo(true)}>{t("season.playTo")}</Button>}
         </div>
       ) : undefined}>
       {nav.tab === "squad" && <SquadTab state={state} dispatch={dispatch} clubSeason={clubSeason} revealed={revealed} suspended={suspended} prefs={prefs} />}

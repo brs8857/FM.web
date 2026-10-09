@@ -1,5 +1,12 @@
 .disclosure {
-  border-top: 1px solid var(--rule);
+  padding: 0 var(--space-4);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--radius-card);
+  box-shadow: var(--glass-shadow), var(--glass-hi);
+}
+.disclosure + .disclosure {
+  margin-top: var(--space-3);
 }
 .heading {
   font: inherit;
@@ -40,4 +47,21 @@
 .trigger:not(:disabled):active {
   transform: none;
   background: var(--paper-2);
+}
+/* A table inside runs to the card's edges, flat, so it has the full width
+   to fit in: a card within a card would cost it the inset twice. */
+.panel div:has(> table) {
+  margin-inline: calc(-1 * var(--space-4));
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+.panel div:has(> table) caption {
+  padding-inline: var(--space-4);
+}
+.panel div:has(> table) :is(th, td):first-child {
+  padding-left: var(--space-4);
+}
+.panel div:has(> table) :is(th, td):last-child {
+  padding-right: var(--space-4);
 }

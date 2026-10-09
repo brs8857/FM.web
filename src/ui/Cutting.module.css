@@ -3,19 +3,21 @@
   flex-direction: column;
   gap: 2px;
   min-height: var(--hit);
-  padding: var(--space-2) 0 var(--space-3);
-  background: none;
-  border: 0;
-  border-top: 3px solid var(--ink);
+  padding: var(--space-2) var(--space-4);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--radius-card);
+  box-shadow: var(--glass-shadow), var(--glass-hi);
   color: var(--ink);
   text-align: left;
   width: 100%;
 }
 .button {
-  transition: border-color 120ms var(--ease), transform var(--spring-settle-time) var(--spring-settle);
+  transition: outline-color 120ms var(--ease), transform var(--spring-settle-time) var(--spring-settle);
 }
 .selected {
-  border-top-color: var(--action);
+  outline: 2px solid var(--action);
+  outline-offset: -2px;
 }
 .title {
   font-family: var(--font-headline);
