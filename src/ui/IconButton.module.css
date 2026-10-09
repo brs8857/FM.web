@@ -1,3 +1,4 @@
+/* Each top-bar action is its own glass disc. */
 .button {
   display: inline-flex;
   align-items: center;
@@ -5,22 +6,27 @@
   flex: none;
   width: var(--hit);
   height: var(--hit);
-  border-radius: var(--radius-paper);
+  border-radius: var(--radius-pill);
   color: var(--ink);
   position: relative;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-edge);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow), var(--glass-hi);
 }
 /* Small variant keeps a 44 pt hit area through a transparent halo. */
 .sm {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
 }
 .sm::before {
   content: "";
   position: absolute;
-  inset: -8px;
+  inset: -6px;
 }
 .outlined {
-  border: 1px solid var(--ink);
+  border-color: var(--ink);
 }
 .button:disabled {
   opacity: 0.45;

@@ -2,30 +2,32 @@
   display: inline-grid;
   grid-auto-flow: column;
   grid-auto-columns: 1fr;
+  gap: 4px;
   width: 100%;
-  border: 1px solid var(--ink);
-  border-radius: var(--radius-paper);
-  overflow: hidden;
-  background: var(--paper);
+  padding: 4px;
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--radius-pill);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-hi);
 }
 .segment {
-  min-height: var(--hit);
+  min-height: 40px;
   padding: 0 var(--space-3);
   font-weight: 600;
   font-size: var(--text-sm);
   color: var(--ink);
-  border-right: 1px solid var(--ink);
+  border-radius: var(--radius-pill);
   white-space: nowrap;
-}
-.segment:last-child {
-  border-right: 0;
 }
 .selected {
   background: var(--action);
   color: var(--paper);
+  box-shadow: 0 3px 10px color-mix(in srgb, var(--action) 40%, transparent), inset 0 1px 0 var(--sheen);
 }
 .sm .segment {
-  min-height: 36px;
+  min-height: 32px;
   font-size: var(--text-xs);
 }
 .segment:focus-visible {

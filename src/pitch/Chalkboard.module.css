@@ -2,7 +2,7 @@
   --board-max-h: 100vh;
   background: var(--slate);
   color: var(--chalk);
-  border-radius: var(--radius-paper);
+  border-radius: var(--radius-card);
   overflow: hidden;
   width: 100%;
   padding-block: var(--space-2);

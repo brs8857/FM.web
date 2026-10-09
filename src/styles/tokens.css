@@ -46,8 +46,10 @@
   --space-6: 2rem;
   --space-8: 3rem;
 
-  --radius-paper: 2px;
-  --radius-chip: 2px;
+  --radius-paper: 18px;
+  --radius-card: 22px;
+  --radius-chip: 999px;
+  --radius-pill: 999px;
   --hit: 44px;
   --tab-bar: 49px;
 
@@ -67,6 +69,17 @@
   --ease-stamp: cubic-bezier(0.55, 0, 1, 0.45);
 
   color-scheme: light;
+
+  /* Liquid glass: a translucent, blurred surface that floats over the page.
+     Controls, the tab bar and sheets use these names only. */
+  --glass-bg: rgba(255, 255, 255, 0.52);
+  --glass-bg-strong: rgba(255, 255, 255, 0.74);
+  --glass-edge: rgba(255, 255, 255, 0.85);
+  --glass-blur: blur(22px) saturate(190%);
+  --glass-blur-heavy: blur(34px) saturate(200%);
+  --glass-shadow: 0 8px 28px rgba(20, 40, 20, 0.16), 0 1px 3px rgba(20, 40, 20, 0.12);
+  --glass-hi: inset 0 1.5px 0 rgba(255, 255, 255, 0.95), inset 0 -1px 0 rgba(0, 0, 0, 0.05), inset 0 0 0 0.5px rgba(255, 255, 255, 0.6);
+  --sheen: rgba(255, 255, 255, 0.55);
 }
 
 @supports (transition-timing-function: linear(0, 1)) {
@@ -93,6 +106,12 @@
     --draw: #9EA296;
     --loss: #FF2B1C;
     --action: #15FF00;
+    --glass-bg: rgba(60, 64, 58, 0.5);
+    --glass-bg-strong: rgba(70, 74, 68, 0.76);
+    --glass-edge: rgba(255, 255, 255, 0.22);
+    --glass-shadow: 0 8px 28px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.5);
+    --glass-hi: inset 0 1.5px 0 rgba(255, 255, 255, 0.28), inset 0 -1px 0 rgba(0, 0, 0, 0.25), inset 0 0 0 0.5px rgba(255, 255, 255, 0.12);
+    --sheen: rgba(255, 255, 255, 0.3);
     color-scheme: dark;
   }
 }
@@ -111,6 +130,12 @@
   --draw: #9EA296;
   --loss: #FF2B1C;
   --action: #15FF00;
+  --glass-bg: rgba(60, 64, 58, 0.5);
+  --glass-bg-strong: rgba(70, 74, 68, 0.76);
+  --glass-edge: rgba(255, 255, 255, 0.22);
+  --glass-shadow: 0 8px 28px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.5);
+  --glass-hi: inset 0 1.5px 0 rgba(255, 255, 255, 0.28), inset 0 -1px 0 rgba(0, 0, 0, 0.25), inset 0 0 0 0.5px rgba(255, 255, 255, 0.12);
+  --sheen: rgba(255, 255, 255, 0.3);
   color-scheme: dark;
 }
 
@@ -128,4 +153,16 @@
   --motion-type: 0ms;
   --motion-stamp: 0ms;
   --motion-stamp-hold: 0ms;
+}
+
+/* No blur available, or the person asked for less transparency: the same
+   surfaces, solid. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root, [data-theme="dark"] { --glass-blur: none; --glass-blur-heavy: none; --glass-bg: var(--paper-2); --glass-bg-strong: var(--paper); }
+}
+@media (prefers-reduced-transparency: reduce) {
+  :root, [data-theme="dark"] { --glass-blur: none; --glass-blur-heavy: none; --glass-bg: var(--paper-2); --glass-bg-strong: var(--paper); }
+}
+@media (prefers-contrast: more) {
+  :root, [data-theme="dark"] { --glass-edge: var(--ink); }
 }

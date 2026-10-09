@@ -1,5 +1,18 @@
 # Changelog
 
+## 3.4.0 — 2026-10-09
+
+Liquid glass, part one: the shell and the controls, rounded and translucent in the iPhone's own style.
+
+### Changed
+- **Every action is its own button.** The back arrow and the XI mark sit in separate glass discs; the main action is a green capsule with light along its top edge, and a second action ("Play to…", "Skip to end", "Saves", "Settings") is its own glass capsule beside it rather than underlined text.
+- **The tab bar floats.** Squad, Board, Season and Club sit in one glass capsule above the page, and the selected tab is a lighter capsule inside it. On a wide screen the side rail is a tall glass capsule.
+- **The footer floats too.** The page scrolls under the action buttons and fades out behind them, instead of stopping at a ruled bar.
+- **Sheets are inset glass,** with large rounded corners, a soft shadow and a heavier blur than the controls.
+- **Rounded everywhere.** Cards, the board, tables and the league choices have 18 to 22 pt corners; toggles and segmented controls are capsules, with the selected segment a raised green pill.
+- A faint pitch-green glow sits behind the page, so the glass has something to catch.
+- Reduce Transparency, or a browser without blur, makes every glass surface solid and drops the glow; Increase Contrast gives glass a hard ink edge.
+
 ## 3.3.0 — 2026-10-09
 
 Motion that feels like an extension of your hand (the apple-design pass; the skill is in `.agents/skills/apple-design`).
