@@ -56,3 +56,8 @@
   color: var(--loss);
   border-radius: 2px;
 }
+/* A full-width row lights up under the finger rather than shrinking. */
+.button:not(:disabled):active {
+  transform: none;
+  background: var(--paper-2);
+}

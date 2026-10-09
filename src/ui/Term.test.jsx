@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { Term, TermsProvider } from "./Term.jsx";
 
 const terms = {
@@ -9,7 +9,7 @@ const terms = {
 };
 
 describe("Term", () => {
-  it("opens a definition sheet and nests further terms", () => {
+  it("opens a definition sheet and nests further terms", async () => {
     render(<TermsProvider terms={terms}><p>Your <Term term="cohesion">cohesion</Term> is Rough.</p></TermsProvider>);
     const trigger = screen.getByRole("button", { name: "cohesion" });
     expect(trigger.getAttribute("aria-haspopup")).toBe("dialog");
@@ -20,7 +20,7 @@ describe("Term", () => {
     expect(screen.getByRole("dialog", { name: "Job" }).textContent).toContain("What the player is asked to do.");
     expect(screen.getAllByRole("dialog")).toHaveLength(2);
     fireEvent.keyDown(screen.getByRole("dialog", { name: "Job" }), { key: "Escape" });
-    expect(screen.getAllByRole("dialog")).toHaveLength(1);
+    await waitFor(() => expect(screen.getAllByRole("dialog")).toHaveLength(1));
     fireEvent.click(screen.getByRole("button", { name: "Brief" }));
     expect(screen.getByRole("dialog", { name: "Brief" })).toBeTruthy();
   });

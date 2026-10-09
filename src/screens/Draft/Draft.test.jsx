@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent, act, within } from "@testing-library/react";
+import { render, screen, fireEvent, act, within, waitFor } from "@testing-library/react";
 import { useReducer } from "react";
 import Draft from "./Draft.jsx";
 import { shirtOrder } from "./CuttingSheet.jsx";
@@ -33,7 +33,7 @@ function draftState(seed = 11) {
 }
 
 describe("Draft", () => {
-  it("draws three cuttings, opens a team sheet in shirt order, confirms and picks", () => {
+  it("draws three cuttings, opens a team sheet in shirt order, confirms and picks", async () => {
     const spy = {};
     render(<Harness initial={draftState()} spy={spy} />);
     expect(screen.getByText("Nobody picked yet")).toBeTruthy();
@@ -55,10 +55,10 @@ describe("Draft", () => {
     expect(spy.state.assignments[0].player).toBeTruthy();
     expect(screen.getByText("1 picked · 1 from the 2000s")).toBeTruthy();
     expect(screen.getByTestId("live-region").textContent).toMatch(/picked at goalkeeper\. Pick 2 of 11/);
-    expect(screen.queryByRole("dialog")).toBeNull();
+    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
   });
 
-  it("spends redraws and rubs out the ticks; the second pick shows the era cost", () => {
+  it("spends redraws and rubs out the ticks; the second pick shows the era cost", async () => {
     const spy = {};
     render(<Harness initial={draftState(3)} spy={spy} />);
     fireEvent.click(screen.getByRole("button", { name: "Draw" }));
@@ -71,6 +71,7 @@ describe("Draft", () => {
     fireEvent.click(within(screen.getByRole("list", { name: "Cuttings" })).getAllByRole("button")[0]);
     fireEvent.click(screen.getByRole("dialog").querySelector("li button"));
     fireEvent.click(screen.getByRole("button", { name: "Pick" }));
+    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
     fireEvent.click(screen.getByRole("button", { name: "Draw" }));
     const other = spy.state.draw.options.find((o) => o.year !== spy.state.assignments[0].player.seasonKey.split("_")[0]);
     fireEvent.click(screen.getByRole("button", { name: new RegExp(clubSeasonLabel(dataset, `${other.year}_${other.clubId}`)) }));

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { render, screen, fireEvent, within } from "@testing-library/react";
+import { render, screen, fireEvent, within, waitFor } from "@testing-library/react";
 import { useReducer } from "react";
 import SquadTab from "./SquadTab.jsx";
 import { statBand } from "./StatPip.jsx";
@@ -50,7 +50,7 @@ describe("SquadTab", () => {
     expect(numbers.map(Number).filter((n) => ratings.includes(n) && n > 45)).toEqual(numbers.map(Number).filter((n) => ratings.includes(n) && n > 45 && [...state.assignments, ...state.bench].some((e) => e.player.age === n)));
   });
 
-  it("opens the player sheet with five-band pips, changes job and brief, and swaps", () => {
+  it("opens the player sheet with five-band pips, changes job and brief, and swaps", async () => {
     const spy = {};
     const state = makeSeason3TacticsState();
     render(<Harness initial={state} spy={spy} />);
@@ -70,7 +70,7 @@ describe("SquadTab", () => {
     expect(spy.state.assignments[stIdx].sliderAtt).toBe(55);
     fireEvent.click(screen.getByRole("button", { name: "Swap with…" }));
     fireEvent.click(screen.getByRole("dialog").querySelector("li button"));
-    expect(screen.queryByRole("dialog")).toBeNull();
+    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
     expect(spy.state.assignments.map((a) => a.player.name)).not.toEqual(state.assignments.map((a) => a.player.name));
     expect(screen.getByTestId("live-region").textContent).toMatch(/swapped/);
   });

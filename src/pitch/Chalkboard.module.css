@@ -37,7 +37,9 @@
 }
 .ghost {
   position: absolute;
-  transform: translate(-50%, -50%);
+  /* Picked up: a touch larger, with a shadow beneath. */
+  transform: translate(-50%, -50%) scale(1.12);
+  box-shadow: 0 8px 14px rgba(0, 0, 0, 0.4);
   width: 32px;
   height: 32px;
   border-radius: 50%;

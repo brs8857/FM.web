@@ -55,3 +55,8 @@
 .tick {
   font-weight: 700;
 }
+/* A full-width row lights up under the finger rather than shrinking. */
+.option:not(:disabled):active {
+  transform: none;
+  background: var(--paper-2);
+}

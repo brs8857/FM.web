@@ -62,6 +62,31 @@ describe("usePitchDrag", () => {
     expect(dispatch).toHaveBeenCalledWith({ type: "MOVE_PLAYER", slotId: "GK", x: 50, y: 50 });
   });
 
+  it("judges the drop where the marker is drawn, not where the finger is, keeping the grab offset", () => {
+    const dispatch = vi.fn();
+    const hook = renderHook(() => usePitchDrag({ assignments, dispatch }));
+    // Grabbed 20 px below and 10 px left of the marker's centre.
+    act(() => hook.result.current.startDrag("slot", "GK", { dx: -10, dy: 20 }));
+    pointAt("pitch");
+    act(() => release(100, 170));
+    expect(document.elementFromPoint).toHaveBeenCalledWith(110, 150);
+    const move = dispatch.mock.calls[0][0];
+    expect(move).toMatchObject({ type: "MOVE_PLAYER", slotId: "GK", y: 50 });
+    expect(move.x).toBeCloseTo(55, 6);
+  });
+
+  it("puts the whole marker, not just its disc, where it was held on a free move", () => {
+    const dispatch = vi.fn();
+    const hook = renderHook(() => usePitchDrag({ assignments, dispatch }));
+    // The disc's centre is 6 px above the finger; the marker's (disc and name) 14 px above it.
+    act(() => hook.result.current.startDrag("slot", "GK", { dx: 0, dy: 6, bx: 0, by: 14 }));
+    pointAt("pitch");
+    act(() => release(100, 164));
+    expect(document.elementFromPoint).toHaveBeenCalledWith(100, 158);
+    const move = dispatch.mock.calls[0][0];
+    expect(move.y).toBeCloseTo(50, 6);
+  });
+
   it("swaps a bench player into the nearest slot when dropped on open pitch", () => {
     const { dispatch } = start("bench", 1);
     pointAt("pitch");

@@ -1,5 +1,20 @@
 # Changelog
 
+## 3.3.0 — 2026-10-09
+
+Motion that feels like an extension of your hand (the apple-design pass; the skill is in `.agents/skills/apple-design`).
+
+### Changed
+- **Everything you press responds at once.** Buttons, chips, tabs and toggles shrink the instant they are touched and spring back when let go; full-width rows light up instead. iPhone Safari only shows this when the page has a touch listener, so it now has one.
+- **Sheets are pulled, not clicked.** A sheet rises from the bottom edge on a spring and leaves the way it came. Dragging its handle follows your finger exactly, picks up from wherever the sheet is if you grab it mid-motion, resists if you pull it up, and dims the page less as it goes. Let go and it goes by where your flick was heading, at your own speed, or springs back with a little bounce. The page behind a sheet is blurred.
+- **A marker stays under your finger on the board.** A dragged player is lifted with a shadow and keeps the spot you grabbed him by; he lands exactly where he is drawn, where before the drop was judged at your fingertip.
+- Springs are CSS (`--spring-settle`, no overshoot, for anything you tap; `--spring-flick`, a 1.5% bounce, only for what a flick carried), generated from damping and response by `scripts/springs.mjs` with no library, so the app is 1 KB bigger, not 20.
+- **Reduced motion cross-fades.** With Reduce Motion on, a sheet fades in and out instead of travelling; everything else still stops dead. Reduce Transparency removes the blur, and Increase Contrast gives sheets a hard edge.
+- Headings balance their lines, and text uses the system font's optical sizing.
+
+### Fixed
+- A hold before letting go no longer counts as a flick: velocity is read up to the moment the finger lifts, so a sheet pulled fast and then held still stays put.
+
 ## 3.2.0 — 2026-10-09
 
 ### Changed

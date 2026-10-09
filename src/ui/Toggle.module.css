@@ -40,7 +40,7 @@
   height: 18px;
   border-radius: 50%;
   background: var(--ink);
-  transition: transform 120ms var(--ease), background 120ms var(--ease);
+  transition: transform var(--spring-settle-time) var(--spring-settle), background 120ms var(--ease);
 }
 .on .track {
   background: var(--action);

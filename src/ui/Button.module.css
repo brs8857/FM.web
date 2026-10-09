@@ -12,7 +12,7 @@
   font-size: var(--text-md);
   line-height: 1.2;
   white-space: nowrap;
-  transition: transform 80ms var(--ease), opacity 120ms var(--ease);
+  transition: transform var(--spring-settle-time) var(--spring-settle), opacity 120ms var(--ease);
 }
 .primary {
   background: var(--action);
@@ -45,7 +45,4 @@
 .button:disabled {
   opacity: 0.45;
   cursor: not-allowed;
-}
-.button:not(:disabled):active {
-  transform: translateY(1px);
 }

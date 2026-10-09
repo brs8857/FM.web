@@ -557,3 +557,26 @@ themes lose their 62% cap the same way. Marks drawn on the page (focus
 rings, selected rows, underlines) moved from the bright highlight to the
 deep action green, which passes 3:1 on paper; `scripts/check-contrast.mjs`
 now checks that pair too (30 pairs).
+
+## 8. Motion (2026-10-09, v3.3.0)
+
+The `apple-design` skill (emilkowalski/skills, from Apple's WWDC fluid-interface
+talks) applied to the game. Audit against its sections, and what was done:
+
+| Skill section | Found | Done |
+|---|---|---|
+| 1 Response | press feedback only on Button and Cutting; none on chips, tabs, toggles, rows | one global rule (scale on touch-down, spring back), rows highlight; iOS touchstart hook so `:active` shows |
+| 2 Direct manipulation | the dragged marker's ghost centred on the finger, ignoring where it was grabbed; the drop judged at the fingertip | grab offset kept; ghost lifted; drop judged at the marker, and a free move places the whole marker |
+| 3 Interruptibility | sheet snap-back was a fixed CSS transition; no way to grab a moving sheet | a grab reads the live on-screen offset and carries on from it |
+| 4-5 Springs, velocity | fixed-duration ease for everything | CSS `linear()` springs (critically damped by default, a little bounce only after a flick); release velocity read up to the lift |
+| 6 Momentum | a sheet closed after 80 px of travel, velocity ignored | dismiss by the projected rest point, at the finger's speed |
+| 7 Spatial consistency | sheets faded in and vanished | in from the bottom edge, out the same way |
+| 9 Rubber-banding | a hard stop pulling a sheet up | progressive resistance |
+| 12 Materials | an opaque scrim | blurred scrim; reduced-transparency and contrast fallbacks |
+| 14 Reduced motion | everything cut to 0 ms | sheets cross-fade; the rest still stop |
+| 15 Typography | already the system face (San Francisco applies its own tracking, so none was added on top) | optical sizing on; headings balanced |
+
+Not done, on purpose: haptics (the web has no iOS vibration API; for the
+Capacitor build), a translucent tab bar over scrolling content (needs the
+layout to scroll under the bar), page-to-page transitions between setup
+steps, and the 36 px small buttons from §2.6 (still below 44 pt).
