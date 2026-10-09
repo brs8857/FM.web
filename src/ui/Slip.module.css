@@ -1,15 +1,18 @@
 .slip {
-  border-top: 1px solid var(--ink);
-  padding-top: var(--space-3);
+  padding: var(--space-4);
   max-width: 100%;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--radius-card);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow), var(--glass-hi);
 }
 .header {
   display: flex;
   flex-direction: column;
   gap: 2px;
   margin-bottom: var(--space-3);
-  padding-bottom: var(--space-2);
-  border-bottom: 1px solid var(--rule);
 }
 .title {
   font-size: var(--text-xl);

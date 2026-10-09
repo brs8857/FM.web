@@ -24,7 +24,7 @@
 }
 .table th,
 .table td {
-  padding: var(--space-2) var(--space-2);
+  padding: var(--space-2) 6px;
   text-align: left;
   border-bottom: 1px solid var(--rule);
   white-space: nowrap;
@@ -48,7 +48,7 @@
 }
 .dense th,
 .dense td {
-  padding: var(--space-1) var(--space-2);
+  padding: var(--space-1) 6px;
 }
 .table tr.solid td {
   border-bottom: 2px solid var(--ink);

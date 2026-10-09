@@ -73,15 +73,24 @@
 .summary {
   display: flex;
   flex-direction: column;
-  border-top: 2px solid var(--ink);
+  padding: 0 var(--space-4);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--radius-card);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow), var(--glass-hi);
 }
 .stat {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   gap: var(--space-3);
-  padding: var(--space-2) 0;
+  padding: var(--space-3) 0;
   border-bottom: 1px solid var(--rule);
+}
+.stat:last-child {
+  border-bottom: 0;
 }
 .statLabel {
   font-size: var(--text-sm);
