@@ -27,8 +27,6 @@
   color: var(--ink);
   background: var(--glass-bg);
   border-color: var(--glass-edge);
-  -webkit-backdrop-filter: var(--glass-blur);
-  backdrop-filter: var(--glass-blur);
   box-shadow: var(--glass-shadow), var(--glass-hi);
 }
 /* A lesser action: a lighter glass capsule, still its own button. */
@@ -36,8 +34,6 @@
   color: var(--ink);
   background: var(--glass-bg);
   border-color: var(--glass-edge);
-  -webkit-backdrop-filter: var(--glass-blur);
-  backdrop-filter: var(--glass-blur);
   box-shadow: var(--glass-hi), 0 1px 3px rgba(20, 40, 20, 0.1);
 }
 .sm {

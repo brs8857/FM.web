@@ -12,6 +12,8 @@ Liquid glass: the shell, the controls, and the cards and lists, rounded and tran
 - **Rounded everywhere.** Cards, the board, tables and the league choices have 18 to 22 pt corners; toggles and segmented controls are capsules, with the selected segment a raised green pill.
 - **Cards and lists.** The draft's club cuttings, Last match and Next, the vidiprinter, the half-season note, Final table, Matches, Season so far, Saves, Settings and About are each a rounded glass card. The team sheet and bench, the record and the play-off ties are rounded lists with hairline dividers, and the selected row is tinted green rather than marked with a bar.
 - A table inside a card runs to the card's edges, so the league table keeps its width.
+- Only the floating controls (the top-bar discs, the tab bar, the footer buttons and sheets) blur what is behind them; cards are plain translucent fills, which look the same over a plain page and are much cheaper to draw on a phone.
+- On the draft desk the three cuttings are tighter and the board a little shorter, so all three still fit on the screen of a smaller iPhone without scrolling.
 - The page behind is plain paper (or black in dark mode); there is no background gradient.
 - Reduce Transparency, or a browser without blur, makes every glass surface solid; Increase Contrast gives glass a hard ink edge.
 

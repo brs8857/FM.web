@@ -11,7 +11,7 @@
   --board-max-h: 42vh;
 }
 .draft {
-  --board-max-h: 38vh;
+  --board-max-h: 36vh;
 }
 .pitch {
   position: relative;

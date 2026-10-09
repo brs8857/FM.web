@@ -59,6 +59,12 @@
   padding: var(--space-2) var(--space-1);
   padding-bottom: calc(var(--space-2) + env(safe-area-inset-bottom));
 }
+/* Only the floating controls blur what scrolls under them: a blur on every
+   card would cost more than it shows over a plain page. */
+.sticky button {
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+}
 /* The main action takes the room; a second action keeps its own width. */
 .sticky > :first-child {
   flex: 1 1 auto;

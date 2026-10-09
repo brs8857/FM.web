@@ -3,12 +3,10 @@
   flex-direction: column;
   gap: 2px;
   min-height: var(--hit);
-  padding: var(--space-3) var(--space-4);
+  padding: var(--space-2) var(--space-4);
   background: var(--glass-bg);
   border: 1px solid var(--glass-edge);
   border-radius: var(--radius-card);
-  -webkit-backdrop-filter: var(--glass-blur);
-  backdrop-filter: var(--glass-blur);
   box-shadow: var(--glass-shadow), var(--glass-hi);
   color: var(--ink);
   text-align: left;

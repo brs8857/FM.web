@@ -27,8 +27,6 @@
   border: 1px solid var(--glass-edge);
   border-radius: var(--radius-card);
   background: var(--glass-bg);
-  -webkit-backdrop-filter: var(--glass-blur);
-  backdrop-filter: var(--glass-blur);
   box-shadow: var(--glass-shadow), var(--glass-hi);
   color: var(--ink);
   text-align: start;
